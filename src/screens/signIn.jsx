@@ -7,7 +7,7 @@ import {
   Box,
   Grid,
   Typography,
-  IconButton, // Importamos IconButton
+  IconButton, 
 } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { useTheme } from "@mui/material";
@@ -15,14 +15,14 @@ import bgSignIn from "../assets/Img/jpg/bgSignIn.jpg";
 import { useMediaQuery } from "@mui/material";
 import GoogleIcon from "../assets/Img/webp/logoGoogle.webp";
 import FacebookIcon from "../assets/Img/png/logoFacebook.png";
-import VisibilityIcon from "@mui/icons-material/Visibility"; // Importamos el icono de visibilidad
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff"; // Importamos el icono de ocultar
+import VisibilityIcon from "@mui/icons-material/Visibility"; 
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 export default function SignIn() {
   const theme = useTheme();
   const isMobile = useMediaQuery("(max-width:600px)");
 
-  const [showPassword, setShowPassword] = React.useState(false); // Estado para controlar la visibilidad de la contraseña
+  const [showPassword, setShowPassword] = React.useState(false); 
 
   const handlePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -68,7 +68,7 @@ export default function SignIn() {
             item
             sx={{ fontSize: "1rem", fontWeight: "normal", marginTop: 2 }}
           >
-            Don't have an account? <Link href="/signup">{"Sign Up"}</Link>
+            Don't have an account yet? <Link href="/signup" underline="none">{"Sign Up Here"}</Link>
           </Grid>
 
           <Box
@@ -167,7 +167,7 @@ export default function SignIn() {
             <Button
               variant="outlined"
               fullWidth
-              sx={{ borderRadius: 2, mr: 1, color: "black", height: "40px" }} // Ajustamos la altura del botón
+              sx={{ borderRadius: 2, mr: 1, color: "black", height: "40px" }} 
               startIcon={
                 <img
                   src={GoogleIcon}
@@ -181,7 +181,7 @@ export default function SignIn() {
             <Button
               variant="outlined"
               fullWidth
-              sx={{ borderRadius: 2, ml: 1, color: "black", height: "40px" }} // Ajustamos la altura del botón
+              sx={{ borderRadius: 2, ml: 1, color: "black", height: "40px" }} 
               startIcon={
                 <img
                   src={FacebookIcon}
