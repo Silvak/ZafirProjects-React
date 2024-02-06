@@ -6,8 +6,10 @@ import NavbarDrawer from "@/components/navBar/navBarDrawer";
 import AlertGlobal from "@/components/alert/alert";
 import ModalGlobal from "@/components/modal/modal";
 
+
 const Home = React.lazy(() => import("@/screens/home"));
 const NotFoundPage = React.lazy(() => import("@/screens/notFoundPage"));
+const SignIn = React.lazy(() => import ("@/screens/signIn"));
 
 export default function Navigator() {
   let Logo = "";
@@ -52,6 +54,7 @@ export default function Navigator() {
       <NavbarDrawer>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/signin" element={<SignIn />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </NavbarDrawer>
