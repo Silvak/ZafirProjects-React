@@ -7,7 +7,7 @@ import {
   Box,
   Grid,
   Typography,
-  IconButton, 
+  IconButton,
 } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { useTheme } from "@mui/material";
@@ -15,8 +15,8 @@ import bgSignIn from "../assets/Img/jpg/bgSignIn.jpg";
 import { useMediaQuery } from "@mui/material";
 import GoogleIcon from "../assets/Img/webp/logoGoogle.webp";
 import FacebookIcon from "../assets/Img/png/logoFacebook.png";
-import VisibilityIcon from "@mui/icons-material/Visibility"; 
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import VisibilityIcon from "@mui/icons-material/Visibility"; // Importamos el icono de visibilidad
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff"; // Importamos el icono de ocultar
 
 export default function SignIn() {
   const theme = useTheme();
