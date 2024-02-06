@@ -15,8 +15,8 @@ import bgSignIn from "../assets/Img/jpg/bgSignIn.jpg";
 import { useMediaQuery } from "@mui/material";
 import GoogleIcon from "../assets/Img/webp/logoGoogle.webp";
 import FacebookIcon from "../assets/Img/png/logoFacebook.png";
-import VisibilityIcon from "@mui/icons-material/Visibility"; // Importamos el icono de visibilidad
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff"; // Importamos el icono de ocultar
+import VisibilityIcon from "@mui/icons-material/Visibility"; 
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff"; 
 
 export default function SignIn() {
   const theme = useTheme();
@@ -167,12 +167,12 @@ export default function SignIn() {
             <Button
               variant="outlined"
               fullWidth
-              sx={{ borderRadius: 2, mr: 1, color: "black", height: "40px" }} 
+              sx={{ borderRadius: 2, mr: 1, color: "black", height: "40px", p:2 }} 
               startIcon={
                 <img
                   src={GoogleIcon}
                   alt="Google Logo"
-                  style={{ width: 24, height: 24 }}
+                  style={{ width: 24, height: "auto" }}
                 />
               }
             >
@@ -181,12 +181,12 @@ export default function SignIn() {
             <Button
               variant="outlined"
               fullWidth
-              sx={{ borderRadius: 2, ml: 1, color: "black", height: "40px" }} 
+              sx={{ borderRadius: 2, ml: 1, color: "black", height: "40px", p:2 }} 
               startIcon={
                 <img
                   src={FacebookIcon}
                   alt="Facebook Logo"
-                  style={{ width: 24, height: 24 }}
+                  style={{ width: 24, height: "auto" }}
                 />
               }
             >
