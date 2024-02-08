@@ -1,4 +1,6 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Icon, IconButton, Typography } from "@mui/material";
+import StopCircle from "@mui/icons-material/StopCircle";
+
 import bgImage from "@/assets/Img/jpg/bgSignUp.jpg";
 import SignUpForm from "@/components/forms/SignUpForm";
 
@@ -9,11 +11,13 @@ const signUp = () => {
       spacing={3}
       sx={{
         height: "100vh",
+        padding: "0px",
       }}
     >
       {/* left */}
       <Grid
         item
+        xs={0}
         md={6}
         sx={{
           backgroundImage: `url(${bgImage})`,
@@ -38,7 +42,16 @@ const signUp = () => {
           },
         }}
       >
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ flexGrow: 1, display: "flex", gap: 1, alignItems: "start" }}>
+          <IconButton
+            sx={{
+              backgroundColor: "background.default",
+              p: 0,
+            }}
+            disableRipple
+          >
+            <StopCircle sx={{ fontSize: "30px", color: "icon.third" }} />
+          </IconButton>
           <Typography variant="h6">Sunstone</Typography>
         </Box>
         <Box sx={{ maxWidth: "600px" }}>
@@ -49,7 +62,7 @@ const signUp = () => {
         </Box>
       </Grid>
       {/* right */}
-      <Grid item xs={false} md={6}>
+      <Grid item xs={12} md={6} mx={"auto"}>
         <SignUpForm />
       </Grid>
     </Grid>

@@ -36,7 +36,6 @@ const SignUpForm = () => {
         maxWidth: 500,
         mx: "auto",
         py: 2,
-        pr: { xs: "100px", sm: "0px" },
       }}
     >
       {/* title */}
@@ -54,13 +53,10 @@ const SignUpForm = () => {
       {/* form */}
       <Box
         component="form"
-        sx={{
-          mt: 5,
-          "& .MuiTextField-root": { m: 1, width: "100%" },
-        }}
         noValidate
         autoComplete="off"
         onSubmit={handleSubmit}
+        sx={{ overflow: "hidden", mt: 4 }}
       >
         {/* layout inputs */}
         <Grid container spacing={2}>
@@ -213,6 +209,7 @@ const SignUpForm = () => {
             direction="row"
             alignItems="center"
             justifyContent="center"
+            flexWrap="wrap"
             spacing={2}
             sx={{ mt: 4 }}
           >
