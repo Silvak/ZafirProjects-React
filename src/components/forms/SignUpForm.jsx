@@ -35,7 +35,7 @@ const SignUpForm = () => {
         height: "100%",
         maxWidth: 500,
         mx: "auto",
-        py: 2,
+        p: 2,
       }}
     >
       {/* title */}
@@ -197,25 +197,23 @@ const SignUpForm = () => {
             alignItems: "center",
           }}
         >
-          <Divider sx={{ width: "200px", borderColor: "text.primary" }} />
+          <Divider sx={{ flex: 1, borderColor: "text.primary" }} />
           <Typography variant="body2" fontWeight="normal">
             Or
           </Typography>
-          <Divider sx={{ width: "200px", borderColor: "text.primary" }} />
+          <Divider sx={{ flex: 1, borderColor: "text.primary" }} />
         </Box>
         {/* form social btns */}
-        <Box>
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="center"
-            flexWrap="wrap"
-            spacing={2}
-            sx={{ mt: 4 }}
-          >
+
+        <Grid container spacing={2} sx={{ mt: 2 }}>
+          <Grid item xs={12} md={6}>
             <Button
               variant="outlined"
-              sx={{ color: "icon.primary", borderColor: "icon.primary" }}
+              sx={{
+                color: "icon.primary",
+                borderColor: "icon.primary",
+                width: "100%",
+              }}
               startIcon={
                 <IconButton size="small">
                   <img src={GoogleIcon} alt="google icon" width="30px" />
@@ -224,9 +222,15 @@ const SignUpForm = () => {
             >
               Sign with Google
             </Button>
+          </Grid>
+          <Grid item xs={12} md={6}>
             <Button
               variant="outlined"
-              sx={{ color: "icon.primary", borderColor: "icon.primary" }}
+              sx={{
+                color: "icon.primary",
+                borderColor: "icon.primary",
+                width: "100%",
+              }}
               startIcon={
                 <IconButton size="small">
                   <img src={FacebookIcon} alt="google icon" width="30px" />
@@ -235,8 +239,8 @@ const SignUpForm = () => {
             >
               Sign with Facebook
             </Button>
-          </Stack>
-        </Box>
+          </Grid>
+        </Grid>
       </Box>
     </Box>
   );
