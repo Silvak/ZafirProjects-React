@@ -9,7 +9,8 @@ import ModalGlobal from "@/components/modal/modal";
 
 const Home = React.lazy(() => import("@/screens/home"));
 const NotFoundPage = React.lazy(() => import("@/screens/notFoundPage"));
-const SignIn = React.lazy(() => import ("@/screens/signin"));
+const SignIn = React.lazy(() => import ("@/screens/signIn"));
+const MyTask = React.lazy(() => import ("@/screens/myTask"));
 
 export default function Navigator() {
   let Logo = "";
@@ -55,6 +56,7 @@ export default function Navigator() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/my-task" element={<MyTask />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </NavbarDrawer>

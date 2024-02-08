@@ -20,6 +20,7 @@ declare module "@/routes/routes";
 declare module "@/screens/home";
 declare module "@/screens/notFoundPage";
 declare module "@/screens/signIn";
+declare module "@/screens/myTask";
 
 declare module "@/theme/theme";
 
