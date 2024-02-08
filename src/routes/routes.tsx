@@ -11,7 +11,7 @@ const Home = React.lazy(() => import("@/screens/home"));
 const NotFoundPage = React.lazy(() => import("@/screens/notFoundPage"));
 
 const MyTask = React.lazy(() => import ("@/screens/myTask"));
-const SignIn = React.lazy(() => import ("@/screens/signin"));
+const SignIn = React.lazy(() => import ("@/screens/signIn"));
 const SignUp = React.lazy(() => import ("@/screens/signUp"));
 
 export default function Navigator() {
