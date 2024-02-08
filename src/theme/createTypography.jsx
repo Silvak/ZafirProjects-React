@@ -3,21 +3,21 @@ export const createTypography = () => {
     fontFamily:
       '"Poppins", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"',
     body1: {
-      fontWeight: "800",
+      fontWeight: "300",
       "@media (min-width:0px)": {
-        fontSize: "20px",
+        fontSize: "10px",
       },
       "@media (min-width:600px)": {
-        fontSize: "24px",
+        fontSize: "10px",
       },
       "@media (min-width:900px)": {
-        fontSize: "24px",
+        fontSize: "12px",
       },
       "@media (min-width:1200px)": {
-        fontSize: "40px",
+        fontSize: "15px",
       },
       "@media (min-width:1800px)": {
-        fontSize: "45px",
+        fontSize: "18px",
       },
     },
     body2: {

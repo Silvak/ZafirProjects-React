@@ -10,49 +10,54 @@ export function createPalette(mode) {
       disabledBackground: alpha(neutral[900], 0.12),
       focus: alpha(neutral[900], 0.16),
       hover: alpha(neutral[900], 0.04),
-      selected: alpha(neutral[900], 0.12),
+      selected: alpha(neutral[900],),
     },
     background: {
       default: common.white,
       paper: common.white,
     },
-    divider: "#F2F4F7",
+    divider: "#FFFFFF",
     error,
     info,
+    icon: {
+      primary: "#393d44",
+      secondary: "#7662ea",
+      third: "#6366F1",
+    },
     mode: mode,
     ...(mode == "light"
       ? {
-          background: {
-            default: "#F5F5F5",
-            paper: "#3B3B3B",
-          },
-          text: {
-            primary: "#3B3B3B",
-            secondary: "#F5F5F5",
-            third: "#6366F1",
-          },
-          icon: {
-            primary: "#3B3B3B",
-            secondary: "#F5F5F5",
-            third: "#6366F1",
-          },
-        }
+        background: {
+          default: "#ECEFF3",
+          paper: "#b5b5b5",
+        },
+        text: {
+          primary: "#6b6e75",
+          secondary: "#393d44",
+          third: "#6366F1",
+        },
+        icon: {
+          primary: "#393d44",
+          secondary: "#7662ea",
+          third: "#6366F1",
+        },
+      }
       : {
-          background: {
-            default: "#3B3B3B",
-            paper: "#F5F5F5",
-          },
-          text: {
-            primary: "#F5F5F5",
-            secondary: "#3B3B3B",
-            third: "#6366F1",
-          },
-          icon: {
-            primary: "#F5F5F5",
-            secondary: "#3B3B3B",
-            third: "#6366F1",
-          },
-        }),
+        background: {
+          default: "#3B3B3B",
+          paper: "#F5F5F5",
+        },
+        text: {
+          primary: "#F5F5F5",
+          secondary: "#3B3B3B",
+          third: "#6366F1",
+        },
+        icon: {
+          primary: "#F5F5F5",
+          secondary: "#3B3B3B",
+          third: "#7662ea",
+        },
+      }),
     neutral,
     primary: indigo,
     success,
