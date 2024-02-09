@@ -17,6 +17,7 @@ import GoogleIcon from "../assets/Img/webp/logoGoogle.webp";
 import FacebookIcon from "../assets/Img/png/logoFacebook.png";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import StopCircle from "@mui/icons-material/StopCircle";
 
 export default function SignIn() {
   const theme = useTheme();
@@ -73,9 +74,19 @@ export default function SignIn() {
               }}
             >
               <Box sx={{ flexGrow: 1 }}>
-                <Typography variant="h6" style={{ marginTop: "5rem" }}>
-                  Sunstone
-                </Typography>
+                <div style={{display:"flex", marginTop:"1rem", gap:"1rem"}}>
+
+                <IconButton
+                  sx={{
+                    backgroundColor: "background.default",
+                    p: 0,
+                  }}
+                  disableRipple
+                  >
+                  <StopCircle sx={{ fontSize: "30px", color: "icon.third" }} />
+                </IconButton>
+                <Typography variant="h6">Sunstone</Typography>
+                  </div>
               </Box>
               <Box sx={{ maxWidth: "600px" }}>
                 <Typography
@@ -94,7 +105,7 @@ export default function SignIn() {
           xs={false}
           sm={4}
           md={4}
-          sx={{ marginTop: isMobile ? 6 : 12 }}
+          sx={{ marginTop: isMobile ? 6 : 12, ml: isMobile ? 0 : 6 }}
         >
           <Typography variant="h2">Sign in</Typography>
           <Grid

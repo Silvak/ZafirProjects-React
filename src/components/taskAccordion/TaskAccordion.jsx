@@ -9,26 +9,57 @@ import {
   Avatar,
   ThemeProvider,
   createTheme,
+  useMediaQuery,
 } from "@mui/material";
 import {
   AttachFile as AttachFileIcon,
-  Event as EventIcon,
   MarkUnreadChatAltOutlined as MarkUnreadChatAltOutlinedIcon,
   MoreHoriz as MoreHorizIcon,
 } from "@mui/icons-material";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import AddIcon from "@mui/icons-material/Add";
 import AvatarGroup from "@mui/material/AvatarGroup";
 
 const TaskAccordion = ({ title, tasks, handleAddTask }) => {
   const theme = createTheme();
   const [expanded, setExpanded] = useState(true);
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+
+  const handleMoreIcon = () => {
+    alert("toqueé el ... ");
+  };
+  const handleClipIcon = () => {
+    alert("toqueé el icono del clip");
+  };
+
+  const ExpandIcon = ({ expanded }) => {
+    return (
+      <span
+        style={{
+          transform: expanded ? "rotate(180deg)" : "rotate(-90deg)",
+          fontSize: "2rem",
+          color: "gray",
+          fontWeight: "normal",
+          marginRight: "1rem",
+          padding: "1rem",
+        }}
+        onClick={() => setExpanded(!expanded)}
+      >
+        v
+      </span>
+    );
+  };
 
   return (
     <ThemeProvider theme={theme}>
-      <div>
+      <div
+        style={{
+          display: isMobile ? "flex" : "",
+          textAlign: isMobile ? "left" : "",
+        }}
+      >
         <Accordion
           expanded={expanded}
-          onChange={() => setExpanded(!expanded)}
           sx={{
             backgroundColor: "#F6F7FA",
             boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
@@ -80,7 +111,6 @@ const TaskAccordion = ({ title, tasks, handleAddTask }) => {
                   backgroundColor: "cyan",
                   fontSize: "1.5rem",
                 }}
-                onClick={handleAddTask}
               />
             </div>
           </AccordionSummary>
@@ -142,12 +172,16 @@ const TaskAccordion = ({ title, tasks, handleAddTask }) => {
                         color="textSecondary"
                         noWrap
                         style={{ fontSize: "14px", fontWeight: "bold" }}
+                        sx={{ ml: "3rem" }}
                       >
                         {task.appDesign}
                       </Typography>
                     </Grid>
                     <Grid item xs={12} sm={1} sx={{ marginRight: "3rem" }}>
-                      <AvatarGroup max={3}>
+                      <AvatarGroup
+                        max={3}
+                        style={{ marginRight: isMobile ? "30%" : "" }}
+                      >
                         {task.assignees.map((assignee, index) => (
                           <Avatar key={index} alt="Assignee" src={assignee} />
                         ))}
@@ -156,16 +190,19 @@ const TaskAccordion = ({ title, tasks, handleAddTask }) => {
                     <Grid item xs={12} sm={2}>
                       <div style={{ display: "flex", color: "darkslategray" }}>
                         <MarkUnreadChatAltOutlinedIcon
-                          style={{ marginRight: "5px", color: "darkslategray" }}
+                          sx={{ mr: "5px", color: "gray" }}
                         />
                         <Typography
                           variant="body1"
                           noWrap
-                          style={{ fontSize: "14px", marginRight: "1rem" }}
+                          style={{ fontSize: "14px", marginRight: "3rem" }}
                         >
                           {task.notification}
                         </Typography>
-                        <AttachFileIcon />
+                        <AttachFileIcon
+                          style={{ cursor: "pointer", color: "gray" }}
+                          onClick={handleClipIcon}
+                        />
                         <Typography
                           variant="body1"
                           noWrap
@@ -184,8 +221,12 @@ const TaskAccordion = ({ title, tasks, handleAddTask }) => {
                           marginRight: "4rem",
                         }}
                       >
-                        <EventIcon
-                          style={{ marginRight: "5px", color: "darkslategray" }}
+                        <CalendarTodayIcon
+                          style={{
+                            marginTop: isMobile ? "5px" : "",
+                            marginRight: isMobile ? "" : "5px",
+                            color: "gray",
+                          }}
                         />
                         <Typography
                           variant="body1"
@@ -215,7 +256,15 @@ const TaskAccordion = ({ title, tasks, handleAddTask }) => {
                       </Typography>
                     </Grid>
                     <Grid item xs={12} sm={1}>
-                      <MoreHorizIcon style={{ color: "darkslategray" }} />
+                      <MoreHorizIcon
+                        style={{
+                          color: "darkslategray",
+                          cursor: "pointer",
+                          visibility: isMobile ? "hidden" : "inherits",
+                        }}
+                        onClick={handleMoreIcon}
+                        sx={{ ml: "5rem" }}
+                      />
                     </Grid>
                   </Grid>
                 </Paper>
@@ -240,22 +289,6 @@ const priorityColors = {
   High: { backgroundColor: "#FFEBEA", color: "#E55D57" },
   Medium: { backgroundColor: "#FCF2E3", color: "#EBA741" },
   Low: { backgroundColor: "#DEE9F2", color: "#5BA9F6" },
-};
-
-const ExpandIcon = ({ expanded }) => {
-  return (
-    <span
-      style={{
-        transform: expanded ? "rotate(180deg)" : "rotate(-90deg)",
-        fontSize: "20px",
-        color: "gray",
-        fontWeight: "normal",
-        marginRight: "1rem",
-      }}
-    >
-      v
-    </span>
-  );
 };
 
 export default TaskAccordion;
