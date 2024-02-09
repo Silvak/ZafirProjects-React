@@ -1,45 +1,72 @@
-import {
-  Box,
-  FormControl,
-  List,
-  NativeSelect,
-  Typography,
-} from "@mui/material";
-import { projectsData } from "@/mockData/projectsData";
+import { Table, TableBody, TableCell, TableRow } from "@mui/material";
 
-//components
-import ProjectItem from "./ProjectItem";
-//styles
-import { tableStyles } from "./styles";
+import ProjectsTableHeader from "./ProjectsTableHeader";
+import { projectsData } from "../../mockData/projectsData";
+import ProjectsTableItem from "./ProjectsTableItem";
+import TablePagination from "../tableMembers/tablePagination";
+import { useState } from "react";
 
-const total = 24;
+const username = "John Doe";
 
 const ProjectsTable = () => {
+  const [page, setPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const totalProjects = projectsData.length;
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(1);
+  };
   return (
-    <Box sx={tableStyles.container}>
-      <Box sx={tableStyles.head}>
-        <Typography variant="h6">{total} Projects</Typography>
-        <FormControl sx={{ minWidth: 120 }} size="medium">
-          <NativeSelect
-            defaultValue={1}
-            inputProps={{
-              name: "filter",
-              id: "uncontrolled-native",
-            }}
-          >
-            <option value={1}>This week</option>
-            <option value={2}>This month</option>
-            <option value={3}>This year</option>
-          </NativeSelect>
-        </FormControl>
-      </Box>
-      {/* data */}
-      <List sx={tableStyles.list}>
-        {projectsData.map((item) => (
-          <ProjectItem {...item} key={item.id} username={"John Doe"} />
-        ))}
-      </List>
-    </Box>
+    <Table
+      sx={{
+        mt: "30px",
+        background: "#FFFFFF",
+        borderRadius: "20px",
+        display: "block",
+        padding: "20px",
+      }}
+    >
+      <ProjectsTableHeader totalProjects={totalProjects} />
+
+      <TableBody sx={{ display: "grid" }}>
+        <TableRow
+          sx={{
+            overflowX: "auto",
+            "&>*": {
+              borderBottom: "none",
+              width: "max(900px, 100%)",
+            },
+          }}
+        >
+          {projectsData
+            .slice(
+              (page - 1) * rowsPerPage,
+              (page - 1) * rowsPerPage + rowsPerPage
+            )
+            .map((project) => (
+              <ProjectsTableItem
+                {...project}
+                key={project.id}
+                username={username}
+              />
+            ))}
+        </TableRow>
+      </TableBody>
+
+      <TablePagination
+        rowsPerPage={rowsPerPage}
+        page={page}
+        handleChangePage={handleChangePage}
+        handleChangeRowsPerPage={handleChangeRowsPerPage}
+        membersData={projectsData}
+      />
+    </Table>
   );
 };
 export default ProjectsTable;
