@@ -15,14 +15,14 @@ import bgSignIn from "../assets/Img/jpg/bgSignIn.jpg";
 import { useMediaQuery } from "@mui/material";
 import GoogleIcon from "../assets/Img/webp/logoGoogle.webp";
 import FacebookIcon from "../assets/Img/png/logoFacebook.png";
-import VisibilityIcon from "@mui/icons-material/Visibility"; 
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff"; 
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 export default function SignIn() {
   const theme = useTheme();
   const isMobile = useMediaQuery("(max-width:600px)");
 
-  const [showPassword, setShowPassword] = React.useState(false); 
+  const [showPassword, setShowPassword] = React.useState(false);
 
   const handlePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -41,21 +41,54 @@ export default function SignIn() {
     <ThemeProvider theme={theme}>
       <Grid
         container
-        component="main"
-        sx={{ justifyContent: "center", height: "100vh", width: "auto" }}
+        spacing={3}
+        sx={{
+          height: "100vh",
+        }}
       >
         <CssBaseline />
-        <Grid
-          item
-          xs={false}
-          sm={4}
-          md={6}
-          sx={{
-            backgroundImage: `url(${bgSignIn})`,
-            backgroundSize: "cover",
-            marginRight: isMobile ? 0 : 8,
-          }}
-        />
+        {!isMobile && (
+          <>
+            <Grid
+              item
+              xs={false}
+              sm={4}
+              md={6}
+              sx={{
+                backgroundImage: `url(${bgSignIn})`,
+                backgroundSize: "cover",
+                marginRight: isMobile ? 0 : 8,
+                filter: "brightness(0.7)",
+              }}
+            />
+            <div
+              style={{
+                display: "flex",
+                position: "absolute",
+                color: "white",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                height: "100%",
+                marginLeft: "5%",
+              }}
+            >
+              <Box sx={{ flexGrow: 1 }}>
+                <Typography variant="h6" style={{ marginTop: "5rem" }}>
+                  Sunstone
+                </Typography>
+              </Box>
+              <Box sx={{ maxWidth: "600px" }}>
+                <Typography
+                  variant="body1"
+                  sx={{ textBalance: "balance", marginBottom: "5rem" }}
+                >
+                  The ultimate multipurpose dashboard UI Kit for kickstart any
+                  project.
+                </Typography>
+              </Box>
+            </div>
+          </>
+        )}
         <Grid
           item
           xs={false}
@@ -63,12 +96,15 @@ export default function SignIn() {
           md={4}
           sx={{ marginTop: isMobile ? 6 : 12 }}
         >
-          <Typography variant="h3">Sign in</Typography>
+          <Typography variant="h2">Sign in</Typography>
           <Grid
             item
             sx={{ fontSize: "1rem", fontWeight: "normal", marginTop: 2 }}
           >
-            Don't have an account yet? <Link href="/signup" underline="none">{"Sign Up Here"}</Link>
+            Don't have an account yet?{" "}
+            <Link href="/sign-up" underline="none">
+              {"Sign Up Here"}
+            </Link>
           </Grid>
 
           <Box
@@ -167,7 +203,13 @@ export default function SignIn() {
             <Button
               variant="outlined"
               fullWidth
-              sx={{ borderRadius: 2, mr: 1, color: "black", height: "40px", p:2 }} 
+              sx={{
+                borderRadius: 2,
+                mr: 1,
+                color: "black",
+                height: "40px",
+                p: 2,
+              }}
               startIcon={
                 <img
                   src={GoogleIcon}
@@ -181,7 +223,13 @@ export default function SignIn() {
             <Button
               variant="outlined"
               fullWidth
-              sx={{ borderRadius: 2, ml: 1, color: "black", height: "40px", p:2 }} 
+              sx={{
+                borderRadius: 2,
+                ml: 1,
+                color: "black",
+                height: "40px",
+                p: 2,
+              }}
               startIcon={
                 <img
                   src={FacebookIcon}

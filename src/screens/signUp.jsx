@@ -11,7 +11,10 @@ const signUp = () => {
       spacing={3}
       sx={{
         height: "100vh",
-        padding: "0px",
+        padding: "0",
+        "& > .MuiGrid-item": {
+          padding: 0,
+        },
       }}
     >
       {/* left */}
@@ -27,7 +30,6 @@ const signUp = () => {
           color: "text.secondary",
           display: { xs: "none", md: "flex" },
           flexDirection: "column",
-          py: 2,
           "&::after": {
             content: "''",
             position: "absolute",
@@ -42,7 +44,16 @@ const signUp = () => {
           },
         }}
       >
-        <Box sx={{ flexGrow: 1, display: "flex", gap: 1, alignItems: "start" }}>
+        <Box
+          sx={{
+            py: 2,
+            height: "auto",
+            flexGrow: 1,
+            display: "flex",
+            gap: 1,
+            alignItems: "start",
+          }}
+        >
           <IconButton
             sx={{
               backgroundColor: "background.default",
