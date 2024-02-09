@@ -221,6 +221,7 @@ export default function NavbarDrawer(props) {
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
+    console.log(anchorElUser);
   };
   const open3 = Boolean(anchorEl);
   const handleCloseUserMenu = () => {
@@ -337,7 +338,7 @@ export default function NavbarDrawer(props) {
         }}
       >
         <ListItem sx={{
-          backgroundColor: isActive ? "#ffffff" : "#eceff3"
+          
         }}>
           <ListItemButton
             sx={{
@@ -348,7 +349,8 @@ export default function NavbarDrawer(props) {
               marginLeft: "5px",
               marginRight: "5px",
               width: "5px",
-              
+              color: isActive ? "#7662ea" : "black",
+              backgroundColor: isActive ? "#ffffff" : "#eceff3"
             }}
 
           >
@@ -365,7 +367,10 @@ export default function NavbarDrawer(props) {
             <ListItemText
               disableTypography
               primary={<Typography variant="h8">{props.title}</Typography>}
-              sx={{ opacity: open ? 1 : 0 }}
+              sx={{ 
+                opacity: open ? 1 : 0 ,
+                color: isActive ? theme.palette.text.secondary : theme.palette.text.primary,
+              }}
             />
           </ListItemButton>
         </ListItem>
@@ -522,20 +527,16 @@ export default function NavbarDrawer(props) {
           </ItemNav>
 
           <ListItemButton onClick={handleClick2}  >
-            <ListItemIcon  >
+            <ItemNav to="/projects" title="Projects">
               <FolderCopyOutlinedIcon sx={{ marginRight: 1.6, }} />
-              <ListItemText primary="Projects" />
-            </ListItemIcon>
+            </ItemNav>
+              {/* <ListItemText primary="Projects" /> */}
             {open2 ? <ExpandLess sx={{ marginLeft: 3 }} /> : <KeyboardArrowRightIcon sx={{ marginLeft: 3 }} />}
           </ListItemButton>
           <Collapse in={open2} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              <ListItemButton sx={{ pl: 4 }}>
-                <ListItemIcon>
-                  <StarBorder />
-                </ListItemIcon>
-                <ListItemText primary="Starred" />
-              </ListItemButton>
+            <ItemNav to="/projects" title="Projects" sx={{ pl: 8 }}/>
+            <ItemNav to="/report" title="Report" sx={{ pl: 8 }}/>
             </List>
           </Collapse>
 
