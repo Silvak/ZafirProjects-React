@@ -10,6 +10,9 @@ declare module "@/components/modal/modal";
 declare module "@/components/forms/SignUpForm";
 declare module "@/components/projectsTable/ProjectsTable";
 declare module "@/components/projectsTable/ProjectItem";
+declare module "@/components/projectsTable/ProjectsTableHeader";
+declare module "@/components/projectsTable/RenderIconByCategory";
+declare module "@/components/BoxIcon/BoxIcon";
 
 
 
