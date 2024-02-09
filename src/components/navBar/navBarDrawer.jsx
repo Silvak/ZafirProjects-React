@@ -1,36 +1,21 @@
 import * as React from "react";
-import { styled, alpha } from '@mui/material/styles';
-import { NavLink, useLocation } from "react-router-dom";
-import TaskOutlinedIcon from '@mui/icons-material/TaskOutlined';
+import { styled, alpha } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
-import Collapse from '@mui/material/Collapse';
-import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
-import MuiAccordion from '@mui/material/Accordion';
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import MuiAccordionSummary from '@mui/material/AccordionSummary';
-import MuiAccordionDetails from '@mui/material/AccordionDetails';
-import SearchIcon from '@mui/icons-material/Search';
-import MoreIcon from '@mui/icons-material/MoreVert';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import StarBorder from '@mui/icons-material/StarBorder';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import CloudCircleIcon from '@mui/icons-material/CloudCircle';
-import BrokenImageOutlinedIcon from '@mui/icons-material/BrokenImageOutlined';
-import QuestionAnswerOutlinedIcon from '@mui/icons-material/QuestionAnswerOutlined';
-import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
-import FolderCopyOutlinedIcon from '@mui/icons-material/FolderCopyOutlined';
-import MultilineChartOutlinedIcon from '@mui/icons-material/MultilineChartOutlined';
-import StopCircleIcon from '@mui/icons-material/StopCircle';
-import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
-import { items } from "./items";
+import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
+import MuiAccordion from "@mui/material/Accordion";
+import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import MuiAccordionSummary from "@mui/material/AccordionSummary";
+import MuiAccordionDetails from "@mui/material/AccordionDetails";
+import SearchIcon from "@mui/icons-material/Search";
+import MoreIcon from "@mui/icons-material/MoreVert";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import CloudCircleIcon from "@mui/icons-material/CloudCircle";
+import StopCircleIcon from "@mui/icons-material/StopCircle";
+import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import {
   List,
-  ListItemText,
-  ListItemIcon,
-  ListItem,
-  ListItemButton,
   IconButton,
   Typography,
   Box,
@@ -43,12 +28,13 @@ import {
   InputBase,
   AccordionActions,
 } from "@mui/material";
-import {
-  Menu,
-  MenuOpen,
-} from "@mui/icons-material";
-const drawerWidth = 240;
+import { Menu, MenuOpen } from "@mui/icons-material";
+import ItemNav from "@/components/navBar/itemNav";
+import ItemMenu from "@/components/navBar/itemMenu";
 
+const drawerWidth = 258;
+
+//styles
 const openedMixin = (theme) => ({
   width: drawerWidth,
   backgroundColor: "#eceff3",
@@ -70,9 +56,9 @@ const closedMixin = (theme) => ({
     duration: theme.transitions.duration.leavingScreen,
   }),
   overflowX: "hidden",
-  width: `calc(${theme.spacing(7)} + 1px)`,
+  width: `calc(${theme.spacing("64px")} + 1px)`,
   [theme.breakpoints.up("sm")]: {
-    width: `calc(${theme.spacing(7)} + 1px)`,
+    width: `calc(${theme.spacing("80px")} + 1px)`,
   },
 });
 
@@ -153,51 +139,86 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
-const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
   borderRadius: "3.5em",
   backgroundColor: "transparent",
-  '&:hover': {
+  "&:hover": {
     backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
   marginRight: theme.spacing(2),
   marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
+  width: "100%",
+  [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(3),
-    width: 'auto',
+    width: "auto",
   },
 }));
 
-const SearchIconWrapper = styled('div')(({ theme }) => ({
+const SearchIconWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  '& .MuiInputBase-input': {
+  color: "inherit",
+  "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("md")]: {
+      width: "20ch",
     },
   },
 }));
 
+//Acordion styles
+const Accordion = styled((props) => (
+  <MuiAccordion disableGutters elevation={0} square {...props} />
+))(({ theme }) => ({
+  border: `1px solid ${theme.palette.divider}`,
+  "&:not(:last-child)": {
+    borderBottom: 0,
+  },
+  "&::before": {
+    display: "none",
+  },
+}));
 
+const AccordionSummary = styled((props) => (
+  <MuiAccordionSummary
+    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: "0.9rem" }} />}
+    {...props}
+  />
+))(({ theme }) => ({
+  backgroundColor:
+    theme.palette.mode === "dark"
+      ? "rgba(255, 255, 255, .05)"
+      : "rgba(0, 0, 0, .03)",
+  flexDirection: "row-reverse",
+  "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
+    transform: "rotate(90deg)",
+  },
+  "& .MuiAccordionSummary-content": {
+    marginLeft: theme.spacing(1),
+  },
+}));
 
+const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
+  padding: theme.spacing(2),
+  borderTop: "1px solid rgba(0, 0, 0, .125)",
+}));
 
+//Main component
 export default function NavbarDrawer(props) {
-  const [expanded, setExpanded] = React.useState('panel1');
+  const [expanded, setExpanded] = React.useState("panel1");
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
@@ -220,9 +241,9 @@ export default function NavbarDrawer(props) {
   };
 
   const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-    console.log(anchorElUser);
+    console.log("captura el evento");
   };
+
   const open3 = Boolean(anchorEl);
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
@@ -249,19 +270,19 @@ export default function NavbarDrawer(props) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const menuId = 'primary-search-account-menu';
+  const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
+        vertical: "top",
+        horizontal: "right",
       }}
       id={menuId}
       keepMounted
       transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
+        vertical: "top",
+        horizontal: "right",
       }}
       open={isMenuOpen}
       onClose={handleMenuClose}
@@ -271,8 +292,7 @@ export default function NavbarDrawer(props) {
     </Menu>
   );
 
-  const mobileMenuId = 'primary-search-account-menu-mobile';
-
+  const mobileMenuId = "primary-search-account-menu-mobile";
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -282,107 +302,18 @@ export default function NavbarDrawer(props) {
     setOpen(false);
   };
 
-  const Accordion = styled((props) => (
-    <MuiAccordion disableGutters elevation={0} square {...props} />
-  ))(({ theme }) => ({
-    border: `1px solid ${theme.palette.divider}`,
-    '&:not(:last-child)': {
-      borderBottom: 0,
-    },
-    '&::before': {
-      display: 'none',
-    },
-  }));
-
-  const AccordionSummary = styled((props) => (
-    <MuiAccordionSummary
-      expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
-      {...props}
-    />
-  ))(({ theme }) => ({
-    backgroundColor:
-      theme.palette.mode === 'dark'
-        ? 'rgba(255, 255, 255, .05)'
-        : 'rgba(0, 0, 0, .03)',
-    flexDirection: 'row-reverse',
-    '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
-      transform: 'rotate(90deg)',
-    },
-    '& .MuiAccordionSummary-content': {
-      marginLeft: theme.spacing(1),
-    },
-  }));
-
-  const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-    padding: theme.spacing(2),
-    borderTop: '1px solid rgba(0, 0, 0, .125)',
-  }));
-
-
-  function ItemNav(props) {
-    const location = useLocation();
-    const isActive = location.pathname === props.to;
-
-    return (
-      <NavLink
-        to={props.to}
-        style={({ isActive }) => {
-          return {
-            textDecoration: "none",
-            color: isActive
-              ? theme.palette.text.secondary
-              : theme.palette.text.primary,
-            backgroundColor: isActive ? "white" : "#eceff3",
-            borderRadius: "1em"
-          };
-        }}
-      >
-        <ListItem sx={{
-          
-        }}>
-          <ListItemButton
-            sx={{
-              minHeight: 48,
-              justifyContent: open ? "initial" : "center",
-              px: 1,
-              borderRadius: "1rem",
-              marginLeft: "5px",
-              marginRight: "5px",
-              width: "5px",
-              color: isActive ? "#7662ea" : "black",
-              backgroundColor: isActive ? "#ffffff" : "#eceff3"
-            }}
-
-          >
-            <ListItemIcon
-              sx={{
-                minWidth: 0,
-                mr: open ? 2 : "auto",
-                justifyContent: "center",
-                color: isActive ? "#7662ea" : "black",
-              }}
-            >
-              {props.children}
-            </ListItemIcon>
-            <ListItemText
-              disableTypography
-              primary={<Typography variant="h8">{props.title}</Typography>}
-              sx={{ 
-                opacity: open ? 1 : 0 ,
-                color: isActive ? theme.palette.text.secondary : theme.palette.text.primary,
-              }}
-            />
-          </ListItemButton>
-        </ListItem>
-      </NavLink>
-    );
-  }
-
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <CustomAppBar position="fixed" open={open} >
-        <Toolbar sx={{ border: "2px solid #b5b5b5", borderBlockStart: "none", borderLeft: "none", height: "80px" }}>
+      <CustomAppBar position="fixed" open={open}>
+        <Toolbar
+          sx={{
+            border: "2px solid #b5b5b5",
+            borderBlockStart: "none",
+            borderLeft: "none",
+            height: "80px",
+          }}
+        >
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -402,12 +333,12 @@ export default function NavbarDrawer(props) {
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
+              inputProps={{ "aria-label": "search" }}
             />
           </Search>
 
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <IconButton
               size="large"
               aria-label="show 5 new notifications"
@@ -419,15 +350,11 @@ export default function NavbarDrawer(props) {
               </Badge>
             </IconButton>
 
-            {/* <MenuItem sx={{
-              height: "70px",
-              marginTop: 1,
-              marginBottom: 1
-            }}> */}
+            {/* Profile button */}
             <Box
               sx={{
-                display: 'flex',
-                alignItems: 'center',
+                display: "flex",
+                alignItems: "center",
                 backgroundColor: "#ffffff",
                 padding: 1,
                 borderRadius: 3.5,
@@ -437,33 +364,32 @@ export default function NavbarDrawer(props) {
                 cursor: "pointer",
               }}
               id="fade-button"
-              aria-controls={open3 ? 'fade-menu' : undefined}
+              aria-controls={open3 ? "fade-menu" : undefined}
               aria-haspopup="true"
-              aria-expanded={open3 ? 'true' : undefined}
+              aria-expanded={open3 ? "true" : undefined}
               onClick={handleOpenUserMenu}
             >
               <Avatar
                 src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
                 srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                sx={{ borderRadius: '50%' }}
+                sx={{ borderRadius: "50%" }}
               />
               <Box sx={{ ml: 1.5 }}>
-                <Typography level="title-sm" variant="h7" color={theme.palette.text.fourth}>
+                <Typography
+                  level="title-sm"
+                  variant="h7"
+                  color={theme.palette.text.fourth}
+                >
                   Alexander
                 </Typography>
-                <Typography level="body-xs"  >
-                  Admin
-                </Typography>
+                <Typography level="body-xs">Admin</Typography>
               </Box>
               <KeyboardArrowDownIcon sx={{ marginLeft: 2 }} />
             </Box>
-            {/* </MenuItem> */}
           </Box>
 
-
-
-
-          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+          {/* Mobile Profile Button */}
+          <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
               aria-label="show more"
@@ -477,13 +403,28 @@ export default function NavbarDrawer(props) {
           </Box>
         </Toolbar>
       </CustomAppBar>
-      <Drawer variant="permanent" open={open} >
-        <DrawerHeader sx={{ borderBlockEnd: "2px solid #b5b5b5", display: "flex", justifyContent: "start", height: "80px" }}>
+
+      <Drawer variant="permanent" open={open}>
+        {/* Draw Header Logo & toggle open */}
+        <DrawerHeader
+          sx={{
+            borderBlockEnd: "2px solid #b5b5b5",
+            display: "flex",
+            justifyContent: "start",
+            height: "80px",
+          }}
+        >
           <StopCircleIcon style={{ color: "#7662ea" }} />
-          <Typography variant="h6" noWrap component="div" color="black" sx={{ marginLeft: 1, marginRight: 3 }}>
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            color="black"
+            sx={{ marginLeft: 1, marginRight: 3 }}
+          >
             Sunstone
           </Typography>
-          <IconButton onClick={handleDrawerClose} >
+          <IconButton onClick={handleDrawerClose}>
             {theme.direction === "rtl" ? (
               <MenuOpen />
             ) : (
@@ -491,16 +432,25 @@ export default function NavbarDrawer(props) {
             )}
           </IconButton>
         </DrawerHeader>
-        <List
+
+        <Box
           sx={{
             display: "flex",
             flexDirection: "column",
-            height: "10%",
+            height: "100px",
             justifyContent: "flex-start",
             marginTop: "1rem",
           }}
         >
-          <Accordion sx={{ m: 1, minWidth: 100 }} style={{ borderRadius: "10px", backgroundColor: "#f6f7fa", marginLeft: "5px", marginRight: "5px", borderColor: "#e0e3e8" }}>
+          <Accordion
+            sx={{ m: 1, minWidth: 100 }}
+            style={{
+              borderRadius: "12px",
+              backgroundColor: "#f6f7fa",
+              px: "12px",
+              borderColor: "#e0e3e8",
+            }}
+          >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1-content"
@@ -514,47 +464,12 @@ export default function NavbarDrawer(props) {
               </MenuItem>
             </AccordionActions>
           </Accordion>
-        </List>
+        </Box>
 
-        <List
-          >
-          <ItemNav to="/" title="Overview">
-            <BrokenImageOutlinedIcon />
-          </ItemNav>
-
-          <ItemNav to="/tasks" title="My Tasks">
-            <TaskOutlinedIcon />
-          </ItemNav>
-
-          <ListItemButton onClick={handleClick2}  >
-            <ItemNav to="/projects" title="Projects">
-              <FolderCopyOutlinedIcon sx={{ marginRight: 1.6, }} />
-            </ItemNav>
-              {/* <ListItemText primary="Projects" /> */}
-            {open2 ? <ExpandLess sx={{ marginLeft: 3 }} /> : <KeyboardArrowRightIcon sx={{ marginLeft: 3 }} />}
-          </ListItemButton>
-          <Collapse in={open2} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-            <ItemNav to="/projects" title="Projects" sx={{ pl: 8 }}/>
-            <ItemNav to="/report" title="Report" sx={{ pl: 8 }}/>
-            </List>
-          </Collapse>
-
-          <ItemNav to="/tracker" title="Time Tracker">
-            <TimerOutlinedIcon />
-          </ItemNav>
-
-          <ItemNav to="/performance" title="Performance">
-            <MultilineChartOutlinedIcon />
-          </ItemNav>
-
-          <ItemNav to="/messages" title="Messages">
-            <QuestionAnswerOutlinedIcon />
-          </ItemNav>
-        </List>
-
+        {/* Menu Items */}
+        <ItemMenu open={open} />
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3, }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
         {props.children}
       </Box>

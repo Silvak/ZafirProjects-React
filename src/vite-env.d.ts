@@ -7,6 +7,9 @@ declare module "@/components/buttons/buttonPrimary";
 declare module "@/components/inputs/inputSearchNavbar";
 declare module "@/components/alert/alert";
 declare module "@/components/modal/modal";
+declare module "@/components/navBar/itemNav";
+declare module "@/components/navBar/ItemMenu";
+declare module "@/components/navBar/items";
 
 declare module "@/context/AppContextProvider";
 declare module "@/stores/index";

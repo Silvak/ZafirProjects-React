@@ -52,6 +52,12 @@ export default function Navigator() {
       <NavbarDrawer>
         <Routes>
           <Route path="/" element={<Home />} />
+
+          <Route path="/projects" element={<>Project</>}>
+            <Route index element={<>Overview</>} />
+            <Route path="report" element={<>Report</>} />
+          </Route>
+
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </NavbarDrawer>
