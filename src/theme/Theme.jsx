@@ -12,7 +12,7 @@ export default function theme(themeModeState) {
   return {
     breakpoints: {
       values: {
-        xs: 320,
+        xs: 220,
         sm: 600,
         md: 900,
         lg: 1200,

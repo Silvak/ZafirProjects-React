@@ -23,6 +23,7 @@ export function createPalette(mode) {
       primary: "#393d44",
       secondary: "#7662ea",
       third: "#6366F1",
+      fourth: "#1d1f24",
     },
     mode: mode,
     ...(mode == "light"
@@ -35,6 +36,7 @@ export function createPalette(mode) {
           primary: "#6b6e75",
           secondary: "#393d44",
           third: "#6366F1",
+          fourth: "#1d1f24",
         },
         icon: {
           primary: "#393d44",

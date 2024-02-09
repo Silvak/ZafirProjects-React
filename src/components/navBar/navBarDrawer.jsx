@@ -5,8 +5,6 @@ import TaskOutlinedIcon from '@mui/icons-material/TaskOutlined';
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
 import Collapse from '@mui/material/Collapse';
-import Fade from '@mui/material/Fade';
-import Tooltip from '@mui/material/Tooltip';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 import MuiAccordion from '@mui/material/Accordion';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
@@ -16,7 +14,6 @@ import SearchIcon from '@mui/icons-material/Search';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
 import StarBorder from '@mui/icons-material/StarBorder';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CloudCircleIcon from '@mui/icons-material/CloudCircle';
@@ -27,6 +24,7 @@ import FolderCopyOutlinedIcon from '@mui/icons-material/FolderCopyOutlined';
 import MultilineChartOutlinedIcon from '@mui/icons-material/MultilineChartOutlined';
 import StopCircleIcon from '@mui/icons-material/StopCircle';
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
+import { items } from "./items";
 import {
   List,
   ListItemText,
@@ -44,9 +42,6 @@ import {
   MenuItem,
   InputBase,
   AccordionActions,
-  AccordionSummary,
-  AccordionDetails,
-  Button
 } from "@mui/material";
 import {
   Menu,
@@ -69,7 +64,7 @@ const openedMixin = (theme) => ({
 
 const closedMixin = (theme) => ({
   backgroundColor: "#eceff3",
-  borderTop: "none",
+  borderRight: "2px solid #b5b5b5",
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -324,6 +319,8 @@ export default function NavbarDrawer(props) {
 
 
   function ItemNav(props) {
+    const location = useLocation();
+    const isActive = location.pathname === props.to;
 
     return (
       <NavLink
@@ -334,12 +331,14 @@ export default function NavbarDrawer(props) {
             color: isActive
               ? theme.palette.text.secondary
               : theme.palette.text.primary,
-            backgroundColor: "#ffffff",
+            backgroundColor: isActive ? "white" : "#eceff3",
             borderRadius: "1em"
           };
         }}
       >
-        <ListItem disablePadding>
+        <ListItem sx={{
+          backgroundColor: isActive ? "#ffffff" : "#eceff3"
+        }}>
           <ListItemButton
             sx={{
               minHeight: 48,
@@ -347,22 +346,25 @@ export default function NavbarDrawer(props) {
               px: 1,
               borderRadius: "1rem",
               marginLeft: "5px",
-              marginRight: "5px"
+              marginRight: "5px",
+              width: "5px",
+              
             }}
+
           >
             <ListItemIcon
               sx={{
                 minWidth: 0,
                 mr: open ? 2 : "auto",
                 justifyContent: "center",
-                color:  theme.palette.action.active ,
+                color: isActive ? "#7662ea" : "black",
               }}
             >
               {props.children}
             </ListItemIcon>
             <ListItemText
               disableTypography
-              primary={<Typography variant="body2">{props.title}</Typography>}
+              primary={<Typography variant="h8">{props.title}</Typography>}
               sx={{ opacity: open ? 1 : 0 }}
             />
           </ListItemButton>
@@ -382,7 +384,7 @@ export default function NavbarDrawer(props) {
             onClick={handleDrawerOpen}
             edge="start"
             sx={{
-              marginRight: 5,
+              marginRight: 2,
               ...(open && { display: "none" }),
             }}
           >
@@ -398,55 +400,63 @@ export default function NavbarDrawer(props) {
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>
-          
+
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton
               size="large"
               aria-label="show 5 new notifications"
               color="inherit"
+              sx={{ marginRight: 2 }}
             >
               <Badge badgeContent={5} color="error">
                 <NotificationsOutlinedIcon />
               </Badge>
             </IconButton>
 
-            <MenuItem sx={{
+            {/* <MenuItem sx={{
               height: "70px",
               marginTop: 1,
               marginBottom: 1
-            }}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                }}
-                id="fade-button"
-                aria-controls={open3 ? 'fade-menu' : undefined}
-                aria-haspopup="true"
-                aria-expanded={open3 ? 'true' : undefined}
-                onClick={handleOpenUserMenu}
-              >
-                <Avatar
-                  src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                  srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                  sx={{ borderRadius: '50%' }}
-                />
-                <Box sx={{ ml: 1.5 }}>
-                  <Typography level="title-sm" color="text.primary">
-                    Alexander
-                  </Typography>
-                  <Typography level="body-xs" color="text.tertiary">
-                    Admin
-                  </Typography>
-                </Box>
-                <KeyboardArrowDownIcon sx={{marginLeft: 1}}/>
+            }}> */}
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                backgroundColor: "#ffffff",
+                padding: 1,
+                borderRadius: 3.5,
+                paddingLeft: 2,
+                paddingRight: 2,
+                maxHeight: "52px",
+                cursor: "pointer",
+              }}
+              id="fade-button"
+              aria-controls={open3 ? 'fade-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open3 ? 'true' : undefined}
+              onClick={handleOpenUserMenu}
+            >
+              <Avatar
+                src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
+                srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
+                sx={{ borderRadius: '50%' }}
+              />
+              <Box sx={{ ml: 1.5 }}>
+                <Typography level="title-sm" variant="h7" color={theme.palette.text.fourth}>
+                  Alexander
+                </Typography>
+                <Typography level="body-xs"  >
+                  Admin
+                </Typography>
               </Box>
-            </MenuItem>
+              <KeyboardArrowDownIcon sx={{ marginLeft: 2 }} />
+            </Box>
+            {/* </MenuItem> */}
           </Box>
 
 
-      
+
 
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton
@@ -485,8 +495,9 @@ export default function NavbarDrawer(props) {
             marginTop: "1rem",
           }}
         >
-          <Accordion sx={{ m: 1, minWidth: 120 }} style={{ borderRadius: "10px", backgroundColor: "#f6f7fa", marginLeft: "5px", marginRight: "5px", borderColor: "#e0e3e8" }}>
+          <Accordion sx={{ m: 1, minWidth: 100 }} style={{ borderRadius: "10px", backgroundColor: "#f6f7fa", marginLeft: "5px", marginRight: "5px", borderColor: "#e0e3e8" }}>
             <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1-content"
               id="panel1-header"
             >
@@ -500,18 +511,19 @@ export default function NavbarDrawer(props) {
           </Accordion>
         </List>
 
-        <List>
-          <ItemNav to="" title="Overview">
-            <BrokenImageOutlinedIcon sx={{ color: "icon.primary" }} />
+        <List
+          >
+          <ItemNav to="/" title="Overview">
+            <BrokenImageOutlinedIcon />
           </ItemNav>
 
           <ItemNav to="/tasks" title="My Tasks">
-            <TaskOutlinedIcon sx={{ color: "icon.primary" }} />
+            <TaskOutlinedIcon />
           </ItemNav>
 
           <ListItemButton onClick={handleClick2}  >
-            <ListItemIcon sx={{ color: "icon.primary" }} >
-              <FolderCopyOutlinedIcon sx={{ marginRight: 1.6, color: "icon.primary" }} />
+            <ListItemIcon  >
+              <FolderCopyOutlinedIcon sx={{ marginRight: 1.6, }} />
               <ListItemText primary="Projects" />
             </ListItemIcon>
             {open2 ? <ExpandLess sx={{ marginLeft: 3 }} /> : <KeyboardArrowRightIcon sx={{ marginLeft: 3 }} />}
@@ -528,15 +540,15 @@ export default function NavbarDrawer(props) {
           </Collapse>
 
           <ItemNav to="/tracker" title="Time Tracker">
-            <TimerOutlinedIcon sx={{ color: "icon.primary" }} />
+            <TimerOutlinedIcon />
           </ItemNav>
 
           <ItemNav to="/performance" title="Performance">
-            <MultilineChartOutlinedIcon sx={{ color: "icon.primary" }} />
+            <MultilineChartOutlinedIcon />
           </ItemNav>
 
           <ItemNav to="/messages" title="Messages">
-            <QuestionAnswerOutlinedIcon sx={{ color: "icon.primary" }} />
+            <QuestionAnswerOutlinedIcon />
           </ItemNav>
         </List>
 

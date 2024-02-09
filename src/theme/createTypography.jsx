@@ -236,5 +236,41 @@ export const createTypography = () => {
         fontSize: "25px",
       },
     },
+    h7: {
+      fontWeight: "500",
+      "@media (min-width:0px)": {
+        fontSize: "10px",
+      },
+      "@media (min-width:600px)": {
+        fontSize: "10px",
+      },
+      "@media (min-width:900px)": {
+        fontSize: "13px",
+      },
+      "@media (min-width:1200px)": {
+        fontSize: "13px",
+      },
+      "@media (min-width:1800px)": {
+        fontSize: "15px",
+      },
+    },
+    h8: {
+      fontWeight: "510",
+      "@media (min-width:0px)": {
+        fontSize: "11px",
+      },
+      "@media (min-width:600px)": {
+        fontSize: "11px",
+      },
+      "@media (min-width:900px)": {
+        fontSize: "14px",
+      },
+      "@media (min-width:1200px)": {
+        fontSize: "15px",
+      },
+      "@media (min-width:1800px)": {
+        fontSize: "15px",
+      },
+    },
   };
 };
