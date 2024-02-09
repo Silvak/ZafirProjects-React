@@ -25,6 +25,7 @@ declare module "@/screens/notFoundPage";
 declare module "@/screens/signIn";
 declare module "@/screens/signUp";
 declare module "@/screens/myTask";
+declare module "@/screens/members";
 declare module "@/theme/theme";
 
 /// <reference types="vite/client"/>
