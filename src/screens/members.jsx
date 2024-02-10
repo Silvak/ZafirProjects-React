@@ -19,7 +19,7 @@ const columns = [
   { id: "project", label: "Project", minWidth: 100 },
   { id: "ledStatus", label: "Lead Status", minWidth: 0 },
   { id: "leadOwner", label: "Lead Owner", minWidth: 0 },
-  {id: "action", label: "Lead Owner", minWidth: 50 },
+  {id: "action", label: "", minWidth: 50 },
 ];
 
 const useStyles = makeStyles((theme) => ({
@@ -73,6 +73,8 @@ const MembersTable = () => {
 
   const isSelected = (rowName) => selectedRows.indexOf(rowName) !== -1;
 
+  const handleButtonMore = () => alert("toqué el botón +Add Create")
+
   return (
     <div style={{ backgroundColor: "#ECEFF3" }}>
       <div style={{display:"flex", justifyContent:"space-between", textAlign:"center", alignItems:"center", marginInline:"1rem"}}>
@@ -86,7 +88,7 @@ const MembersTable = () => {
         >
           Equipo
         </h6>
-        <Button variant="contained" sx={{ padding:"0.6rem", height:"min-content", borderRadius:"12px"}}>+ Add new contact</Button>
+        <Button variant="contained" onClick={handleButtonMore} sx={{ padding:"0.6rem", height:"min-content", borderRadius:"12px"}}>+ Add new contact</Button>
       </div>
       <Paper className={classes.root} style={{ borderRadius: "16px" }}>
         <TableContainer className={classes.container } >

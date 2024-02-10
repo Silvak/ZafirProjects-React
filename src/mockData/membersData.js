@@ -239,7 +239,7 @@ export const membersData = [
     photo: photo,
     mail: "robertgarcia@email.com",
     project: "Subway",
-    ledStatus: "Needs Improvement",
+    ledStatus: "Good Timing",
     leadOwner: "Emily Johnson",
     photoOwner: photoW,
   },
