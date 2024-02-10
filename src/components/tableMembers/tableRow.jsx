@@ -41,51 +41,59 @@ const TableRowComponent = ({
         )}
 
         {columns.map((column) => {
-         let cellContent = row[column.id];
+          let cellContent = row[column.id];
 
-         if (column.id === "ledStatus") {
-           cellContent = (
-             <div
-               style={{
-                 minWidth: "11rem",
-               }}
-             >
-               <div
-                 style={{
-                   color:
-                     row[column.id] === "Bad Timing"
-                       ? "#F28C43"
-                       : row[column.id] === "New"
-                       ? "#7662EA"
-                       : row[column.id] === "Contracted"
-                       ? "#429482"
-                       : row[column.id] === "Deal Unqualified"
-                       ? "#E55D57"
-                       : "blue",
-                   backgroundColor:
-                     row[column.id] === "Bad Timing"
-                       ? "#FDEEE3"
-                       : row[column.id] === "New"
-                       ? "#ECE9FF"
-                       : row[column.id] === "Contracted"
-                       ? "#E5F3DD"
-                       : row[column.id] === "Deal Unqualified"
-                       ? "#FFEBEA"
-                       : "cyan",
-                   display: "inline-block",
-                   borderRadius: "12px",
-                   padding: "0.5rem 0.8rem",
-                   marginLeft: "1rem",
-                   fontSize: "14px",
-                 }}
-               >
-                 <CircleIcon sx={{ fontSize: "13px", marginRight:"5px" }} />
-                 <span>{row[column.id]}</span>
-               </div>
-             </div>
-           );
-         }
-         
+          if (column.id === "ledStatus") {
+            cellContent = (
+              <div
+                style={{
+                  minWidth: "11rem",
+                }}
+              >
+                <div
+                  style={{
+                    color:
+                      row[column.id] === "Bad Timing"
+                        ? "#F28C43"
+                        : row[column.id] === "New"
+                        ? "#7662EA"
+                        : row[column.id] === "Contracted"
+                        ? "#429482"
+                        : row[column.id] === "Deal Unqualified"
+                        ? "#E55D57"
+                        : row[column.id] === "Good Timing"
+                        ? "#2ECC71" 
+                        : row[column.id] === "Good"
+                        ? "#2E86C1" 
+                        : "blue",
+                    backgroundColor:
+                      row[column.id] === "Bad Timing"
+                        ? "#FDEEE3"
+                        : row[column.id] === "New"
+                        ? "#ECE9FF"
+                        : row[column.id] === "Contracted"
+                        ? "#E5F3DD"
+                        : row[column.id] === "Deal Unqualified"
+                        ? "#FFEBEA"
+                        : row[column.id] === "Good Timing"
+                        ? "#D5F5E3"
+                        : row[column.id] === "Good"
+                        ? "#D6EAF8"
+                        : "cyan",
+
+                    display: "inline-block",
+                    borderRadius: "12px",
+                    padding: "0.5rem 0.8rem",
+                    marginLeft: "1rem",
+                    fontSize: "14px",
+                  }}
+                >
+                  <CircleIcon sx={{ fontSize: "13px", marginRight: "5px" }} />
+                  <span>{row[column.id]}</span>
+                </div>
+              </div>
+            );
+          }
 
           return (
             <TableCell
@@ -95,6 +103,7 @@ const TableRowComponent = ({
                 fontWeight: "bold",
                 width: column.minWidth,
                 fontSize: "16px",
+                padding: !isMobile ? "0px" : "12px",
                 backgroundColor:
                   column.id === "lead_status" ? "cyan" : "inherit",
               }}
@@ -103,7 +112,10 @@ const TableRowComponent = ({
               }
             >
               {column.id === "action" && !isMobile && (
-                <MoreHorizIcon onClick={() => alert("Algo")} />
+                <MoreHorizIcon
+                  style={{ marginLeft: "24px" }}
+                  onClick={() => alert("Action de '...' more")}
+                />
               )}
               {!isMobile &&
               (column.id === "name" || column.id === "leadOwner") ? (
@@ -117,8 +129,8 @@ const TableRowComponent = ({
                   {column.id === "name" && (
                     <img
                       style={{
-                        width: "56px",
-                        marginRight: "2rem",
+                        width: "48px",
+                        marginRight: "20px",
                         borderRadius: "50%",
                       }}
                       src={row["photo"]}
@@ -127,7 +139,7 @@ const TableRowComponent = ({
                   {column.id === "leadOwner" && (
                     <img
                       style={{
-                        width: "56px",
+                        width: "48px",
                         marginRight: "2rem",
                         borderRadius: "50%",
                         marginLeft: "5rem",
@@ -155,7 +167,12 @@ const TableRowComponent = ({
                   cellContent
                 )
               ) : column.id === "name" ? (
-                <span style={{ display: "flex", minWidth: !isMobile ? "5rem" : "10rem"  }}>
+                <span
+                  style={{
+                    display: "flex",
+                    minWidth: !isMobile ? "5rem" : "10rem",
+                  }}
+                >
                   {cellContent}
                 </span>
               ) : (
@@ -174,15 +191,21 @@ const TableRowComponent = ({
                   <Typography
                     variant="body2"
                     component="div"
-                    style={{ textAlign: "center", marginRight: "30%" }}
+                    style={{
+                      textAlign: "center",
+                      marginRight: "20%",
+                      fontWeight: "normal",
+                    }}
                   >
                     <strong>{column.label !== "Name" && column.label} </strong>
                     {column.label !== "Name" && column.id !== "action" ? (
                       <React.Fragment>
                         {column.id === "photo" ? (
-                          <img src={row["photo"]} width="48px" alt="Photo" />
+                          <img src={row["photo"]} width="56px" alt="Photo" />
                         ) : (
-                          <span>{": " + row[column.id]}</span>
+                          <span style={{ fontWeight: "normal" }}>
+                            {": " + row[column.id]}
+                          </span>
                         )}
                       </React.Fragment>
                     ) : (

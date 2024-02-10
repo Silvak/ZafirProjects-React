@@ -45,6 +45,7 @@ export default function SignIn() {
         spacing={3}
         sx={{
           height: "100vh",
+          padding: "12px",
         }}
       >
         <CssBaseline />
@@ -74,19 +75,22 @@ export default function SignIn() {
               }}
             >
               <Box sx={{ flexGrow: 1 }}>
-                <div style={{display:"flex", marginTop:"1rem", gap:"1rem"}}>
-
-                <IconButton
-                  sx={{
-                    backgroundColor: "background.default",
-                    p: 0,
-                  }}
-                  disableRipple
+                <div
+                  style={{ display: "flex", marginTop: "1rem", gap: "1rem" }}
+                >
+                  <IconButton
+                    sx={{
+                      backgroundColor: "background.default",
+                      p: 0,
+                    }}
+                    disableRipple
                   >
-                  <StopCircle sx={{ fontSize: "30px", color: "icon.third" }} />
-                </IconButton>
-                <Typography variant="h6">Sunstone</Typography>
-                  </div>
+                    <StopCircle
+                      sx={{ fontSize: "30px", color: "icon.third" }}
+                    />
+                  </IconButton>
+                  <Typography variant="h6">Sunstone</Typography>
+                </div>
               </Box>
               <Box sx={{ maxWidth: "600px" }}>
                 <Typography

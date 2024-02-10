@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import Checkbox from "@mui/material/Checkbox";
@@ -16,6 +16,8 @@ const TableHeader = ({
   membersData,
   columns,
 }) => {
+  const [selectedOption, setSelectedOption] = useState("Leads");
+
   const headers = [
     {
       id: "",
@@ -52,6 +54,11 @@ const TableHeader = ({
   ];
 
   const totalRows = membersData.length;
+
+  const handleFilterClick = () => {
+    alert("Apreté el botón de Filter");
+  };
+
   return (
     <>
       <TableRow>
@@ -59,7 +66,7 @@ const TableHeader = ({
           <Grid container justifyContent="space-between" alignItems="center">
             <div>
               <Grid item sx={{textAlign:"center"}}>
-                <h2 style={{ fontSize: "16px", fontWeight: "bold" }}>
+                <h2 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: isMobile ? "8px" : "0px" }}>
                   {totalRows} Contacts
                 </h2>
                 {
@@ -130,7 +137,8 @@ const TableHeader = ({
                     </Grid>
                     <Grid item>
                       <Select
-                        value="Leads"
+                        value={selectedOption}
+                        onChange={(event) => setSelectedOption(event.target.value)}
                         variant="outlined"
                         style={{
                           borderRadius: "12px",
@@ -182,6 +190,7 @@ const TableHeader = ({
                           border: "1px solid lightgray",
                           borderRadius: "12px",
                         }}
+                        onClick={handleFilterClick}
                       >
                         Filter
                       </Button>
