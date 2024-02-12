@@ -11,10 +11,10 @@ const TablePagination = ({
   handleChangeRowsPerPage,
   page,
   handleChangePage,
-  membersData,
+  data,
 }) => {
   const startIndex = (page - 1) * rowsPerPage + 1;
-  const endIndex = Math.min(startIndex + rowsPerPage - 1, membersData.length);
+  const endIndex = Math.min(startIndex + rowsPerPage - 1, data.length);
 
   return (
     <Grid
@@ -39,7 +39,11 @@ const TablePagination = ({
           size="small"
           value={rowsPerPage}
           onChange={handleChangeRowsPerPage}
-          style={{ width: "5rem", borderRadius: "12px", backgroundColor:"white" }}
+          style={{
+            width: "5rem",
+            borderRadius: "12px",
+            backgroundColor: "white",
+          }}
         >
           <MenuItem
             value={10}
@@ -110,10 +114,10 @@ const TablePagination = ({
         }}
       >
         <Typography variant="body2" sx={{ fontWeight: "normal" }}>
-          Showing {startIndex}-{endIndex} of {membersData.length} entries
+          Showing {startIndex}-{endIndex} of {data.length} entries
         </Typography>
         <Pagination
-          count={Math.ceil(membersData.length / rowsPerPage)}
+          count={Math.ceil(data.length / rowsPerPage)}
           page={page}
           onChange={handleChangePage}
           className="pagination"
