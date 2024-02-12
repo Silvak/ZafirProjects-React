@@ -1,36 +1,31 @@
 import * as React from "react";
 import { styled, alpha } from "@mui/material/styles";
+import GraphicdunkSelect from "./CustomItems/graphicdunk";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import MuiAccordion from "@mui/material/Accordion";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import MuiAccordionSummary from "@mui/material/AccordionSummary";
-import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import SearchIcon from "@mui/icons-material/Search";
 import MoreIcon from "@mui/icons-material/MoreVert";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import CloudCircleIcon from "@mui/icons-material/CloudCircle";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import {
-  List,
   IconButton,
   Typography,
   Box,
   CssBaseline,
   Toolbar,
   Badge,
-  Avatar,
   useTheme,
   MenuItem,
   InputBase,
-  AccordionActions,
 } from "@mui/material";
 import { Menu, MenuOpen } from "@mui/icons-material";
 import ItemNav from "@/components/navBar/itemNav";
 import ItemMenu from "@/components/navBar/itemMenu";
+import UserProfileButton from "./CustomItems/ProfileTab";
+import Logo from "./CustomItems/logo";
 
 const drawerWidth = 258;
 
@@ -143,15 +138,15 @@ const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: "3.5em",
   backgroundColor: "transparent",
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
+  // "&:hover": {
+  //   backgroundColor: alpha(theme.palette.common.white, 0.25),
+  // },
   marginRight: theme.spacing(2),
   marginLeft: 0,
   width: "100%",
   [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(3),
-    width: "auto",
+    width: "600px",
   },
 }));
 
@@ -192,31 +187,10 @@ const Accordion = styled((props) => (
   },
 }));
 
-const AccordionSummary = styled((props) => (
-  <MuiAccordionSummary
-    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: "0.9rem" }} />}
-    {...props}
-  />
-))(({ theme }) => ({
-  backgroundColor:
-    theme.palette.mode === "dark"
-      ? "rgba(255, 255, 255, .05)"
-      : "rgba(0, 0, 0, .03)",
-  flexDirection: "row-reverse",
-  "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
-    transform: "rotate(90deg)",
-  },
-  "& .MuiAccordionSummary-content": {
-    marginLeft: theme.spacing(1),
-  },
-}));
 
-const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-  padding: theme.spacing(2),
-  borderTop: "1px solid rgba(0, 0, 0, .125)",
-}));
-
-//Main component
+{
+  /***** MAIN COMPONENT ***/
+}
 export default function NavbarDrawer(props) {
   const [expanded, setExpanded] = React.useState("panel1");
   const handleChange = (panel) => (event, newExpanded) => {
@@ -224,38 +198,12 @@ export default function NavbarDrawer(props) {
   };
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
-  const [open2, setOpen2] = React.useState(false);
+  // const [open2, setOpen2] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [anchorUser, setAnchorUser] = React.useState(false);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const isMenuOpen = Boolean(anchorEl);
-
-  const handleMenu = (event) => {
-    setAnchorUser(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorUser(false);
-  };
-
-  const handleOpenUserMenu = (event) => {
-    console.log("captura el evento");
-  };
-
-  const open3 = Boolean(anchorEl);
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
-  const handleClick2 = () => {
-    setOpen2(!open2);
-  };
-
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
@@ -307,6 +255,7 @@ export default function NavbarDrawer(props) {
       <CssBaseline />
       <CustomAppBar position="fixed" open={open}>
         <Toolbar
+          disableKeyboardFocus
           sx={{
             border: "2px solid #b5b5b5",
             borderBlockStart: "none",
@@ -315,6 +264,7 @@ export default function NavbarDrawer(props) {
           }}
         >
           <IconButton
+            
             color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerOpen}
@@ -327,7 +277,7 @@ export default function NavbarDrawer(props) {
             <Menu />
           </IconButton>
 
-          <Search>
+          <Search >
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
@@ -337,6 +287,7 @@ export default function NavbarDrawer(props) {
             />
           </Search>
 
+          {/* Notification button */}
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <IconButton
@@ -351,41 +302,7 @@ export default function NavbarDrawer(props) {
             </IconButton>
 
             {/* Profile button */}
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                backgroundColor: "#ffffff",
-                padding: 1,
-                borderRadius: 3.5,
-                paddingLeft: 2,
-                paddingRight: 2,
-                maxHeight: "52px",
-                cursor: "pointer",
-              }}
-              id="fade-button"
-              aria-controls={open3 ? "fade-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={open3 ? "true" : undefined}
-              onClick={handleOpenUserMenu}
-            >
-              <Avatar
-                src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                sx={{ borderRadius: "50%" }}
-              />
-              <Box sx={{ ml: 1.5 }}>
-                <Typography
-                  level="title-sm"
-                  variant="h7"
-                  color={theme.palette.text.fourth}
-                >
-                  Alexander
-                </Typography>
-                <Typography level="body-xs">Admin</Typography>
-              </Box>
-              <KeyboardArrowDownIcon sx={{ marginLeft: 2 }} />
-            </Box>
+            <UserProfileButton />
           </Box>
 
           {/* Mobile Profile Button */}
@@ -414,16 +331,7 @@ export default function NavbarDrawer(props) {
             height: "80px",
           }}
         >
-          <StopCircleIcon style={{ color: "#7662ea" }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            color="black"
-            sx={{ marginLeft: 1, marginRight: 3 }}
-          >
-            Sunstone
-          </Typography>
+          <Logo/>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "rtl" ? (
               <MenuOpen />
@@ -433,38 +341,8 @@ export default function NavbarDrawer(props) {
           </IconButton>
         </DrawerHeader>
 
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            height: "100px",
-            justifyContent: "flex-start",
-            marginTop: "1rem",
-          }}
-        >
-          <Accordion
-            sx={{ m: 1, minWidth: 100 }}
-            style={{
-              borderRadius: "12px",
-              backgroundColor: "#f6f7fa",
-              px: "12px",
-              borderColor: "#e0e3e8",
-            }}
-          >
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1-content"
-              id="panel1-header"
-            >
-              <CloudCircleIcon value={1} /> Graphicdunk
-            </AccordionSummary>
-            <AccordionActions>
-              <MenuItem>
-                <CloudCircleIcon value={2} /> Graphicdunk
-              </MenuItem>
-            </AccordionActions>
-          </Accordion>
-        </Box>
+        {/* Graphicdunk Select */}
+        <GraphicdunkSelect open2={open}/>
 
         {/* Menu Items */}
         <ItemMenu open={open} />

@@ -31,6 +31,7 @@ function ItemNav(props) {
             borderRadius: "12px",
             overflow: "hidden",
             backgroundColor: isActive ? "#ffffff" : "#eceff3",
+            color: isActive ? "#3A3D44" : "#6B6E75"
           }}
         >
           {/* icon & text */}
@@ -51,7 +52,7 @@ function ItemNav(props) {
                 fontWeight: "600",
                 fontSize: "1.2rem",
                 visibility: props.open ? "visible" : "hidden",
-                color: isActive ? "#7662ea" : "#6B6E75",
+                color: isActive ? "#3A3D44" : "#6B6E75",
               }}
             >
               {capitalize(props.title)}

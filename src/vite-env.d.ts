@@ -10,6 +10,9 @@ declare module "@/components/modal/modal";
 declare module "@/components/navBar/itemNav";
 declare module "@/components/navBar/ItemMenu";
 declare module "@/components/navBar/items";
+declare module "@/components/navBar/CustomItems/ProfileTab";
+declare module "@/components/navBar/CustomItems/graphicdunk";
+declare module "@/components/navBar/CustomItems/graphicNav";
 
 declare module "@/context/AppContextProvider";
 declare module "@/stores/index";
