@@ -76,9 +76,30 @@ export const mockTasks = [
     priority: "Low",
     screen: null,
   },
-];
-
-export const mockTasksPending = [
+  {
+    task: "New feature development",
+    appDesign: "Peceland App Design",
+    profilePhoto: photo,
+    notification: 0,
+    attachments: [],
+    date: "Future",
+    status: "Backlog",
+    assignees: [photo],
+    priority: "Medium",
+    screen: null,
+  },
+  {
+    task: "Performance optimization",
+    appDesign: "Peceland App Design",
+    profilePhoto: photow,
+    notification: 0,
+    attachments: [],
+    date: "Future",
+    status: "Backlog",
+    assignees: [photow],
+    priority: "Medium",
+    screen: null,
+  },
   {
     task: "Settings page",
     appDesign: "Peceland App Design",

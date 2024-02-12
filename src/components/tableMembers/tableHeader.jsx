@@ -65,12 +65,17 @@ const TableHeader = ({
         <TableCell colSpan={columns.length + 1}>
           <Grid container justifyContent="space-between" alignItems="center">
             <div>
-              <Grid item sx={{textAlign:"center"}}>
-                <h2 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: isMobile ? "8px" : "0px" }}>
+              <Grid item sx={{ textAlign: "center" }}>
+                <h2
+                  style={{
+                    fontSize: "16px",
+                    fontWeight: "bold",
+                    marginBottom: isMobile ? "8px" : "0px",
+                  }}
+                >
                   {totalRows} Contacts
                 </h2>
-                {
-                isMobile && (
+                {isMobile && (
                   <Grid style={{ position: "relative" }}>
                     <div style={{ position: "relative" }}>
                       <input
@@ -85,9 +90,9 @@ const TableHeader = ({
                           fontSize: "14px",
                           fontFamily:
                             '"Poppins", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"',
-                            paddingLeft: "40px",
-                          }}
-                          />
+                          paddingLeft: "40px",
+                        }}
+                      />
                       <SearchIcon
                         style={{
                           position: "absolute",
@@ -96,11 +101,10 @@ const TableHeader = ({
                           transform: "translateY(-50%)",
                           color: "gray",
                         }}
-                        />
+                      />
                     </div>
                   </Grid>
-                  )
-                }
+                )}
               </Grid>
             </div>
             <Grid item>
@@ -138,7 +142,9 @@ const TableHeader = ({
                     <Grid item>
                       <Select
                         value={selectedOption}
-                        onChange={(event) => setSelectedOption(event.target.value)}
+                        onChange={(event) =>
+                          setSelectedOption(event.target.value)
+                        }
                         variant="outlined"
                         style={{
                           borderRadius: "12px",
@@ -206,7 +212,7 @@ const TableHeader = ({
         {!isMobile && (
           <TableCell>
             <Checkbox
-              style={{ color: "lightgray" }}
+              style={{ color: "lightgray", width:"min-content" }}
               indeterminate={
                 selectedRows.length > 0 &&
                 selectedRows.length < membersData.length
