@@ -37,4 +37,8 @@ declare module "@/theme/theme";
 declare module "@/screens/projects";
 
 
+declare module "@/hooks/usePagination";
+declare module "@/hooks/useSignUp";
+
+
 /// <reference types="vite/client"/>

@@ -27,7 +27,7 @@ const ProjectsTableItem = ({
   projectName,
   quantityTasks,
   date,
-  file,
+  attachments,
   category,
   status,
   username,
@@ -72,7 +72,7 @@ const ProjectsTableItem = ({
       </BoxFlex>
       <BoxFlex>
         <MdAttachFile color="#6B6E75" size="20px" />
-        <p> {file} files</p>
+        <p> {attachments.length} files</p>
       </BoxFlex>
       <BoxFlex>
         {status.name === "In progress" ? (
