@@ -34,7 +34,7 @@ const TableRowComponent = ({
             <Checkbox
               checked={isItemSelected}
               onChange={() => handleCheckboxClick(row.name)}
-              sx={{ color: "lightgray", borderRadius: 8 }}
+              sx={{ color: "lightgray", borderRadius: 8, width:"min-content" }}
               className="checkbox-contact"
             />
           </TableCell>
