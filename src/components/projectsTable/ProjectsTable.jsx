@@ -1,27 +1,20 @@
-import { Table, TableBody, TableCell, TableRow } from "@mui/material";
+import { Table, TableBody, TableRow } from "@mui/material";
 
-import ProjectsTableHeader from "./ProjectsTableHeader";
+import ProjectsTableHeader from "@/components/projectsTable/ProjectsTableHeader";
+import ProjectsTableItem from "@/components/projectsTable/ProjectsTableItem";
+import TablePagination from "@/components/tableMembers/tablePagination";
+
+import usePagination from "@/hooks/usePagination";
 import { projectsData } from "../../mockData/projectsData";
-import ProjectsTableItem from "./ProjectsTableItem";
-import TablePagination from "../tableMembers/tablePagination";
-import { useState } from "react";
 
 const username = "John Doe";
 
 const ProjectsTable = () => {
-  const [page, setPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } =
+    usePagination({});
 
   const totalProjects = projectsData.length;
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(1);
-  };
   return (
     <Table
       sx={{
@@ -64,7 +57,7 @@ const ProjectsTable = () => {
         page={page}
         handleChangePage={handleChangePage}
         handleChangeRowsPerPage={handleChangeRowsPerPage}
-        membersData={projectsData}
+        data={projectsData}
       />
     </Table>
   );
