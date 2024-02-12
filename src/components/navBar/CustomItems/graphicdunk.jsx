@@ -57,6 +57,7 @@ function GraphicdunkSelect(props) {
         gap: "8px",
         px: "12px",
         width: "100%",
+        marginTop: "24px"
       }}
     >
         {items.map((element) => (

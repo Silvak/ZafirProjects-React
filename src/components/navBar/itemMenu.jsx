@@ -11,7 +11,7 @@ import ExpandLess from "@mui/icons-material/ExpandLess";
 export const items = [
   {
     title: "overview",
-    url: "/overview",
+    url: "/",
     icon: <BrokenImageOutlinedIcon />,
     submenu: [],
   },
@@ -65,6 +65,7 @@ function ItemMenu(props) {
         gap: "8px",
         px: "12px",
         width: "100%",
+        marginTop: "48px"
       }}
     >
       {items.map((element) => (
