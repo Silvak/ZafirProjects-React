@@ -12,6 +12,7 @@ export const mockTasks = [
     status: "In Progress",
     assignees: [photo],
     priority: "High",
+    screen: null,
   },
   {
     task: "My profile page",
@@ -23,6 +24,8 @@ export const mockTasks = [
     status: "Issues",
     assignees: [photow],
     priority: "High",
+    screen:
+      "https://res.cloudinary.com/dgdcfmnnx/image/upload/v1707754534/wwdhjjme5wixbr7z0hav.webp",
   },
   {
     task: "Notification",
@@ -34,6 +37,7 @@ export const mockTasks = [
     status: "Review",
     assignees: [photo, photow],
     priority: "Medium",
+    screen: null,
   },
   {
     task: "Product detail page",
@@ -45,6 +49,7 @@ export const mockTasks = [
     status: "Completed",
     assignees: [photo, photow],
     priority: "Low",
+    screen: null,
   },
 
   {
@@ -57,6 +62,19 @@ export const mockTasks = [
     status: "Completed",
     assignees: [photow],
     priority: "Low",
+    screen: null,
+  },
+  {
+    task: "Settings page",
+    appDesign: "Peceland App Design",
+    profilePhoto: photow,
+    notification: 0,
+    attachments: ["file1.docx"],
+    date: "Oct 1 - 4, 2022",
+    status: "Pending",
+    assignees: [photow],
+    priority: "Low",
+    screen: null,
   },
 ];
 

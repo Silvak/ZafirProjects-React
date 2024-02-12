@@ -23,6 +23,7 @@ declare module "@/stores/container/container";
 declare module "@/stores/Actions/Theme/storeTheme";
 declare module "@/stores/useGetNativeBalance/useGetNativeBalance";
 declare module "@/stores/useGetWalletTokenBalances/useGetWalletTokenBalances";
+declare module "@/stores/Tasks/createTasksSlice";
 
 declare module "@/routes/routes";
 
