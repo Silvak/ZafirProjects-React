@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  Accordion,
   AccordionSummary,
   AccordionDetails,
   Typography,
@@ -23,6 +22,9 @@ import AddIcon from "@mui/icons-material/Add";
 import AvatarGroup from "@mui/material/AvatarGroup";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import CircleIcon from "@mui/icons-material/Circle";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import CustomAccordion from "./customAccordion";
 
 const TaskAccordion = ({ title, tasks, handleAddTask, view }) => {
   const theme = createTheme();
@@ -39,19 +41,27 @@ const TaskAccordion = ({ title, tasks, handleAddTask, view }) => {
 
   const ExpandIcon = ({ expanded }) => {
     return (
-      <span
+      <div
         style={{
-          transform: expanded ? "rotate(180deg)" : "rotate(-90deg)",
-          fontSize: "2rem",
-          color: "gray",
-          fontWeight: "normal",
-          marginRight: "1rem",
-          padding: "1rem",
+          cursor: "pointer",
+          color: "#424242",
         }}
         onClick={() => setExpanded(!expanded)}
       >
-        v
-      </span>
+        {expanded ? (
+          <ExpandMoreIcon
+            style={{
+              fontSize: "2rem",
+            }}
+          />
+        ) : (
+          <ExpandLessIcon
+            style={{
+              fontSize: "2rem",
+            }}
+          />
+        )}
+      </div>
     );
   };
 
@@ -63,12 +73,13 @@ const TaskAccordion = ({ title, tasks, handleAddTask, view }) => {
           textAlign: isMobile ? "left" : "",
         }}
       >
-        <Accordion
+        <CustomAccordion
           expanded={expanded}
-          sx={{
+          elevation={4}
+          className="custom-accordion"
+          style={{
             backgroundColor: "#F6F7FA",
-            boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-            borderRadius: 8,
+            borderRadius: "2rem",
           }}
         >
           <AccordionSummary
@@ -77,18 +88,21 @@ const TaskAccordion = ({ title, tasks, handleAddTask, view }) => {
             sx={{
               display: "flex",
               alignItems: "center",
-              backgroundColor: "#F6F7FA",
               borderRadius: 8,
+              padding: 1,
             }}
           >
-            <div style={{ display: "flex", alignItems: "center" }}>
+            <div
+              style={{ display: "flex", alignItems: "center" }}
+              onClick={() => setExpanded(!expanded)}
+            >
               <ExpandIcon expanded={expanded} />
               <Typography
                 variant="h4"
                 sx={{
                   fontSize: "18px",
                   fontWeight: "bold",
-                  marginRight: "1rem",
+                  marginInline: "1rem",
                 }}
               >
                 {title}
@@ -133,13 +147,13 @@ const TaskAccordion = ({ title, tasks, handleAddTask, view }) => {
             {tasks.map((task, index) => (
               <Paper
                 key={index}
-                elevation={isMobile || isKanbanView ? 2 : 0}
+                elevation={3}
                 sx={{
                   marginBottom: "8px",
-                  padding: "18px",
+                  padding: "14px",
                   opacity: task.status === "Completed" ? 0.5 : 1,
                   borderRadius: "18px",
-                  width: isKanbanView || isMobile ? "90%" : "99%",
+                  width: isKanbanView || isMobile ? "85%" : "99%",
                   marginLeft: "auto",
                   marginRight: "auto",
                 }}
@@ -168,6 +182,18 @@ const TaskAccordion = ({ title, tasks, handleAddTask, view }) => {
                         <ArrowForwardIcon style={{ color: "#6B6E75" }} />
                       </div>
                       <Divider sx={{ mb: 2 }}></Divider>
+                      {task.screen && (
+                        <img
+                          src={task.screen}
+                          alt="Task Screen"
+                          style={{
+                            width: "100%",
+                            marginBottom: "10px",
+                            border: "3px solid #F6F7FA",
+                            borderRadius: 8,
+                          }}
+                        />
+                      )}
                     </div>
                   ))}
                 <Typography
@@ -180,10 +206,10 @@ const TaskAccordion = ({ title, tasks, handleAddTask, view }) => {
                 </Typography>
                 <Grid
                   container
-                  spacing={0.5}
+                  spacing={0}
                   columns={isMobile || isKanbanView ? 6 : 12}
                   alignItems="center"
-                  padding={1}
+                  padding={0}
                 >
                   <Grid item xs={12} sm={!isKanbanView ? 2 : 1}>
                     <Typography
@@ -193,7 +219,8 @@ const TaskAccordion = ({ title, tasks, handleAddTask, view }) => {
                         fontSize: "12px",
                         width: "min-content",
                         fontWeight: "bold",
-                        paddingInline: "8px",
+                        paddingInline: "4px",
+                        paddingBlock: "2px",
                         borderRadius: "6px",
                         ...priorityColors[task.priority],
                       }}
@@ -209,7 +236,8 @@ const TaskAccordion = ({ title, tasks, handleAddTask, view }) => {
                       style={{
                         fontSize: "6px",
                         color: "lightgray",
-                        marginInline: "2rem",
+                        marginRight: "0rem",
+                        marginInline: "1rem",
                       }}
                     />
                   )}
@@ -304,7 +332,7 @@ const TaskAccordion = ({ title, tasks, handleAddTask, view }) => {
                       </div>
                       {isMobile ||
                         (isKanbanView && (
-                          <Grid item xs={12} sm={2} marginRight={20}>
+                          <Grid item xs={12} sm={1}>
                             <AvatarGroup max={3}>
                               {task.assignees.map((assignee, index) => (
                                 <Avatar
@@ -323,7 +351,8 @@ const TaskAccordion = ({ title, tasks, handleAddTask, view }) => {
                     xs={12}
                     sm={isKanbanView ? 3 : 2}
                     sx={{
-                      mt: isKanbanView ? 4 : 0,
+                      mt: isKanbanView ? 4 : isMobile ? 2 : 0,
+                      mb: isMobile ? 2 : 0,
                       marginInline: 2,
                       minWidth: "max-content",
                     }}
@@ -396,24 +425,25 @@ const TaskAccordion = ({ title, tasks, handleAddTask, view }) => {
               </Paper>
             ))}
           </AccordionDetails>
-        </Accordion>
+        </CustomAccordion>
       </div>
     </ThemeProvider>
   );
 };
 
 const statusColors = {
-  "In Progress": { backgroundColor: "#CEE4F8", color: "#459CED" },
-  Issues: { backgroundColor: "#FFEBEA", color: "#EB807B" },
-  Review: { backgroundColor: "#FCF2E3", color: "#EDB055" },
-  Completed: { backgroundColor: "#E2F3F0", color: "#429482" },
-  Pending: { backgroundColor: "#F6F7FA", color: "#8D9096" },
+  "In Progress": { backgroundColor: "#BED8F5", color: "#2676CF" },
+  Issues: { backgroundColor: "#F8D1CB", color: "#D3544B" },
+  Review: { backgroundColor: "#F6E5C6", color: "#E19E41" },
+  Completed: { backgroundColor: "#CCE3DD", color: "#277F65" },
+  Pending: { backgroundColor: "#E0E5E9", color: "#7E838A" },
+  Backlog: { backgroundColor: "#F0E1F1", color: "#8E44AD" },
 };
 
 const priorityColors = {
-  High: { backgroundColor: "#FFEBEA", color: "#E55D57" },
-  Medium: { backgroundColor: "#FCF2E3", color: "#EBA741" },
-  Low: { backgroundColor: "#DEE9F2", color: "#5BA9F6" },
+  High: { backgroundColor: "#FFD1CE", color: "#E24942" },
+  Medium: { backgroundColor: "#FDE9D5", color: "#E5922C" },
+  Low: { backgroundColor: "#CDD9E5", color: "#4B8DC2" },
 };
 
 export default TaskAccordion;

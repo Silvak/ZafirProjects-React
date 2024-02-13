@@ -68,6 +68,7 @@ const Header = ({ title, isMobile, handleButton, handleAddTask }) => {
               cursor: "pointer",
               marginRight: "2rem",
               paddingBottom: 1,
+              backgroundColor:"white"
             }}
           >
             <FormatListBulletedRoundedIcon
