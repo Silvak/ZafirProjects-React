@@ -60,20 +60,11 @@ export default function Navigator() {
       <NavbarDrawer>
         <Routes>
           <Route path="/" element={<Home />} />
-<<<<<<< HEAD
-
-          <Route path="/projects" element={<>Project</>}>
-            <Route index element={<>Overview</>} />
-            <Route path="report" element={<>Report</>} />
-          </Route>
-
-=======
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/my-task" element={<MyTask />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/members" element={<Members />} />
->>>>>>> development
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </NavbarDrawer>
