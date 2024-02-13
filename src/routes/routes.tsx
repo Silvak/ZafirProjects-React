@@ -6,8 +6,16 @@ import NavbarDrawer from "@/components/navBar/navBarDrawer";
 import AlertGlobal from "@/components/alert/alert";
 import ModalGlobal from "@/components/modal/modal";
 
+
 const Home = React.lazy(() => import("@/screens/home"));
 const NotFoundPage = React.lazy(() => import("@/screens/notFoundPage"));
+
+const MyTask = React.lazy(() => import ("@/screens/myTask"));
+const Members = React.lazy(() => import ("@/screens/members"));
+const SignIn = React.lazy(() => import ("@/screens/signIn"));
+const SignUp = React.lazy(() => import ("@/screens/signUp"));
+const Projects = React.lazy(() => import ("@/screens/projects"));
+
 
 export default function Navigator() {
   let Logo = "";
@@ -52,12 +60,20 @@ export default function Navigator() {
       <NavbarDrawer>
         <Routes>
           <Route path="/" element={<Home />} />
+<<<<<<< HEAD
 
           <Route path="/projects" element={<>Project</>}>
             <Route index element={<>Overview</>} />
             <Route path="report" element={<>Report</>} />
           </Route>
 
+=======
+          <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/my-task" element={<MyTask />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/members" element={<Members />} />
+>>>>>>> development
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </NavbarDrawer>

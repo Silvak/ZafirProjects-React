@@ -1,0 +1,12 @@
+.pagination .Mui-selected {
+  background-color: #7662ea !important;
+  color: white !important;
+}
+
+.pagination .Mui-selected:hover {
+  background-color: #7662ea !important;
+}
+
+.checkbox-contact {
+    border-radius: "8px" !important;
+}
