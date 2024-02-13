@@ -6,16 +6,15 @@ import NavbarDrawer from "@/components/navBar/navBarDrawer";
 import AlertGlobal from "@/components/alert/alert";
 import ModalGlobal from "@/components/modal/modal";
 
-
 const Home = React.lazy(() => import("@/screens/home"));
 const NotFoundPage = React.lazy(() => import("@/screens/notFoundPage"));
 
-const MyTask = React.lazy(() => import ("@/screens/myTask"));
-const Members = React.lazy(() => import ("@/screens/members"));
-const SignIn = React.lazy(() => import ("@/screens/signIn"));
-const SignUp = React.lazy(() => import ("@/screens/signUp"));
-const Projects = React.lazy(() => import ("@/screens/projects"));
-
+const MyTask = React.lazy(() => import("@/screens/myTask"));
+const Members = React.lazy(() => import("@/screens/members"));
+const SignIn = React.lazy(() => import("@/screens/signIn"));
+const SignUp = React.lazy(() => import("@/screens/signUp"));
+const Projects = React.lazy(() => import("@/screens/projects"));
+const Roadmap = React.lazy(() => import("@/screens/roadmap"));
 
 export default function Navigator() {
   let Logo = "";
@@ -65,6 +64,7 @@ export default function Navigator() {
           <Route path="/my-task" element={<MyTask />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/members" element={<Members />} />
+          <Route path="/roadmap" element={<Roadmap />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </NavbarDrawer>
