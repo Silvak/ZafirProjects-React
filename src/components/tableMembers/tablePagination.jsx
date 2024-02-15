@@ -112,16 +112,16 @@ const TablePagination = ({
           margin: "0.5rem",
         }}
       >
-        <Typography variant="body2" sx={{ fontWeight: "normal", margin:1}}>
-          {/* Showing {startIndex}-{endIndex} of {membersData.length} entries */}
-          entries
+        <Typography variant="body2" sx={{ fontWeight: "normal", margin: 1 }}>
+          Showing {startIndex}-{endIndex} of {data.length} entries
+
         </Typography>
         <Pagination
           count={Math.ceil(data.length / rowsPerPage)}
           page={page}
           onChange={handleChangePage}
           className="pagination"
-          sx={{mb:1}}
+          sx={{ mb: 1 }}
         />
       </Grid>
     </Grid>

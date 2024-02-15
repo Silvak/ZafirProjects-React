@@ -1,29 +1,25 @@
-import React, { useContext } from "react";
-import { Box, Modal, Typography } from "@mui/material";
+import * as React from "react";
+import { Box, Button, Modal, Typography } from "@mui/material";
 import { useBoundStore } from "@/stores/index";
 import { shallow } from "zustand/shallow";
-import ButtonSecondary from "@/components/buttons/buttonSecondary";
 
-const style = {
-  backgroundColor: "background.paper",
-  position: "relative",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: { xs: "90%", sm: "350px  ", md: "450px", lg: "500px" },
-  p: "20px",
-  borderRadius: "20px",
+const modalStyle = {
   display: "flex",
+  flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-  flexDirection: "column",
+  padding: "10px",
+  height: "auto",
 };
 
-export default function ModalGlobal() {
-  const { stateModal, titleModal, ChangeStateModal } = useBoundStore(
-    (state) => state,
-    shallow
-  );
+const ModalGlobal = () => {
+  const {
+    stateModal,
+    titleModal,
+    ChangeStateModal,
+    contentModal,
+  } = useBoundStore((state) => state, shallow);
+
   const handleClose = () => {
     ChangeStateModal(false);
   };
@@ -31,25 +27,58 @@ export default function ModalGlobal() {
   return (
     <Modal
       open={stateModal}
+      onClose={handleClose}
       disableEnforceFocus
       sx={{
-        ".css-i9fmh8-MuiBackdrop-root-MuiModal-backdrop": {
+        "& .MuiBackdrop-root": {
           backgroundColor: "transparent",
-          backdropFilter: "blur(1px)",
+          backdropFilter: "blur(3px)",
         },
       }}
     >
-      <Box sx={style}>
-        <Typography
-          variant="body1"
-          sx={{
-            color: "text.third",
-          }}
-        >
-          {titleModal}
-        </Typography>
-        <ButtonSecondary onClick={handleClose}>Close</ButtonSecondary>
+      <Box sx={{ ...modalStyle, width: "auto", height: "auto" }}>
+        <Box>
+          <Typography
+            variant="h4"
+            sx={{
+              padding: "1rem",
+              bgcolor: "white",
+              color: "black",
+              fontWeight: "bold",
+              borderTopLeftRadius: "16px",
+              borderTopRightRadius: "16px",
+              borderBottomLeftRadius: 0,
+              borderBottomRightRadius: 0,
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                borderBottom:"1px solid lightgray",
+                marginBlock:"2px",
+              }}
+            >
+              {titleModal}
+              <Button
+                sx={{
+                  marginRight: "0",
+                  bgcolor: "white",
+                }}
+                title="Close"
+                variant="text"
+                onClick={handleClose}
+              >
+                X
+              </Button>
+            </div>
+          </Typography>
+          <div>{contentModal}</div>
+        </Box>
       </Box>
     </Modal>
   );
-}
+};
+
+export default ModalGlobal;

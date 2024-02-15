@@ -68,6 +68,7 @@ const Header = ({ title, isMobile, handleButton, handleAddTask }) => {
               cursor: "pointer",
               marginRight: "2rem",
               paddingBottom: 1,
+              backgroundColor:"white"
             }}
           >
             <FormatListBulletedRoundedIcon
@@ -147,6 +148,7 @@ const Header = ({ title, isMobile, handleButton, handleAddTask }) => {
               maxWidth: "fit-content",
               padding: "0.6rem 1rem",
               marginTop: isMobile ? "1rem" : "0",
+              marginBottom: isMobile ? "0" : "0.8rem",
             }}
             onClick={handleAddTask}
           >

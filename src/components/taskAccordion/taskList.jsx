@@ -1,8 +1,8 @@
 import React from "react";
 import TaskAccordion from "./TaskAccordion";
 
-const TaskList = ({ title, tasks, handleAddTask, view }) => {
 
+const TaskList = ({ title, tasks, status, handleAddTask, view }) => {
 
   return (
     <div style={{ marginTop: "2rem" }}>
@@ -10,6 +10,7 @@ const TaskList = ({ title, tasks, handleAddTask, view }) => {
         title={title}
         tasks={tasks}
         view={view}
+        status={status}
         handleAddTask={handleAddTask}
       />
     </div>
