@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Box, Button, Divider, Modal, Typography } from "@mui/material";
+import { Box, Button, Modal, Typography } from "@mui/material";
 import { useBoundStore } from "@/stores/index";
 import { shallow } from "zustand/shallow";
 
@@ -9,12 +9,16 @@ const modalStyle = {
   justifyContent: "center",
   alignItems: "center",
   padding: "10px",
-  borderRadius: "20px",
+  height: "auto",
 };
 
 const ModalGlobal = () => {
-  const { stateModal, titleModal, ChangeStateModal, contentModal } =
-    useBoundStore((state) => state, shallow);
+  const {
+    stateModal,
+    titleModal,
+    ChangeStateModal,
+    contentModal,
+  } = useBoundStore((state) => state, shallow);
 
   const handleClose = () => {
     ChangeStateModal(false);
@@ -43,12 +47,32 @@ const ModalGlobal = () => {
               fontWeight: "bold",
               borderTopLeftRadius: "16px",
               borderTopRightRadius: "16px",
+              borderBottomLeftRadius: 0,
+              borderBottomRightRadius: 0,
             }}
           >
-            {titleModal}
-            <Button sx={{marginLeft:"60%", bgcolor:"lightgray", padding:"1px", width:"0.5rem"}} title="Close" variant="text" onClick={handleClose}>
-              Close
-            </Button>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                borderBottom:"1px solid lightgray",
+                marginBlock:"2px",
+              }}
+            >
+              {titleModal}
+              <Button
+                sx={{
+                  marginRight: "0",
+                  bgcolor: "white",
+                }}
+                title="Close"
+                variant="text"
+                onClick={handleClose}
+              >
+                X
+              </Button>
+            </div>
           </Typography>
           <div>{contentModal}</div>
         </Box>

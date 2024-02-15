@@ -12,11 +12,11 @@ import {
   Grid,
   Box,
   IconButton,
+  useMediaQuery,
+  ThemeProvider
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useBoundStore } from "../../stores/index";
-import { ThemeProvider } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import user1 from "../../assets/Img/png/userImageMan.png";
 import user2 from "../../assets/Img/png/userImageWoman.png";
 import user3 from "../../assets/Img/png/userImage.png";
@@ -30,9 +30,8 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
   const [endDate, setEndDate] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState("");
-  const [tags, setTags] = useState([]);
-  const { tasks, addTask, ChangeStateModal, ChangeContentModal } =
-    useBoundStore();
+  const [tags, setTags] = useState("");
+  const { ChangeStateModal } = useBoundStore();
 
   const [selectedUser, setSelectedUser] = useState("");
   const [teamMembers, setTeamMembers] = useState([]);
@@ -74,7 +73,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
   return (
     <ThemeProvider theme={theme}>
       <Paper
-      elevation={3}
+        elevation={3}
         style={{
           paddingInline: "2rem",
           maxHeight: "90vh",
@@ -84,14 +83,13 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
           overflowY: "auto",
           borderBottomLeftRadius: "16px",
           borderBottomRightRadius: "16px",
+          borderTopLeftRadius: "0px",
+          borderTopRightRadius: "0px",
         }}
       >
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <Typography
-              
-              sx={{ fontSize: "0.2rem", fontWeight: "normal" }}
-            >
+            <Typography sx={{ fontSize: "0.2rem", fontWeight: "normal" }}>
               Task name
             </Typography>
             <TextField
@@ -105,10 +103,9 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
           </Grid>
 
           <Grid item xs={6}>
-            <Typography  sx={{ fontSize: "0.85rem" }}>
-              Start date
-            </Typography>
+            <Typography sx={{ fontSize: "0.85rem" }}>Start date</Typography>
             <TextField
+              fullWidth
               value={startDate}
               variant="outlined"
               size="small"
@@ -118,11 +115,10 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
           </Grid>
 
           <Grid item xs={6}>
-            <Typography  sx={{ fontSize: "0.85rem" }}>
-              End date
-            </Typography>
+            <Typography sx={{ fontSize: "0.85rem" }}>End date</Typography>
             <TextField
               variant="outlined"
+              fullWidth
               value={endDate}
               size="small"
               onChange={(e) => setEndDate(e.target.value)}
@@ -131,7 +127,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
           </Grid>
 
           <Grid item xs={12}>
-            <Typography  sx={{ fontSize: "0.85rem" }}>
+            <Typography sx={{ fontSize: "0.85rem" }}>
               Add a description
             </Typography>
             <TextField
@@ -148,14 +144,12 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
           </Grid>
 
           <Grid item xs={12}>
-            <Typography  sx={{ fontSize: "0.85rem" }}>
-              Assigne to
-            </Typography>
+            <Typography sx={{ fontSize: "0.85rem" }}>Assigne to</Typography>
             <TextField
               fullWidth
               variant="outlined"
               size="small"
-              sx={{ fontSize: "2", fontWeight:"normal" }}
+              sx={{ fontSize: "2", fontWeight: "normal" }}
               placeholder="Search Leader"
               value={selectedUser}
               onChange={handleAssignToChange}
@@ -204,9 +198,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
           </Grid>
 
           <Grid item xs={12}>
-            <Typography  sx={{ fontSize: "0.85rem" }}>
-              Priority
-            </Typography>
+            <Typography sx={{ fontSize: "0.85rem" }}>Priority</Typography>
             <FormControl fullWidth>
               <Select
                 value={priority}
@@ -225,9 +217,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
           </Grid>
 
           <Grid item xs={12}>
-            <Typography  sx={{ fontSize: "0.85rem" }}>
-              Tags
-            </Typography>
+            <Typography sx={{ fontSize: "0.85rem" }}>Tags</Typography>
             <FormControl fullWidth>
               <Select
                 value={tags}
@@ -236,12 +226,13 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
                 sx={{ fontSize: "2rem", bgcolor: "white" }}
                 onChange={(e) => setTags(e.target.value)}
                 displayEmpty
-                renderValue={(selected) => (selected ? selected : "Type: All ")}
+                renderValue={(selected) => (selected ? selected : "Type: All")}
               >
                 <CustomMenuItem value="In Progress">In Progress</CustomMenuItem>
                 <CustomMenuItem value="Issues">Issues</CustomMenuItem>
                 <CustomMenuItem value="Review">Review</CustomMenuItem>
                 <CustomMenuItem value="Completed">Completed</CustomMenuItem>
+                <CustomMenuItem value="Working">Working</CustomMenuItem>
                 <CustomMenuItem value="Pending">Pending</CustomMenuItem>
                 <CustomMenuItem value="Backlog">Backlog</CustomMenuItem>
               </Select>
