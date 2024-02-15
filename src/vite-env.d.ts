@@ -25,6 +25,15 @@ declare module "@/components/taskAccordion/TaskItem";
 declare module "@/components/taskAccordion/taskList";
 declare module "@/components/taskAccordion/customAccordion";
 
+declare module "@/components/TaskDetail/TaskDetail";
+declare module "@/components/TaskDetail/TaskDetailHeader";
+declare module "@/components/TaskDetail/TaskDetailContent";
+declare module "@/components/TaskDetail/TaskDetailItem";
+declare module "@/components/TaskDetail/TaskDetailSubstaks";
+
+
+
+
 
 
 

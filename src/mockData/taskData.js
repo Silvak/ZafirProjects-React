@@ -133,3 +133,61 @@ export const mockTasks = [
     priority: "Low",
   },
 ];
+
+export const taskDetailData = {
+  id: crypto.randomUUID(),
+  task: "Home screen interaction",
+  appDesign: "Peceland App Design",
+  profilePhoto: photo,
+  notification: 1,
+  attachments: ["file1.pdf", "image1.jpg"],
+  date: "Oct - 1, 2024",
+  status: "Working",
+  assignees: [
+    {
+      id: 1,
+      name: "Franco",
+      profile: photo,
+    },
+    {
+      id: 2,
+      name: "Maria",
+      profile: photow,
+    },
+  ],
+  priority: "High",
+  screen: null,
+};
+
+export const subsTaksData = [
+  {
+    id: 1,
+    name: "Substasks 1",
+    assignee: {
+      name: "Juan",
+      profile: photo,
+    },
+    status: "In progress",
+    date: "Nov. 12, 2023",
+  },
+  {
+    id: 2,
+    name: "Substasks 2",
+    assignee: {
+      name: "María",
+      profile: photow,
+    },
+    status: "Completed",
+    date: "Nov. 12, 2024",
+  },
+  {
+    id: 3,
+    name: "Substasks 3",
+    assignee: {
+      name: "Juan",
+      profile: photo,
+    },
+    status: "Pending",
+    date: "Nov. 12, 2023",
+  },
+];

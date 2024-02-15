@@ -13,12 +13,8 @@ const modalStyle = {
 };
 
 const ModalGlobal = () => {
-  const {
-    stateModal,
-    titleModal,
-    ChangeStateModal,
-    contentModal,
-  } = useBoundStore((state) => state, shallow);
+  const { stateModal, titleModal, ChangeStateModal, contentModal } =
+    useBoundStore((state) => state, shallow);
 
   const handleClose = () => {
     ChangeStateModal(false);
@@ -36,7 +32,14 @@ const ModalGlobal = () => {
         },
       }}
     >
-      <Box sx={{ ...modalStyle, width: "auto", height: "auto" }}>
+      <Box
+        sx={{
+          ...modalStyle,
+          width: "auto",
+          minHeight: "100vh",
+          padding: "20px",
+        }}
+      >
         <Box>
           <Typography
             variant="h4"
@@ -56,8 +59,8 @@ const ModalGlobal = () => {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                borderBottom:"1px solid lightgray",
-                marginBlock:"2px",
+                borderBottom: "1px solid lightgray",
+                marginBlock: "2px",
               }}
             >
               {titleModal}
