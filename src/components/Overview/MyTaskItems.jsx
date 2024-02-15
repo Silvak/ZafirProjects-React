@@ -38,18 +38,18 @@ function MyTaskItems({ tasks, handleAddTask }) {
             }}
           >
             {tasks.map((task, index) => (
-              <Paper
+              <Box
                 key={index}
                 // elevation={isMobile || isKanbanView ? 2 : 0}
                 elevation={0}
                 sx={{
-                  marginBottom: "8px",
-                  padding: "18px",
+                  // padding: "18px",
                   opacity: task.status === "Completed" ? 0.5 : 1,
                   borderRadius: "18px",
                   width: "99%", // width: isKanbanView || isMobile ? "90%" : "99%",
                   marginLeft: "auto",
                   marginRight: "auto",
+                  // height: "452px"
                 }}
               >
                 
@@ -65,7 +65,7 @@ function MyTaskItems({ tasks, handleAddTask }) {
                   container
                   spacing={0.5}
                   // columns={isMobile || isKanbanView ? 6 : 12}
-                  columns={6}
+                  // columns={12}
                   alignItems="center"
                   padding={1}
                 >
@@ -96,6 +96,7 @@ function MyTaskItems({ tasks, handleAddTask }) {
                         display: "flex",
                         color: "darkslategray",
                         alignItems: "center",
+                        marginLeft: 50, /// no estaba
                       }}
                     >
                       <div style={{ display: "flex" }}>
@@ -144,7 +145,7 @@ function MyTaskItems({ tasks, handleAddTask }) {
                     item
                     xs={12}
                     // sm={isKanbanView ? 3 : 2}
-                    sm={2}
+                    sm={4}
                     sx={{
                       // mt: isKanbanView ? 4 : 0,
                       mt: 0,
@@ -156,14 +157,12 @@ function MyTaskItems({ tasks, handleAddTask }) {
                       style={{
                         display: "flex",
                         alignItems: "center",
-                        marginRight: "4rem",
+                        // marginRight: "4rem",
+                        marginLeft: 80, // no estaba
                       }}
                     >
                       <CalendarTodayIcon
                         style={{
-                          // marginTop: isMobile ? "5px" : "",
-                          marginTop: "5px",
-                          // marginRight: isMobile ? "" : "5px",
                           color: "gray",
                         }}
                       />
@@ -186,6 +185,8 @@ function MyTaskItems({ tasks, handleAddTask }) {
                       mt: 0,
                       marginInline: 2,
                       minWidth: "min-content",
+                      display: "flex",
+                      justifyContent: "end"
                     }}
                   >
                     <Typography
@@ -206,7 +207,7 @@ function MyTaskItems({ tasks, handleAddTask }) {
                     </Typography>
                   </Grid>
                 </Grid>
-              </Paper>
+              </Box>
             ))}
           </Box>
     </div>
