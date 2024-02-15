@@ -113,7 +113,8 @@ const TablePagination = ({
         }}
       >
         <Typography variant="body2" sx={{ fontWeight: "normal", margin:1}}>
-          Showing {startIndex}-{endIndex} of {membersData.length} entries
+          {/* Showing {startIndex}-{endIndex} of {membersData.length} entries */}
+          entries
         </Typography>
         <Pagination
           count={Math.ceil(data.length / rowsPerPage)}

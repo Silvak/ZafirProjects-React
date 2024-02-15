@@ -2,6 +2,8 @@ import React from "react";
 import TaskAccordion from "./TaskAccordion";
 
 const TaskList = ({ title, tasks, handleAddTask, view }) => {
+
+
   return (
     <div style={{ marginTop: "2rem" }}>
       <TaskAccordion

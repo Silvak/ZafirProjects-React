@@ -16,8 +16,8 @@ export const items = [
     submenu: [],
   },
   {
-    title: "tasks",
-    url: "/tasks",
+    title: "My tasks",
+    url: "/my-task",
     icon: <TaskOutlinedIcon />,
     submenu: [],
   },
