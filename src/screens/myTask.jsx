@@ -4,13 +4,14 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import Header from "../components/taskAccordion/taskHeader";
 import TaskList from "../components/taskAccordion/taskList";
-import { useBoundStore } from "../stores/index"; // Importa el hook useBoundStore aquí
+import { useBoundStore } from "../stores/index"; 
+import CreateTaskForm from "../components/forms/createTaskForm";
 
 const App = () => {
   const [view, setView] = useState("Format List");
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
-  const { tasks, addTask } = useBoundStore();
+  const { tasks, addTask, ChangeStateModal, ChangeContentModal, ChangeTitleModal } = useBoundStore();
 
   let pendingTasks = tasks.filter((task) => task.status === "Pending");
   let backlogTasks = tasks.filter((task) => task.status === "Backlog");
@@ -21,8 +22,11 @@ const App = () => {
   };
 
   const handleAddTask = (title, description) => {
-    addTask({ title, description });
+    ChangeTitleModal("Create Task");
+    ChangeContentModal(<CreateTaskForm placeholderTaskName="task 1" />);
+    ChangeStateModal(true);
   };
+
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -46,7 +50,7 @@ const App = () => {
               tasks={workingTasks}
               view={view}
               status="Working"
-              handleAddTask={() => handleAddTask("", "")}
+              handleAddTask={() => handleAddTask()}
             />
           </div>
           <div>
@@ -55,7 +59,7 @@ const App = () => {
               tasks={pendingTasks}
               view={view}
               status="Pending"
-              handleAddTask={() => handleAddTask("", "")}
+              handleAddTask={() => handleAddTask()}
             />
           </div>
           <div>
@@ -64,7 +68,7 @@ const App = () => {
               tasks={backlogTasks}
               view={view}
               status="Backlog"
-              handleAddTask={() => handleAddTask("", "")}
+              handleAddTask={() => handleAddTask()}
             />
           </div>
         </div>

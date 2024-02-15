@@ -297,7 +297,7 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
                 visibility: isMobile ? "hidden" : "inherits",
               }}
               onClick={handleMoreIcon}
-              sx={{ ml: "5rem" }}
+              sx={{ ml: "2rem" }}
             />
           )}
         </Grid>
@@ -314,6 +314,7 @@ const statusColors = {
   Completed: { backgroundColor: "#CCE3DD", color: "#277F65" },
   Pending: { backgroundColor: "#E0E5E9", color: "#7E838A" },
   Backlog: { backgroundColor: "#F0E1F1", color: "#8E44AD" },
+  Working: { backgroundColor: "#FFECB3", color: "#8B4513" }, 
 };
 
 const priorityColors = {
