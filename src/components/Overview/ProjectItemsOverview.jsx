@@ -1,5 +1,6 @@
 import { Box, TableCell } from "@mui/material";
 import { RenderProjectItems } from "./RenderProjectItems";
+import EditIcon from '@mui/icons-material/Edit';
 
 const BoxFlex = ({ children, sx }) => {
   return (
@@ -22,7 +23,7 @@ const ProjectItemsOverview = ({
   projectName,
   quantityTasks,
   category,
-  item
+  item,
 }) => {
   return (
     <TableCell
@@ -36,9 +37,8 @@ const ProjectItemsOverview = ({
           cursor: "pointer",
         },
         height: "71px",
-        width: "320px"
+        width: "320px",
       }}
-      onClick={() => alert("ir al proyecto")}
     >
       <BoxFlex sx={{ flex: 2 }}>
         <div
@@ -49,13 +49,23 @@ const ProjectItemsOverview = ({
             borderRadius: "12px",
             padding: "10px",
           }}
+          onClick={() => alert("ir al proyecto")}
         >
           <RenderProjectItems category={category} />
         </div>
-        <Box >
-          <h2 className="projectName">{projectName}</h2>
-          <small className="quantityTasks">{quantityTasks} | {item}</small>
+        <Box>
+          <div onClick={() => alert("ir al proyecto")}>
+            <h2 className="projectName">{projectName}</h2>
+          </div>
+          <small className="quantityTasks">
+            {quantityTasks} | {item}
+          </small>
         </Box>
+        <div style={{ marginLeft: 'auto' }}
+          onClick={() => alert("Abrir modal edit")}
+        >
+          <EditIcon />
+        </div>
       </BoxFlex>
     </TableCell>
   );

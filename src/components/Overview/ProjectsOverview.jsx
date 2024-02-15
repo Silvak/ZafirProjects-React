@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { projectsData } from "../../mockData/projectsData";
 import ProjectsTableItem from "@/components/projectsTable/ProjectsTableItem";
+import EastIcon from '@mui/icons-material/East';
 import {
   Typography,
   Grid,
@@ -53,8 +54,9 @@ function ProjectsOverview() {
                 marginRight: "30px"
             }}
           >
-            <NavLink to="/projects" style={{ textDecoration: "none" }}>
+            <NavLink to="/projects" style={{ textDecoration: "none", display: "flex" }}>
               View all
+              <EastIcon xs sx={{marginLeft: "6px"}}/>
             </NavLink>
           </Grid>
         </Box>
