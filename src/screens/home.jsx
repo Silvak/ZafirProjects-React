@@ -1,4 +1,4 @@
-import { useTheme, Box, IconButton, Button, Typography } from "@mui/material";
+import { useTheme, Box, IconButton, Button, Typography, Grid } from "@mui/material";
 import OverviewHeader from "../components/Overview/overviewHeader";
 import MyWorkGlance from "../components/Overview/myWork";
 import MyTaskOverview from "../components/Overview/MyTaskOverview";
@@ -33,13 +33,14 @@ function MyApp() {
       >
         <OverviewHeader />
         <MyWorkGlance />
-        <main style={{
-          display: "flex",
-          justifyContent: "space-between",
-        }}>
-          <MyTaskOverview />
-          <ProjectsOverview />
-        </main>
+        <Grid container spacing={1}  >
+          <Grid item xs >
+            <MyTaskOverview />
+          </Grid>
+          <Box item xs sx={{display: "flex", justifyContent: "space-between", width: "fit-content", margin: 1}}>
+            <ProjectsOverview />
+          </Box>
+        </Grid>
       </Box>
     </Box>
   );

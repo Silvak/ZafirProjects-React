@@ -25,6 +25,7 @@ function ProjectsOverview() {
           height: "572px",
           width: "360px",
           borderRadius: "20px",
+          minWidth: "360px",
         }}
       >
         <Box

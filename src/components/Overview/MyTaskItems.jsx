@@ -11,15 +11,10 @@ import {
   AttachFile as AttachFileIcon,
   Circle,
   MarkUnreadChatAltOutlined as MarkUnreadChatAltOutlinedIcon,
-  MoreHoriz as MoreHorizIcon,
 } from "@mui/icons-material";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import AddIcon from "@mui/icons-material/Add";
-import AvatarGroup from "@mui/material/AvatarGroup";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import CircleIcon from "@mui/icons-material/Circle";
 
-function MyTaskItems({ tasks, handleAddTask }) {
+function MyTaskItems({ tasks }) {
   const handleMoreIcon = () => {
     alert("toqueé el ... ");
   };
@@ -29,189 +24,179 @@ function MyTaskItems({ tasks, handleAddTask }) {
   const theme = createTheme();
   return (
     <ThemeProvider theme={theme}>
-    <div>
-    <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              padding: "0",
-            }}
-          >
-            {tasks.map((task, index) => (
-              <Box
-                key={index}
-                // elevation={isMobile || isKanbanView ? 2 : 0}
-                elevation={0}
-                sx={{
-                  // padding: "18px",
-                  opacity: task.status === "Completed" ? 0.5 : 1,
-                  borderRadius: "18px",
-                  width: "99%", // width: isKanbanView || isMobile ? "90%" : "99%",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  // height: "452px"
-                }}
+      <div>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            padding: "0",
+          }}
+        >
+          {tasks.map((task, index) => (
+            <Box
+              key={index}
+              elevation={0}
+              sx={{
+                opacity: task.status === "Completed" ? 0.5 : 1,
+                borderRadius: "18px",
+                width: "99%", 
+                marginLeft: "auto",
+                marginRight: "auto",
+              }}
+            >
+              
+              <Typography
+                variant="h6"
+                fontWeight="bold"
+                noWrap
+                style={{ fontSize: "14px", marginTop: "16px" }}
               >
-                
-                <Typography
-                  variant="h6"
-                  fontWeight="bold"
-                  noWrap
-                  style={{ fontSize: "14px", marginTop: "16px" }}
-                >
-                  {task.task}
-                </Typography>
-                <Grid
-                  container
-                  spacing={0.5}
-                  // columns={isMobile || isKanbanView ? 6 : 12}
-                  // columns={12}
-                  alignItems="center"
-                  padding={1}
-                >
-                  <Grid item xs={12} sm={2}>
-                  {/* <Grid item xs={12} sm={!isKanbanView ? 2 : 1}> */}
-                    <Typography
-                      variant="h6"
-                      noWrap
-                      style={{
-                        fontSize: "12px",
-                        width: "min-content",
-                        fontWeight: "bold",
-                        paddingInline: "8px",
-                        borderRadius: "6px",
-                        ...priorityColors[task.priority],
-                      }}
-                    >
-                      <Circle
-                        sx={{ fontSize: "10px", marginRight: "2px" }}
-                      ></Circle>
-                      {task.priority}
-                    </Typography>
-                  </Grid>
-                  
-                  <Grid item xs={12} sm={2}>
-                    <div
-                      style={{
-                        display: "flex",
-                        color: "darkslategray",
-                        alignItems: "center",
-                        marginLeft: 50, /// no estaba
-                      }}
-                    >
-                      <div style={{ display: "flex" }}>
-                        <MarkUnreadChatAltOutlinedIcon
-                          sx={{ mr: "5px", color: "gray" }}
-                        />
-                        <Typography
-                          variant="body1"
-                          noWrap
-                          style={{
-                            fontSize: "14px",
-                            fontWeight: "bold",
-                          }}
-                        >
-                          {task.notification}
-                        </Typography>
-                      </div>
-                      
-                      <div
-                        style={{
-                          display: "flex",
-                          // marginLeft: !isKanbanView ? 30 : 0,
-                          marginLeft: 30,
-                        }}
-                      >
-                        <AttachFileIcon
-                          style={{ cursor: "pointer", color: "gray" }}
-                          onClick={handleClipIcon}
-                        />
-                        <Typography
-                          variant="body1"
-                          noWrap
-                          style={{
-                            fontSize: "14px",
-                            fontWeight: "bold",
-                            marginRight: "1rem",
-                          }}
-                        >
-                          {" "}
-                          {task.attachments.length}
-                        </Typography>
-                      </div>
-                    </div>
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    // sm={isKanbanView ? 3 : 2}
-                    sm={4}
-                    sx={{
-                      // mt: isKanbanView ? 4 : 0,
-                      mt: 0,
-                      marginInline: 2,
-                      minWidth: "max-content",
+                {task.task}
+              </Typography>
+              <Grid
+                container
+                spacing={0.5}
+                // columns={12}
+                alignItems="center"
+                padding={1}
+              >
+                <Grid item xs={12} sm={2}>
+                  <Typography
+                    variant="h6"
+                    noWrap
+                    style={{
+                      fontSize: "12px",
+                      width: "min-content",
+                      fontWeight: "bold",
+                      paddingInline: "8px",
+                      borderRadius: "6px",
+                      ...priorityColors[task.priority],
                     }}
                   >
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        // marginRight: "4rem",
-                        marginLeft: 80, // no estaba
-                      }}
-                    >
-                      <CalendarTodayIcon
-                        style={{
-                          color: "gray",
-                        }}
+                    <Circle
+                      sx={{ fontSize: "10px", marginRight: "2px" }}
+                    ></Circle>
+                    {task.priority}
+                  </Typography>
+                </Grid>
+                
+                <Grid item xs={12} sm={2}>
+                  <div
+                    style={{
+                      display: "flex",
+                      color: "darkslategray",
+                      alignItems: "center",
+                      marginLeft: 50, 
+                    }}
+                  >
+                    <div style={{ display: "flex" }}>
+                      <MarkUnreadChatAltOutlinedIcon
+                        sx={{ mr: "5px", color: "gray" }}
                       />
                       <Typography
                         variant="body1"
-                        color="textSecondary"
                         noWrap
-                        style={{ fontSize: "14px", fontWeight: "bold" }}
+                        style={{
+                          fontSize: "14px",
+                          fontWeight: "bold",
+                        }}
                       >
-                        {task.date}
+                        {task.notification}
                       </Typography>
                     </div>
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    sm={1}
-                    sx={{
-                      // mt: isKanbanView ? 4 : 0,
-                      mt: 0,
-                      marginInline: 2,
-                      minWidth: "min-content",
+                    
+                    <div
+                      style={{
+                        display: "flex",
+                        marginLeft: 30,
+                      }}
+                    >
+                      <AttachFileIcon
+                        style={{ cursor: "pointer", color: "gray" }}
+                        onClick={handleClipIcon}
+                      />
+                      <Typography
+                        variant="body1"
+                        noWrap
+                        style={{
+                          fontSize: "14px",
+                          fontWeight: "bold",
+                          marginRight: "1rem",
+                        }}
+                      >
+                        {" "}
+                        {task.attachments.length}
+                      </Typography>
+                    </div>
+                  </div>
+                </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  sm={4}
+                  sx={{
+                    mt: 0,
+                    marginInline: 2,
+                    minWidth: "max-content",
+                  }}
+                >
+                  <div
+                    style={{
                       display: "flex",
-                      justifyContent: "end"
+                      alignItems: "center",
+                      marginLeft: 80, 
                     }}
                   >
+                    <CalendarTodayIcon
+                      style={{
+                        color: "gray",
+                      }}
+                    />
                     <Typography
                       variant="body1"
                       color="textSecondary"
                       noWrap
-                      sx={{
-                        fontWeight: "bold",
-                        fontSize: "14px",
-                        borderRadius: "8px",
-                        padding: "4px 8px",
-                        textAlign: "center",
-                        alignItems: "center",
-                        ...statusColors[task.status],
-                      }}
+                      style={{ fontSize: "14px", fontWeight: "bold" }}
                     >
-                      {task.status}
+                      {task.date}
                     </Typography>
-                  </Grid>
+                  </div>
                 </Grid>
-              </Box>
-            ))}
-          </Box>
-    </div>
-  </ThemeProvider>
+                <Grid
+                  item
+                  xs={12}
+                  sm={1}
+                  sx={{
+                    mt: 0,
+                    marginInline: 2,
+                    minWidth: "min-content",
+                    display: "flex",
+                    justifyContent: "end"
+                  }}
+                >
+                  <Typography
+                    variant="body1"
+                    color="textSecondary"
+                    noWrap
+                    sx={{
+                      fontWeight: "bold",
+                      fontSize: "14px",
+                      borderRadius: "8px",
+                      padding: "4px 8px",
+                      textAlign: "center",
+                      alignItems: "center",
+                      ...statusColors[task.status],
+                    }}
+                  >
+                    {task.status}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Box>
+          ))}
+        </Box>
+      </div>
+    </ThemeProvider>
   );
 }
 

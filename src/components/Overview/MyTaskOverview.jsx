@@ -6,27 +6,9 @@ import {
   createTheme,
   Select,
   MenuItem,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Paper,
   Grid,
-  Avatar,
   ThemeProvider,
-  useMediaQuery,
-  Divider,
 } from "@mui/material";
-import {
-  AttachFile as AttachFileIcon,
-  Circle,
-  MarkUnreadChatAltOutlined as MarkUnreadChatAltOutlinedIcon,
-  MoreHoriz as MoreHorizIcon,
-} from "@mui/icons-material";
-import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import AddIcon from "@mui/icons-material/Add";
-import AvatarGroup from "@mui/material/AvatarGroup";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import CircleIcon from "@mui/icons-material/Circle";
 import MyTaskList from "./MyTaskList";
 
 function MyTask() {
@@ -42,17 +24,20 @@ function MyTask() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box
+      <Grid 
         sx={{
           backgroundColor: "#ffffff",
           height: "572px",
-          width: "744px",
+          minWidth: "544px",
           borderRadius: "20px",
           marginRight: "24px",
+          display: "flex",
+          flexDirection: "column",
+          flex: 1,
         }}
       >
         {/* My Task Header */}
-        <Box
+        <Grid item 
           sx={{
             display: "flex",
             justifyContent: "space-between",
@@ -120,14 +105,14 @@ function MyTask() {
               </MenuItem>
             </Select>
           </Grid>
-        </Box>
+        </Grid>
         {/* Task list */}
         <MyTaskList 
           tasks={workingTasks}
           handleAddTask={() => handleAddTask("", "")}
         />                
 
-      </Box>
+      </Grid>
     </ThemeProvider>
   );
 }
