@@ -147,47 +147,50 @@ export const taskDetailData = {
     {
       id: 1,
       name: "Franco",
-      profile: photo,
+      profilePhoto: photo,
     },
     {
       id: 2,
       name: "Maria",
-      profile: photow,
+      profilePhoto: photow,
     },
   ],
   priority: "High",
   screen: null,
 };
 
-export const subsTaksData = [
+export const subsTasksData = [
   {
     id: 1,
-    name: "Substasks 1",
-    assignee: {
+    task: "Substasks 1",
+    assignees: {
       name: "Juan",
-      profile: photo,
+      profilePhoto: photo,
     },
     status: "In progress",
     date: "Nov. 12, 2023",
+    priority: "Low",
   },
   {
     id: 2,
-    name: "Substasks 2",
-    assignee: {
+    task: "Substasks 2",
+    assignees: {
       name: "María",
-      profile: photow,
+      profilePhoto: photow,
     },
     status: "Completed",
     date: "Nov. 12, 2024",
+    priority: "Low",
   },
   {
     id: 3,
-    name: "Substasks 3",
-    assignee: {
+    task: "Substasks 3",
+    assignees: {
       name: "Juan",
-      profile: photo,
+      profilePhoto: photo,
     },
     status: "Pending",
     date: "Nov. 12, 2023",
+    priority: "Low",
   },
 ];

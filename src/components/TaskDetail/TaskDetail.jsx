@@ -4,7 +4,9 @@ import TaskDetailHeader from "./TaskDetailHeader";
 import TaskDetailSubstasks from "./TaskDetailSubstasks";
 import ChatMessage from "../chatSeccion/chat";
 
-const TaskDetail = () => {
+const TaskDetail = ({ task }) => {
+  const { id, task: taskTitle } = task || {};
+
   return (
     <Grid
       container
@@ -18,8 +20,8 @@ const TaskDetail = () => {
       spacing={3}
     >
       <Grid item xs={12} md={7} sx={{ color: "#1D1F24" }}>
-        <TaskDetailHeader taskId="86a28kta" taskTitle="Task Title" />
-        <TaskDetailContent />
+        <TaskDetailHeader taskId={id} taskTitle={taskTitle} />
+        <TaskDetailContent task={task} />
         <TaskDetailSubstasks />
       </Grid>
       <Grid item xs={12} md={5}>
