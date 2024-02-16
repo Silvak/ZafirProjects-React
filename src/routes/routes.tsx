@@ -15,6 +15,7 @@ const Members = React.lazy(() => import ("@/screens/members"));
 const SignIn = React.lazy(() => import ("@/screens/signIn"));
 const SignUp = React.lazy(() => import ("@/screens/signUp"));
 const Projects = React.lazy(() => import ("@/screens/projects"));
+const TaskDetail = React.lazy(()=> import ("@/components/TaskDetail/TaskDetail"));
 
 
 export default function Navigator() {
@@ -65,6 +66,8 @@ export default function Navigator() {
           <Route path="/my-task" element={<MyTask />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/members" element={<Members />} />
+          <Route path="/detail" element={<TaskDetail />} />
+
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </NavbarDrawer>

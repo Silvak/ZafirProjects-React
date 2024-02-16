@@ -14,7 +14,7 @@ import {
 import moment from "moment";
 import { mockConversation as initialMockConversation } from "../../mockData/chatData";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
-import SentimentSatisfiedOutlinedIcon from '@mui/icons-material/SentimentSatisfiedOutlined';
+import SentimentSatisfiedOutlinedIcon from "@mui/icons-material/SentimentSatisfiedOutlined";
 
 const ChatMessage = () => {
   const theme = useTheme();
@@ -57,13 +57,12 @@ const ChatMessage = () => {
     }
   };
 
-
   const handleClip = () => {
-    alert("presioné el icono de clip")
-  }
+    alert("presioné el icono de clip");
+  };
   const handleEmoji = () => {
-    alert("presioné el icono de emoji")
-  }
+    alert("presioné el icono de emoji");
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -80,6 +79,7 @@ const ChatMessage = () => {
           borderBottomRightRadius: "16px",
           borderTopLeftRadius: 0,
           borderTopRightRadius: 0,
+          boxShadow: "none",
         }}
       >
         {mockConversation.map((msg, index) => (
@@ -170,14 +170,14 @@ const ChatMessage = () => {
             startAdornment={
               <InputAdornment position="start">
                 <IconButton onClick={handleEmoji}>
-                  <SentimentSatisfiedOutlinedIcon sx={{color:"gray"}}/>
+                  <SentimentSatisfiedOutlinedIcon sx={{ color: "gray" }} />
                 </IconButton>
               </InputAdornment>
             }
             endAdornment={
               <InputAdornment position="end">
                 <IconButton onClick={handleClip}>
-                  <AttachFileIcon sx={{color:"gray"}}/>
+                  <AttachFileIcon sx={{ color: "gray" }} />
                 </IconButton>
               </InputAdornment>
             }

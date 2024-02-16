@@ -2,7 +2,7 @@ import UserAvatar from "@/assets/Img/png/userImageMan.png";
 import { Box, TableCell } from "@mui/material";
 import { RenderIconByCategory } from "./RenderIconByCategory";
 //styles
-import "./styles.css";
+import css from "./styles.module.css";
 //icons
 import { MdAttachFile, MdCalendarMonth } from "react-icons/md";
 
@@ -58,13 +58,13 @@ const ProjectsTableItem = ({
           <RenderIconByCategory category={category} />
         </div>
         <Box sx={{ marginLeft: "20px" }}>
-          <h2 className="projectName">{projectName}</h2>
-          <small className="quantityTasks">{quantityTasks}</small>
+          <h2 className={css.projectName}>{projectName}</h2>
+          <small className={css.quantityTasks}>{quantityTasks}</small>
         </Box>
       </BoxFlex>
       <BoxFlex>
         <img src={UserAvatar} alt="user avatar" width={40} height={40} />
-        <p className="username">{username}</p>
+        <p className={css.username}>{username}</p>
       </BoxFlex>
       <BoxFlex>
         <MdCalendarMonth color="#6B6E75" size="20px" />
