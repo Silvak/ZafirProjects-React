@@ -68,7 +68,6 @@ function OverviewHeader() {
               width: "200px",
               marginTop: "6px",
               color: "#6B6E75",
-              fontSize: "12px"
             }}
           >
             {dayOfWeek}, {month} {dayOfMonth}
