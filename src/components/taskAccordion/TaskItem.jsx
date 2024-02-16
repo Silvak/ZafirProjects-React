@@ -155,7 +155,11 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
           <Grid item xs={12} sm={1} sx={{ marginRight: "3rem" }}>
             <AvatarGroup max={3} style={{ marginRight: isMobile ? "30%" : "" }}>
               {task.assignees.map((assignee, index) => (
-                <Avatar key={index} alt="Assignee" src={assignee} />
+                <Avatar
+                  key={index}
+                  alt={assignee.name}
+                  src={assignee.profile}
+                />
               ))}
             </AvatarGroup>
           </Grid>
@@ -227,9 +231,13 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
             {isMobile ||
               (isKanbanView && (
                 <Grid item xs={12} sm={1}>
-                  <AvatarGroup max={3}>
+                  <AvatarGroup max={2}>
                     {task.assignees.map((assignee, index) => (
-                      <Avatar key={index} alt="Assignee" src={assignee} />
+                      <Avatar
+                        key={index}
+                        alt={assignee.name}
+                        src={assignee.profile}
+                      />
                     ))}
                   </AvatarGroup>
                 </Grid>
@@ -324,7 +332,7 @@ const statusColors = {
   Completed: { backgroundColor: "#CCE3DD", color: "#277F65" },
   Pending: { backgroundColor: "#E0E5E9", color: "#7E838A" },
   Backlog: { backgroundColor: "#F0E1F1", color: "#8E44AD" },
-  Working: { backgroundColor: "#FFECB3", color: "#8B4513" },
+  Working: { backgroundColor: "#E8F4E6", color: "#4C7C4A" },
 };
 
 const priorityColors = {

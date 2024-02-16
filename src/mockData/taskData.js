@@ -11,7 +11,12 @@ export const mockTasks = [
     attachments: ["file1.pdf", "image1.jpg"],
     date: "Today",
     status: "Working",
-    assignees: [photo],
+    assignees: [
+      {
+        name: "John",
+        profile: photo,
+      },
+    ],
     priority: "High",
     screen: null,
   },
@@ -24,7 +29,16 @@ export const mockTasks = [
     attachments: ["file2.docx", "image2.png"],
     date: "Oct 2, 2022",
     status: "Working",
-    assignees: [photow],
+    assignees: [
+      {
+        name: "Alice",
+        profile: photow,
+      },
+      {
+        name: "Adrian",
+        profile: photo
+      }
+    ],
     priority: "High",
     screen:
       "https://res.cloudinary.com/dgdcfmnnx/image/upload/v1707754534/wwdhjjme5wixbr7z0hav.webp",
@@ -38,7 +52,16 @@ export const mockTasks = [
     attachments: [],
     date: "Today",
     status: "Backlog",
-    assignees: [photo, photow],
+    assignees: [
+      {
+        name: "Bob",
+        profile: photo,
+      },
+      {
+        name: "Julie",
+        profile: photow
+      }
+    ],
     priority: "Medium",
     screen: null,
   },
@@ -51,11 +74,19 @@ export const mockTasks = [
     attachments: ["file3.xlsx"],
     date: "Oct 3 - 4, 2023",
     status: "Working",
-    assignees: [photo, photow],
+    assignees: [
+      {
+        name: "Frank",
+        profile: photo,
+      },
+      {
+        name: "Charlie",
+        profile: photow,
+      },
+    ],
     priority: "Low",
     screen: null,
   },
-
   {
     id: crypto.randomUUID(),
     task: "Help",
@@ -65,7 +96,12 @@ export const mockTasks = [
     attachments: ["image3.jpg"],
     date: "Today",
     status: "Working",
-    assignees: [photow],
+    assignees: [
+      {
+        name: "David",
+        profile: photow,
+      },
+    ],
     priority: "Low",
     screen: null,
   },
@@ -78,7 +114,15 @@ export const mockTasks = [
     attachments: ["file1.docx"],
     date: "Oct 1 - 4, 2022",
     status: "Pending",
-    assignees: [photo, photow],
+    assignees: [
+      {
+        name: "Eva",
+        profile: photow,
+      },      {
+        name: "Frank",
+        profile: photo,
+      },
+    ],
     priority: "Low",
     screen: null,
   },
@@ -91,7 +135,12 @@ export const mockTasks = [
     attachments: [],
     date: "Future",
     status: "Backlog",
-    assignees: [photo],
+    assignees: [
+      {
+        name: "Frank",
+        profile: photo,
+      },
+    ],
     priority: "Medium",
     screen: null,
   },
@@ -104,7 +153,16 @@ export const mockTasks = [
     attachments: [],
     date: "Future",
     status: "Backlog",
-    assignees: [photow],
+    assignees: [
+      {
+        name: "Grace",
+        profile: photow,
+      },
+      {
+        name: "Henry",
+        profile: photo,
+      },
+    ],
     priority: "Medium",
     screen: null,
   },
@@ -117,7 +175,12 @@ export const mockTasks = [
     attachments: ["file1.pdf"],
     date: "Oct 1 - 4, 2022",
     status: "Pending",
-    assignees: [photo],
+    assignees: [
+      {
+        name: "Henry",
+        profile: photo,
+      },
+    ],
     priority: "Low",
   },
   {
@@ -129,7 +192,12 @@ export const mockTasks = [
     attachments: ["file1.docx"],
     date: "Oct 1 - 4, 2022",
     status: "Pending",
-    assignees: [photow],
+    assignees: [
+      {
+        name: "Isabel",
+        profile: photow,
+      },
+    ],
     priority: "Low",
   },
 ];
