@@ -32,6 +32,8 @@ declare module "@/components/taskAccordion/TaskAccordion";
 declare module "@/components/taskAccordion/TaskItem";
 declare module "@/components/taskAccordion/taskList";
 declare module "@/components/taskAccordion/customAccordion";
+declare module "@/components/forms/EditProjectForm";
+declare module "@/components/forms/CreateProjectForm";
 
 declare module "@/components/TaskDetail/TaskDetail";
 declare module "@/components/TaskDetail/TaskDetailHeader";
@@ -58,6 +60,7 @@ declare module "@/stores/Tasks/createTasksSlice";
 
 declare module "@/routes/routes";
 
+declare module "@/screens/EditForm";
 declare module "@/screens/home";
 declare module "@/screens/notFoundPage";
 declare module "@/screens/signIn";

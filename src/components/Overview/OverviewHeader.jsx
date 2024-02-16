@@ -8,11 +8,18 @@ import {
   createTheme,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import { useBoundStore } from "../../stores";
+import CreateProjectForm from "../forms/CreateProjectForm";
 
 function OverviewHeader() {
   const theme = createTheme();
   const { name } = userData;
-
+  const {ChangeStateModal, ChangeContentModal, ChangeTitleModal} = useBoundStore();
+  const handleCreate = () => {
+    ChangeTitleModal("Add Project");
+    ChangeContentModal(<CreateProjectForm />);
+    ChangeStateModal(true);
+  }
   //Date
   const currentDate = new Date();
 
@@ -68,14 +75,15 @@ function OverviewHeader() {
               width: "200px",
               marginTop: "6px",
               color: "#6B6E75",
-              fontSize: "12px"
             }}
           >
             {dayOfWeek}, {month} {dayOfMonth}
           </Typography>
         </Grid>
+        {/* Create Project */}
         <Grid sx={{ width: "100px", marginRight: "30px" }}>
           <Button
+            onClick={handleCreate}
             sx={{
               textTransform: "none",
               color: "white",

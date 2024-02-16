@@ -4,12 +4,9 @@ import { myWorkData } from "../../mockData/myWorkData";
 import {
   Typography,
   Grid,
-  Button,
   Box,
   ThemeProvider,
   createTheme,
-  Select,
-  MenuItem,
 } from "@mui/material";
 
 
@@ -35,7 +32,7 @@ function MyWorkGlance() {
         <Typography
           sx={{
             fontSize: "20px",
-            fontWeight: 500,
+            fontWeight: "500",
             fontFamily: "Poppins",
             marginBottom: "20px", // Agregado espacio inferior para separar del siguiente elemento
           }}
@@ -84,7 +81,7 @@ function InfoCard({ data }) {
           marginBottom: "5px", // Agregado espacio inferior para separar del siguiente elemento
         }}
       />
-      <Typography variant="h5" sx={{ marginLeft: 1.5, marginBottom: "5px" }}>
+      <Typography variant="h5" sx={{ marginLeft: 1.5, marginBottom: "5px", fontWeight: "bold", color: "black" }}>
         {data.total}
       </Typography>
       <Typography>{data.title}</Typography>
