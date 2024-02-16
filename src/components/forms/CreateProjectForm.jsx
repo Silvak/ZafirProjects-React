@@ -9,93 +9,104 @@ import {
   Typography,
   createTheme,
   Avatar,
-  IconButton
+  IconButton,
 } from "@mui/material";
+import { useBoundStore } from "../../stores";
+
 import AddIcon from "@mui/icons-material/Add";
 import user1 from "../../assets/Img/png/userImageMan.png";
 import user2 from "../../assets/Img/png/userImageWoman.png";
 import user3 from "../../assets/Img/png/userImage.png";
 
 function CreateProjectForm() {
-    const theme = createTheme();
-    const [selectedUser, setSelectedUser] = useState("");
-    const [selectedMember, setSelectedMember] = useState("");
-    const [teamMembers, setTeamMembers] = useState([]);
-    const [teamLeaders, setLeaders] = useState([]);
-    const [formData, setFormData] = useState({
-      name: "",
-      start: "",
-      end: "",
-      description: "",
-      link: "",
-      github: "",
-      leaders: teamLeaders,
-      members: teamMembers,
+  const { ChangeStateModal } = useBoundStore();
+  const theme = createTheme();
+  const [selectedUser, setSelectedUser] = useState("");
+  const [selectedMember, setSelectedMember] = useState("");
+  const [teamMembers, setTeamMembers] = useState([]);
+  const [teamLeaders, setLeaders] = useState([]);
+  const [formData, setFormData] = useState({
+    name: "",
+    start: "",
+    end: "",
+    description: "",
+    link: "",
+    github: "",
+    leaders: teamLeaders,
+    members: teamMembers,
+  });
+
+  const handleClose = () => {
+    ChangeStateModal(false);
+  };
+
+  const handleSubmit = () => {
+    SubmitEvent(formData);
+  };
+
+  const handleLeaderToChange = (e) => {
+    setSelectedUser(e.target.value);
+  };
+  const handleMemberToChange = (e) => {
+    setSelectedMember(e.target.value);
+  };
+
+  const handleAddLeaders = () => {
+    if (selectedUser && !teamLeaders.includes(selectedUser)) {
+      setLeaders([...teamLeaders, selectedUser]);
+      setSelectedUser("");
+    }
+  };
+  const handleAddMembers = () => {
+    if (selectedMember && !teamMembers.includes(selectedMember)) {
+      setTeamMembers([...teamMembers, selectedMember]);
+      setSelectedMember("");
+    }
+  };
+
+  const handleRemoveLeader = (memberToRemove) => {
+    const updatedMembers = teamLeaders.filter(
+      (member) => member !== memberToRemove
+    );
+    setLeaders(updatedMembers);
+  };
+
+  const handleRemoveMember = (memberToRemove) => {
+    const updatedMembers = teamMembers.filter(
+      (member) => member !== memberToRemove
+    );
+    setTeamMembers(updatedMembers);
+  };
+
+  const handleChange = (event) => {
+    const eventName = event.target.name;
+    const eventValue = event.target.value;
+    setFormData({
+      ...formData,
+      [eventName]: [...formData[eventName], eventValue],
     });
-  
-    const handleSubmit = () => {
-      SubmitEvent(formData);
-    };
-    
-    const handleLeaderToChange = (e) => {
-      setSelectedUser(e.target.value);
-    };
-    const handleMemberToChange = (e) => {
-      setSelectedMember(e.target.value);
-    };
-  
-    const handleAddLeaders = () => {
-      if (selectedUser && !teamLeaders.includes(selectedUser)) {
-        setLeaders([...teamLeaders, selectedUser]);
-        setSelectedUser("");
-      }
-    };
-    const handleAddMembers = () => {
-      if (selectedMember && !teamMembers.includes(selectedMember)) {
-        setTeamMembers([...teamMembers, selectedMember]);
-        setSelectedMember("");
-      }
-    };
-  
-    const handleRemoveLeader = (memberToRemove) => {
-      const updatedMembers = teamLeaders.filter(
-        (member) => member !== memberToRemove
-      );
-      setLeaders(updatedMembers);
-    };
-    
-    const handleRemoveMember = (memberToRemove) => {
-      const updatedMembers = teamMembers.filter(
-        (member) => member !== memberToRemove
-      );
-      setTeamMembers(updatedMembers);
-    };
-  
-    const handleChange = (event) => {
-      const eventName = event.target.name;
-      const eventValue = event.target.value;
-      setFormData({
-        ...formData,
-        [eventName]: [...formData[eventName], eventValue],
-      });
-  
-      console.log(formData);
-    };
-  
+
+    console.log(formData);
+  };
+
   return (
     <ThemeProvider theme={theme}>
       {/* row - colum */}
       <Paper
-        elevation={4}
+        elevation={1}
         sx={{
           minWidth: "530px",
           width: "fit-content",
           padding: "39px",
-          borderRadius: "12px",
+          // borderRadius: "12px",
+          borderTopLeftRadius: "0px",
+          borderTopRightRadius: "0px",
           overflowY: "auto",
+          borderBottomLeftRadius: "16px",
+          borderBottomRightRadius: "16px",
         }}
       >
-        <Grid
+        {/* <Grid
           item
           sx={{
             marginBottom: "30px",
@@ -104,7 +115,7 @@ function CreateProjectForm() {
           <Typography variant="h5" fontFamily={"Poppins"} fontWeight={"bold"}>
             Add Project
           </Typography>
-        </Grid>
+        </Grid> */}
 
         <Grid
           item
@@ -117,6 +128,7 @@ function CreateProjectForm() {
             Enter a project name
           </Typography>
           <TextField
+            size="small"
             placeholder="Project name..."
             name="name"
             onChange={handleChange}
@@ -143,6 +155,7 @@ function CreateProjectForm() {
               Start date
             </Typography>
             <TextField
+              size="small"
               name="start"
               onChange={handleChange}
               sx={{
@@ -160,6 +173,7 @@ function CreateProjectForm() {
               End date
             </Typography>
             <TextField
+              size="small"
               name="end"
               onChange={handleChange}
               sx={{
@@ -180,6 +194,7 @@ function CreateProjectForm() {
             Add a description...
           </Typography>
           <TextField
+            size="small"
             name="description"
             onChange={handleChange}
             placeholder="..."
@@ -199,6 +214,7 @@ function CreateProjectForm() {
             Project link...
           </Typography>
           <TextField
+            size="small"
             name="link"
             onChange={handleChange}
             sx={{
@@ -218,6 +234,7 @@ function CreateProjectForm() {
             Github
           </Typography>
           <TextField
+            size="small"
             name="github"
             onChange={handleChange}
             sx={{
@@ -236,6 +253,7 @@ function CreateProjectForm() {
             Team leaders
           </Typography>
           <TextField
+            size="small"
             name="leaders"
             value={selectedUser}
             onChange={handleLeaderToChange}
@@ -244,50 +262,49 @@ function CreateProjectForm() {
               width: "100%",
             }}
           />
-
         </Grid>
         <Grid item xs={12}>
-            <Box
-              sx={{
-                display: "flex",
-                gap: "8px",
-                marginBottom: "20px",
-                cursor: "pointer",
-                width: "fit-content"
-              }}
-            >
-              {teamLeaders.map((member, index) => (
-                <Avatar
-                  title="Remove"
-                  key={index}
-                  alt={member}
-                  src={
-                    member === "user1"
-                      ? user1
-                      : member === "user2"
-                      ? user2
-                      : member === "user3"
-                      ? user3
-                      : ""
-                  }
-                  onClick={() => handleRemoveLeader(member)}
-                  style={{ transition: "opacity 0.3s ease-in-out" }}
-                  onMouseOver={(e) => (e.currentTarget.style.opacity = "0.7")}
-                  onMouseOut={(e) => (e.currentTarget.style.opacity = "1")}
-                />
-              ))}
-              {teamLeaders.length < 4 && (
-                <IconButton
-                  title="Add Leader"
-                  sx={{ bgcolor: "lightgray" }}
-                  onClick={handleAddLeaders}
-                >
-                  <AddIcon />
-                </IconButton>
-              )}
-            </Box>
-          </Grid>
-          
+          <Box
+            sx={{
+              display: "flex",
+              gap: "8px",
+              marginBottom: "20px",
+              cursor: "pointer",
+              width: "fit-content",
+            }}
+          >
+            {teamLeaders.map((member, index) => (
+              <Avatar
+                title="Remove"
+                key={index}
+                alt={member}
+                src={
+                  member === "user1"
+                    ? user1
+                    : member === "user2"
+                    ? user2
+                    : member === "user3"
+                    ? user3
+                    : ""
+                }
+                onClick={() => handleRemoveLeader(member)}
+                style={{ transition: "opacity 0.3s ease-in-out" }}
+                onMouseOver={(e) => (e.currentTarget.style.opacity = "0.7")}
+                onMouseOut={(e) => (e.currentTarget.style.opacity = "1")}
+              />
+            ))}
+            {teamLeaders.length < 4 && (
+              <IconButton
+                title="Add Leader"
+                sx={{ bgcolor: "lightgray" }}
+                onClick={handleAddLeaders}
+              >
+                <AddIcon />
+              </IconButton>
+            )}
+          </Box>
+        </Grid>
+
         <Grid
           item
           sx={{
@@ -299,6 +316,7 @@ function CreateProjectForm() {
             Add members
           </Typography>
           <TextField
+            size="small"
             name="members"
             value={selectedMember}
             onChange={handleMemberToChange}
@@ -309,57 +327,57 @@ function CreateProjectForm() {
           />
         </Grid>
         <Grid item xs={12}>
-            <Box
-              sx={{
-                display: "flex",
-                gap: "8px",
-                marginBottom: "20px",
-                cursor: "pointer",
-                width: "fit-content"
-              }}
-            >
-              {teamMembers.map((member, index) => (
-                <Avatar
-                  title="Remove"
-                  key={index}
-                  alt={member}
-                  src={
-                    member === "user1"
-                      ? user1
-                      : member === "user2"
-                      ? user2
-                      : member === "user3"
-                      ? user3
-                      : ""
-                  }
-                  onClick={() => handleRemoveMember(member)}
-                  style={{ transition: "opacity 0.3s ease-in-out" }}
-                  onMouseOver={(e) => (e.currentTarget.style.opacity = "0.7")}
-                  onMouseOut={(e) => (e.currentTarget.style.opacity = "1")}
-                />
-              ))}
-              {teamMembers.length < 4 && (
-                <IconButton
-                  title="Add Leader"
-                  sx={{ bgcolor: "lightgray" }}
-                  onClick={handleAddMembers}
-                >
-                  <AddIcon />
-                </IconButton>
-              )}
-            </Box>
-          </Grid>
+          <Box
+            sx={{
+              display: "flex",
+              gap: "8px",
+              marginBottom: "20px",
+              cursor: "pointer",
+              width: "fit-content",
+            }}
+          >
+            {teamMembers.map((member, index) => (
+              <Avatar
+                title="Remove"
+                key={index}
+                alt={member}
+                src={
+                  member === "user1"
+                    ? user1
+                    : member === "user2"
+                    ? user2
+                    : member === "user3"
+                    ? user3
+                    : ""
+                }
+                onClick={() => handleRemoveMember(member)}
+                style={{ transition: "opacity 0.3s ease-in-out" }}
+                onMouseOver={(e) => (e.currentTarget.style.opacity = "0.7")}
+                onMouseOut={(e) => (e.currentTarget.style.opacity = "1")}
+              />
+            ))}
+            {teamMembers.length < 4 && (
+              <IconButton
+                title="Add Leader"
+                sx={{ bgcolor: "lightgray" }}
+                onClick={handleAddMembers}
+              >
+                <AddIcon />
+              </IconButton>
+            )}
+          </Box>
+        </Grid>
         <Grid
           sx={{
             display: "flex",
             justifyContent: "space-between",
             width: "444px",
-            marginTop: "40px"
+            marginTop: "40px",
           }}
         >
           <Button
             title="Cancel"
-            onClick={()=> {alert("Cerrar modal");}}
+            onClick={handleClose}
             sx={{
               textTransform: "none",
               color: "black",
@@ -398,6 +416,5 @@ function CreateProjectForm() {
     </ThemeProvider>
   );
 }
-
 
 export default CreateProjectForm;

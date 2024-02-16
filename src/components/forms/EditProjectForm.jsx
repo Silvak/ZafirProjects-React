@@ -11,12 +11,14 @@ import {
   createTheme,
   Avatar
 } from "@mui/material";
+import { useBoundStore } from "../../stores";
 import AddIcon from "@mui/icons-material/Add";
 import user1 from "../../assets/Img/png/userImageMan.png";
 import user2 from "../../assets/Img/png/userImageWoman.png";
 import user3 from "../../assets/Img/png/userImage.png";
 
 function EditProjectForm() {
+  const { ChangeStateModal } = useBoundStore();
   const theme = createTheme();
   const [selectedUser, setSelectedUser] = useState("");
   const [selectedMember, setSelectedMember] = useState("");
@@ -32,6 +34,11 @@ function EditProjectForm() {
     leaders: teamLeaders,
     members: teamMembers,
   });
+
+  const handleClose = () => {
+    ChangeStateModal(false);
+  }
+  
 
   const handleSubmit = () => {
     SubmitEvent(formData);
@@ -86,16 +93,20 @@ function EditProjectForm() {
     <ThemeProvider theme={theme}>
       {/* row - colum */}
       <Paper
-        elevation={4}
+        elevation={1}
         sx={{
           minWidth: "530px",
           width: "fit-content",
           padding: "39px",
-          borderRadius: "12px",
+          // borderRadius: "12px",
+          borderTopLeftRadius: "0px",
+          borderTopRightRadius: "0px",
           overflowY: "auto",
+          borderBottomLeftRadius: "16px",
+          borderBottomRightRadius: "16px",
         }}
       >
-        <Grid
+        {/* <Grid
           item
           sx={{
             marginBottom: "30px",
@@ -104,7 +115,7 @@ function EditProjectForm() {
           <Typography variant="h5" fontFamily={"Poppins"} fontWeight={"bold"}>
             Edit Project
           </Typography>
-        </Grid>
+        </Grid> */}
 
         <Grid
           item
@@ -117,6 +128,7 @@ function EditProjectForm() {
             Enter a project name
           </Typography>
           <TextField
+            size="small"
             placeholder="Project name..."
             name="name"
             onChange={handleChange}
@@ -143,6 +155,7 @@ function EditProjectForm() {
               Start date
             </Typography>
             <TextField
+              size="small"
               name="start"
               onChange={handleChange}
               sx={{
@@ -160,6 +173,7 @@ function EditProjectForm() {
               End date
             </Typography>
             <TextField
+              size="small"
               name="end"
               onChange={handleChange}
               sx={{
@@ -180,6 +194,7 @@ function EditProjectForm() {
             Add a description...
           </Typography>
           <TextField
+            size="small"
             name="description"
             onChange={handleChange}
             placeholder="..."
@@ -199,6 +214,7 @@ function EditProjectForm() {
             Project link...
           </Typography>
           <TextField
+            size="small"
             name="link"
             onChange={handleChange}
             sx={{
@@ -218,6 +234,7 @@ function EditProjectForm() {
             Github
           </Typography>
           <TextField
+            size="small"
             name="github"
             onChange={handleChange}
             sx={{
@@ -236,6 +253,7 @@ function EditProjectForm() {
             Team leaders
           </Typography>
           <TextField
+            size="small"
             name="leaders"
             value={selectedUser}
             onChange={handleLeaderToChange}
@@ -299,6 +317,7 @@ function EditProjectForm() {
             Add members
           </Typography>
           <TextField
+            size="small"
             name="members"
             value={selectedMember}
             onChange={handleMemberToChange}
@@ -359,7 +378,7 @@ function EditProjectForm() {
         >
           <Button
             title="Cancel"
-            onClick={()=> {alert("Cerrar modal");}}
+            onClick={handleClose}
             sx={{
               textTransform: "none",
               color: "black",

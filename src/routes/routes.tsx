@@ -10,8 +10,6 @@ import ModalGlobal from "@/components/modal/modal";
 const Home = React.lazy(() => import("@/screens/home"));
 const NotFoundPage = React.lazy(() => import("@/screens/notFoundPage"));
 
-// Prueba para Forms
-const EditForm = React.lazy(() => import("@/screens/EditForm"));
 
 const MyTask = React.lazy(() => import ("@/screens/myTask"));
 const Members = React.lazy(() => import ("@/screens/members"));
@@ -69,8 +67,6 @@ export default function Navigator() {
           <Route path="/projects" element={<Projects />} />
           <Route path="/members" element={<Members />} />
           <Route path="*" element={<NotFoundPage />} />
-          {/* Ruta de prueba */}
-          <Route path="/editform" element={<EditForm />} />
         </Routes>
       </NavbarDrawer>
 

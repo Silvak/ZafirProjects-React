@@ -2,6 +2,7 @@ import { useState } from "react";
 import { projectsData } from "../../mockData/projectsData";
 import ProjectsTableItem from "@/components/projectsTable/ProjectsTableItem";
 import EastIcon from '@mui/icons-material/East';
+import EditProjectForm from "../forms/EditProjectForm";
 import {
   Typography,
   Grid,
@@ -12,11 +13,20 @@ import {
   TableBody,
   TableRow,
 } from "@mui/material";
+import { useBoundStore } from "../../stores";
 import { NavLink } from "react-router-dom";
 import ProjectItemsOverview from "./ProjectItemsOverview";
 
 function ProjectsOverview() {
   const theme = createTheme();
+  const { ChangeStateModal, ChangeContentModal, ChangeTitleModal } = useBoundStore();
+  const handleEdit = () => {
+    ChangeTitleModal("Edit Project");
+    ChangeContentModal(<EditProjectForm />);
+    ChangeStateModal(true);
+  }
+  
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -54,7 +64,7 @@ function ProjectsOverview() {
                 marginRight: "30px"
             }}
           >
-            <NavLink to="/projects" style={{ textDecoration: "none", display: "flex" }}>
+            <NavLink to="/projects" style={{ textDecoration: "none", display: "flex", fontFamily: "Poppins" }}>
               View all
               <EastIcon xs sx={{marginLeft: "6px"}}/>
             </NavLink>
@@ -84,6 +94,7 @@ function ProjectsOverview() {
             >
               {projectsData.map((project) => (
                   <ProjectItemsOverview
+                    handleEdit={handleEdit}
                     {...project}
                     key={project.id}
                   />
