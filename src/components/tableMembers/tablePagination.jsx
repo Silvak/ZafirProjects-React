@@ -114,6 +114,7 @@ const TablePagination = ({
       >
         <Typography variant="body2" sx={{ fontWeight: "normal", margin: 1 }}>
           Showing {startIndex}-{endIndex} of {data.length} entries
+
         </Typography>
         <Pagination
           count={Math.ceil(data.length / rowsPerPage)}

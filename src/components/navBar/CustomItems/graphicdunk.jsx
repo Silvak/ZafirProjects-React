@@ -57,7 +57,7 @@ function GraphicdunkSelect(props) {
         gap: "8px",
         px: "12px",
         width: "100%",
-        marginTop: "24px"
+        marginTop: "24px",
       }}
     >
         {items.map((element) => (
@@ -71,7 +71,10 @@ function GraphicdunkSelect(props) {
                 border: "2px solid #E0E3E8",
                 width: "100%",
                 borderRadius: "12px",
-                backgroundColor: "#F6F7FA"
+                backgroundColor: "#F6F7FA",
+                '&:hover': {
+                  backgroundColor: "#F6F7FA"
+                }
               }}
               disableRipple
             >
