@@ -31,6 +31,7 @@ const ModalGlobal = () => {
           backdropFilter: "blur(3px)",
         },
       }}
+      style={{ overflowY: "auto" }}
     >
       <Box
         sx={{

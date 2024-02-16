@@ -13,7 +13,7 @@ import {
   Box,
   IconButton,
   useMediaQuery,
-  ThemeProvider
+  ThemeProvider,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useBoundStore } from "../../stores/index";
@@ -37,15 +37,14 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
   const [teamMembers, setTeamMembers] = useState([]);
 
   const handleCreate = () => {
-    onCreate({
-      taskName,
-      startDate,
-      endDate,
-      description,
-      assignedTo,
-      priority,
-      tags,
-    });
+    console.log("Task Name:", taskName);
+    console.log("Start Date:", startDate);
+    console.log("End Date:", endDate);
+    console.log("Description:", description);
+    console.log("Assigned To:", teamMembers);
+    console.log("Priority:", priority);
+    console.log("Tags:", tags);
+    handleClose();
   };
 
   const handleClose = () => {
@@ -153,6 +152,11 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
               placeholder="Search Leader"
               value={selectedUser}
               onChange={handleAssignToChange}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleAddMember();
+                }
+              }}
             />
           </Grid>
 
