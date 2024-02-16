@@ -1,10 +1,8 @@
 import { Grid, Box } from "@mui/material";
 import GridItem from "./TaskDetailItem";
 
-import { taskDetailData } from "../../mockData/taskData";
-
-const TaskDetailContent = () => {
-  const { task, appDesign, date, assignees, priority } = taskDetailData;
+const TaskDetailContent = ({ task }) => {
+  const { appDesign, date, assignees, priority } = task || {};
 
   return (
     <Grid container spacing={3} sx={{ marginTop: "10px" }}>
@@ -12,11 +10,26 @@ const TaskDetailContent = () => {
       <GridItem label="Date" detailText={date} />
       <Grid item xs={12}>
         <p style={{ color: "#6B6E75", marginBottom: "5px" }}>Assigned to</p>
-        <Box sx={{ display: "flex", gap: "10px" }}>
-          {assignees.map((element) => (
+
+        <Box sx={{ display: "flex", gap: "5px" }}>
+          {Array.isArray(assignees) ? (
+            assignees.map((element) => (
+              <img
+                key={element.id}
+                src={element.profile}
+                alt="profile"
+                style={{
+                  width: "32px",
+                  height: "32px",
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                }}
+              />
+            ))
+          ) : (
             <img
-              key={element.id}
-              src={element.profile}
+              key={assignees.id}
+              src={assignees.profile}
               alt="profile"
               style={{
                 width: "32px",
@@ -25,7 +38,7 @@ const TaskDetailContent = () => {
                 objectFit: "cover",
               }}
             />
-          ))}
+          )}
         </Box>
       </Grid>
       <GridItem label="Priority" detailText={priority} />

@@ -13,6 +13,8 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import CircleIcon from "@mui/icons-material/Circle";
 import { Avatar, Divider } from "@mui/material";
 import AvatarGroup from "@mui/material/AvatarGroup";
+import { useBoundStore } from "../../stores";
+import TaskDetail from "../TaskDetail/TaskDetail";
 
 const TaskItem = ({ task, isMobile, isKanbanView }) => {
   const [{ opacity }, dragRef] = useDrag(
@@ -26,8 +28,13 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
     []
   );
 
-  const handleMoreIcon = () => {
-    alert("toqueé el ... ");
+  const { ChangeStateModal, ChangeTitleModal, ChangeContentModal } =
+    useBoundStore((state) => state);
+
+  const handleMoreIcon = (task) => () => {
+    ChangeStateModal(true);
+    ChangeTitleModal("Task Detail");
+    ChangeContentModal(<TaskDetail task={task} />);
   };
   const handleClipIcon = () => {
     alert("toqueé el icono del clip");
@@ -68,7 +75,10 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
               >
                 {task.appDesign}
               </Typography>
-              <ArrowForwardIcon style={{ color: "#6B6E75" }} />
+              <ArrowForwardIcon
+                style={{ color: "#6B6E75", cursor: "pointer" }}
+                onClick={handleMoreIcon(task)}
+              />
             </div>
             <Divider sx={{ mb: 2 }}></Divider>
             {task.screen && (
@@ -296,7 +306,7 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
                 cursor: "pointer",
                 visibility: isMobile ? "hidden" : "inherits",
               }}
-              onClick={handleMoreIcon}
+              onClick={handleMoreIcon(task)}
               sx={{ ml: "2rem" }}
             />
           )}
@@ -314,7 +324,7 @@ const statusColors = {
   Completed: { backgroundColor: "#CCE3DD", color: "#277F65" },
   Pending: { backgroundColor: "#E0E5E9", color: "#7E838A" },
   Backlog: { backgroundColor: "#F0E1F1", color: "#8E44AD" },
-  Working: { backgroundColor: "#FFECB3", color: "#8B4513" }, 
+  Working: { backgroundColor: "#FFECB3", color: "#8B4513" },
 };
 
 const priorityColors = {
