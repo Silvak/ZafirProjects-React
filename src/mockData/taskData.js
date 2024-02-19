@@ -36,8 +36,8 @@ export const mockTasks = [
       },
       {
         name: "Adrian",
-        profile: photo
-      }
+        profile: photo,
+      },
     ],
     priority: "High",
     screen:
@@ -59,8 +59,8 @@ export const mockTasks = [
       },
       {
         name: "Julie",
-        profile: photow
-      }
+        profile: photow,
+      },
     ],
     priority: "Medium",
     screen: null,
@@ -118,7 +118,8 @@ export const mockTasks = [
       {
         name: "Eva",
         profile: photow,
-      },      {
+      },
+      {
         name: "Frank",
         profile: photo,
       },
@@ -235,7 +236,7 @@ export const subsTasksData = [
       name: "Juan",
       profilePhoto: photo,
     },
-    status: "In progress",
+    status: "In Progress",
     date: "Nov. 12, 2023",
     priority: "Low",
   },

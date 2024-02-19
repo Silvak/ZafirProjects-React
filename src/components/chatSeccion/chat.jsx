@@ -75,7 +75,7 @@ const ChatMessage = () => {
           maxHeight: "85vh",
           margin: "auto",
           background: "white",
-          overflow: "auto",
+          overflowY: "auto",
           borderBottomRightRadius: "16px",
           borderTopLeftRadius: 0,
           borderTopRightRadius: 0,

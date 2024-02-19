@@ -15,6 +15,7 @@ import { Avatar, Divider } from "@mui/material";
 import AvatarGroup from "@mui/material/AvatarGroup";
 import { useBoundStore } from "../../stores";
 import TaskDetail from "../TaskDetail/TaskDetail";
+import { statusColors, priorityColors } from "../../utils/colors";
 
 const TaskItem = ({ task, isMobile, isKanbanView }) => {
   const [{ opacity }, dragRef] = useDrag(
@@ -44,13 +45,13 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
     <Paper
       elevation={3}
       sx={{
-        marginBottom: "8px",
         padding: "14px",
         opacity: opacity,
-        borderRadius: "18px",
-        width: isKanbanView || isMobile ? "85%" : "99%",
-        marginLeft: "auto",
-        marginRight: "auto",
+        borderRadius: "12px",
+        width: "100%",
+        marginInline: "auto",
+        boxShadow:
+          " rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px",
       }}
       ref={dragRef}
     >
@@ -324,19 +325,3 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
   );
 };
 export default TaskItem;
-
-const statusColors = {
-  "In Progress": { backgroundColor: "#BED8F5", color: "#2676CF" },
-  Issues: { backgroundColor: "#F8D1CB", color: "#D3544B" },
-  Review: { backgroundColor: "#F6E5C6", color: "#E19E41" },
-  Completed: { backgroundColor: "#CCE3DD", color: "#277F65" },
-  Pending: { backgroundColor: "#E0E5E9", color: "#7E838A" },
-  Backlog: { backgroundColor: "#F0E1F1", color: "#8E44AD" },
-  Working: { backgroundColor: "#E8F4E6", color: "#4C7C4A" },
-};
-
-const priorityColors = {
-  High: { backgroundColor: "#FFD1CE", color: "#E24942" },
-  Medium: { backgroundColor: "#FDE9D5", color: "#E5922C" },
-  Low: { backgroundColor: "#CDD9E5", color: "#4B8DC2" },
-};

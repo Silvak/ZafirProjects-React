@@ -30,22 +30,20 @@ const ModalGlobal = () => {
           backgroundColor: "transparent",
           backdropFilter: "blur(3px)",
         },
+        overflowY: "auto",
       }}
-      style={{ overflowY: "auto" }}
     >
       <Box
         sx={{
           ...modalStyle,
-          width: "auto",
           minHeight: "100vh",
           padding: "20px",
         }}
       >
-        <Box>
+        <Box sx={{ width: "100%" }}>
           <Typography
             variant="h4"
             sx={{
-              padding: "1rem",
               bgcolor: "white",
               color: "black",
               fontWeight: "bold",
@@ -62,13 +60,16 @@ const ModalGlobal = () => {
                 alignItems: "center",
                 borderBottom: "1px solid lightgray",
                 marginBlock: "2px",
+                padding: "8px",
               }}
             >
               {titleModal}
               <Button
                 sx={{
-                  marginRight: "0",
+                  margin: "0",
                   bgcolor: "white",
+                  display: "flex",
+                  justifyContent: "flex-end",
                 }}
                 title="Close"
                 variant="text"

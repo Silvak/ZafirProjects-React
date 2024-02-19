@@ -1,9 +1,9 @@
 import { Box, Button } from "@mui/material";
 import { RxEyeOpen } from "react-icons/rx";
-import { getStatusColor } from "../../utils/getStatusColor";
-import TaskDetail from "./TaskDetail";
 import { useBoundStore } from "../../stores";
+import { statusColors } from "../../utils/colors";
 import CreateTaskForm from "../forms/createTaskForm";
+import TaskDetail from "./TaskDetail";
 //mock
 import { subsTasksData } from "../../mockData/taskData";
 //styles
@@ -63,8 +63,7 @@ const TaskDetailSubstasks = () => {
               <td>
                 <div
                   style={{
-                    backgroundColor: getStatusColor(item.status).bg,
-                    color: getStatusColor(item.status).color,
+                    ...statusColors[item.status],
                     padding: "5px 10px",
                     borderRadius: "5px",
                     textAlign: "center",
