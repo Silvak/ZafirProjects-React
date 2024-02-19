@@ -11,11 +11,15 @@ const TaskDetail = ({ task }) => {
     <Grid
       container
       sx={{
-        padding: "50px 30px",
+        padding: "0 10px",
         background: "#FFFF",
         margin: 0,
         overflowY: "auto",
         height: "100vh",
+        width: "100%",
+        "& > .MuiGrid-item": {
+          padding: "20px 5px",
+        },
       }}
       spacing={3}
     >

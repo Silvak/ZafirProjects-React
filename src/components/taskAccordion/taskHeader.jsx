@@ -1,21 +1,23 @@
-import React, { useState } from "react";
 import {
-  Typography,
-  Grid,
-  ButtonGroup,
-  Select,
-  MenuItem,
-  Button,
-  ThemeProvider,
-  createTheme,
-} from "@mui/material";
-import {
+  CalendarToday as CalendarTodayIcon,
   FormatListBulletedRounded as FormatListBulletedRoundedIcon,
   ViewKanbanOutlined as ViewKanbanOutlinedIcon,
-  CalendarToday as CalendarTodayIcon,
 } from "@mui/icons-material";
+import {
+  Button,
+  ButtonGroup,
+  Grid,
+  MenuItem,
+  Select,
+  ThemeProvider,
+  Typography,
+  createTheme,
+  useMediaQuery,
+} from "@mui/material";
+import React, { useState } from "react";
 
-const Header = ({ title, isMobile, handleButton, handleAddTask }) => {
+const Header = ({ title, handleButton, handleAddTask }) => {
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const theme = createTheme();
   const [selectedValue, setSelectedValue] = useState("All Tasks");
   const [selectedIcon, setSelectedIcon] = useState("Format List");
@@ -35,40 +37,51 @@ const Header = ({ title, isMobile, handleButton, handleAddTask }) => {
         style={{
           display: "flex",
           flexDirection: isMobile ? "column" : "row",
-          flexWrap: isMobile ? "wrap" : "",
-          alignItems: "center",
           textAlign: "center",
+          alignItems: "center",
           justifyContent: isMobile ? "center" : "space-between",
-          gap: "1rem",
-          padding: "1.5rem",
+          padding: "30px 20px",
         }}
       >
-        <Grid item>
+        <Grid item sx={{ flex: "1 0 auto" }}>
           <Typography
             variant="h4"
             sx={{
               fontSize: "24px",
               fontWeight: "bold",
               textAlign: isMobile ? "center" : "left",
-              mt: 2,
             }}
           >
             {title}
           </Typography>
         </Grid>
-        <Grid item>
+        {/* buttons group */}
+        <Grid
+          item
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: isMobile ? "10px" : "0",
+            flexDirection: isMobile ? "column" : "row",
+            gap: "20px",
+          }}
+        >
           <ButtonGroup
             variant="outlined"
             aria-label="Loading button group"
             sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
               fontWeight: "normal",
               padding: "0.3rem",
               borderRadius: "8px",
               border: "1px solid gray",
               cursor: "pointer",
-              marginRight: "2rem",
               paddingBottom: 1,
-              backgroundColor:"white"
+              backgroundColor: "white",
+              width: "100%",
             }}
           >
             <FormatListBulletedRoundedIcon
@@ -90,7 +103,7 @@ const Header = ({ title, isMobile, handleButton, handleAddTask }) => {
                 color: selectedIcon === "View Kanban" ? "white" : "gray",
                 borderRadius: "8px",
                 padding: "2px",
-                display: isMobile ? "none" : ""
+                display: isMobile ? "none" : "",
               }}
               onClick={() => handleIconButtonClick("View Kanban")}
             />
@@ -109,13 +122,12 @@ const Header = ({ title, isMobile, handleButton, handleAddTask }) => {
             onChange={handleSelectChange}
             sx={{
               width: isMobile ? "120px" : "170px",
+              width: "100%",
               height: "40px",
               color: "black",
               backgroundColor: "white",
               border: "1px solid gray",
               borderRadius: "8px",
-              marginRight: isMobile ? 0 : "2rem",
-              paddingTop: 1,
               fontSize: "16px",
             }}
           >
@@ -140,15 +152,12 @@ const Header = ({ title, isMobile, handleButton, handleAddTask }) => {
           </Select>
           <Button
             variant="contained"
-            fullWidth
             sx={{
               fontSize: "12px",
               fontWeight: "bold",
               borderRadius: "12px",
-              maxWidth: "fit-content",
-              padding: "0.6rem 1rem",
-              marginTop: isMobile ? "1rem" : "0",
-              marginBottom: isMobile ? "0" : "0.8rem",
+              padding: "10px 20px",
+              minWidth: "200px",
             }}
             onClick={handleAddTask}
           >
