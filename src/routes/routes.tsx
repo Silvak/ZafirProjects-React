@@ -5,20 +5,19 @@ import Navbar from "@/components/navBar/navBar";
 import NavbarDrawer from "@/components/navBar/navBarDrawer";
 import AlertGlobal from "@/components/alert/alert";
 import ModalGlobal from "@/components/modal/modal";
-
+import { storeUser } from "@/stores/user/storeUser";
 
 const Home = React.lazy(() => import("@/screens/home"));
 const NotFoundPage = React.lazy(() => import("@/screens/notFoundPage"));
 
-
-const MyTask = React.lazy(() => import ("@/screens/myTask"));
-const Members = React.lazy(() => import ("@/screens/members"));
-const SignIn = React.lazy(() => import ("@/screens/signIn"));
-const SignUp = React.lazy(() => import ("@/screens/signUp"));
-const Projects = React.lazy(() => import ("@/screens/projects"));
-
+const MyTask = React.lazy(() => import("@/screens/myTask"));
+const Members = React.lazy(() => import("@/screens/members"));
+const SignIn = React.lazy(() => import("@/screens/signIn"));
+const SignUp = React.lazy(() => import("@/screens/signUp"));
+const Projects = React.lazy(() => import("@/screens/projects"));
 
 export default function Navigator() {
+  const { Authenticated } = storeUser();
   let Logo = "";
 
   return (
@@ -55,22 +54,23 @@ export default function Navigator() {
     >
       {/*Navbar primary */}
       {/* <Navbar /> */}
-      {/* <Toolbar sx={{m:"10px"}} /> */}
-
-      {/*Navbar secondary */}
-      <NavbarDrawer>
+      {Authenticated ? (
+        <NavbarDrawer>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/tasks" element={<MyTask />} />
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/members" element={<Members />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </NavbarDrawer>
+      ) : (
         <Routes>
-          <Route path="/" element={<Home />} />
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/my-task" element={<MyTask />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/members" element={<Members />} />
-
-
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
-      </NavbarDrawer>
+      )}
 
       {/*other tools */}
       <AlertGlobal />

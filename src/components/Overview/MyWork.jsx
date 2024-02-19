@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { myWorkData } from "../../mockData/myWorkData";
 import {
@@ -9,15 +8,13 @@ import {
   createTheme,
 } from "@mui/material";
 
-
 function MyWorkGlance() {
   const theme = createTheme();
-  const [selectedValue, setSelectedValue] = useState("This Month");  
+  const [selectedValue, setSelectedValue] = useState("This Month");
   const handleSelectChange = (event) => {
     setSelectedValue(event.target.value);
   };
-  const {pending, progress, issues, review, completed} = myWorkData;
-
+  const { pending, progress, issues, review, completed } = myWorkData;
 
   return (
     <ThemeProvider theme={theme}>
@@ -81,7 +78,15 @@ function InfoCard({ data }) {
           marginBottom: "5px", // Agregado espacio inferior para separar del siguiente elemento
         }}
       />
-      <Typography variant="h5" sx={{ marginLeft: 1.5, marginBottom: "5px", fontWeight: "bold", color: "black" }}>
+      <Typography
+        variant="h5"
+        sx={{
+          marginLeft: 1.5,
+          marginBottom: "5px",
+          fontWeight: "bold",
+          color: "black",
+        }}
+      >
         {data.total}
       </Typography>
       <Typography>{data.title}</Typography>

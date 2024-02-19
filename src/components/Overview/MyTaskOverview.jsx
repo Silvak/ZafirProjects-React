@@ -24,7 +24,7 @@ function MyTask() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid 
+      <Grid
         sx={{
           backgroundColor: "#ffffff",
           height: "572px",
@@ -37,7 +37,8 @@ function MyTask() {
         }}
       >
         {/* My Task Header */}
-        <Grid item 
+        <Grid
+          item
           sx={{
             display: "flex",
             justifyContent: "space-between",
@@ -107,15 +108,13 @@ function MyTask() {
           </Grid>
         </Grid>
         {/* Task list */}
-        <MyTaskList 
+        <MyTaskList
           tasks={workingTasks}
           handleAddTask={() => handleAddTask("", "")}
-        />                
-
+        />
       </Grid>
     </ThemeProvider>
   );
 }
-
 
 export default MyTask;
