@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import CreateTaskForm from "@/components/forms/createTaskForm";
-import Header from "@/components/taskAccordion/taskHeader";
+import TaskHeader from "@/components/taskAccordion/taskHeader";
 import TaskList from "@/components/taskAccordion/taskList";
 import { useBoundStore } from "@/stores/index";
 
@@ -41,7 +41,7 @@ const App = () => {
   return (
     <DndProvider backend={HTML5Backend}>
       <div sx={{ minWidth: "250px" }}>
-        <Header
+        <TaskHeader
           title="My Task"
           handleAddTask={handleAddTask}
           handleButton={handleButton}
