@@ -10,11 +10,12 @@ import { storeUser } from "@/stores/user/storeUser";
 const Home = React.lazy(() => import("@/screens/home"));
 const NotFoundPage = React.lazy(() => import("@/screens/notFoundPage"));
 
-const MyTask = React.lazy(() => import("@/screens/myTask"));
+const MyTask = React.lazy(() => import("@/screens/project/myTask"));
 const Members = React.lazy(() => import("@/screens/members"));
 const SignIn = React.lazy(() => import("@/screens/signIn"));
-const SignUp = React.lazy(() => import("@/screens/signUp"));
-const Projects = React.lazy(() => import("@/screens/projects"));
+const SignUp = React.lazy(() => import("@/screens/signUp")); //"@/screens/project/Layout"
+const Projects = React.lazy(() => import("@/screens/project/projects"));
+const Layout = React.lazy(() => import("@/screens/project/layout"));
 
 export default function Navigator() {
   const { Authenticated } = storeUser();
@@ -57,9 +58,16 @@ export default function Navigator() {
       {Authenticated ? (
         <NavbarDrawer>
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/tasks" element={<MyTask />} />
-            <Route path="/projects" element={<Projects />} />
+            <Route index element={<Home />} />
+
+            <Route path="/project" element={<Projects />} />
+
+            <Route path="/project/:id" element={<Layout />}>
+              <Route index element={<MyTask />} />
+              <Route path="tasks" element={<MyTask />} />
+              <Route path="report" element={<>Report</>} />
+            </Route>
+
             <Route path="/members" element={<Members />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>

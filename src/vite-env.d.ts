@@ -57,10 +57,11 @@ declare module "@/screens/home";
 declare module "@/screens/notFoundPage";
 declare module "@/screens/signIn";
 declare module "@/screens/signUp";
-declare module "@/screens/myTask";
 declare module "@/screens/members";
 declare module "@/theme/theme";
-declare module "@/screens/projects";
+declare module "@/screens/project/projects";
+declare module "@/screens/project/myTask";
+declare module "@/screens/project/layout";
 
 declare module "@/hooks/usePagination";
 declare module "@/hooks/useSignUp";

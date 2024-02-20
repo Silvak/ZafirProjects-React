@@ -2,16 +2,22 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import React, { useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import Header from "../components/taskAccordion/taskHeader";
-import TaskList from "../components/taskAccordion/taskList";
-import { useBoundStore } from "../stores/index"; 
-import CreateTaskForm from "../components/forms/createTaskForm";
+import Header from "../../components/taskAccordion/taskHeader";
+import TaskList from "../../components/taskAccordion/taskList";
+import { useBoundStore } from "../../stores/index";
+import CreateTaskForm from "../../components/forms/createTaskForm";
 
 const App = () => {
   const [view, setView] = useState("Format List");
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
-  const { tasks, addTask, ChangeStateModal, ChangeContentModal, ChangeTitleModal } = useBoundStore();
+  const {
+    tasks,
+    addTask,
+    ChangeStateModal,
+    ChangeContentModal,
+    ChangeTitleModal,
+  } = useBoundStore();
 
   let pendingTasks = tasks.filter((task) => task.status === "Pending");
   let backlogTasks = tasks.filter((task) => task.status === "Backlog");
@@ -26,7 +32,6 @@ const App = () => {
     ChangeContentModal(<CreateTaskForm placeholderTaskName="task 1" />);
     ChangeStateModal(true);
   };
-
 
   return (
     <DndProvider backend={HTML5Backend}>

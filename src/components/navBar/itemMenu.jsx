@@ -17,28 +17,34 @@ export const items = [
   },
   {
     title: "My tasks",
-    url: "/my-task",
+    url: "/project/1111/tasks",
     icon: <TaskOutlinedIcon />,
     submenu: [],
   },
   {
-    title: "projects",
-    url: "/projects",
+    title: "project",
+    url: "/project",
     icon: <FolderCopyOutlinedIcon />,
     submenu: [
       {
         title: "Mi proyecto 1",
-        url: "/projects/234234",
+        url: "/project/1111",
       },
       {
         title: "report",
-        url: "/projects/report",
+        url: "/project/1111/report",
       },
     ],
   },
   {
     title: "performance",
     url: "/performance",
+    icon: <MultilineChartOutlinedIcon />,
+    submenu: [],
+  },
+  {
+    title: "memebers",
+    url: "/members",
     icon: <MultilineChartOutlinedIcon />,
     submenu: [],
   },
@@ -65,7 +71,7 @@ function ItemMenu(props) {
         gap: "8px",
         px: "12px",
         width: "100%",
-        marginTop: "48px"
+        marginTop: "48px",
       }}
     >
       {items.map((element) => (
