@@ -40,7 +40,7 @@ const ModalGlobal = () => {
           padding: "20px",
         }}
       >
-        <Box sx={{ width: "100%" }}>
+        <Box> {/* width off */}
           <Typography
             variant="h4"
             sx={{
