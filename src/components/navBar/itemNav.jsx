@@ -39,8 +39,14 @@ const typographySx = (isActive, open) => ({
   fontWeight: "600",
   fontSize: "14px !important",
   ml: "14px",
-  display: open ? "flex" : "none",
   color: isActive ? "#3A3D44" : "#6B6E75",
+  transition: "opacity 300ms ease, transform 300ms ease",
+  opacity: open ? 1 : 0,
+  transform: open ? "translateX(0)" : "translateX(-20px)",
+  visibility: open ? "visible" : "hidden",
+  height: open ? "auto" : "0",
+  overflow: "hidden",
+  whiteSpace: "nowrap",
 });
 
 const arrowBoxSx = (open) => ({

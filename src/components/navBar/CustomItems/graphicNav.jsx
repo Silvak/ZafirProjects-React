@@ -15,7 +15,6 @@ import { useLocation } from "react-router-dom";
 function GraphicNav(props) {
   const location = useLocation();
   const isActive = location.pathname === props.to;
-  const theme = useTheme();
 
   return (
     <NavLink to={props.to} style={{ textDecoration: "none", width: "100%" }}>

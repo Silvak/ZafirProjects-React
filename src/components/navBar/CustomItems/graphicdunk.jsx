@@ -1,14 +1,9 @@
 import { useState } from "react";
 import CloudCircleIcon from "@mui/icons-material/CloudCircle";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { List, ListItemButton, Collapse } from "@mui/material";
 import GraphicNav from "@/components/navBar/CustomItems/graphicNav";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-
-// constant
-
-// ==============================|| MENU ITEMS ||============================== //
 
 const items = [
   {
@@ -37,17 +32,30 @@ const items = [
 
 function GraphicdunkSelect(props) {
   const [open, setOpen] = useState(false);
-  console.log(open);
 
   const handleClick = () => {
-    if (props.open != false) {
+    if (props.open !== false) {
       setOpen(!open);
     }
   };
 
+  //submenu
+  const Submenu = ({ submenuItems }) => (
+    <Collapse in={open} timeout="auto" unmountOnExit>
+      {submenuItems.map((submenuItem) => (
+        <GraphicNav
+          key={submenuItem.id}
+          to={submenuItem.url}
+          title={submenuItem.title}
+          open={true}
+          sx={{ pl: 8 }}
+        />
+      ))}
+    </Collapse>
+  );
+
   return (
     <List
-      key="graphicItem"
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -60,9 +68,8 @@ function GraphicdunkSelect(props) {
       }}
     >
       {items.map((element) => (
-        <>
+        <div key={element.id}>
           <ListItemButton
-            key={element.title}
             onClick={handleClick}
             sx={{
               m: 0,
@@ -70,9 +77,8 @@ function GraphicdunkSelect(props) {
               border: "1px solid #E0E3E8",
               width: "100%",
               borderRadius: "12px",
-              backgroundColor: "#F6F7FA",
               "&:hover": {
-                backgroundColor: "red",
+                backgroundColor: "white",
               },
             }}
             disableRipple
@@ -85,19 +91,8 @@ function GraphicdunkSelect(props) {
               arrow={open ? <ExpandLessIcon /> : <KeyboardArrowDownIcon />}
             />
           </ListItemButton>
-
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            {element.submenu.map((submenuItem) => (
-              <GraphicNav
-                key={submenuItem.id}
-                to={submenuItem.url}
-                title={submenuItem.title}
-                open={true}
-                sx={{ pl: 8 }}
-              />
-            ))}
-          </Collapse>
-        </>
+          <Submenu submenuItems={element.submenu} />
+        </div>
       ))}
     </List>
   );

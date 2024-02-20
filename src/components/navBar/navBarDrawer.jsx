@@ -12,7 +12,6 @@ import {
   CssBaseline,
   Toolbar,
   Badge,
-  useTheme,
   InputBase,
 } from "@mui/material";
 import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
@@ -20,7 +19,7 @@ import ItemMenu from "@/components/navBar/itemMenu";
 import UserProfileButton from "./CustomItems/ProfileTab";
 import Logo from "./CustomItems/logo";
 
-//sizing
+//sizing variables
 const drawerWidth = 258;
 const sizeOnWeb = 80;
 const sizeOnMobile = 64;
@@ -55,7 +54,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "flex-end",
-  padding: "0px 12px",
+  padding: "0px 16px 0px 24px",
   height: sizeOnMobile,
   [theme.breakpoints.up("sm")]: {
     height: sizeOnWeb,
@@ -140,8 +139,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
     width: "100%",
+    fontSize: "14px",
     [theme.breakpoints.up("md")]: {
-      width: "20ch",
+      width: "100%",
     },
   },
 }));
@@ -217,7 +217,6 @@ export default function NavbarDrawer(props) {
             borderBottom: "1px solid #b5b5b5",
             display: "flex",
             justifyContent: open ? "space-between" : "center",
-
             cursor: "pointer",
           }}
           onClick={handleDrawerOpen}
@@ -236,7 +235,7 @@ export default function NavbarDrawer(props) {
       </Drawer>
 
       {/* content */}
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 0 }}>
         <DrawerHeader />
         {props.children}
       </Box>
