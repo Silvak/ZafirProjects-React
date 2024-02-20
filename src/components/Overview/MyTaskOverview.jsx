@@ -8,6 +8,7 @@ import {
   MenuItem,
   Grid,
   ThemeProvider,
+  useMediaQuery,
 } from "@mui/material";
 import MyTaskList from "./MyTaskList";
 
@@ -15,6 +16,7 @@ function MyTask() {
   const { tasks, addTask } = useBoundStore();
   const theme = createTheme();
   const [selectedValue, setSelectedValue] = useState("This Week");
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const handleSelectChange = (event) => {
     setSelectedValue(event.target.value);
   };
@@ -24,22 +26,23 @@ function MyTask() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid 
+      <Grid
         sx={{
           backgroundColor: "#ffffff",
           height: "572px",
-          minWidth: "544px",
           borderRadius: "20px",
-          marginRight: "24px",
           display: "flex",
           flexDirection: "column",
           flex: 1,
+          overflow: "-moz-hidden-unscrollable",
+          overflowX: "hidden"
         }}
       >
         {/* My Task Header */}
-        <Grid item 
+        <Grid
+          item
           sx={{
-            display: "flex",
+            display: isMobile ? "inline-table" : "flex",
             justifyContent: "space-between",
             height: "69px",
           }}
@@ -47,6 +50,7 @@ function MyTask() {
           <Grid
             item
             sx={{
+              
               marginLeft: "20px",
               marginBottom: "17px",
               marginTop: "22px",
@@ -58,6 +62,7 @@ function MyTask() {
               My Task
             </Typography>
           </Grid>
+          {/* Select Filter */}
           <Grid item>
             <Select
               value={selectedValue}
@@ -74,6 +79,7 @@ function MyTask() {
                 marginBottom: "15px",
                 paddingTop: 1,
                 fontSize: "16px",
+                margin: isMobile ? 2 : ""
               }}
             >
               <MenuItem
@@ -107,15 +113,13 @@ function MyTask() {
           </Grid>
         </Grid>
         {/* Task list */}
-        <MyTaskList 
+        <MyTaskList
           tasks={workingTasks}
           handleAddTask={() => handleAddTask("", "")}
-        />                
-
+        />
       </Grid>
     </ThemeProvider>
   );
 }
-
 
 export default MyTask;

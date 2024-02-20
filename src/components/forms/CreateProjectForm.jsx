@@ -10,6 +10,7 @@ import {
   createTheme,
   Avatar,
   IconButton,
+  useMediaQuery,
 } from "@mui/material";
 import { useBoundStore } from "../../stores";
 
@@ -89,16 +90,18 @@ function CreateProjectForm() {
     console.log(formData);
   };
 
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+
   return (
     <ThemeProvider theme={theme}>
       {/* row - colum */}
       <Paper
         elevation={1}
         sx={{
-          minWidth: "530px",
-          width: "fit-content",
+          maxWidth: isMobile ? "90vw" : "fit-content",
           padding: "39px",
-          // borderRadius: "12px",
+          maxHeight: "90vh",
+          height: isMobile ? "90vh" : "",
           borderTopLeftRadius: "0px",
           borderTopRightRadius: "0px",
           overflowY: "auto",
@@ -120,7 +123,7 @@ function CreateProjectForm() {
         <Grid
           item
           sx={{
-            width: "444px",
+            // width: "444px",
             marginBottom: "20px",
           }}
         >
@@ -147,7 +150,7 @@ function CreateProjectForm() {
           <Grid
             item
             sx={{
-              width: "216px",
+              // width: "216px",
               marginRight: "12px",
             }}
           >
@@ -166,7 +169,7 @@ function CreateProjectForm() {
           <Grid
             item
             sx={{
-              width: "216px",
+              // width: "216px",
             }}
           >
             <Typography fontFamily={"Poppins"} color={"#6B6E75"}>
@@ -186,7 +189,7 @@ function CreateProjectForm() {
         <Grid
           item
           sx={{
-            width: "444px",
+            // width: "444px",
             marginBottom: "20px",
           }}
         >
@@ -206,7 +209,7 @@ function CreateProjectForm() {
         <Grid
           item
           sx={{
-            width: "444px",
+            // width: "444px",
             marginBottom: "20px",
           }}
         >
@@ -226,7 +229,7 @@ function CreateProjectForm() {
         <Grid
           item
           sx={{
-            width: "444px",
+            // width: "444px",
             marginBottom: "20px",
           }}
         >
@@ -245,7 +248,7 @@ function CreateProjectForm() {
         <Grid
           item
           sx={{
-            width: "444px",
+            // width: "444px",
             marginBottom: "20px",
           }}
         >
@@ -308,7 +311,7 @@ function CreateProjectForm() {
         <Grid
           item
           sx={{
-            width: "444px",
+            // width: "444px",
             marginBottom: "20px",
           }}
         >
@@ -371,7 +374,6 @@ function CreateProjectForm() {
           sx={{
             display: "flex",
             justifyContent: "space-between",
-            width: "444px",
             marginTop: "40px",
           }}
         >

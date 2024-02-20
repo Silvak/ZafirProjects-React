@@ -6,10 +6,10 @@ import {
   Typography,
   Grid,
 } from "@mui/material";
-import OverviewHeader from "../components/Overview/OverviewHeader";
-import MyWorkGlance from "../components/Overview/MyWork";
-import MyTaskOverview from "../components/Overview/MyTaskOverview";
-import ProjectsOverview from "../components/Overview/ProjectsOverview";
+import OverviewHeader from "@/components/Overview/OverviewHeader";
+import MyWorkGlance from "@/components/Overview/MyWork";
+import MyTaskOverview from "@/components/Overview/MyTaskOverview";
+import ProjectsOverview from "@/components/Overview/ProjectsOverview";
 
 function MyApp() {
   const theme = useTheme();

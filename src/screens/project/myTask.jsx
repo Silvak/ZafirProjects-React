@@ -2,10 +2,10 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import React, { useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import CreateTaskForm from "../components/forms/createTaskForm";
-import Header from "../components/taskAccordion/taskHeader";
-import TaskList from "../components/taskAccordion/taskList";
-import { useBoundStore } from "../stores/index";
+import CreateTaskForm from "@/components/forms/createTaskForm";
+import Header from "@/components/taskAccordion/taskHeader";
+import TaskList from "@/components/taskAccordion/taskList";
+import { useBoundStore } from "@/stores/index";
 
 const App = () => {
   const [view, setView] = useState("Format List");
