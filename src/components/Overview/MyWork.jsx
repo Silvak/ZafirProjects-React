@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { myWorkData } from "../../mockData/myWorkData";
 import {
@@ -7,18 +6,19 @@ import {
   Box,
   ThemeProvider,
   createTheme,
+  Select,
+  MenuItem,
+  useMediaQuery
 } from "@mui/material";
-
 
 function MyWorkGlance() {
   const theme = createTheme();
-  const [selectedValue, setSelectedValue] = useState("This Month");  
+  const { pending, progress, issues, review, completed } = myWorkData;
+  const [selectedValue, setSelectedValue] = useState("This Month");
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const handleSelectChange = (event) => {
     setSelectedValue(event.target.value);
   };
-  const {pending, progress, issues, review, completed} = myWorkData;
-
-
   return (
     <ThemeProvider theme={theme}>
       <Box
@@ -27,18 +27,70 @@ function MyWorkGlance() {
           height: "auto", // Cambiado a "auto" para que el contenedor se ajuste al contenido
           borderRadius: "20px",
           padding: "20px", // Agregado espacio interno para separar los elementos
+          overflowX: "auto"
         }}
       >
+        <Grid item sx={{display: isMobile ? "inline-table" : "flex", justifyContent: "space-between", alignContent: "center", alignItems: "center", overflowX: "hidden"}}>
+
         <Typography
           sx={{
             fontSize: "20px",
             fontWeight: "500",
             fontFamily: "Poppins",
             marginBottom: "20px", // Agregado espacio inferior para separar del siguiente elemento
+            color: "black"
           }}
         >
           My Work Glance
         </Typography>
+        <Grid item >
+        <Select
+          value={selectedValue}
+          onChange={handleSelectChange}
+          sx={{
+            width: "140px",
+            height: "34px",
+            color: "#1D1F24",
+            backgroundColor: "white",
+            border: "1px solid gray",
+            borderRadius: "8px",
+            marginTop: "20px",
+            marginRight: "20px",
+            marginBottom: "15px",
+            paddingTop: 1,
+            fontSize: "16px",
+          }}
+        >
+          <MenuItem
+            value="This Month"
+            sx={{
+              backgroundColor: "white",
+              fontSize: "12px",
+            }}
+          >
+            This Month
+          </MenuItem>
+          <MenuItem
+            value="This Week"
+            sx={{
+              backgroundColor: "white",
+              fontSize: "12px",
+            }}
+          >
+            This Week
+          </MenuItem>
+          <MenuItem
+            value="Today"
+            sx={{
+              backgroundColor: "white",
+              fontSize: "12px",
+            }}
+          >
+            Today
+          </MenuItem>
+        </Select>
+      </Grid>
+        </Grid>
         <Box
           sx={{
             display: "grid",
@@ -52,6 +104,7 @@ function MyWorkGlance() {
           <InfoCard data={review} />
           <InfoCard data={completed} />
         </Box>
+        
       </Box>
     </ThemeProvider>
   );
@@ -59,6 +112,10 @@ function MyWorkGlance() {
 
 // Componente separado para los elementos de información
 function InfoCard({ data }) {
+  const [selectedValue, setSelectedValue] = useState("This Week");
+  const handleSelectChange = (event) => {
+    setSelectedValue(event.target.value);
+  };
   return (
     <Grid
       item
@@ -70,8 +127,10 @@ function InfoCard({ data }) {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "flex-start",
+        height: "91px"
       }}
     >
+      <div style={{display: "flex", marginLeft: "16px"}}>
       <div
         style={{
           borderRadius: "4px",
@@ -81,10 +140,19 @@ function InfoCard({ data }) {
           marginBottom: "5px", // Agregado espacio inferior para separar del siguiente elemento
         }}
       />
-      <Typography variant="h5" sx={{ marginLeft: 1.5, marginBottom: "5px", fontWeight: "bold", color: "black" }}>
+      <Typography
+        variant="h5"
+        sx={{
+          marginLeft: 1.5,
+          marginBottom: "5px",
+          fontWeight: "bold",
+          color: "black",
+        }}
+      >
         {data.total}
       </Typography>
-      <Typography>{data.title}</Typography>
+      </div>
+      <Typography sx={{marginLeft: "38px"}}>{data.title}</Typography>
     </Grid>
   );
 }

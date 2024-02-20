@@ -12,6 +12,7 @@ import {
   Table,
   TableBody,
   TableRow,
+  useMediaQuery,
 } from "@mui/material";
 import { useBoundStore } from "../../stores";
 import { NavLink } from "react-router-dom";
@@ -19,6 +20,7 @@ import ProjectItemsOverview from "./ProjectItemsOverview";
 
 function ProjectsOverview() {
   const theme = createTheme();
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const { ChangeStateModal, ChangeContentModal, ChangeTitleModal } = useBoundStore();
   const handleEdit = () => {
     ChangeTitleModal("Edit Project");
@@ -33,15 +35,15 @@ function ProjectsOverview() {
       <Box
         sx={{
           backgroundColor: "#ffffff",
-          height: "572px",
-          width: "360px",
+          height: "auto",
+          // width: "360px",
           borderRadius: "20px",
-          minWidth: "360px",
+          // minWidth: "360px",
         }}
       >
-        <Box
+        <Grid
           sx={{
-            display: "flex",
+            display: isMobile ? "flex" : "flex",
             justifyContent: "space-between",
           }}
         >
@@ -61,7 +63,9 @@ function ProjectsOverview() {
           <Grid item
             sx={{
                 marginTop: "26px",
-                marginRight: "30px"
+                marginRight: "30px",
+                marginLeft: isMobile ? "30px" : "",
+                backgroundColor: isMobile ? "#ECE9FF" : ""
             }}
           >
             <NavLink to="/projects" style={{ textDecoration: "none", display: "flex", fontFamily: "Poppins" }}>
@@ -69,7 +73,7 @@ function ProjectsOverview() {
               <EastIcon xs sx={{marginLeft: "6px"}}/>
             </NavLink>
           </Grid>
-        </Box>
+        </Grid>
         <Table
           sx={{
             mt: "10px",

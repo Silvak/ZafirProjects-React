@@ -6,6 +6,7 @@ import {
   Box,
   ThemeProvider,
   createTheme,
+  useMediaQuery,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useBoundStore } from "../../stores";
@@ -15,6 +16,7 @@ function OverviewHeader() {
   const theme = createTheme();
   const { name } = userData;
   const {ChangeStateModal, ChangeContentModal, ChangeTitleModal} = useBoundStore();
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const handleCreate = () => {
     ChangeTitleModal("Add Project");
     ChangeContentModal(<CreateProjectForm />);
@@ -41,10 +43,11 @@ function OverviewHeader() {
     <ThemeProvider theme={theme}>
       <Box
         sx={{
-          display: "flex",
+          display: isMobile ? "inline-table" : "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          marginTop: "19px"
+          marginTop: "19px",
+          
         }}
       >
         <Grid
