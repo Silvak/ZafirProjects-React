@@ -10,8 +10,18 @@ const TaskDetailHeader = ({ taskId, taskTitle }) => {
         alignItems: "center",
       }}
     >
-      <h2 style={{ fontSize: "24px", fontWeight: "bold" }}>{taskTitle}</h2>
-      <Box sx={{ background: "#E0E3E8", padding: "5px", borderRadius: "8px" }}>
+      <h2 style={{ fontSize: "clamp(18px,2vw, 20px)", fontWeight: "bold" }}>
+        {taskTitle}
+      </h2>
+      <Box
+        sx={{
+          background: "#E0E3E8",
+          padding: "8px",
+          borderRadius: "8px",
+          fontSize: "clamp(10px,2vw, 12px)",
+          textAlign: "center",
+        }}
+      >
         <span>{taskId}</span>
       </Box>
     </Box>

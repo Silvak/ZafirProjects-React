@@ -69,7 +69,6 @@ const TaskAccordion = ({ title, status, tasks, handleAddTask, view }) => {
     <ThemeProvider theme={theme}>
       <div
         style={{
-          display: isMobile ? "flex" : "",
           textAlign: isMobile ? "left" : "",
           opacity,
         }}
@@ -81,7 +80,10 @@ const TaskAccordion = ({ title, status, tasks, handleAddTask, view }) => {
           className="custom-accordion"
           style={{
             backgroundColor: "#F6F7FA",
-            borderRadius: "2rem",
+            borderRadius: "12px",
+            padding: "20px",
+            boxShadow:
+              " rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px",
           }}
         >
           <AccordionSummary
@@ -114,7 +116,7 @@ const TaskAccordion = ({ title, status, tasks, handleAddTask, view }) => {
                   fontSize: "12px",
                   fontWeight: "normal",
                   marginRight: "1rem",
-                  borderRadius: "8px",
+                  borderRadius: "12px",
                   height: "1.6rem",
                   width: "1.6rem",
                   textAlign: "center",
@@ -144,6 +146,7 @@ const TaskAccordion = ({ title, status, tasks, handleAddTask, view }) => {
               display: "flex",
               flexDirection: "column",
               padding: "0",
+              gap: "20px",
             }}
           >
             {tasks.map((task) => (

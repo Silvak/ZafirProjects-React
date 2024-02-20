@@ -2,14 +2,14 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import React, { useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import Header from "../../components/taskAccordion/taskHeader";
-import TaskList from "../../components/taskAccordion/taskList";
-import { useBoundStore } from "../../stores/index";
-import CreateTaskForm from "../../components/forms/createTaskForm";
+import CreateTaskForm from "../components/forms/createTaskForm";
+import Header from "../components/taskAccordion/taskHeader";
+import TaskList from "../components/taskAccordion/taskList";
+import { useBoundStore } from "../stores/index";
 
 const App = () => {
   const [view, setView] = useState("Format List");
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("md"));
 
   const {
     tasks,
@@ -33,20 +33,25 @@ const App = () => {
     ChangeStateModal(true);
   };
 
+  const setColumnsStyle = () => {
+    if (view === "View Kanban" && !isMobile) return "repeat(3,1fr)";
+    if (view === "View Kanban" && isMobile) return "1fr";
+  };
+
   return (
     <DndProvider backend={HTML5Backend}>
-      <div>
+      <div sx={{ minWidth: "250px" }}>
         <Header
           title="My Task"
-          isMobile={isMobile}
           handleAddTask={handleAddTask}
           handleButton={handleButton}
         />
         <div
           style={{
-            display: view === "View Kanban" ? "flex" : "",
-            flexDirection: view === "View Kanban" ? "row" : "",
+            display: "grid",
+            gridTemplateColumns: setColumnsStyle(),
             gap: "1rem",
+            padding: "0 20px",
           }}
         >
           <div>

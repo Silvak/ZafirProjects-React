@@ -9,7 +9,8 @@ import {
   IconButton,
   Typography,
   createTheme,
-  Avatar
+  Avatar,
+  useMediaQuery
 } from "@mui/material";
 import { useBoundStore } from "../../stores";
 import AddIcon from "@mui/icons-material/Add";
@@ -20,6 +21,7 @@ import user3 from "../../assets/Img/png/userImage.png";
 function EditProjectForm() {
   const { ChangeStateModal } = useBoundStore();
   const theme = createTheme();
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const [selectedUser, setSelectedUser] = useState("");
   const [selectedMember, setSelectedMember] = useState("");
   const [teamMembers, setTeamMembers] = useState([]);
@@ -95,10 +97,10 @@ function EditProjectForm() {
       <Paper
         elevation={1}
         sx={{
-          minWidth: "530px",
-          width: "fit-content",
+          maxWidth: isMobile ? "90vw" : "fit-content",
           padding: "39px",
-          // borderRadius: "12px",
+          maxHeight: "90vh",
+          height: isMobile ? "90vh" : "",
           borderTopLeftRadius: "0px",
           borderTopRightRadius: "0px",
           overflowY: "auto",
@@ -106,21 +108,11 @@ function EditProjectForm() {
           borderBottomRightRadius: "16px",
         }}
       >
-        {/* <Grid
-          item
-          sx={{
-            marginBottom: "30px",
-          }}
-        >
-          <Typography variant="h5" fontFamily={"Poppins"} fontWeight={"bold"}>
-            Edit Project
-          </Typography>
-        </Grid> */}
-
+ 
         <Grid
           item
           sx={{
-            width: "444px",
+            // width: "444px",
             marginBottom: "20px",
           }}
         >
@@ -147,7 +139,7 @@ function EditProjectForm() {
           <Grid
             item
             sx={{
-              width: "216px",
+              // width: "216px",
               marginRight: "12px",
             }}
           >
@@ -166,7 +158,7 @@ function EditProjectForm() {
           <Grid
             item
             sx={{
-              width: "216px",
+              // width: "216px",
             }}
           >
             <Typography fontFamily={"Poppins"} color={"#6B6E75"}>
@@ -186,7 +178,7 @@ function EditProjectForm() {
         <Grid
           item
           sx={{
-            width: "444px",
+            // width: "444px",
             marginBottom: "20px",
           }}
         >
@@ -206,7 +198,7 @@ function EditProjectForm() {
         <Grid
           item
           sx={{
-            width: "444px",
+            // width: "444px",
             marginBottom: "20px",
           }}
         >
@@ -226,7 +218,7 @@ function EditProjectForm() {
         <Grid
           item
           sx={{
-            width: "444px",
+            // width: "444px",
             marginBottom: "20px",
           }}
         >
@@ -245,7 +237,7 @@ function EditProjectForm() {
         <Grid
           item
           sx={{
-            width: "444px",
+            // width: "444px",
             marginBottom: "20px",
           }}
         >
@@ -309,7 +301,7 @@ function EditProjectForm() {
         <Grid
           item
           sx={{
-            width: "444px",
+            // width: "444px",
             marginBottom: "20px",
           }}
         >
@@ -372,7 +364,6 @@ function EditProjectForm() {
           sx={{
             display: "flex",
             justifyContent: "space-between",
-            width: "444px",
             marginTop: "40px"
           }}
         >
