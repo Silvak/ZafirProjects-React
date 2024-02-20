@@ -23,7 +23,7 @@ export const items = [
   },
   {
     title: "project",
-    url: "/project",
+    url: "/",
     icon: <FolderCopyOutlinedIcon />,
     submenu: [
       {
