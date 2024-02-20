@@ -1,14 +1,15 @@
-import { Box, TableCell } from "@mui/material";
+import { Box, TableCell, useMediaQuery } from "@mui/material";
 import { RenderProjectItems } from "./RenderProjectItems";
 import EditIcon from '@mui/icons-material/Edit';
 
 const BoxFlex = ({ children, sx, }) => {
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   return (
     <Box
       sx={{
-        display: "flex",
+        display: isMobile ? "grid" : "flex",
         alignItems: "center",
-        justifyContent: "flex-start",
+        justifyContent: isMobile ? "center" :"flex-start", // *
         gap: "10px",
         flex: 1,
         ...sx,
@@ -28,7 +29,7 @@ const ProjectItemsOverview = ({
   item,
   handleEdit
 }) => {
-
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
 
   return (
@@ -42,18 +43,21 @@ const ProjectItemsOverview = ({
           backgroundColor: "rgba(0, 0, 0, 0.1)",
           cursor: "pointer",
         },
-        height: "71px",
-        width: "320px",
+        height: "auto",
+        width: "auto",
       }}
     >
       <BoxFlex sx={{ flex: 2 }}>
         <div
           style={{
-            display: "grid",
+            display: isMobile ? "flex" : "grid",
             placeContent: "center",
             backgroundColor: "#ECE9FF",
             borderRadius: "12px",
             padding: "10px",
+            width: isMobile ? "auto" : "",
+            justifyContent: isMobile ? "center" : ""
+
           }}
           onClick={() => alert("ir al proyecto")}
         >
@@ -67,7 +71,7 @@ const ProjectItemsOverview = ({
             {quantityTasks} | {item}
           </small>
         </Box>
-        <div style={{ marginLeft: 'auto', color: "#6B6E75"}}
+        <div style={{ display: "flex", marginLeft: isMobile ? "" : 'auto', color: "#6B6E75", justifyContent: isMobile ? "center" : "", backgroundColor: isMobile ? "white" : "", borderRadius: "12px", width: isMobile ? "auto" : ""}}
           onClick={handleEdit}
         >
           <EditIcon />
