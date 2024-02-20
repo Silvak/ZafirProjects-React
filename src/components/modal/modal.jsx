@@ -13,13 +13,13 @@ const modalStyle = {
 };
 
 const ModalGlobal = () => {
-  const { stateModal, titleModal, ChangeStateModal, contentModal } =
+  const { stateModal, titleModal, ChangeStateModal, contentModal, isVisibleButton } =
     useBoundStore((state) => state, shallow);
 
   const handleClose = () => {
     ChangeStateModal(false);
   };
-
+  console.log(isVisibleButton);
   return (
     <Modal
       open={stateModal}
@@ -44,13 +44,17 @@ const ModalGlobal = () => {
           <Typography
             variant="h4"
             sx={{
-              bgcolor: "white",
+              bgcolor: "#FFFFFF",
               color: "black",
               fontWeight: "bold",
               borderTopLeftRadius: "16px",
               borderTopRightRadius: "16px",
               borderBottomLeftRadius: 0,
               borderBottomRightRadius: 0,
+              paddingTop: "20px",
+              paddingLeft: "35px",
+              paddingBottom: "7px",
+              borderBottom: "1px solid white"
             }}
           >
             <div
@@ -58,12 +62,12 @@ const ModalGlobal = () => {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                borderBottom: "1px solid lightgray",
-                marginBlock: "2px",
-                padding: "8px",
+                border: "none"
               }}
             >
               {titleModal}
+              {/* Close Modal */}
+              { isVisibleButton && (
               <Button
                 sx={{
                   margin: "0",
@@ -76,7 +80,9 @@ const ModalGlobal = () => {
                 onClick={handleClose}
               >
                 X
-              </Button>
+              </Button>)
+              }
+              
             </div>
           </Typography>
           <div>{contentModal}</div>

@@ -72,7 +72,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
   return (
     <ThemeProvider theme={theme}>
       <Paper
-        elevation={3}
+        elevation={1}
         style={{
           paddingInline: "2rem",
           maxHeight: "90vh",
@@ -84,9 +84,10 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
           borderBottomRightRadius: "16px",
           borderTopLeftRadius: "0px",
           borderTopRightRadius: "0px",
+          paddingBottom: "15px",
         }}
       >
-        <Grid container spacing={2}>
+        <Grid container spacing={2} sx={{marginTop:"13px"}}>
           <Grid item xs={12}>
             <Typography sx={{ fontSize: "0.2rem", fontWeight: "normal" }}>
               Task name
