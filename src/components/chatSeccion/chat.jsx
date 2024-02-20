@@ -67,13 +67,12 @@ const ChatMessage = () => {
   return (
     <ThemeProvider theme={theme}>
       <Paper
-        elevation={3}
         style={{
           paddingInline: "1rem",
           paddingBlock: "0.5rem",
-          width: "auto",
+          width: "100%",
           maxHeight: "85vh",
-          margin: "auto",
+          margin: "0",
           background: "white",
           overflowY: "auto",
           borderBottomRightRadius: "16px",
