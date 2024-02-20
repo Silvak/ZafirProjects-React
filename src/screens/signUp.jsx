@@ -1,6 +1,5 @@
 import { Box, Grid, Icon, IconButton, Typography } from "@mui/material";
 import StopCircle from "@mui/icons-material/StopCircle";
-
 import bgImage from "@/assets/Img/jpg/bgSignUp.jpg";
 import SignUpForm from "@/components/forms/SignUpForm";
 

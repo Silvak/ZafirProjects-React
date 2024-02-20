@@ -187,7 +187,6 @@ const Accordion = styled((props) => (
   },
 }));
 
-
 {
   /***** MAIN COMPONENT ***/
 }
@@ -264,7 +263,6 @@ export default function NavbarDrawer(props) {
           }}
         >
           <IconButton
-            
             color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerOpen}
@@ -277,7 +275,7 @@ export default function NavbarDrawer(props) {
             <Menu />
           </IconButton>
 
-          <Search >
+          <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
@@ -331,7 +329,7 @@ export default function NavbarDrawer(props) {
             height: "80px",
           }}
         >
-          <Logo/>
+          <Logo />
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "rtl" ? (
               <MenuOpen />
@@ -342,7 +340,7 @@ export default function NavbarDrawer(props) {
         </DrawerHeader>
 
         {/* Graphicdunk Select */}
-        <GraphicdunkSelect open2={open}/>
+        <GraphicdunkSelect open2={open} />
 
         {/* Menu Items */}
         <ItemMenu open={open} />
