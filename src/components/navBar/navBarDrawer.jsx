@@ -1,28 +1,21 @@
-import * as React from "react";
-import { styled, alpha } from "@mui/material/styles";
+import { useState } from "react";
+import { styled } from "@mui/material/styles";
 import GraphicdunkSelect from "./CustomItems/graphicdunk";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
-import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
-import MuiAccordion from "@mui/material/Accordion";
-import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import SearchIcon from "@mui/icons-material/Search";
 import MoreIcon from "@mui/icons-material/MoreVert";
-import StopCircleIcon from "@mui/icons-material/StopCircle";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import {
   IconButton,
-  Typography,
   Box,
   CssBaseline,
   Toolbar,
   Badge,
   useTheme,
-  MenuItem,
   InputBase,
 } from "@mui/material";
 import { Menu, MenuOpen } from "@mui/icons-material";
-import ItemNav from "@/components/navBar/itemNav";
 import ItemMenu from "@/components/navBar/itemMenu";
 import UserProfileButton from "./CustomItems/ProfileTab";
 import Logo from "./CustomItems/logo";
@@ -105,35 +98,6 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-const StyledBadge = styled(Badge)(({ theme }) => ({
-  "& .MuiBadge-badge": {
-    backgroundColor: "#44b700",
-    color: "#44b700",
-    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
-    "&::after": {
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      borderRadius: "50%",
-      animation: "ripple 1.2s infinite ease-in-out",
-      border: "1px solid currentColor",
-      content: '""',
-    },
-  },
-  "@keyframes ripple": {
-    "0%": {
-      transform: "scale(.8)",
-      opacity: 1,
-    },
-    "100%": {
-      transform: "scale(2.4)",
-      opacity: 0,
-    },
-  },
-}));
-
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: "3.5em",
@@ -174,72 +138,33 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-//Acordion styles
-const Accordion = styled((props) => (
-  <MuiAccordion disableGutters elevation={0} square {...props} />
-))(({ theme }) => ({
-  border: `1px solid ${theme.palette.divider}`,
-  "&:not(:last-child)": {
-    borderBottom: 0,
-  },
-  "&::before": {
-    display: "none",
-  },
-}));
-
-{
-  /***** MAIN COMPONENT ***/
-}
+/* MAIN COMPONENT */
 export default function NavbarDrawer(props) {
-  const [expanded, setExpanded] = React.useState("panel1");
-  const handleChange = (panel) => (event, newExpanded) => {
-    setExpanded(newExpanded ? panel : false);
-  };
+  //const [expanded, setExpanded] = React.useState("panel1");
+  //const handleChange = (panel) => (event, newExpanded) => {
+  //  setExpanded(newExpanded ? panel : false);
+  //};
   const theme = useTheme();
-  const [open, setOpen] = React.useState(true);
-  // const [open2, setOpen2] = React.useState(true);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const isMenuOpen = Boolean(anchorEl);
+  const [open, setOpen] = useState(true);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
+  //const [anchorEl, setAnchorEl] = useState(null);
+  //const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  //const [anchorElUser, setAnchorElUser] = React.useState(null);
+  //const isMenuOpen = Boolean(anchorEl);
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
+  //const handleMobileMenuClose = () => {
+  //  setMobileMoreAnchorEl(null);
+  //};
+
+  //const handleMenuClose = () => {
+  //  setAnchorEl(null);
+  //  handleMobileMenuClose();
+  //};
 
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
-
-  const menuId = "primary-search-account-menu";
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    </Menu>
-  );
-
-  const mobileMenuId = "primary-search-account-menu-mobile";
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -252,6 +177,8 @@ export default function NavbarDrawer(props) {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
+
+      {/* NavBar */}
       <CustomAppBar position="fixed" open={open}>
         <Toolbar
           disableKeyboardFocus
@@ -308,7 +235,6 @@ export default function NavbarDrawer(props) {
             <IconButton
               size="large"
               aria-label="show more"
-              aria-controls={mobileMenuId}
               aria-haspopup="true"
               onClick={handleMobileMenuOpen}
               color="inherit"
@@ -319,6 +245,7 @@ export default function NavbarDrawer(props) {
         </Toolbar>
       </CustomAppBar>
 
+      {/* Sidebar Drawer */}
       <Drawer variant="permanent" open={open}>
         {/* Draw Header Logo & toggle open */}
         <DrawerHeader
@@ -339,12 +266,14 @@ export default function NavbarDrawer(props) {
           </IconButton>
         </DrawerHeader>
 
-        {/* Graphicdunk Select */}
-        <GraphicdunkSelect open2={open} />
+        {/* Project Select */}
+        <GraphicdunkSelect />
 
         {/* Menu Items */}
         <ItemMenu open={open} />
       </Drawer>
+
+      {/* content */}
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
         {props.children}
