@@ -8,7 +8,7 @@ import {
   createTheme,
   Select,
   MenuItem,
-  useMediaQuery
+  useMediaQuery,
 } from "@mui/material";
 
 function MyWorkGlance() {
@@ -19,6 +19,7 @@ function MyWorkGlance() {
   const handleSelectChange = (event) => {
     setSelectedValue(event.target.value);
   };
+
   return (
     <ThemeProvider theme={theme}>
       <Box
@@ -27,69 +28,77 @@ function MyWorkGlance() {
           height: "auto", // Cambiado a "auto" para que el contenedor se ajuste al contenido
           borderRadius: "20px",
           padding: "20px", // Agregado espacio interno para separar los elementos
-          overflowX: "auto"
+          overflowX: "auto",
         }}
       >
-        <Grid item sx={{display: isMobile ? "inline-table" : "flex", justifyContent: "space-between", alignContent: "center", alignItems: "center", overflowX: "hidden"}}>
-
-        <Typography
+        <Grid
+          item
           sx={{
-            fontSize: "20px",
-            fontWeight: "500",
-            fontFamily: "Poppins",
-            marginBottom: "20px", // Agregado espacio inferior para separar del siguiente elemento
-            color: "black"
+            display: isMobile ? "inline-table" : "flex",
+            justifyContent: "space-between",
+            alignContent: "center",
+            alignItems: "center",
+            overflowX: "hidden",
           }}
         >
-          My Work Glance
-        </Typography>
-        <Grid item >
-        <Select
-          value={selectedValue}
-          onChange={handleSelectChange}
-          sx={{
-            width: "140px",
-            height: "34px",
-            color: "#1D1F24",
-            backgroundColor: "white",
-            border: "1px solid gray",
-            borderRadius: "8px",
-            marginTop: "20px",
-            marginRight: "20px",
-            marginBottom: "15px",
-            paddingTop: 1,
-            fontSize: "16px",
-          }}
-        >
-          <MenuItem
-            value="This Month"
+          <Typography
             sx={{
-              backgroundColor: "white",
-              fontSize: "12px",
+              fontSize: "20px",
+              fontWeight: "500",
+              fontFamily: "Poppins",
+              marginBottom: "20px", // Agregado espacio inferior para separar del siguiente elemento
+              color: "black",
             }}
           >
-            This Month
-          </MenuItem>
-          <MenuItem
-            value="This Week"
-            sx={{
-              backgroundColor: "white",
-              fontSize: "12px",
-            }}
-          >
-            This Week
-          </MenuItem>
-          <MenuItem
-            value="Today"
-            sx={{
-              backgroundColor: "white",
-              fontSize: "12px",
-            }}
-          >
-            Today
-          </MenuItem>
-        </Select>
-      </Grid>
+            My Work Glance
+          </Typography>
+          <Grid item>
+            <Select
+              value={selectedValue}
+              onChange={handleSelectChange}
+              sx={{
+                width: "140px",
+                height: "34px",
+                color: "#1D1F24",
+                backgroundColor: "white",
+                border: "1px solid gray",
+                borderRadius: "8px",
+                marginTop: "20px",
+                marginRight: "20px",
+                marginBottom: "15px",
+                paddingTop: 1,
+                fontSize: "16px",
+              }}
+            >
+              <MenuItem
+                value="This Month"
+                sx={{
+                  backgroundColor: "white",
+                  fontSize: "12px",
+                }}
+              >
+                This Month
+              </MenuItem>
+              <MenuItem
+                value="This Week"
+                sx={{
+                  backgroundColor: "white",
+                  fontSize: "12px",
+                }}
+              >
+                This Week
+              </MenuItem>
+              <MenuItem
+                value="Today"
+                sx={{
+                  backgroundColor: "white",
+                  fontSize: "12px",
+                }}
+              >
+                Today
+              </MenuItem>
+            </Select>
+          </Grid>
         </Grid>
         <Box
           sx={{
@@ -104,7 +113,6 @@ function MyWorkGlance() {
           <InfoCard data={review} />
           <InfoCard data={completed} />
         </Box>
-        
       </Box>
     </ThemeProvider>
   );
@@ -127,32 +135,32 @@ function InfoCard({ data }) {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "flex-start",
-        height: "91px"
+        height: "91px",
       }}
     >
-      <div style={{display: "flex", marginLeft: "16px"}}>
-      <div
-        style={{
-          borderRadius: "4px",
-          width: "8px",
-          height: "33px",
-          backgroundColor: data.color,
-          marginBottom: "5px", // Agregado espacio inferior para separar del siguiente elemento
-        }}
-      />
-      <Typography
-        variant="h5"
-        sx={{
-          marginLeft: 1.5,
-          marginBottom: "5px",
-          fontWeight: "bold",
-          color: "black",
-        }}
-      >
-        {data.total}
-      </Typography>
+      <div style={{ display: "flex", marginLeft: "16px" }}>
+        <div
+          style={{
+            borderRadius: "4px",
+            width: "8px",
+            height: "33px",
+            backgroundColor: data.color,
+            marginBottom: "5px", // Agregado espacio inferior para separar del siguiente elemento
+          }}
+        />
+        <Typography
+          variant="h5"
+          sx={{
+            marginLeft: 1.5,
+            marginBottom: "5px",
+            fontWeight: "bold",
+            color: "black",
+          }}
+        >
+          {data.total}
+        </Typography>
       </div>
-      <Typography sx={{marginLeft: "38px"}}>{data.title}</Typography>
+      <Typography sx={{ marginLeft: "38px" }}>{data.title}</Typography>
     </Grid>
   );
 }

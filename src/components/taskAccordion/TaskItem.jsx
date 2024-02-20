@@ -100,7 +100,12 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
         variant="h6"
         fontWeight="bold"
         noWrap
-        style={{ fontSize: "14px", marginTop: "16px" }}
+        style={{
+          fontSize: "14px",
+          marginTop: "16px",
+          cursor: "pointer",
+        }}
+        onClick={isMobile && handleMoreIcon(task)}
       >
         {task.task}
       </Typography>
@@ -122,6 +127,7 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
               paddingInline: "4px",
               paddingBlock: "2px",
               borderRadius: "6px",
+              margin: isMobile ? "10px 0" : "0",
               ...priorityColors[task.priority],
             }}
           >
@@ -250,9 +256,7 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
           xs={12}
           sm={isKanbanView ? 3 : 2}
           sx={{
-            mt: isKanbanView ? 4 : isMobile ? 2 : 0,
-            mb: isMobile ? 2 : 0,
-            marginInline: 2,
+            mt: isKanbanView ? "20px" : isMobile ? "5px" : "0",
             minWidth: "max-content",
           }}
         >
@@ -260,7 +264,6 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
             style={{
               display: "flex",
               alignItems: "center",
-              marginRight: "4rem",
             }}
           >
             <CalendarTodayIcon
