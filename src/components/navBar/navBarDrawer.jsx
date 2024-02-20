@@ -72,6 +72,7 @@ const CustomAppBar = styled(MuiAppBar, {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
+  boxShadow: "none",
   // mobile screens
   height: sizeOnMobile,
   ...(open && {
