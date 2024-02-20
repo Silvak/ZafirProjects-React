@@ -16,20 +16,22 @@ import {
   InputBase,
 } from "@mui/material";
 import { Menu, MenuOpen } from "@mui/icons-material";
+import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
 import ItemMenu from "@/components/navBar/itemMenu";
 import UserProfileButton from "./CustomItems/ProfileTab";
 import Logo from "./CustomItems/logo";
 
+//sizing
 const drawerWidth = 258;
+const appbarHeight = 80;
+const appbarMobileHeight = 64;
 
 //styles
 const openedMixin = (theme) => ({
   width: drawerWidth,
   backgroundColor: "#eceff3",
-  border: "2px solid #b5b5b5",
-  borderTop: "none",
-  borderLeft: "none",
   overflowX: "hidden",
+  borderRight: "1px solid #b5b5b5",
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
@@ -38,11 +40,11 @@ const openedMixin = (theme) => ({
 
 const closedMixin = (theme) => ({
   backgroundColor: "#eceff3",
-  borderRight: "2px solid #b5b5b5",
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
+  borderRight: "1px solid #b5b5b5",
   overflowX: "hidden",
   width: `calc(${theme.spacing("64px")} + 1px)`,
   [theme.breakpoints.up("sm")]: {
@@ -54,9 +56,12 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "flex-end",
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
+  padding: "0px 12px",
   ...theme.mixins.toolbar,
+  height: appbarMobileHeight,
+  [theme.breakpoints.up("sm")]: {
+    height: appbarHeight,
+  },
 }));
 
 const CustomAppBar = styled(MuiAppBar, {
@@ -65,7 +70,7 @@ const CustomAppBar = styled(MuiAppBar, {
   backgroundColor: "#eceff3",
   // backgroundColor: theme.palette.background.paper,
   backgroundImage: "none",
-  zIndex: theme.zIndex.drawer + 1,
+  zIndex: theme.zIndex.drawer - 1,
   transition: theme.transitions.create(["width", "margin"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -78,6 +83,11 @@ const CustomAppBar = styled(MuiAppBar, {
       duration: theme.transitions.duration.enteringScreen,
     }),
   }),
+
+  height: appbarMobileHeight,
+  [theme.breakpoints.up("sm")]: {
+    height: appbarHeight,
+  },
 }));
 
 const Drawer = styled(MuiDrawer, {
@@ -167,11 +177,7 @@ export default function NavbarDrawer(props) {
   };
 
   const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
+    setOpen(!open);
   };
 
   return (
@@ -183,9 +189,7 @@ export default function NavbarDrawer(props) {
         <Toolbar
           disableKeyboardFocus
           sx={{
-            border: "2px solid #b5b5b5",
-            borderBlockStart: "none",
-            borderLeft: "none",
+            borderBottom: "1px solid #b5b5b5",
             height: "80px",
           }}
         >
@@ -250,19 +254,17 @@ export default function NavbarDrawer(props) {
         {/* Draw Header Logo & toggle open */}
         <DrawerHeader
           sx={{
-            borderBlockEnd: "2px solid #b5b5b5",
+            borderBottom: "1px solid #b5b5b5",
             display: "flex",
-            justifyContent: "start",
-            height: "80px",
+            justifyContent: open ? "space-between" : "center",
+
+            cursor: "pointer",
           }}
+          onClick={handleDrawerOpen}
         >
-          <Logo />
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "rtl" ? (
-              <MenuOpen />
-            ) : (
-              <MenuOpen sx={{ color: "#393d44" }} />
-            )}
+          {open && <Logo />}
+          <IconButton sx={{ color: "#6B6E75", fontSize: "1.2rem" }}>
+            {open ? <MdArrowBackIos /> : <MdArrowForwardIos />}
           </IconButton>
         </DrawerHeader>
 
