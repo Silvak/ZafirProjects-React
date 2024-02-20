@@ -49,11 +49,11 @@ export const items = [
 ];
 
 function ItemMenu(props) {
-  const [open, setOpen] = useState(false);
+  const [openIndex, setOpenIndex] = useState(null);
 
-  const handleClick = () => {
-    if (props.open != false) {
-      setOpen(!open);
+  const handleClick = (index) => {
+    if (props.open !== false) {
+      setOpenIndex(openIndex === index ? null : index);
     }
   };
 
@@ -78,16 +78,25 @@ function ItemMenu(props) {
                 disableRipple
               >
                 <ItemNav
-                  key={`main-item-${index}`}
                   to={element.url}
                   title={element.title}
                   icon={element.icon}
                   open={props.open}
-                  arrow={open ? <ExpandLess /> : <KeyboardArrowRightIcon />}
+                  arrow={
+                    openIndex === index ? (
+                      <ExpandLess />
+                    ) : (
+                      <KeyboardArrowRightIcon />
+                    )
+                  }
                 />
               </ListItemButton>
 
-              <Collapse in={open && props.open} timeout="auto" unmountOnExit>
+              <Collapse
+                in={openIndex === index && props.open}
+                timeout="auto"
+                unmountOnExit
+              >
                 {element.submenu.map((submenuItem, submenuIndex) => (
                   <ItemNav
                     key={`submenu-item-${index}-${submenuIndex}`}
