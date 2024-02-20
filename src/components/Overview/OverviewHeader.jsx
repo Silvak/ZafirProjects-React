@@ -15,7 +15,7 @@ import CreateProjectForm from "../forms/CreateProjectForm";
 function OverviewHeader() {
   const theme = createTheme();
   const { name } = userData;
-  const {ChangeStateModal, ChangeContentModal, ChangeTitleModal} = useBoundStore();
+  const {ChangeStateModal, ChangeContentModal, ChangeTitleModal } = useBoundStore();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const handleCreate = () => {
     ChangeTitleModal("Add Project");
