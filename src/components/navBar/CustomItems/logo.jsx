@@ -12,7 +12,7 @@ export default function Logo() {
         component="div"
         sx={{ color: "#1D1F24", fontWeight: 600 }}
       >
-        Zafir
+        ZAFIR
       </Typography>
     </Stack>
   );

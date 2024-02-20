@@ -15,7 +15,6 @@ import {
   useTheme,
   InputBase,
 } from "@mui/material";
-import { Menu, MenuOpen } from "@mui/icons-material";
 import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
 import ItemMenu from "@/components/navBar/itemMenu";
 import UserProfileButton from "./CustomItems/ProfileTab";
@@ -23,8 +22,8 @@ import Logo from "./CustomItems/logo";
 
 //sizing
 const drawerWidth = 258;
-const appbarHeight = 80;
-const appbarMobileHeight = 64;
+const sizeOnWeb = 80;
+const sizeOnMobile = 64;
 
 //styles
 const openedMixin = (theme) => ({
@@ -34,22 +33,22 @@ const openedMixin = (theme) => ({
   borderRight: "1px solid #b5b5b5",
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.enteringScreen,
+    duration: theme.transitions.duration.leavingScreen,
   }),
 });
 
 const closedMixin = (theme) => ({
   backgroundColor: "#eceff3",
+  borderRight: "1px solid #b5b5b5",
+  overflowX: "hidden",
+  width: `calc(${theme.spacing(sizeOnMobile + "px")} + 1px)`,
+  [theme.breakpoints.up("sm")]: {
+    width: `calc(${theme.spacing(sizeOnWeb + "px")} + 1px)`,
+  },
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  borderRight: "1px solid #b5b5b5",
-  overflowX: "hidden",
-  width: `calc(${theme.spacing("64px")} + 1px)`,
-  [theme.breakpoints.up("sm")]: {
-    width: `calc(${theme.spacing("80px")} + 1px)`,
-  },
 });
 
 const DrawerHeader = styled("div")(({ theme }) => ({
@@ -57,10 +56,9 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   alignItems: "center",
   justifyContent: "flex-end",
   padding: "0px 12px",
-  ...theme.mixins.toolbar,
-  height: appbarMobileHeight,
+  height: sizeOnMobile,
   [theme.breakpoints.up("sm")]: {
-    height: appbarHeight,
+    height: sizeOnWeb,
   },
 }));
 
@@ -68,25 +66,28 @@ const CustomAppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
   backgroundColor: "#eceff3",
-  // backgroundColor: theme.palette.background.paper,
+  borderBottom: "1px solid #b5b5b5",
   backgroundImage: "none",
   zIndex: theme.zIndex.drawer - 1,
-  transition: theme.transitions.create(["width", "margin"], {
+  transition: theme.transitions.create(["width", "margin", "height"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
+  // mobile screens
+  height: sizeOnMobile,
   ...(open && {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
   }),
-
-  height: appbarMobileHeight,
+  ...(!open && {
+    width: `calc(100% - ${sizeOnMobile}px)`,
+  }),
+  //web screens
   [theme.breakpoints.up("sm")]: {
-    height: appbarHeight,
+    ...(!open && {
+      width: `calc(100% - ${sizeOnWeb}px)`,
+    }),
+    height: sizeOnWeb,
   },
 }));
 
@@ -112,9 +113,6 @@ const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: "3.5em",
   backgroundColor: "transparent",
-  // "&:hover": {
-  //   backgroundColor: alpha(theme.palette.common.white, 0.25),
-  // },
   marginRight: theme.spacing(2),
   marginLeft: 0,
   width: "100%",
@@ -150,27 +148,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 /* MAIN COMPONENT */
 export default function NavbarDrawer(props) {
-  //const [expanded, setExpanded] = React.useState("panel1");
-  //const handleChange = (panel) => (event, newExpanded) => {
-  //  setExpanded(newExpanded ? panel : false);
-  //};
-  const theme = useTheme();
   const [open, setOpen] = useState(true);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
-
-  //const [anchorEl, setAnchorEl] = useState(null);
-  //const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-  //const [anchorElUser, setAnchorElUser] = React.useState(null);
-  //const isMenuOpen = Boolean(anchorEl);
-
-  //const handleMobileMenuClose = () => {
-  //  setMobileMoreAnchorEl(null);
-  //};
-
-  //const handleMenuClose = () => {
-  //  setAnchorEl(null);
-  //  handleMobileMenuClose();
-  //};
 
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
@@ -186,26 +165,7 @@ export default function NavbarDrawer(props) {
 
       {/* NavBar */}
       <CustomAppBar position="fixed" open={open}>
-        <Toolbar
-          disableKeyboardFocus
-          sx={{
-            borderBottom: "1px solid #b5b5b5",
-            height: "80px",
-          }}
-        >
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{
-              marginRight: 2,
-              ...(open && { display: "none" }),
-            }}
-          >
-            <Menu />
-          </IconButton>
-
+        <Toolbar disableKeyboardFocus sx={{ height: "100%" }}>
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
@@ -263,7 +223,7 @@ export default function NavbarDrawer(props) {
           onClick={handleDrawerOpen}
         >
           {open && <Logo />}
-          <IconButton sx={{ color: "#6B6E75", fontSize: "1.2rem" }}>
+          <IconButton sx={{ color: "#6B6E75", fontSize: "1.1rem" }}>
             {open ? <MdArrowBackIos /> : <MdArrowForwardIos />}
           </IconButton>
         </DrawerHeader>
