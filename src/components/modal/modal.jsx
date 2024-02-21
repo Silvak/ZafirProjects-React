@@ -38,9 +38,10 @@ const ModalGlobal = () => {
           ...modalStyle,
           minHeight: "100vh",
           padding: "20px",
+          
         }}
       >
-        <Box> {/* width off */}
+        <Box sx={{maxWidth: "100%"}}> {/* width off */}
           <Typography
             variant="h4"
             sx={{
