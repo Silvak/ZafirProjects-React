@@ -30,7 +30,7 @@ const ModalGlobal = () => {
           backgroundColor: "transparent",
           backdropFilter: "blur(3px)",
         },
-        overflowY: "auto",
+        overflowY: "-moz-hidden-unscrollable",
       }}
     >
       <Box
