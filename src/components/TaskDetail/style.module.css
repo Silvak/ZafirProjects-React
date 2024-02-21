@@ -4,11 +4,13 @@
 }
 
 .table{
-    border: 1px solid #E0E3E8;
+    --borderColor: #E0E3E8;
+    border: 1px solid var(--borderColor);
     border-radius: 8px;
     border-collapse: separate;
-    --borderColor: #E0E3E8;
     width: 100%;
+    overflow-x: auto;
+    display: block;
 }
 
 .headText{
@@ -20,6 +22,10 @@
     text-align: left;
 }
 
+.table td {
+    width: 100%;
+}
+  
 
 .table tr{
     border-bottom: 1px solid var(--borderColor);
@@ -71,15 +77,3 @@
 }
 
 
-@media screen and (max-width: 600px) {
-    .table {
-      overflow-x: auto;
-      display: block;
-    }
-    
-    td {
-      width: 100%;
-    }
-    
-    
-}

@@ -45,13 +45,10 @@ const TaskHeader = ({ title, handleButton, handleAddTask }) => {
             alignItems: "center",
             justifyContent: "center",
             fontWeight: "normal",
-            padding: "0.3rem",
             borderRadius: "8px",
             border: "1px solid gray",
             cursor: "pointer",
-            paddingBottom: 1,
             backgroundColor: "white",
-            width: "100%",
           }}
         >
           <FormatListBulletedRoundedIcon
@@ -89,13 +86,9 @@ const TaskHeader = ({ title, handleButton, handleAddTask }) => {
           value={selectedValue}
           onChange={handleSelectChange}
           sx={{
-            width: isMobile ? "120px" : "170px",
-            width: "100%",
-            height: "40px",
             color: "black",
             backgroundColor: "white",
             border: "1px solid gray",
-            borderRadius: "8px",
             fontSize: "16px",
           }}
         >
@@ -124,7 +117,6 @@ const TaskHeader = ({ title, handleButton, handleAddTask }) => {
             fontSize: "12px",
             fontWeight: "bold",
             borderRadius: "12px",
-            padding: "10px 20px",
           }}
           onClick={handleAddTask}
         >
