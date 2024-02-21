@@ -9,11 +9,14 @@ const Google = () => {
       sx={{
         color: "icon.primary",
         borderColor: "icon.primary",
+        padding: "6px 12px",
         width: "100%",
+        height: "44px",
+        borderRadius: "8px",
       }}
       startIcon={
         <IconButton size="small">
-          <img src={GoogleIcon} alt="google icon" width="30px" />
+          <img src={GoogleIcon} alt="google icon" width="28px" />
         </IconButton>
       }
     >
