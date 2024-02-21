@@ -4,11 +4,13 @@ import React from "react";
 
 const useStyles = makeStyles((theme) => ({
   header: {
+    width: "100%",
     margin: "10px 0",
     padding: "0 20px",
     display: "flex",
     justifyContent: "space-between",
-    alignContent: "center",
+    alignItems: "center",
+    overflow: "hidden",
     [theme.breakpoints.down("sm")]: {
       flexDirection: "column",
     },
@@ -43,11 +45,18 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "row",
     gap: "20px",
     "& > *": {
-      width: "70%",
+      width: "fit-content",
+      height: "40px",
+      textAlign: "center",
+      padding: "0px 10px",
+      borderRadius: "8px",
     },
     [theme.breakpoints.down("xs")]: {
       marginTop: "10px",
       flexDirection: "column",
+      "& > *": {
+        width: "100%",
+      },
     },
   },
 }));

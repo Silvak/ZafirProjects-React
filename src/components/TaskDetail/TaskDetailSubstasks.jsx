@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, useMediaQuery } from "@mui/material";
 import { RxEyeOpen } from "react-icons/rx";
 import { useBoundStore } from "../../stores";
 import { statusColors } from "../../utils/colors";
@@ -18,8 +18,14 @@ const tableHeadData = [
 ];
 
 const TaskDetailSubstasks = () => {
-  const { ChangeStateModal, ChangeTitleModal, ChangeContentModal } =
-    useBoundStore((state) => state);
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+
+  const {
+    ChangeStateModal,
+    ChangeTitleModal,
+    ChangeContentModal,
+    ChangeIsVisibleButton,
+  } = useBoundStore((state) => state);
 
   const handleAddTask = () => {
     ChangeStateModal(true);
@@ -31,12 +37,16 @@ const TaskDetailSubstasks = () => {
     ChangeStateModal(true);
     ChangeTitleModal("Substask Detail");
     ChangeContentModal(<TaskDetail task={subsTasksData[0]} />);
+    ChangeIsVisibleButton(true);
   };
 
   return (
     <Box sx={{ padding: "50px 0" }}>
       <p className={css.title}>Subtasks</p>
-      <table className={css.table}>
+      <table
+        className={css.table}
+        style={{ padding: isMobile ? "5px" : "20px" }}
+      >
         <tr>
           {tableHeadData.map((item) => (
             <th key={item.id} className={css.headText}>

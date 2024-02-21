@@ -1,21 +1,27 @@
-import { Box, Grid, Icon, IconButton, Typography } from "@mui/material";
+import { Box, Grid, IconButton, Typography } from "@mui/material";
+import { makeStyles } from "@material-ui/core/styles";
+
 import StopCircle from "@mui/icons-material/StopCircle";
 import bgImage from "@/assets/Img/jpg/bgSignUp.jpg";
 import SignUpForm from "@/components/forms/SignUpForm";
 
+const useStyles = makeStyles((theme) => ({
+  container: {
+    width: "100%",
+    padding: "0px",
+    height: "100vh",
+    margin: 0,
+    "& > .MuiGrid-item": {
+      padding: 0,
+    },
+  },
+}));
+
 const signUp = () => {
+  const classes = useStyles();
+
   return (
-    <Grid
-      container
-      spacing={3}
-      sx={{
-        height: "100vh",
-        padding: "0",
-        "& > .MuiGrid-item": {
-          padding: 0,
-        },
-      }}
-    >
+    <Grid container spacing={3} className={classes.container}>
       {/* left */}
       <Grid
         item
@@ -26,9 +32,12 @@ const signUp = () => {
           backgroundSize: "cover",
           backgroundPosition: "center 0%",
           position: "relative",
-          color: "text.secondary",
+          color: "#fff",
           display: { xs: "none", md: "flex" },
+          justifyContent: "center",
+          alignItems: "flex-start",
           flexDirection: "column",
+
           "&::after": {
             content: "''",
             position: "absolute",
@@ -38,14 +47,14 @@ const signUp = () => {
           },
           "& > *": {
             position: "relative",
-            zIndex: 2,
+            zIndex: 5,
             marginLeft: "60px",
+            padding: "30px 0",
           },
         }}
       >
         <Box
           sx={{
-            py: 2,
             height: "auto",
             flexGrow: 1,
             display: "flex",
@@ -64,8 +73,16 @@ const signUp = () => {
           </IconButton>
           <Typography variant="h6">Sunstone</Typography>
         </Box>
-        <Box sx={{ maxWidth: "600px" }}>
-          <Typography variant="body1" sx={{ textBalance: "balance" }}>
+
+        <Box
+          sx={{
+            maxWidth: "600px",
+          }}
+        >
+          <Typography
+            variant="body1"
+            sx={{ textBalance: "balance", color: "inherit" }}
+          >
             The ultimate multipurpose dashboard UI Kit for kickstart any
             project.
           </Typography>

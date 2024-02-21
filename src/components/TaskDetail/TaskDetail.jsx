@@ -6,7 +6,7 @@ import ChatMessage from "../chatSeccion/chat";
 
 const TaskDetail = ({ task }) => {
   const { id, task: taskTitle } = task || {};
-  const { isMobile } = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
   return (
     <Grid
@@ -20,7 +20,7 @@ const TaskDetail = ({ task }) => {
           padding: "0px",
         },
         "& > .MuiGrid-item:nth-of-type(1)": {
-          padding: `10px  ${isMobile ? "5px" : "30px"}`,
+          padding: `10px  ${isMobile ? "10px" : "30px"}`,
         },
       }}
       spacing={4}
@@ -32,7 +32,7 @@ const TaskDetail = ({ task }) => {
         sx={{
           color: "#1D1F24",
           height: "100%",
-          overflowY: "auto",
+          overflowY: isMobile ? "none" : "scroll",
         }}
       >
         <TaskDetailHeader taskId={id} taskTitle={taskTitle} />

@@ -34,13 +34,16 @@ declare module "@/components/taskAccordion/taskList";
 declare module "@/components/taskAccordion/customAccordion";
 declare module "@/components/forms/EditProjectForm";
 declare module "@/components/forms/CreateProjectForm";
-
+declare module "@/components/buttons/Facebook/Facebook";
+declare module "@/components/buttons/Google/Google";
 declare module "@/components/TaskDetail/TaskDetail";
 declare module "@/components/TaskDetail/TaskDetailHeader";
 declare module "@/components/TaskDetail/TaskDetailContent";
 declare module "@/components/TaskDetail/TaskDetailItem";
 declare module "@/components/TaskDetail/TaskDetailSubstaks";
 declare module "@/components/Header/Header";
+declare module "@/components/buttons/SocialBtns";
+declare module "@/components/forms/SignInForm";
 
 declare module "@/context/AppContextProvider";
 declare module "@/stores/index";
@@ -66,5 +69,7 @@ declare module "@/screens/project/layout";
 
 declare module "@/hooks/usePagination";
 declare module "@/hooks/useSignUp";
+declare module "@/hooks/useSignIn";
+
 
 /// <reference types="vite/client"/>

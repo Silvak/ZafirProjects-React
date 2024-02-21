@@ -15,9 +15,7 @@ import {
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import useSignUp from "@/hooks/useSignUp";
-
-import GoogleIcon from "@/assets/Img/webp/logoGoogle.webp";
-import FacebookIcon from "@/assets/Img/png/logoFacebook.png";
+import SocialBtns from "@/components/buttons/SocialBtns";
 
 const SignUpForm = () => {
   const {
@@ -190,6 +188,8 @@ const SignUpForm = () => {
         {/* form or */}
         <Box
           sx={{
+            width: "100%",
+            height: "50px",
             display: "flex",
             mt: 4,
             gap: 1,
@@ -204,43 +204,7 @@ const SignUpForm = () => {
           <Divider sx={{ flex: 1, borderColor: "text.primary" }} />
         </Box>
         {/* form social btns */}
-
-        <Grid container spacing={2} sx={{ mt: 2 }}>
-          <Grid item xs={12} md={6}>
-            <Button
-              variant="outlined"
-              sx={{
-                color: "icon.primary",
-                borderColor: "icon.primary",
-                width: "100%",
-              }}
-              startIcon={
-                <IconButton size="small">
-                  <img src={GoogleIcon} alt="google icon" width="30px" />
-                </IconButton>
-              }
-            >
-              Sign with Google
-            </Button>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Button
-              variant="outlined"
-              sx={{
-                color: "icon.primary",
-                borderColor: "icon.primary",
-                width: "100%",
-              }}
-              startIcon={
-                <IconButton size="small">
-                  <img src={FacebookIcon} alt="google icon" width="30px" />
-                </IconButton>
-              }
-            >
-              Sign with Facebook
-            </Button>
-          </Grid>
-        </Grid>
+        <SocialBtns />
       </Box>
     </Box>
   );
