@@ -19,7 +19,6 @@ const useStyles = makeStyles((theme) => ({
     padding: "0px",
     height: "100vh",
     margin: 0,
-    border: "1px solid red",
     "& > .MuiGrid-item": {
       padding: 0,
       height: "100%",
