@@ -81,7 +81,6 @@ function ItemMenu(props) {
                   to={element.url}
                   title={element.title}
                   icon={element.icon}
-                  open={props.open}
                   arrow={
                     openIndex === index ? (
                       <ExpandLess />
@@ -102,7 +101,6 @@ function ItemMenu(props) {
                     key={`submenu-item-${index}-${submenuIndex}`}
                     to={submenuItem.url}
                     title={submenuItem.title}
-                    open={props.open}
                     sx={{ pl: 8 }}
                   />
                 ))}
@@ -114,7 +112,6 @@ function ItemMenu(props) {
               to={element.url}
               title={element.title}
               icon={element.icon}
-              open={props.open}
             />
           )}
         </div>
