@@ -29,13 +29,18 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
     []
   );
 
-  const { ChangeStateModal, ChangeTitleModal, ChangeContentModal } =
-    useBoundStore((state) => state);
+  const {
+    ChangeStateModal,
+    ChangeTitleModal,
+    ChangeContentModal,
+    ChangeIsVisibleButton,
+  } = useBoundStore((state) => state);
 
   const handleMoreIcon = (task) => () => {
     ChangeStateModal(true);
     ChangeTitleModal("Task Detail");
     ChangeContentModal(<TaskDetail task={task} />);
+    ChangeIsVisibleButton(true);
   };
   const handleClipIcon = () => {
     alert("toqueé el icono del clip");

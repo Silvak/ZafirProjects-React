@@ -3,10 +3,10 @@ import { List, ListItemButton, Collapse } from "@mui/material";
 import ItemNav from "@/components/navBar/itemNav";
 import BrokenImageOutlinedIcon from "@mui/icons-material/BrokenImageOutlined";
 import FolderCopyOutlinedIcon from "@mui/icons-material/FolderCopyOutlined";
-import MultilineChartOutlinedIcon from "@mui/icons-material/MultilineChartOutlined";
 import TaskOutlinedIcon from "@mui/icons-material/TaskOutlined";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import ExpandLess from "@mui/icons-material/ExpandLess";
+import { BiGroup } from "react-icons/bi";
 
 export const items = [
   {
@@ -23,12 +23,16 @@ export const items = [
   },
   {
     title: "project",
-    url: "/project",
+    url: "/",
     icon: <FolderCopyOutlinedIcon />,
     submenu: [
       {
-        title: "Mi proyecto 1",
+        title: "My project",
         url: "/project/1111",
+      },
+      {
+        title: "Project Tasks",
+        url: "/project/1111/tasks",
       },
       {
         title: "report",
@@ -37,71 +41,66 @@ export const items = [
     ],
   },
   {
-    title: "performance",
-    url: "/performance",
-    icon: <MultilineChartOutlinedIcon />,
-    submenu: [],
-  },
-  {
-    title: "memebers",
+    title: "members",
     url: "/members",
-    icon: <MultilineChartOutlinedIcon />,
+    icon: <BiGroup />,
     submenu: [],
   },
 ];
 
 function ItemMenu(props) {
-  const [open, setOpen] = useState(false);
+  const [openIndex, setOpenIndex] = useState(null);
 
-  const handleClick = () => {
-    if (props.open != false) {
-      setOpen(!open);
+  const handleClick = (index) => {
+    if (props.open !== false) {
+      setOpenIndex(openIndex === index ? null : index);
     }
   };
 
   return (
     <List
-      key="listItem"
       sx={{
         display: "flex",
         flexDirection: "column",
-        justifyItems: "center",
-        justifyContent: "center",
-
         gap: "8px",
-        px: "12px",
+        px: { xs: "8px", sm: "12px" },
         width: "100%",
         marginTop: "48px",
       }}
     >
-      {items.map((element) => (
-        <>
+      {items.map((element, index) => (
+        <div key={`item-${index}`}>
           {element.submenu.length > 0 ? (
             <>
               <ListItemButton
-                key={element.title}
-                onClick={handleClick}
-                sx={{
-                  m: 0,
-                  p: 0,
-                }}
+                onClick={() => handleClick(index)}
+                sx={{ m: 0, p: 0 }}
                 disableRipple
               >
                 <ItemNav
                   to={element.url}
                   title={element.title}
                   icon={element.icon}
-                  open={props.open}
-                  arrow={open ? <ExpandLess /> : <KeyboardArrowRightIcon />}
+                  arrow={
+                    openIndex === index ? (
+                      <ExpandLess />
+                    ) : (
+                      <KeyboardArrowRightIcon />
+                    )
+                  }
                 />
               </ListItemButton>
 
-              <Collapse in={open} timeout="auto" unmountOnExit>
-                {element.submenu.map((submenuItem) => (
+              <Collapse
+                in={openIndex === index && props.open}
+                timeout="auto"
+                unmountOnExit
+              >
+                {element.submenu.map((submenuItem, submenuIndex) => (
                   <ItemNav
+                    key={`submenu-item-${index}-${submenuIndex}`}
                     to={submenuItem.url}
                     title={submenuItem.title}
-                    open={props.open}
                     sx={{ pl: 8 }}
                   />
                 ))}
@@ -109,13 +108,13 @@ function ItemMenu(props) {
             </>
           ) : (
             <ItemNav
+              key={`item-nav-${index}`}
               to={element.url}
               title={element.title}
               icon={element.icon}
-              open={props.open}
             />
           )}
-        </>
+        </div>
       ))}
     </List>
   );

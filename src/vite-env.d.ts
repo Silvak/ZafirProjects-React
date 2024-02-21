@@ -27,7 +27,7 @@ declare module "@/components/Overview/RenderProjectItems";
 declare module "@/components/Overview/MyTaskList";
 declare module "@/components/Overview/MyTaskItems";
 declare module "@/components/BoxIcon/BoxIcon";
-declare module "@/components/taskAccordion/taskHeader";
+declare module "@/components/taskAccordion/TaskHeader";
 declare module "@/components/taskAccordion/TaskAccordion";
 declare module "@/components/taskAccordion/TaskItem";
 declare module "@/components/taskAccordion/taskList";
@@ -40,6 +40,8 @@ declare module "@/components/TaskDetail/TaskDetailHeader";
 declare module "@/components/TaskDetail/TaskDetailContent";
 declare module "@/components/TaskDetail/TaskDetailItem";
 declare module "@/components/TaskDetail/TaskDetailSubstaks";
+declare module "@/components/Header/Header";
+
 
 declare module "@/context/AppContextProvider";
 declare module "@/stores/index";
