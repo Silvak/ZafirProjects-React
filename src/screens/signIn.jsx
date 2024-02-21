@@ -85,10 +85,7 @@ export default function SignIn() {
           </Box>
         </Box>
         <Box sx={{ maxWidth: "600px" }}>
-          <Typography
-            variant="body1"
-            sx={{ textBalance: "balance", marginBottom: "5rem" }}
-          >
+          <Typography variant="body1" sx={{ textBalance: "balance" }}>
             The ultimate multipurpose dashboard UI Kit for kickstart any
             project.
           </Typography>
