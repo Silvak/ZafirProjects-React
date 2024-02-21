@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { styled } from "@mui/material/styles";
-import GraphicdunkSelect from "./CustomItems/graphicdunk";
+import ProjectSelect from "./CustomItems/projectSelect";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
 import SearchIcon from "@mui/icons-material/Search";
@@ -14,6 +14,8 @@ import {
   Badge,
   InputBase,
 } from "@mui/material";
+import { useBoundStore } from "@/stores/index";
+import { shallow } from "zustand/shallow";
 import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
 import ItemMenu from "@/components/navBar/itemMenu";
 import UserProfileButton from "./CustomItems/ProfileTab";
@@ -149,15 +151,18 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 /* MAIN COMPONENT */
 export default function NavbarDrawer(props) {
-  const [open, setOpen] = useState(true);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const { stateOpen, ChangeStateOpen } = useBoundStore(
+    (state) => state,
+    shallow
+  );
 
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
   const handleDrawerOpen = () => {
-    setOpen(!open);
+    ChangeStateOpen(!stateOpen);
   };
 
   return (
@@ -165,7 +170,7 @@ export default function NavbarDrawer(props) {
       <CssBaseline />
 
       {/* NavBar */}
-      <CustomAppBar position="fixed" open={open}>
+      <CustomAppBar position="fixed" open={stateOpen}>
         <Toolbar disableKeyboardFocus sx={{ height: "100%" }}>
           <Search>
             <SearchIconWrapper>
@@ -211,28 +216,28 @@ export default function NavbarDrawer(props) {
       </CustomAppBar>
 
       {/* Sidebar Drawer */}
-      <Drawer variant="permanent" open={open}>
+      <Drawer variant="permanent" open={stateOpen}>
         {/* Draw Header Logo & toggle open */}
         <DrawerHeader
           sx={{
             borderBottom: "1px solid #b5b5b5",
             display: "flex",
-            justifyContent: open ? "space-between" : "center",
+            justifyContent: stateOpen ? "space-between" : "center",
             cursor: "pointer",
           }}
           onClick={handleDrawerOpen}
         >
-          {open && <Logo />}
-          <IconButton sx={{ color: "#6B6E75", fontSize: "1.1rem" }}>
-            {open ? <MdArrowBackIos /> : <MdArrowForwardIos />}
+          {stateOpen && <Logo />}
+          <IconButton sx={{ color: "#6B6E75", fontSize: "1rem" }}>
+            {stateOpen ? <MdArrowBackIos /> : <MdArrowForwardIos />}
           </IconButton>
         </DrawerHeader>
 
         {/* Project Select */}
-        <GraphicdunkSelect />
+        <ProjectSelect open={stateOpen} />
 
         {/* Menu Items */}
-        <ItemMenu open={open} />
+        <ItemMenu open={stateOpen} />
       </Drawer>
 
       {/* content */}

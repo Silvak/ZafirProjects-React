@@ -11,7 +11,7 @@ declare module "@/components/navBar/itemNav";
 declare module "@/components/navBar/ItemMenu";
 declare module "@/components/navBar/items";
 declare module "@/components/navBar/CustomItems/ProfileTab";
-declare module "@/components/navBar/CustomItems/graphicdunk";
+declare module "@/components/navBar/CustomItems/projectSelect";
 declare module "@/components/navBar/CustomItems/graphicNav";
 declare module "@/components/forms/SignUpForm";
 declare module "@/components/projectsTable/ProjectsTable";
@@ -44,7 +44,6 @@ declare module "@/components/TaskDetail/TaskDetailSubstaks";
 declare module "@/components/Header/Header";
 declare module "@/components/buttons/SocialBtns";
 declare module "@/components/forms/SignInForm";
-
 
 declare module "@/context/AppContextProvider";
 declare module "@/stores/index";
