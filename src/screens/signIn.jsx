@@ -1,13 +1,7 @@
 import StopCircle from "@mui/icons-material/StopCircle";
 
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  Box,
-  Grid,
-  IconButton,
-  Typography,
-  useMediaQuery,
-} from "@mui/material";
+import { Box, Grid, IconButton, Typography } from "@mui/material";
 import * as React from "react";
 import bgSignIn from "../assets/Img/jpg/bgSignIn.jpg";
 
@@ -91,6 +85,7 @@ export default function SignIn() {
           </Typography>
         </Box>
       </Grid>
+
       {/* right */}
       <Grid item xs={12} md={6} mx={"auto"}>
         <SignInForm />

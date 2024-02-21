@@ -9,17 +9,25 @@ import {
   IconButton,
   Divider,
 } from "@mui/material";
-
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-
 import SocialBtns from "@/components/buttons/SocialBtns";
 
 const SignInForm = () => {
   const { showPassword, handlePasswordVisibility, handleSubmit } = useSignIn();
 
   return (
-    <Box sx={{ maxWidth: 500, mx: "auto", padding: "20px 10px" }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center !important",
+        height: "100% !important",
+        maxWidth: 500,
+        mx: "auto",
+        px: 4,
+      }}
+    >
       {/* title */}
       <Box>
         <Typography variant="h2" mb={1}>
@@ -32,6 +40,7 @@ const SignInForm = () => {
           </Link>
         </Typography>
       </Box>
+
       {/* form */}
       <Box
         component="form"
@@ -39,7 +48,7 @@ const SignInForm = () => {
         onSubmit={handleSubmit}
         sx={{
           overflow: "hidden",
-          height: "100%",
+          height: "auto",
         }}
       >
         {/* layout inputs */}
@@ -141,4 +150,5 @@ const SignInForm = () => {
     </Box>
   );
 };
+
 export default SignInForm;

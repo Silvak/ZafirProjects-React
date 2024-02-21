@@ -88,6 +88,7 @@ const signUp = () => {
           </Typography>
         </Box>
       </Grid>
+
       {/* right */}
       <Grid item xs={12} md={6} mx={"auto"}>
         <SignUpForm />

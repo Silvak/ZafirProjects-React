@@ -10,7 +10,6 @@ import {
   Button,
   Link as MuiLink,
   Divider,
-  Stack,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -30,10 +29,13 @@ const SignUpForm = () => {
   return (
     <Box
       sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
         height: "100%",
         maxWidth: 500,
         mx: "auto",
-        p: 2,
+        px: 4,
       }}
     >
       {/* title */}
