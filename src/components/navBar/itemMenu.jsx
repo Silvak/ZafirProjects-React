@@ -4,8 +4,8 @@ import ItemNav from "@/components/navBar/itemNav";
 import BrokenImageOutlinedIcon from "@mui/icons-material/BrokenImageOutlined";
 import FolderCopyOutlinedIcon from "@mui/icons-material/FolderCopyOutlined";
 import TaskOutlinedIcon from "@mui/icons-material/TaskOutlined";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-import ExpandLess from "@mui/icons-material/ExpandLess";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { BiGroup } from "react-icons/bi";
 
 export const items = [
@@ -63,6 +63,7 @@ function ItemMenu(props) {
         display: "flex",
         flexDirection: "column",
         gap: "8px",
+        py: 0,
         px: { xs: "8px", sm: "12px" },
         width: "100%",
         marginTop: "48px",
@@ -83,9 +84,9 @@ function ItemMenu(props) {
                   icon={element.icon}
                   arrow={
                     openIndex === index ? (
-                      <ExpandLess />
+                      <ExpandLessIcon />
                     ) : (
-                      <KeyboardArrowRightIcon />
+                      <KeyboardArrowDownIcon />
                     )
                   }
                 />

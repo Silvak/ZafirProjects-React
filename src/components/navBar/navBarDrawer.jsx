@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { styled } from "@mui/material/styles";
-import GraphicdunkSelect from "./CustomItems/graphicdunk";
+import ProjectSelect from "./CustomItems/projectSelect";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
 import SearchIcon from "@mui/icons-material/Search";
@@ -228,13 +228,13 @@ export default function NavbarDrawer(props) {
           onClick={handleDrawerOpen}
         >
           {stateOpen && <Logo />}
-          <IconButton sx={{ color: "#6B6E75", fontSize: "1.1rem" }}>
+          <IconButton sx={{ color: "#6B6E75", fontSize: "1rem" }}>
             {stateOpen ? <MdArrowBackIos /> : <MdArrowForwardIos />}
           </IconButton>
         </DrawerHeader>
 
         {/* Project Select */}
-        <GraphicdunkSelect />
+        <ProjectSelect open={stateOpen} />
 
         {/* Menu Items */}
         <ItemMenu open={stateOpen} />

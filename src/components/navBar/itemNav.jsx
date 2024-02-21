@@ -12,14 +12,14 @@ import { useBoundStore } from "@/stores/index";
 import { shallow } from "zustand/shallow";
 
 // Styles
-const listItemButtonSx = (isActive, open) => ({
+const listItemButtonSx = (isActive, open, bgColor = "#eceff3") => ({
   display: "flex",
   height: 48,
   px: "0px",
   borderRadius: "12px",
   overflow: "hidden",
   justifyContent: open ? "initial" : "space-between",
-  backgroundColor: isActive ? "#ffffff" : "#eceff3",
+  backgroundColor: isActive ? "#ffffff" : bgColor,
   "&:hover": {
     backgroundColor: "#F6F7FA",
   },
@@ -67,18 +67,19 @@ function ItemNav(props) {
 
   return (
     <NavLink to={props.to} style={{ textDecoration: "none", width: "100%" }}>
-      <ListItem disablePadding>
-        <ListItemButton sx={listItemButtonSx(isActive, stateOpen)}>
-          <Stack direction="row" alignItems="center" sx={stackSx}>
-            <Box sx={iconBoxSx(isActive)}>{props.icon}</Box>
-            <Typography sx={typographySx(isActive, stateOpen)}>
-              {capitalize(props.title)}
-            </Typography>
-          </Stack>
+      <ListItemButton
+        sx={listItemButtonSx(isActive, stateOpen, props.bgColor)}
+        //disableRipple
+      >
+        <Stack direction="row" alignItems="center" sx={stackSx}>
+          <Box sx={iconBoxSx(isActive)}>{props.icon}</Box>
+          <Typography sx={typographySx(isActive, stateOpen)}>
+            {capitalize(props.title)}
+          </Typography>
+        </Stack>
 
-          <Box sx={arrowBoxSx(stateOpen)}>{props.arrow}</Box>
-        </ListItemButton>
-      </ListItem>
+        <Box sx={arrowBoxSx(stateOpen)}>{props.arrow}</Box>
+      </ListItemButton>
     </NavLink>
   );
 }

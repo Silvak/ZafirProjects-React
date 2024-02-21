@@ -11,10 +11,13 @@ import {
 import { capitalize } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import { useBoundStore } from "@/stores/index";
+import { shallow } from "zustand/shallow";
 
 function GraphicNav(props) {
   const location = useLocation();
   const isActive = location.pathname === props.to;
+  const { stateOpen } = useBoundStore((state) => state, shallow);
 
   return (
     <NavLink to={props.to} style={{ textDecoration: "none", width: "100%" }}>
@@ -22,10 +25,10 @@ function GraphicNav(props) {
         <ListItemButton
           sx={{
             height: 48,
-            maxWidth: props.open ? "100%" : 48,
+            maxWidth: stateOpen ? "100%" : 48,
             display: "flex",
             width: "100%",
-            justifyContent: props.open ? "initial" : "space-between",
+            justifyContent: stateOpen ? "initial" : "space-between",
             px: "12px",
             borderRadius: "12px",
             overflow: "hidden",
@@ -50,7 +53,7 @@ function GraphicNav(props) {
               sx={{
                 fontWeight: "600",
                 fontSize: "1.2rem",
-                visibility: props.open ? "visible" : "hidden",
+                visibility: stateOpen ? "visible" : "hidden",
                 color: isActive ? "#3A3D44" : "#6B6E75",
               }}
             >
@@ -64,7 +67,7 @@ function GraphicNav(props) {
               display: "flex",
               justifyContent: "end",
               width: "100%",
-              visibility: props.open ? "visible" : "hidden",
+              visibility: stateOpen ? "visible" : "hidden",
             }}
           >
             {props.arrow}
