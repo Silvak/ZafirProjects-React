@@ -30,7 +30,7 @@ const TableRowComponent = ({
         }}
       >
         {!isMobile && (
-          <TableCell>
+          <TableCell style={{ width: "12px"}}>
             <Checkbox
               checked={isItemSelected}
               onChange={() => handleCheckboxClick(row.name)}
