@@ -18,6 +18,12 @@ import {
 import React, { useState } from "react";
 
 import Header from "@/components/Header/Header";
+import FilterSelect from "@/components/Selects/FilterSelect";
+
+const filtersData = [
+  { id: 1, label: "All Tasks", value: "All Tasks" },
+  { id: 2, label: "Item 1", value: "item 1" },
+];
 
 const TaskHeader = ({ title, handleButton, handleAddTask }) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
@@ -54,7 +60,8 @@ const TaskHeader = ({ title, handleButton, handleAddTask }) => {
           <FormatListBulletedRoundedIcon
             sx={{
               marginRight: "10px",
-              backgroundColor: selectedIcon === "Format List" ? "#1976d2" : "",
+              backgroundColor:
+                selectedIcon === "Format List" ? "rgb(118, 98, 234)" : "",
               color: selectedIcon === "Format List" ? "white" : "gray",
               borderRadius: "8px",
               padding: "2px",
@@ -64,7 +71,8 @@ const TaskHeader = ({ title, handleButton, handleAddTask }) => {
           <ViewKanbanOutlinedIcon
             sx={{
               marginRight: "10px",
-              backgroundColor: selectedIcon === "View Kanban" ? "#1976d2" : "",
+              backgroundColor:
+                selectedIcon === "View Kanban" ? "rgb(118, 98, 234)" : "",
               color: selectedIcon === "View Kanban" ? "white" : "gray",
               borderRadius: "8px",
               padding: "2px",
@@ -74,7 +82,8 @@ const TaskHeader = ({ title, handleButton, handleAddTask }) => {
           />
           <CalendarTodayIcon
             sx={{
-              backgroundColor: selectedIcon === "Calendar" ? "#1976d2" : "",
+              backgroundColor:
+                selectedIcon === "Calendar" ? "rgb(118, 98, 234)" : "",
               color: selectedIcon === "Calendar" ? "white" : "gray",
               borderRadius: "8px",
               padding: "2px",
@@ -82,7 +91,7 @@ const TaskHeader = ({ title, handleButton, handleAddTask }) => {
             onClick={() => handleIconButtonClick("Calendar")}
           />
         </ButtonGroup>
-        <Select
+        {/* <Select
           value={selectedValue}
           onChange={handleSelectChange}
           sx={{
@@ -110,13 +119,15 @@ const TaskHeader = ({ title, handleButton, handleAddTask }) => {
           >
             Item1
           </MenuItem>
-        </Select>
+        </Select> */}
+        <FilterSelect data={filtersData} padding="10px" />
         <Button
           variant="contained"
           sx={{
             fontSize: "12px",
             fontWeight: "bold",
             borderRadius: "12px",
+            background: "rgb(118, 98, 234)",
           }}
           onClick={handleAddTask}
         >

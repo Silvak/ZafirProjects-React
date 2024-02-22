@@ -11,13 +11,8 @@ const App = () => {
   const [view, setView] = useState("Format List");
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("md"));
 
-  const {
-    tasks,
-    addTask,
-    ChangeStateModal,
-    ChangeContentModal,
-    ChangeTitleModal,
-  } = useBoundStore();
+  const { tasks, ChangeStateModal, ChangeContentModal, ChangeTitleModal } =
+    useBoundStore();
 
   let pendingTasks = tasks.filter((task) => task.status === "Pending");
   let backlogTasks = tasks.filter((task) => task.status === "Backlog");

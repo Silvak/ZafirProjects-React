@@ -35,7 +35,7 @@ const SignUpForm = () => {
         height: "100%",
         maxWidth: 500,
         mx: "auto",
-        px: 4,
+        padding: "30px 0",
       }}
     >
       {/* title */}
@@ -184,7 +184,12 @@ const SignUpForm = () => {
           </Typography>
         </Box>
         {/* form btn */}
-        <Button variant="contained" size="large" sx={{ width: "100%", mt: 4 }}>
+        <Button
+          variant="contained"
+          size="large"
+          sx={{ width: "100%", mt: 4 }}
+          type="submit"
+        >
           Create an account
         </Button>
         {/* form or */}

@@ -10,6 +10,13 @@ import {
   MenuItem,
   useMediaQuery,
 } from "@mui/material";
+import FilterSelect from "@/components/Selects/FilterSelect";
+
+const filtersData = [
+  { id: 1, label: "This week", value: "week" },
+  { id: 2, label: "This month", value: "month" },
+  { id: 3, label: "Today", value: "today" },
+];
 
 function MyWorkGlance() {
   const theme = createTheme();
@@ -35,9 +42,9 @@ function MyWorkGlance() {
           item
           sx={{
             display: isMobile ? "inline-table" : "flex",
-            justifyContent: "space-between",
-            alignContent: "center",
+            padding: "20px 10px",
             alignItems: "center",
+            justifyContent: "space-between",
             overflowX: "hidden",
           }}
         >
@@ -46,58 +53,13 @@ function MyWorkGlance() {
               fontSize: "20px",
               fontWeight: "500",
               fontFamily: "Poppins",
-              marginBottom: "20px", // Agregado espacio inferior para separar del siguiente elemento
               color: "black",
             }}
           >
             My Work Glance
           </Typography>
           <Grid item>
-            <Select
-              value={selectedValue}
-              onChange={handleSelectChange}
-              sx={{
-                width: "140px",
-                height: "34px",
-                color: "#1D1F24",
-                backgroundColor: "white",
-                border: "1px solid gray",
-                borderRadius: "8px",
-                marginTop: "20px",
-                marginRight: "20px",
-                marginBottom: "15px",
-                paddingTop: 1,
-                fontSize: "16px",
-              }}
-            >
-              <MenuItem
-                value="This Month"
-                sx={{
-                  backgroundColor: "white",
-                  fontSize: "12px",
-                }}
-              >
-                This Month
-              </MenuItem>
-              <MenuItem
-                value="This Week"
-                sx={{
-                  backgroundColor: "white",
-                  fontSize: "12px",
-                }}
-              >
-                This Week
-              </MenuItem>
-              <MenuItem
-                value="Today"
-                sx={{
-                  backgroundColor: "white",
-                  fontSize: "12px",
-                }}
-              >
-                Today
-              </MenuItem>
-            </Select>
+            <FilterSelect data={filtersData} padding="10px" />
           </Grid>
         </Grid>
         <Box

@@ -46,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
     gap: "20px",
     "& > *": {
       width: "fit-content",
+      minWidth: "180px",
       height: "40px",
       textAlign: "center",
       padding: "0px 10px",

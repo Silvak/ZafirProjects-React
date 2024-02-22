@@ -44,6 +44,8 @@ declare module "@/components/TaskDetail/TaskDetailSubstaks";
 declare module "@/components/Header/Header";
 declare module "@/components/buttons/SocialBtns";
 declare module "@/components/forms/SignInForm";
+declare module "@/components/Selects/FilterSelect";
+
 
 declare module "@/context/AppContextProvider";
 declare module "@/stores/index";
@@ -70,6 +72,8 @@ declare module "@/screens/project/layout";
 declare module "@/hooks/usePagination";
 declare module "@/hooks/useSignUp";
 declare module "@/hooks/useSignIn";
+
+declare module "@/utils/colors";
 
 
 /// <reference types="vite/client"/>

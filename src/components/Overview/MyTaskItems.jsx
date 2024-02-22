@@ -15,6 +15,8 @@ import {
 } from "@mui/icons-material";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 
+import { priorityColors, statusColors } from "@/utils/colors";
+
 function MyTaskItems({ tasks }) {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
@@ -173,7 +175,6 @@ function MyTaskItems({ tasks }) {
                       minWidth: "min-content",
                       display: "flex",
                       justifyContent: "end",
-                      backgroundColor: "grey", // *
                       borderRadius: "6px", // *
                     }}
                   >
@@ -197,8 +198,9 @@ function MyTaskItems({ tasks }) {
                 </Grid>
               </Box>
             ))
-          ) : ( /////// MOBILE VIEW
-            <Grid sx={{minWidth: "208px"}}>
+          ) : (
+            /////// MOBILE VIEW
+            <Grid sx={{ minWidth: "208px" }}>
               {tasks.map((task, index) => (
                 <Grid
                   item
@@ -220,7 +222,7 @@ function MyTaskItems({ tasks }) {
                   >
                     {task.task}
                   </Typography>
-                  <Grid item xs={12} sm={2} sx={{marginBottom: "10px"}}>
+                  <Grid item xs={12} sm={2} sx={{ marginBottom: "10px" }}>
                     <Typography
                       variant="h6"
                       noWrap
@@ -292,73 +294,85 @@ function MyTaskItems({ tasks }) {
                   </Grid>
 
                   {/* Calendar and Status */}
-                  <Grid sx={{display:"flex", justifyContent: "center", marginTop: "10px"}}>
-                  <Grid sx={{display: "-moz-initial", justifyContent: "left", overflowX: "auto"}}>
                   <Grid
-                    item
-                    xs={12}
-                    sm={4}
                     sx={{
-                      mt: 0,
-                      marginInline: 2,
-                      minWidth: "max-content",
+                      display: "flex",
+                      justifyContent: "center",
+                      marginTop: "10px",
                     }}
                   >
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
+                    <Grid
+                      sx={{
+                        display: "-moz-initial",
+                        justifyContent: "left",
+                        overflowX: "auto",
                       }}
                     >
-                      <CalendarTodayIcon
-                        style={{
-                          color: "gray",
+                      <Grid
+                        item
+                        xs={12}
+                        sm={4}
+                        sx={{
+                          mt: 0,
+                          marginInline: 2,
+                          minWidth: "max-content",
                         }}
-                      />
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          <CalendarTodayIcon
+                            style={{
+                              color: "gray",
+                            }}
+                          />
+                          <Typography
+                            variant="body1"
+                            color="textSecondary"
+                            noWrap
+                            style={{ fontSize: "14px", fontWeight: "bold" }}
+                          >
+                            {task.date}
+                          </Typography>
+                        </div>
+                      </Grid>
+                    </Grid>
+                    <Grid
+                      item
+                      xs={12}
+                      sm={1}
+                      sx={{
+                        mt: 0,
+                        marginInline: 2,
+                        minWidth: "min-content",
+                        width: "fit-content",
+                        display: "flex",
+                        justifyContent: "end",
+                        backgroundColor: "grey", // *
+                        borderRadius: "6px", // *
+                      }}
+                    >
                       <Typography
                         variant="body1"
                         color="textSecondary"
                         noWrap
-                        style={{ fontSize: "14px", fontWeight: "bold" }}
+                        sx={{
+                          fontWeight: "bold",
+                          fontSize: "14px",
+                          borderRadius: "8px",
+                          padding: "4px 8px",
+                          textAlign: "center",
+                          alignItems: "center",
+                          ...statusColors[task.status],
+                        }}
                       >
-                        {task.date}
+                        {task.status}
                       </Typography>
-                    </div>
+                    </Grid>
                   </Grid>
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    sm={1}
-                    sx={{
-                      mt: 0,
-                      marginInline: 2,
-                      minWidth: "min-content",
-                      width: "fit-content",
-                      display: "flex",
-                      justifyContent: "end",
-                      backgroundColor: "grey", // *
-                      borderRadius: "6px", // *
-                    }}
-                  >
-                    <Typography
-                      variant="body1"
-                      color="textSecondary"
-                      noWrap
-                      sx={{
-                        fontWeight: "bold",
-                        fontSize: "14px",
-                        borderRadius: "8px",
-                        padding: "4px 8px",
-                        textAlign: "center",
-                        alignItems: "center",
-                        ...statusColors[task.status],
-                      }}
-                    >
-                      {task.status}
-                    </Typography>
-                  </Grid>   
-                </Grid>
                 </Grid>
               ))}
             </Grid>
@@ -368,19 +382,5 @@ function MyTaskItems({ tasks }) {
     </ThemeProvider>
   );
 }
-
-const statusColors = {
-  "In Progress": { backgroundColor: "#CEE4F8", color: "#459CED" },
-  Issues: { backgroundColor: "#FFEBEA", color: "#EB807B" },
-  Review: { backgroundColor: "#FCF2E3", color: "#EDB055" },
-  Completed: { backgroundColor: "#E2F3F0", color: "#429482" },
-  Pending: { backgroundColor: "#F6F7FA", color: "#8D9096" },
-};
-
-const priorityColors = {
-  High: { backgroundColor: "#FFEBEA", color: "#E55D57" },
-  Medium: { backgroundColor: "#FCF2E3", color: "#EBA741" },
-  Low: { backgroundColor: "#DEE9F2", color: "#5BA9F6" },
-};
 
 export default MyTaskItems;

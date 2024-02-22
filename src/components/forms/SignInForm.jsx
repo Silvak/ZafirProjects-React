@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   Grid,
-  Link,
   TextField,
   Typography,
   IconButton,
@@ -12,6 +11,7 @@ import {
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import SocialBtns from "@/components/buttons/SocialBtns";
+import { Link } from "react-router-dom";
 
 const SignInForm = () => {
   const { showPassword, handlePasswordVisibility, handleSubmit } = useSignIn();

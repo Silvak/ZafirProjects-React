@@ -1,16 +1,20 @@
-import { useState } from "react";
-import { useBoundStore } from "../../stores/index"; // Importa el hook useBoundStore aquí
+import FilterSelect from "@/components/Selects/FilterSelect";
 import {
-  Typography,
-  Box,
-  createTheme,
-  Select,
-  MenuItem,
   Grid,
   ThemeProvider,
+  Typography,
+  createTheme,
   useMediaQuery,
 } from "@mui/material";
+import { useState } from "react";
+import { useBoundStore } from "../../stores/index"; // Importa el hook useBoundStore aquí
 import MyTaskList from "./MyTaskList";
+
+const filtersData = [
+  { id: 1, label: "This week", value: "week" },
+  { id: 2, label: "This month", value: "month" },
+  { id: 3, label: "Today", value: "today" },
+];
 
 function MyTask() {
   const { tasks, addTask } = useBoundStore();
@@ -35,7 +39,7 @@ function MyTask() {
           flexDirection: "column",
           flex: 1,
           overflow: "-moz-hidden-unscrollable",
-          overflowX: "hidden"
+          overflowX: "hidden",
         }}
       >
         {/* My Task Header */}
@@ -44,13 +48,13 @@ function MyTask() {
           sx={{
             display: isMobile ? "inline-table" : "flex",
             justifyContent: "space-between",
-            height: "69px",
+            padding: "10px 30px",
+            alignItems: "center",
           }}
         >
           <Grid
             item
             sx={{
-              
               marginLeft: "20px",
               marginBottom: "17px",
               marginTop: "22px",
@@ -64,52 +68,7 @@ function MyTask() {
           </Grid>
           {/* Select Filter */}
           <Grid item>
-            <Select
-              value={selectedValue}
-              onChange={handleSelectChange}
-              sx={{
-                width: "140px",
-                height: "34px",
-                color: "#1D1F24",
-                backgroundColor: "white",
-                border: "1px solid gray",
-                borderRadius: "8px",
-                marginTop: "20px",
-                marginRight: "20px",
-                marginBottom: "15px",
-                paddingTop: 1,
-                fontSize: "16px",
-                margin: isMobile ? 2 : ""
-              }}
-            >
-              <MenuItem
-                value="This Month"
-                sx={{
-                  backgroundColor: "white",
-                  fontSize: "12px",
-                }}
-              >
-                This Month
-              </MenuItem>
-              <MenuItem
-                value="This Week"
-                sx={{
-                  backgroundColor: "white",
-                  fontSize: "12px",
-                }}
-              >
-                This Week
-              </MenuItem>
-              <MenuItem
-                value="Today"
-                sx={{
-                  backgroundColor: "white",
-                  fontSize: "12px",
-                }}
-              >
-                Today
-              </MenuItem>
-            </Select>
+            <FilterSelect data={filtersData} padding="10px" />
           </Grid>
         </Grid>
         {/* Task list */}
