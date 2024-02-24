@@ -16,6 +16,7 @@ const SignIn = React.lazy(() => import("@/screens/signIn"));
 const SignUp = React.lazy(() => import("@/screens/signUp")); //"@/screens/project/Layout"
 const Projects = React.lazy(() => import("@/screens/project/projects"));
 const Layout = React.lazy(() => import("@/screens/project/layout"));
+const Report = React.lazy(() => import("@/screens/project/report"));
 
 export default function Navigator() {
   const { Authenticated } = storeUser();
@@ -65,7 +66,7 @@ export default function Navigator() {
             <Route path="/project/:id" element={<Layout />}>
               <Route index element={<MyTask />} />
               <Route path="tasks" element={<MyTask />} />
-              <Route path="report" element={<>Report</>} />
+              <Route path="report" element={<Report/>} />
             </Route>
 
             <Route path="/members" element={<Members />} />

@@ -22,3 +22,25 @@ export const myWorkData = {
     color: "#429482" 
     },
 };
+
+
+export const reportData = {
+  completed: { 
+    title: "Completed tasks", 
+    total: 42, 
+    color: "#5D923D" 
+    },
+  incompleted: { 
+    title: "Incompleted tasks",
+     total: 14,
+      color: "#E55D57"
+    },
+  overdue: { title: "Overdue tasks",
+    total: 8,
+    color: "#EBA741"
+    },
+  total: { title: "Total tasks",
+    total: 56,
+    color: "#459CED"
+    },
+};

@@ -2,7 +2,7 @@ export const projectsData = [
   {
     id: 1,
     projectName: "Peceland App Design",
-    quantityTasks: 24,
+    quantityTasks: 14,
     date: "Oct 1 - 4, 2024",
     attachments: ["file1.pdf", "image1.jpg"],
     status: {
@@ -15,7 +15,7 @@ export const projectsData = [
   {
     id: 2,
     projectName: "Microsoft illustration pack",
-    quantityTasks: 12,
+    quantityTasks: 34,
     date: "Oct 1 - 7, 2024",
     attachments: ["file1.pdf", "image1.jpg"],
     status: {
@@ -28,7 +28,7 @@ export const projectsData = [
   {
     id: 3,
     projectName: "Nasa cosmic website concept",
-    quantityTasks: 12,
+    quantityTasks: 11,
     date: "Oct 1 - 7, 2024",
     attachments: ["file1.pdf", "image1.jpg"],
     status: {
@@ -54,7 +54,7 @@ export const projectsData = [
   {
     id: 5,
     projectName: "Nasa cosmic website concept",
-    quantityTasks: 12,
+    quantityTasks: 11,
     date: "Oct 1 - 7, 2024",
     attachments: ["file1.pdf", "image1.jpg"],
     status: {
