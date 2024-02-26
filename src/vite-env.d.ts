@@ -67,6 +67,7 @@ declare module "@/screens/members";
 declare module "@/theme/theme";
 declare module "@/screens/project/projects";
 declare module "@/screens/project/myTask";
+declare module "@/screens/project/report";
 declare module "@/screens/project/layout";
 
 declare module "@/hooks/usePagination";

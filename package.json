@@ -19,6 +19,7 @@
     "@mui/icons-material": "^5.10.9",
     "@mui/lab": "^5.0.0-alpha.129",
     "@mui/material": "^5.10.12",
+    "@mui/x-charts": "^6.19.5",
     "@stripe/stripe-js": "^1.42.1",
     "@walletconnect/web3-provider": "^1.8.0",
     "@web3auth/web3auth": "^1.1.0",
