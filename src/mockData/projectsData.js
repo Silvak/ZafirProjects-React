@@ -10,7 +10,8 @@ export const projectsData = [
       percentage: 50,
     },
     category: "work",
-    item: "Graphicdunk" 
+    item: "Graphicdunk",
+    completed: 10
   },
   {
     id: 2,
@@ -23,7 +24,8 @@ export const projectsData = [
       percentage: 0,
     },
     category: "coffee",
-    item: "Freelance corp"
+    item: "Freelance corp",
+    completed: 32
   },
   {
     id: 3,
@@ -36,7 +38,8 @@ export const projectsData = [
       percentage: 0,
     },
     category: "microsoft",
-    item: "Graphicdunk"
+    item: "Graphicdunk",
+    completed: 5
   },
   {
     id: 4,
@@ -49,12 +52,13 @@ export const projectsData = [
       percentage: 90,
     },
     category: "cart",
-    item: "Freelance corp"
+    item: "Freelance corp",
+    completed: 10
   },
   {
     id: 5,
-    projectName: "Nasa cosmic website concept",
-    quantityTasks: 11,
+    projectName: "Nggolek Utis Dashboard",
+    quantityTasks: 8,
     date: "Oct 1 - 7, 2024",
     attachments: ["file1.pdf", "image1.jpg"],
     status: {
@@ -62,11 +66,12 @@ export const projectsData = [
       percentage: 0,
     },
     category: "microsoft",
-    item: "Graphicdunk"
+    item: "Graphicdunk",
+    completed: 2
   },
   {
     id: 6,
-    projectName: "Microsoft illustration pack",
+    projectName: "Google illustration pack",
     quantityTasks: 12,
     date: "Oct 1 - 7, 2024",
     attachments: ["file1.pdf", "image1.jpg"],
@@ -75,6 +80,7 @@ export const projectsData = [
       percentage: 0,
     },
     category: "coffee",
-    item: "Freelance corp"
+    item: "Freelance corp",
+    completed: 2
   },
 ];

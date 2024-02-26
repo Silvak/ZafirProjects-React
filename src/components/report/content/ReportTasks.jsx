@@ -10,8 +10,8 @@ import {
 
 function ReportTasks() {
   const theme = createTheme();
-  const { incompleted, overdue, total, completed } = reportData;
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+  const { incompleted, overdue, total, completed } = reportData;
 
   return (
     <ThemeProvider theme={theme}>
@@ -52,6 +52,7 @@ function ReportTasks() {
 }
 
 function InfoCard({ data }) {
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   return (
     <Grid
       item
@@ -65,6 +66,8 @@ function InfoCard({ data }) {
         alignItems: "flex-start",
         height: "91px",
         width: "100%",
+        maxWidth: isMobile ? "200px" : "auto", 
+
       }}
     >
       <div style={{ display: "flex", marginLeft: "16px" }}>

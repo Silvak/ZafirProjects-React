@@ -5,6 +5,8 @@ import AvatarsGroup from "./content/AvatarsGroup";
 import ReportTasks from "./content/ReportTasks";
 import PieChart from "./content/PieChart";
 import TaskByProject from "./content/TaskByProject";
+import TaskByProjectRow from "./content/TaskByProjectRow";
+import UpcomingTask from "./content/UpcomingTask";
 
 function ComponentBody() {
   const isMobile = useMediaQuery("(max-width:600px)");
@@ -63,6 +65,7 @@ function ComponentBody() {
               Upcoming tasks by asignee
               </Typography>
               {/* Contenido para el primer paper en la tercera fila */}
+              <UpcomingTask/>
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -71,6 +74,7 @@ function ComponentBody() {
               Project performance
               </Typography>
               {/* Contenido para el segundo paper en la tercera fila */}
+              <TaskByProjectRow/>
             </Paper>
           </Grid>
         </Grid>

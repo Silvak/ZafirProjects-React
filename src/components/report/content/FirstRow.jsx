@@ -56,9 +56,9 @@ function FirstRow() {
               )}
             >
               <MenuItem sx={{ bgcolor: "#ffffff" }} value="Peceland App Design">Peceland App Design</MenuItem>
-              <MenuItem sx={{ bgcolor: "#ffffff" }} value="Opción 1">Opción 2</MenuItem>
-              <MenuItem sx={{ bgcolor: "#ffffff" }} value="Opción 2">Opción 3</MenuItem>
-              <MenuItem sx={{ bgcolor: "#ffffff" }} value="Opción 3">Opción 4</MenuItem>
+              <MenuItem sx={{ bgcolor: "#ffffff" }} value="Opción 2">Opción 2</MenuItem>
+              <MenuItem sx={{ bgcolor: "#ffffff" }} value="Opción 3">Opción 3</MenuItem>
+              <MenuItem sx={{ bgcolor: "#ffffff" }} value="Opción 4">Opción 4</MenuItem>
             </Select>
           </Grid>
         </Grid>
