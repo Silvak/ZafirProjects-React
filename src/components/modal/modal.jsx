@@ -13,13 +13,18 @@ const modalStyle = {
 };
 
 const ModalGlobal = () => {
-  const { stateModal, titleModal, ChangeStateModal, contentModal, isVisibleButton } =
-    useBoundStore((state) => state, shallow);
+  const {
+    stateModal,
+    titleModal,
+    ChangeStateModal,
+    contentModal,
+    isVisibleButton,
+  } = useBoundStore((state) => state, shallow);
 
   const handleClose = () => {
     ChangeStateModal(false);
   };
-  console.log(isVisibleButton);
+  //console.log(isVisibleButton);
   return (
     <Modal
       open={stateModal}
@@ -38,10 +43,11 @@ const ModalGlobal = () => {
           ...modalStyle,
           minHeight: "100vh",
           padding: "20px",
-          
         }}
       >
-        <Box sx={{maxWidth: "100%"}}> {/* width off */}
+        <Box sx={{ maxWidth: "100%" }}>
+          {" "}
+          {/* width off */}
           <Typography
             variant="h4"
             sx={{
@@ -55,7 +61,7 @@ const ModalGlobal = () => {
               paddingTop: "20px",
               paddingLeft: "35px",
               paddingBottom: "7px",
-              borderBottom: "1px solid white"
+              borderBottom: "1px solid white",
             }}
           >
             <div
@@ -63,27 +69,26 @@ const ModalGlobal = () => {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                border: "none"
+                border: "none",
               }}
             >
               {titleModal}
               {/* Close Modal */}
-              { isVisibleButton && (
-              <Button
-                sx={{
-                  margin: "0",
-                  bgcolor: "white",
-                  display: "flex",
-                  justifyContent: "flex-end",
-                }}
-                title="Close"
-                variant="text"
-                onClick={handleClose}
-              >
-                X
-              </Button>)
-              }
-              
+              {isVisibleButton && (
+                <Button
+                  sx={{
+                    margin: "0",
+                    bgcolor: "white",
+                    display: "flex",
+                    justifyContent: "flex-end",
+                  }}
+                  title="Close"
+                  variant="text"
+                  onClick={handleClose}
+                >
+                  X
+                </Button>
+              )}
             </div>
           </Typography>
           <div>{contentModal}</div>

@@ -3,13 +3,16 @@ import photow from "../assets/Img/png/userImageWoman.png";
 
 export const mockTasks = [
   {
-    id: crypto.randomUUID(),
+    id: "Task-1",
     task: "Home screen interaction",
     appDesign: "Peceland App Design",
     profilePhoto: photo,
     notification: 1,
     attachments: ["file1.pdf", "image1.jpg"],
-    date: "Today",
+    date: {
+      start: "2-20-2024",
+      end: "2-25-2024",
+    },
     status: "Working",
     assignees: [
       {
@@ -19,15 +22,21 @@ export const mockTasks = [
     ],
     priority: "High",
     screen: null,
+    styles: {
+      color: "#459CED",
+    },
   },
   {
-    id: crypto.randomUUID(),
+    id: "Task-2",
     task: "My profile page",
     appDesign: "Peceland App Design",
     profilePhoto: photow,
     notification: 2,
     attachments: ["file2.docx", "image2.png"],
-    date: "Oct 2, 2022",
+    date: {
+      start: "2-26-2024",
+      end: "2-27-2024",
+    },
     status: "Working",
     assignees: [
       {
@@ -42,15 +51,22 @@ export const mockTasks = [
     priority: "High",
     screen:
       "https://res.cloudinary.com/dgdcfmnnx/image/upload/v1707754534/wwdhjjme5wixbr7z0hav.webp",
+
+    styles: {
+      color: "#E55D57",
+    },
   },
   {
-    id: crypto.randomUUID(),
+    id: "Task-3",
     task: "Notification",
     appDesign: "Peceland App Design",
     profilePhoto: photo,
     notification: 1,
     attachments: [],
-    date: "Today",
+    date: {
+      start: "2-22-2024",
+      end: "2-25-2024",
+    },
     status: "Backlog",
     assignees: [
       {
@@ -64,15 +80,21 @@ export const mockTasks = [
     ],
     priority: "Medium",
     screen: null,
+    styles: {
+      color: "#6B6E75",
+    },
   },
   {
-    id: crypto.randomUUID(),
+    id: "Task-4",
     task: "Product detail page",
     appDesign: "Peceland App Design",
     profilePhoto: photow,
     notification: 4,
     attachments: ["file3.xlsx"],
-    date: "Oct 3 - 4, 2023",
+    date: {
+      start: "2-24-2024",
+      end: "2-25-2024",
+    },
     status: "Working",
     assignees: [
       {
@@ -86,15 +108,21 @@ export const mockTasks = [
     ],
     priority: "Low",
     screen: null,
+    styles: {
+      color: "#A0C9C0",
+    },
   },
   {
-    id: crypto.randomUUID(),
+    id: "Task-5",
     task: "Help",
     appDesign: "Peceland App Design",
     profilePhoto: photow,
     notification: 0,
     attachments: ["image3.jpg"],
-    date: "Today",
+    date: {
+      start: "2-24-2024",
+      end: "2-25-2024",
+    },
     status: "Working",
     assignees: [
       {
@@ -104,15 +132,21 @@ export const mockTasks = [
     ],
     priority: "Low",
     screen: null,
+    styles: {
+      color: "#E55D57",
+    },
   },
   {
-    id: crypto.randomUUID(),
+    id: "Task-6",
     task: "Settings page",
     appDesign: "Peceland App Design",
     profilePhoto: photow,
     notification: 0,
     attachments: ["file1.docx"],
-    date: "Oct 1 - 4, 2022",
+    date: {
+      start: "2-24-2024",
+      end: "2-25-2024",
+    },
     status: "Pending",
     assignees: [
       {
@@ -126,15 +160,21 @@ export const mockTasks = [
     ],
     priority: "Low",
     screen: null,
+    styles: {
+      color: "#EBA741",
+    },
   },
   {
-    id: crypto.randomUUID(),
+    id: "Task-7",
     task: "New feature development",
     appDesign: "Peceland App Design",
     profilePhoto: photo,
     notification: 0,
     attachments: [],
-    date: "Future",
+    date: {
+      start: "2-24-2024",
+      end: "2-25-2024",
+    },
     status: "Backlog",
     assignees: [
       {
@@ -144,15 +184,21 @@ export const mockTasks = [
     ],
     priority: "Medium",
     screen: null,
+    styles: {
+      color: "#E55D57",
+    },
   },
   {
-    id: crypto.randomUUID(),
+    id: "Task-8",
     task: "Performance optimization",
     appDesign: "Peceland App Design",
     profilePhoto: photow,
     notification: 0,
     attachments: [],
-    date: "Future",
+    date: {
+      start: "2-24-2024",
+      end: "2-25-2024",
+    },
     status: "Backlog",
     assignees: [
       {
@@ -166,15 +212,21 @@ export const mockTasks = [
     ],
     priority: "Medium",
     screen: null,
+    styles: {
+      color: "#EBA741",
+    },
   },
   {
-    id: crypto.randomUUID(),
+    id: "Task-9",
     task: "Settings page",
     appDesign: "Peceland App Design",
     profilePhoto: photo,
     notification: 1,
     attachments: ["file1.pdf"],
-    date: "Oct 1 - 4, 2022",
+    date: {
+      start: "2-24-2024",
+      end: "2-25-2024",
+    },
     status: "Pending",
     assignees: [
       {
@@ -183,15 +235,21 @@ export const mockTasks = [
       },
     ],
     priority: "Low",
+    styles: {
+      color: "#459CED",
+    },
   },
   {
-    id: crypto.randomUUID(),
+    id: "Task-10",
     task: "Settings page",
     appDesign: "Peceland App Design",
     profilePhoto: photow,
     notification: 0,
     attachments: ["file1.docx"],
-    date: "Oct 1 - 4, 2022",
+    date: {
+      start: "2-24-2024",
+      end: "2-25-2024",
+    },
     status: "Pending",
     assignees: [
       {
@@ -200,11 +258,14 @@ export const mockTasks = [
       },
     ],
     priority: "Low",
+    styles: {
+      color: "#A0C9C0",
+    },
   },
 ];
 
 export const taskDetailData = {
-  id: crypto.randomUUID(),
+  id: "Task-11",
   task: "Home screen interaction",
   appDesign: "Peceland App Design",
   profilePhoto: photo,
@@ -237,7 +298,7 @@ export const subsTasksData = [
       profilePhoto: photo,
     },
     status: "In Progress",
-    date: "Nov. 12, 2023",
+    date: "Nov. 2, 2024",
     priority: "Low",
   },
   {
@@ -248,7 +309,7 @@ export const subsTasksData = [
       profilePhoto: photow,
     },
     status: "Completed",
-    date: "Nov. 12, 2024",
+    date: "Nov. 2, 2024",
     priority: "Low",
   },
   {
@@ -259,7 +320,7 @@ export const subsTasksData = [
       profilePhoto: photo,
     },
     status: "Pending",
-    date: "Nov. 12, 2023",
+    date: "Nov. 2, 2024",
     priority: "Low",
   },
 ];

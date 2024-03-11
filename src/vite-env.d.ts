@@ -46,7 +46,6 @@ declare module "@/components/buttons/SocialBtns";
 declare module "@/components/forms/SignInForm";
 declare module "@/components/Selects/FilterSelect";
 
-
 declare module "@/context/AppContextProvider";
 declare module "@/stores/index";
 declare module "@/stores/container/container";
@@ -69,12 +68,12 @@ declare module "@/screens/project/projects";
 declare module "@/screens/project/myTask";
 declare module "@/screens/project/report";
 declare module "@/screens/project/layout";
+declare module "@/screens/project/gantt";
 
 declare module "@/hooks/usePagination";
 declare module "@/hooks/useSignUp";
 declare module "@/hooks/useSignIn";
 
 declare module "@/utils/colors";
-
 
 /// <reference types="vite/client"/>
