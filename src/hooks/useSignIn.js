@@ -7,7 +7,8 @@ const useSignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const { LoginMail } = useContext(UserContext);
-  const { Authenticated, setUser } = useBoundStore();
+  const { Authenticated, setUser, ChangeStateAlert,
+    ChangeTitleAlert } = useBoundStore();
 
   const handlePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -24,10 +25,12 @@ const useSignIn = () => {
         throw new Error("Faltan completar campos");
       }
       await LoginMail({ email, password });
-      alert(`La autenticación fue exitosa para ${email}`);
+      ChangeTitleAlert(`La autenticación fue exitosa para ${email}`);
+      ChangeStateAlert(true);
     } catch (error) {
       setUser(null);
-      alert(`ERROR: ${error.message}`);
+      ChangeTitleAlert(`ERROR: ${error.message}`);
+      ChangeStateAlert(true);
     }
   };
 
