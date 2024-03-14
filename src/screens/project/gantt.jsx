@@ -1,7 +1,7 @@
+import { useState } from "react";
 import { mockTasks } from "@/mockData/taskData";
 import { styled } from "@mui/system";
 import { differenceInDays, format, addDays } from "date-fns";
-import React, { useState } from "react";
 
 // ----------------- syles ----------------------
 const TaskTable = styled("div")({
@@ -33,14 +33,14 @@ const TaskRow = styled("div")({
 });
 
 // Day drop element
-const DayElement = styled("div")({
+const TableElement = styled("div")({
   minWidth: "100px",
   height: "100%",
   color: "darkslategray",
   borderRight: "1px solid #E0E3E8",
 });
 
-const DayElementHead = styled("div")({
+const TableElementHead = styled("div")({
   width: "100%",
   height: "98px",
   overflow: "hidden",
@@ -64,7 +64,7 @@ const DayElementHead = styled("div")({
   },
 });
 
-const DayElementBody = styled("div")({
+const TableElementBody = styled("div")({
   flex: 1,
   flexDirection: "column",
   width: "100%",
@@ -73,22 +73,8 @@ const DayElementBody = styled("div")({
   borderBottom: "1px solid #E0E3E8",
   padding: "0",
 });
-/*
-const DayElementBody = styled("div")({
-  flex: 1,
-  flexDirection: "column",
-  width: "100%",
-  height: "content",
-  color: "darkslategray",
-  borderBottom: "1px solid #E0E3E8",
-  padding: "0",
-});*/
 
 // ----------------- dyas logic ----------------------
-// Convert the dates in mockTasks to the format "DD-MM-YY"
-
-// En este ejemplo, la fecha actual se utiliza como referencia para calcular el intervalo de tiempo
-const currentDate = new Date();
 
 // Encuentra la fecha más antigua y la más reciente entre todas las tareas
 const minDate = mockTasks.reduce((min, task) => {
@@ -116,7 +102,10 @@ let days = Array.from({ length: daysDifference }, (_, index) => {
   };
 });
 
+// ----------------- gantt chart ----------------------
 const GanttChart = () => {
+  const [taskDrawnOnDay, setTaskDrawnOnDay] = useState({});
+
   return (
     <div
       style={{
@@ -127,16 +116,66 @@ const GanttChart = () => {
     >
       <TaskTable>
         {days.map((element, index) => (
-          <DayElement key={index}>
-            <DayElementHead>
+          <TableElement key={index}>
+            <TableElementHead>
               <p>{element.num}</p>
               <p>
                 {element.day}/week {element.week}/{element.month}/{element.year}
               </p>
-            </DayElementHead>
+            </TableElementHead>
 
-            <DayElementBody>
+            <TableElementBody>
               {mockTasks.map((task) => {
+                const taskStartDate = new Date(
+                  task.date.start.replace(/-/g, "/")
+                );
+                const taskEndDate = new Date(task.date.end.replace(/-/g, "/"));
+                const isTaskInCurrentDay =
+                  taskStartDate <= addDays(minDate, index) &&
+                  taskEndDate >= addDays(minDate, index);
+
+                const taskId = task.id;
+                const taskAlreadyDrawn = taskDrawnOnDay[taskId];
+
+                if (isTaskInCurrentDay && !taskAlreadyDrawn) {
+                  setTaskDrawnOnDay((prevState) => ({
+                    ...prevState,
+                    [taskId]: true,
+                  }));
+                  console.log(task.id);
+                }
+
+                return (
+                  <TaskRow key={task.id}>
+                    {isTaskInCurrentDay && (
+                      <Task style={{ background: `${task.styles.color}` }}>
+                        <div>{task.task}</div>
+                      </Task>
+                    )}
+                  </TaskRow>
+                );
+              })}
+            </TableElementBody>
+          </TableElement>
+        ))}
+      </TaskTable>
+    </div>
+  );
+};
+
+function Gantt() {
+  return (
+    <div>
+      <GanttChart />
+    </div>
+  );
+}
+
+export default Gantt;
+
+/*
+
+{mockTasks.map((task) => {
                 const taskStartDate = new Date(
                   task.date.start.replace(/-/g, "/")
                 );
@@ -155,20 +194,4 @@ const GanttChart = () => {
                   </TaskRow>
                 );
               })}
-            </DayElementBody>
-          </DayElement>
-        ))}
-      </TaskTable>
-    </div>
-  );
-};
-
-function Gantt() {
-  return (
-    <div>
-      <GanttChart />
-    </div>
-  );
-}
-
-export default Gantt;
+*/
