@@ -6,6 +6,7 @@ import NavbarDrawer from "@/components/navBar/navBarDrawer";
 import AlertGlobal from "@/components/alert/alert";
 import ModalGlobal from "@/components/modal/modal";
 import { storeUser } from "@/stores/user/storeUser";
+import { useBoundStore } from "@/stores/index";
 
 const Home = React.lazy(() => import("@/screens/home"));
 const NotFoundPage = React.lazy(() => import("@/screens/notFoundPage"));
@@ -19,7 +20,8 @@ const Layout = React.lazy(() => import("@/screens/project/layout"));
 const Report = React.lazy(() => import("@/screens/project/report"));
 
 export default function Navigator() {
-  const { Authenticated } = storeUser();
+  const { Authenticated } = useBoundStore();
+  // const { Authenticated } = storeUser();
   let Logo = "";
 
   return (
@@ -66,7 +68,7 @@ export default function Navigator() {
             <Route path="/project/:id" element={<Layout />}>
               <Route index element={<MyTask />} />
               <Route path="tasks" element={<MyTask />} />
-              <Route path="report" element={<Report/>} />
+              <Route path="report" element={<Report />} />
             </Route>
 
             <Route path="/members" element={<Members />} />

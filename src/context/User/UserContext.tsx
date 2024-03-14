@@ -1,9 +1,12 @@
 import React, { createContext } from "react";
 import { useMoralis } from "react-moralis";
 import { Moralis } from "moralis-v1";
-
 import { useBoundStore } from "@/stores/index";
+import { initializeApp } from 'firebase/app';
+import { firebaseConfig } from '../../../fbconfig'; // Asegúrate de importar la configuración correcta
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
+initializeApp(firebaseConfig);
 
 type UserContextType = {
   LoginMail: (values: any) => Promise<void>;
@@ -57,26 +60,25 @@ const UserState = (props: { children: any }) => {
     setAuthenticated
   } = useBoundStore();
   
-  const LoginMail = async (values: any) => {
-    const Authenticated = true
-
-    if (!Authenticated) {
-      await Moralis.User.logIn(values.username, values.password)
-        .then(async function (user: any) {
-
-          // const userMarketType = user.get("loginType"); => ejemplo para obtener datos del usuario
-          // setAuthenticated(true)
-          // setUser(user)
-    
-        })
-        .catch(function (error: any) {
-          const errorMessage = JSON.stringify(error);
-          const errorObjeto = JSON.parse(errorMessage);
-
-          console.error("🚀 error de login", error);
-        });
+  const LoginMail = async ({ email, password }: { email: string; password: string }): Promise<void> => {
+    try {
+      const auth = getAuth();
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      setAuthenticated(true);
+      const user = userCredential.user;
+      setUser({
+        uid: user.uid,
+        email: user.email,
+      });
+    } catch (error: any) {
+      const errorMessage = JSON.stringify(error);
+      const errorObjeto = JSON.parse(errorMessage);
+  
+      console.error("🚀 error de login", error);
+      throw new Error (`No se pudo autenticar a ${email}`);
     }
   };
+  
 
   const SettingsUser = async (userAddress: string) => {
     try{
@@ -86,15 +88,19 @@ const UserState = (props: { children: any }) => {
     }
   };
 
-  const LogoutFunc = async () => {
-    const Authenticated = true
-    if (Authenticated) {
+   const LogoutFunc = async () => {
+    try {
+      const auth = getAuth();
+      // Cerrar sesión en Firebase
+      await auth.signOut();
+      // Cerrar sesión en Moralis
       await logout();
       // setAuthenticated(false)
       // setUser([])
       location.reload();
+    } catch (error: any) {
+      console.error("🚀 error de logout", error);
     }
-    
   };
 
   return (

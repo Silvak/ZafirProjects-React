@@ -28,6 +28,7 @@
     "dayjs": "^1.11.6",
     "dotenv": "^16.0.3",
     "ethers": "^5.7.2",
+    "firebase": "^10.9.0",
     "formik": "^2.2.9",
     "javascript-time-ago": "^2.5.9",
     "magic-sdk": "7.0.0",
