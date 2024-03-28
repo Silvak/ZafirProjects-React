@@ -81,7 +81,7 @@ export default function UserProfileButton() {
             >
               {User?.name}
             </Typography>
-            <Typography level="body-xs">Admin</Typography>
+            <Typography level="body-xs">{User?.rol}</Typography>
           </Box>
           {open ? (
             <KeyboardArrowUpIcon sx={{ marginLeft: 2 }} />

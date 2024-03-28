@@ -1,33 +1,17 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useBoundStore } from "@/stores/index";
-import axios from "axios";
-import { axiosInstance } from "@/config/apiConfig";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../context/User/UserContext";
 
 function useSignUp() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setConfirmPassword] = useState(false);
-
-  const { setDataPerfilUser, setUser, setAuthenticated, User } = useBoundStore(
+  const { Register } = useContext(UserContext);
+  const { ChangeStateAlert, ChangeTitleAlert } = useBoundStore(
     (state) => state
   );
 
   const navigate = useNavigate();
-
-  const register = async (user) => {
-    try {
-      const response = await axiosInstance.post("/user/register", user);
-      if (response.status === 201) {
-        console.log(response.data.message);
-        // setAuthenticated(true);
-        navigate("/sign-in");
-      } else {
-        throw new Error("Error al registrar usuario");
-      }
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -41,19 +25,26 @@ function useSignUp() {
 
     const user = {
       firstName,
-      lastName,
       email,
       password,
-      confirmPassword,
     };
 
-    if (Object.values(user).includes("")) return alert("Empty fields!");
-
-    setDataPerfilUser(user);
-    setUser(user);
-    register(user);
-    // setAuthenticated(true);
-    // navigate("/sign-in");
+    Register(user)
+      .then((response) => {
+        if (response.status === 201) {
+          ChangeTitleAlert(response.data.message);
+          ChangeStateAlert(true);
+          setTimeout(() => {
+            ChangeTitleAlert("");
+            ChangeStateAlert(false);
+            navigate("/sign-in");
+          }, 1500);
+        }
+      })
+      .catch((error) => {
+        ChangeTitleAlert(error.message);
+        ChangeStateAlert(true);
+      });
   };
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
