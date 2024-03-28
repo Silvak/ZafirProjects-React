@@ -8,10 +8,10 @@ type FirebaseConfig = {
 };
 
 export const firebaseConfig: FirebaseConfig = {
-    apiKey:"AIzaSyAVA1_-nYTAAZvoefZwVXh-f-imZZd3iYA",
-    authDomain:"zafir-project-management.firebaseapp.com",
-    projectId:"zafir-project-management",
-    storageBucket:"zafir-project-management.appspot.com",
-    messagingSenderId:"239240781112",
-    appId:"1:239240781112:web:20673020f01f01dd1775cd",
+  apiKey: import.meta.env.VITE_API_KEY,
+  authDomain: import.meta.env.VITE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };

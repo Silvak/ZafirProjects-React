@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect } from "react";
 import { Grid, CardMedia, CircularProgress, Toolbar } from "@mui/material";
 import { Route, Routes } from "react-router-dom";
 import Navbar from "@/components/navBar/navBar";
@@ -7,6 +8,7 @@ import AlertGlobal from "@/components/alert/alert";
 import ModalGlobal from "@/components/modal/modal";
 import { storeUser } from "@/stores/user/storeUser";
 import { useBoundStore } from "@/stores/index";
+import { useNavigate } from "react-router-dom";
 
 const Home = React.lazy(() => import("@/screens/home"));
 const NotFoundPage = React.lazy(() => import("@/screens/notFoundPage"));
@@ -22,7 +24,15 @@ const Report = React.lazy(() => import("@/screens/project/report"));
 export default function Navigator() {
   const { Authenticated } = useBoundStore();
   // const { Authenticated } = storeUser();
+  const navigate = useNavigate();
+
   let Logo = "";
+
+  useEffect(() => {
+    if (!Authenticated) {
+      navigate("/sign-in");
+    }
+  }, [Authenticated]);
 
   return (
     <React.Suspense
