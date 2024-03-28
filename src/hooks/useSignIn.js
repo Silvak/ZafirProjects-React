@@ -32,14 +32,6 @@ const useSignIn = () => {
       });
   };
 
-  useEffect(() => {
-    if (Authenticated) {
-      navigate("/");
-    } else {
-      navigate("/sign-in");
-    }
-  }, [Authenticated]);
-
   return {
     showPassword,
     handlePasswordVisibility,

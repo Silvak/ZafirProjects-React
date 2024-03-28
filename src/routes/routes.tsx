@@ -31,6 +31,8 @@ export default function Navigator() {
   useEffect(() => {
     if (!Authenticated) {
       navigate("/sign-in");
+    } else {
+      navigate("/home");
     }
   }, [Authenticated]);
 
@@ -71,7 +73,7 @@ export default function Navigator() {
       {Authenticated ? (
         <NavbarDrawer>
           <Routes>
-            <Route index element={<Home />} />
+            <Route path="/home" element={<Home />} />
 
             <Route path="/project" element={<Projects />} />
 
