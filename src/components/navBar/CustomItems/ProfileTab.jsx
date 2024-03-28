@@ -17,7 +17,7 @@ import { useBoundStore } from "@/stores/index";
 import { useNavigate } from "react-router-dom";
 
 export default function UserProfileButton() {
-  const { setDataPerfilUser, setUser, setAuthenticated } = useBoundStore(
+  const { User, setDataPerfilUser, setUser, setAuthenticated } = useBoundStore(
     (state) => state
   );
 
@@ -75,7 +75,7 @@ export default function UserProfileButton() {
               variant="h7"
               color={theme.palette.text.fourth}
             >
-              Alexander
+              {User?.name}
             </Typography>
             <Typography level="body-xs">Admin</Typography>
           </Box>

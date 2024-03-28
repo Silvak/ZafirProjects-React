@@ -7,8 +7,8 @@ const useSignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const { LoginMail } = useContext(UserContext);
-  const { Authenticated, setUser, ChangeStateAlert,
-    ChangeTitleAlert } = useBoundStore();
+  const { Authenticated, setUser, ChangeStateAlert, ChangeTitleAlert } =
+    useBoundStore();
 
   const handlePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -20,18 +20,16 @@ const useSignIn = () => {
     const email = data.get("email");
     const password = data.get("password");
 
-    try {
-      if (!email || !password) {
-        throw new Error("Faltan completar campos");
-      }
-      await LoginMail({ email, password });
-      ChangeTitleAlert(`La autenticación fue exitosa para ${email}`);
-      ChangeStateAlert(true);
-    } catch (error) {
-      setUser(null);
-      ChangeTitleAlert(`ERROR: ${error.message}`);
-      ChangeStateAlert(true);
-    }
+    LoginMail({ email, password })
+      .then(() => {
+        ChangeTitleAlert("Sesión iniciada");
+        ChangeStateAlert(true);
+      })
+      .catch((error) => {
+        ChangeTitleAlert(error.message);
+        ChangeStateAlert(true);
+        console.log(error.message);
+      });
   };
 
   useEffect(() => {
