@@ -110,9 +110,10 @@ const UserState = (props: { children: any }) => {
       //await logout();
       // setAuthenticated(false)
       // setUser([])
-      //location.reload();
-      setUser({});
+      // location.reload();
+      setDataPerfilUser([]);
       setAuthenticated(false);
+      setUser({});
     } catch (error: any) {
       console.error("🚀 error de logout", error);
     }

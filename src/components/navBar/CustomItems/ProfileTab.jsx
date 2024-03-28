@@ -15,12 +15,15 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Logout, Settings } from "@mui/icons-material";
 import { useBoundStore } from "@/stores/index";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "@/context/User/UserContext";
 
 export default function UserProfileButton() {
+  const { LogoutFunc } = useContext(UserContext);
   const { User, setDataPerfilUser, setUser, setAuthenticated } = useBoundStore(
     (state) => state
   );
-  console.log(User);
+
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -35,10 +38,11 @@ export default function UserProfileButton() {
   };
 
   const handleLogout = () => {
-    setUser([]);
-    setDataPerfilUser([]);
-    setAuthenticated(false);
-    navigate("/sign-in");
+    LogoutFunc();
+    // setUser([]);
+    // setDataPerfilUser([]);
+    // setAuthenticated(false);
+    // navigate("/sign-in");
   };
 
   return (
