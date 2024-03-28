@@ -9,14 +9,13 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Logout, Settings } from "@mui/icons-material";
 import { useBoundStore } from "@/stores/index";
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import { UserContext } from "@/context/User/UserContext";
+import { UserContext } from "../../../context/User/UserContext";
 
 export default function UserProfileButton() {
   const { LogoutFunc } = useContext(UserContext);
@@ -37,8 +36,8 @@ export default function UserProfileButton() {
     setAnchorEl(null);
   };
 
-  const handleLogout = () => {
-    LogoutFunc();
+  const handleLogout = async () => {
+    await LogoutFunc();
     // setUser([]);
     // setDataPerfilUser([]);
     // setAuthenticated(false);

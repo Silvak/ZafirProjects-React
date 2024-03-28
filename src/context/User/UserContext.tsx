@@ -111,7 +111,7 @@ const UserState = (props: { children: any }) => {
       // setAuthenticated(false)
       // setUser([])
       // location.reload();
-      setDataPerfilUser([]);
+      // setDataPerfilUser([]);
       setAuthenticated(false);
       setUser({});
     } catch (error: any) {

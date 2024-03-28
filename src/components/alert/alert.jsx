@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Stack, Button, Snackbar, Slide, Typography } from "@mui/material";
+import { Stack, Snackbar, Slide, Typography } from "@mui/material";
 import { useBoundStore } from "@/stores/index";
 import { shallow } from "zustand/shallow";
 import MuiAlert from "@mui/material/Alert";
@@ -18,7 +18,7 @@ export default function AlertGlobal() {
     return <Slide {...props} direction="left" />;
   }
 
-  const handleClose = (reason) => {
+  const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
@@ -30,7 +30,7 @@ export default function AlertGlobal() {
       <Snackbar
         open={stateAlert}
         autoHideDuration={3000}
-        // onClose={handleClose}
+        onClose={handleClose}
         anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
         TransitionComponent={TransitionRight}
       >
