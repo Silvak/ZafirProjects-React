@@ -76,10 +76,11 @@ const UserState = (props: { children: any }) => {
         email,
         password,
       });
+      console.log(data);
       if (data?.token) {
         setAuthenticated(true);
         setUser({
-          uid: data.user.uid,
+          uid: data.user.id,
           name: data.user.name,
           email: data.user.email,
           rol: data.user.rol,

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useBoundStore } from "@/stores/index";
 import axios from "axios";
+import { axiosInstance } from "@/config/apiConfig";
 
 function useSignUp() {
   const [showPassword, setShowPassword] = useState(false);
@@ -15,21 +16,13 @@ function useSignUp() {
 
   const register = async (user) => {
     try {
-      const response = await axios.post(
-        "http://localhost:9000/user/register",
-        user
-      );
-      console.log(user);
+      const response = await axiosInstance.post("/user/register", user);
       if (response.status === 201) {
         console.log(response.data.message);
-        setAuthenticated(true);
-        navigate("/");
+        // setAuthenticated(true);
+        navigate("/sign-in");
       } else {
         throw new Error("Error al registrar usuario");
-      }
-      if (response.status === 400) {
-        alert("El usuario ya existe");
-        navigate("/sign-in");
       }
     } catch (error) {
       console.error(error.message);

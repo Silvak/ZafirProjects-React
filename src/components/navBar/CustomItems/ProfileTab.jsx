@@ -20,7 +20,7 @@ export default function UserProfileButton() {
   const { User, setDataPerfilUser, setUser, setAuthenticated } = useBoundStore(
     (state) => state
   );
-
+  console.log(User);
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
