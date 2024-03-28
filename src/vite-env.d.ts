@@ -46,7 +46,6 @@ declare module "@/components/buttons/SocialBtns";
 declare module "@/components/forms/SignInForm";
 declare module "@/components/Selects/FilterSelect";
 
-
 declare module "@/context/AppContextProvider";
 declare module "@/stores/index";
 declare module "@/stores/container/container";
@@ -76,5 +75,6 @@ declare module "@/hooks/useSignIn";
 
 declare module "@/utils/colors";
 
+declare module "@/comfig/apiConfig";
 
 /// <reference types="vite/client"/>

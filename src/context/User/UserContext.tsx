@@ -5,7 +5,7 @@ import { useBoundStore } from "@/stores/index";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../../../fbconfig"; // Asegúrate de importar la configuración correcta
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { axiosInstance } from "../../config/apiConfig";
+import { axiosInstance } from "@/comfig/apiConfig";
 initializeApp(firebaseConfig);
 
 type UserContextType = {
