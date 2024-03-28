@@ -139,8 +139,8 @@ export default function UserProfileButton() {
           </ListItemIcon>
           Settings
         </MenuItem>
-        <MenuItem key="logout" onClick={handleClose}>
-          <ListItemIcon onClick={handleLogout}>
+        <MenuItem key="logout" onClick={handleLogout}>
+          <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
           Logout
