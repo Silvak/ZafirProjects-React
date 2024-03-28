@@ -75,6 +75,6 @@ declare module "@/hooks/useSignIn";
 
 declare module "@/utils/colors";
 
-declare module "@/comfig/apiConfig";
+declare module "@/config/apiConfig";
 
 /// <reference types="vite/client"/>
