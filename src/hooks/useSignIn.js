@@ -7,8 +7,13 @@ const useSignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const { LoginMail } = useContext(UserContext);
-  const { Authenticated, setUser, ChangeStateAlert, ChangeTitleAlert } =
-    useBoundStore();
+  const {
+    setAuthenticated,
+    Authenticated,
+    setUser,
+    ChangeStateAlert,
+    ChangeTitleAlert,
+  } = useBoundStore();
 
   const handlePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -21,9 +26,23 @@ const useSignIn = () => {
     const password = data.get("password");
 
     LoginMail({ email, password })
-      .then(() => {
-        ChangeTitleAlert("Sesión iniciada");
-        ChangeStateAlert(true);
+      .then((response) => {
+        if (response.status === 200) {
+          ChangeTitleAlert("Sesión iniciada");
+          ChangeStateAlert(true);
+          setTimeout(() => {
+            const { data } = response;
+            ChangeTitleAlert("");
+            ChangeStateAlert(false);
+            setUser({
+              uid: data.user.id,
+              name: data.user.name,
+              email: data.user.email,
+              rol: data.user.rol,
+            });
+            setAuthenticated(true);
+          }, 1500);
+        }
       })
       .catch((error) => {
         ChangeTitleAlert(error.message);

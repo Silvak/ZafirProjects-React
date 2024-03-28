@@ -9,6 +9,7 @@ import { axiosInstance } from "@/config/apiConfig";
 initializeApp(firebaseConfig);
 
 type UserContextType = {
+  Register: (values: any) => Promise<void>;
   LoginMail: (values: any) => Promise<void>;
   SettingsUser: (userAddress: string) => Promise<void>;
   LogoutFunc: () => Promise<void>;
@@ -53,6 +54,7 @@ async function checkUserRole(roleName: string, ethAddress: string) {
 const UserState = (props: { children: any }) => {
   const { logout, enableWeb3, authenticate } = useMoralis();
   const { user } = useMoralis();
+
   // const userAddress = user!.get("ethAddress");
 
   const {
@@ -64,6 +66,15 @@ const UserState = (props: { children: any }) => {
     setAuthenticated,
   } = useBoundStore();
 
+  const Register = async (user: any): Promise<void> => {
+    try {
+      const response = await axiosInstance.post("/user/register", user);
+      return response;
+    } catch (error: any) {
+      throw Error(error.response.data.message);
+    }
+  };
+
   const LoginMail = async ({
     email,
     password,
@@ -72,20 +83,11 @@ const UserState = (props: { children: any }) => {
     password: string;
   }): Promise<void> => {
     try {
-      const { data } = await axiosInstance.post("/user/login", {
+      const response = await axiosInstance.post("/user/login", {
         email,
         password,
       });
-      console.log(data);
-      if (data?.token) {
-        setAuthenticated(true);
-        setUser({
-          uid: data.user.id,
-          name: data.user.name,
-          email: data.user.email,
-          rol: data.user.rol,
-        });
-      }
+      return response;
     } catch (error: any) {
       throw Error(error.response.data.message);
     }
@@ -123,6 +125,7 @@ const UserState = (props: { children: any }) => {
     <UserContext.Provider
       value={{
         LoginMail,
+        Register,
         SettingsUser,
         LogoutFunc,
       }}
