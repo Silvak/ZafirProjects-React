@@ -29,7 +29,7 @@ export default function AlertGlobal() {
     <Stack sx={{ width: "100%" }}>
       <Snackbar
         open={stateAlert}
-        autoHideDuration={3000}
+        autoHideDuration={2000}
         onClose={handleClose}
         anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
         TransitionComponent={TransitionRight}
