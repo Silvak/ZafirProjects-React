@@ -1,55 +1,96 @@
-import React, { useContext } from "react";
-import { Box, Modal, Typography } from "@mui/material";
+import * as React from "react";
+import { Box, Button, Modal, Typography } from "@mui/material";
 import { useBoundStore } from "@/stores/index";
 import { shallow } from "zustand/shallow";
-import ButtonSecondary from "@/components/buttons/buttonSecondary";
 
-const style = {
-  backgroundColor: "background.paper",
-  position: "relative",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: { xs: "90%", sm: "350px  ", md: "450px", lg: "500px" },
-  p: "20px",
-  borderRadius: "20px",
+const modalStyle = {
   display: "flex",
+  flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-  flexDirection: "column",
+  padding: "10px",
+  height: "auto",
 };
 
-export default function ModalGlobal() {
-  const { stateModal, titleModal, ChangeStateModal } = useBoundStore(
-    (state) => state,
-    shallow
-  );
+const ModalGlobal = () => {
+  const { stateModal, titleModal, ChangeStateModal, contentModal, isVisibleButton } =
+    useBoundStore((state) => state, shallow);
+
   const handleClose = () => {
     ChangeStateModal(false);
   };
-
+  console.log(isVisibleButton);
   return (
     <Modal
       open={stateModal}
+      onClose={handleClose}
       disableEnforceFocus
       sx={{
-        ".css-i9fmh8-MuiBackdrop-root-MuiModal-backdrop": {
+        "& .MuiBackdrop-root": {
           backgroundColor: "transparent",
-          backdropFilter: "blur(1px)",
+          backdropFilter: "blur(3px)",
         },
+        overflowY: "-moz-hidden-unscrollable",
       }}
     >
-      <Box sx={style}>
-        <Typography
-          variant="body1"
-          sx={{
-            color: "text.third",
-          }}
-        >
-          {titleModal}
-        </Typography>
-        <ButtonSecondary onClick={handleClose}>Close</ButtonSecondary>
+      <Box
+        sx={{
+          ...modalStyle,
+          minHeight: "100vh",
+          padding: "20px",
+          
+        }}
+      >
+        <Box sx={{maxWidth: "100%"}}> {/* width off */}
+          <Typography
+            variant="h4"
+            sx={{
+              bgcolor: "#FFFFFF",
+              color: "black",
+              fontWeight: "bold",
+              borderTopLeftRadius: "16px",
+              borderTopRightRadius: "16px",
+              borderBottomLeftRadius: 0,
+              borderBottomRightRadius: 0,
+              paddingTop: "20px",
+              paddingLeft: "35px",
+              paddingBottom: "7px",
+              borderBottom: "1px solid white"
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                border: "none"
+              }}
+            >
+              {titleModal}
+              {/* Close Modal */}
+              { isVisibleButton && (
+              <Button
+                sx={{
+                  margin: "0",
+                  bgcolor: "white",
+                  display: "flex",
+                  justifyContent: "flex-end",
+                }}
+                title="Close"
+                variant="text"
+                onClick={handleClose}
+              >
+                X
+              </Button>)
+              }
+              
+            </div>
+          </Typography>
+          <div>{contentModal}</div>
+        </Box>
       </Box>
     </Modal>
   );
-}
+};
+
+export default ModalGlobal;

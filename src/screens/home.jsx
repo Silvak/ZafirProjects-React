@@ -1,18 +1,17 @@
-import { useBoundStore } from "@/stores/index";
-import { shallow } from "zustand/shallow";
-import { useTheme, Box, IconButton, Button } from "@mui/material";
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
+import {
+  useTheme,
+  Box,
+  IconButton,
+  Button,
+  Typography,
+  Grid,
+} from "@mui/material";
+import OverviewHeader from "@/components/Overview/OverviewHeader";
+import MyWorkGlance from "@/components/Overview/MyWork";
+import MyTaskOverview from "@/components/Overview/MyTaskOverview";
+import ProjectsOverview from "@/components/Overview/ProjectsOverview";
 
 function MyApp() {
-  const {
-    themeModeState,
-    ChangeMode,
-    ChangeStateAlert,
-    stateAlert,
-    ChangeStateModal,
-  } = useBoundStore((state) => state, shallow);
-
   const theme = useTheme();
 
   const handleOpenAlert = () => {
@@ -23,43 +22,42 @@ function MyApp() {
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        // width: "100%",
-        // alignItems: "center",
-        // justifyContent: "center",
-        bgcolor: "background.default",
-        color: "text.primary",
-        borderRadius: 1,
-        // p: 3,
-        gap: "20px",
-      }}
-    >
-      <IconButton
-        sx={{ ml: 1, color: "text.third" }}
-        onClick={() => ChangeMode(themeModeState)}
+    <Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          // width: "100%",
+          // alignItems: "center",
+          // justifyContent: "center",
+          bgcolor: "background.default",
+          color: "text.primary",
+          borderRadius: 1,
+          // p: 3,
+          gap: "20px",
+          m: "24px",
+        }}
       >
-        {theme.palette.mode} mode
-        {theme.palette.mode === "dark" ? (
-          <Brightness7Icon sx={{ color: "icon.third" }} />
-        ) : (
-          <Brightness4Icon sx={{ color: "icon.third" }} />
-        )}
-      </IconButton>
-      <Button
-        onClick={() => handleOpenAlert()}
-        sx={{ backgroundColor: "background.paper", color: "text.third" }}
-      >
-        Alert
-      </Button>
-      <Button
-        onClick={() => handleOpenModal()}
-        sx={{ backgroundColor: "background.paper", color: "text.third" }}
-      >
-        Modal
-      </Button>
+        <OverviewHeader />
+        <MyWorkGlance />
+        <Grid container spacing={1}>
+          <Grid item xs>
+            <MyTaskOverview />
+          </Grid>
+          <Box
+            item
+            xs
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              width: "fit-content",
+              margin: 1,
+            }}
+          >
+            <ProjectsOverview />
+          </Box>
+        </Grid>
+      </Box>
     </Box>
   );
 }

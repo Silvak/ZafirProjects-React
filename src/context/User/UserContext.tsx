@@ -1,51 +1,60 @@
 import React, { createContext } from "react";
 import { useMoralis } from "react-moralis";
 import { Moralis } from "moralis-v1";
-
 import { useBoundStore } from "@/stores/index";
-
+import { initializeApp } from "firebase/app";
+import { firebaseConfig } from "../../../fbconfig"; // Asegúrate de importar la configuración correcta
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { axiosInstance } from "@/config/apiConfig";
+initializeApp(firebaseConfig);
 
 type UserContextType = {
+  Register: (values: any) => Promise<void>;
   LoginMail: (values: any) => Promise<void>;
   SettingsUser: (userAddress: string) => Promise<void>;
   LogoutFunc: () => Promise<void>;
 } | null;
 
-export const UserContext = createContext<UserContextType>(null)
-
+export const UserContext = createContext<UserContextType>(null);
 
 async function assignRoleToUser(userId: string, roleName: string) {
   try {
-      // Llamar a la función de nube en Moralis
-      const result = await Moralis.Cloud.run('assignRoleToUser', { userId, roleName});
+    // Llamar a la función de nube en Moralis
+    const result = await Moralis.Cloud.run("assignRoleToUser", {
+      userId,
+      roleName,
+    });
 
-      console.log(result);
+    console.log(result);
   } catch (error) {
-    console.error('Error al asignar el rol:', error);
+    console.error("Error al asignar el rol:", error);
   }
 }
 
 async function checkUserRole(roleName: string, ethAddress: string) {
   try {
     // Llamar a la función de nube en Parse Server
-    const result = await Moralis.Cloud.run('checkUserRoleFront', { roleName, ethAddress });
+    const result = await Moralis.Cloud.run("checkUserRoleFront", {
+      roleName,
+      ethAddress,
+    });
 
     if (result && result.hasRole) {
       console.log(`El usuario actual tiene el rol '${roleName}'.`);
-      return result.hasRole
+      return result.hasRole;
     } else {
       console.log(`El usuario actual NO tiene el rol '${roleName}'.`);
-      return result.hasRole
+      return result.hasRole;
     }
   } catch (error) {
-    console.error('Error al verificar el rol:', error);
+    console.error("Error al verificar el rol:", error);
   }
 }
 
 const UserState = (props: { children: any }) => {
-
   const { logout, enableWeb3, authenticate } = useMoralis();
   const { user } = useMoralis();
+
   // const userAddress = user!.get("ethAddress");
 
   const {
@@ -54,55 +63,71 @@ const UserState = (props: { children: any }) => {
     Authenticated,
     setDataPerfilUser,
     setUser,
-    setAuthenticated
+    setAuthenticated,
   } = useBoundStore();
-  
-  const LoginMail = async (values: any) => {
-    const Authenticated = true
 
-    if (!Authenticated) {
-      await Moralis.User.logIn(values.username, values.password)
-        .then(async function (user: any) {
+  const Register = async (user: any): Promise<void> => {
+    try {
+      const response = await axiosInstance.post("/user/register", user);
+      return response;
+    } catch (error: any) {
+      throw Error(error.response.data.message);
+    }
+  };
 
-          // const userMarketType = user.get("loginType"); => ejemplo para obtener datos del usuario
-          // setAuthenticated(true)
-          // setUser(user)
-    
-        })
-        .catch(function (error: any) {
-          const errorMessage = JSON.stringify(error);
-          const errorObjeto = JSON.parse(errorMessage);
-
-          console.error("🚀 error de login", error);
-        });
+  const LoginMail = async ({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }): Promise<void> => {
+    try {
+      const response = await axiosInstance.post("/user/login", {
+        email,
+        password,
+      });
+      return response;
+    } catch (error: any) {
+      throw Error(error.response.data.message);
     }
   };
 
   const SettingsUser = async (userAddress: string) => {
-    try{
-      const SetSettingsUser = await Moralis.Cloud.run("SetSettingsUser", { owner: userAddress });
-    }catch(error: any){
+    try {
+      const SetSettingsUser = await Moralis.Cloud.run("SetSettingsUser", {
+        owner: userAddress,
+      });
+    } catch (error: any) {
       console.error("🚀 error de SettingsUser", error);
     }
   };
 
   const LogoutFunc = async () => {
-    const Authenticated = true
-    if (Authenticated) {
-      await logout();
+    try {
+      // const auth = getAuth();
+      // Cerrar sesión en Firebase
+      // await auth.signOut();
+      // Cerrar sesión en Moralis
+      //await logout();
       // setAuthenticated(false)
       // setUser([])
-      location.reload();
+      // location.reload();
+      // setDataPerfilUser([]);
+      setAuthenticated(false);
+      setUser({});
+    } catch (error: any) {
+      console.error("🚀 error de logout", error);
     }
-    
   };
 
   return (
     <UserContext.Provider
-      value={{ 
-        LoginMail, 
-        SettingsUser, 
-        LogoutFunc
+      value={{
+        LoginMail,
+        Register,
+        SettingsUser,
+        LogoutFunc,
       }}
     >
       {props.children}

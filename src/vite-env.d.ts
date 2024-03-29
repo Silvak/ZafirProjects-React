@@ -7,6 +7,44 @@ declare module "@/components/buttons/buttonPrimary";
 declare module "@/components/inputs/inputSearchNavbar";
 declare module "@/components/alert/alert";
 declare module "@/components/modal/modal";
+declare module "@/components/navBar/itemNav";
+declare module "@/components/navBar/ItemMenu";
+declare module "@/components/navBar/items";
+declare module "@/components/navBar/CustomItems/ProfileTab";
+declare module "@/components/navBar/CustomItems/projectSelect";
+declare module "@/components/navBar/CustomItems/graphicNav";
+declare module "@/components/forms/SignUpForm";
+declare module "@/components/projectsTable/ProjectsTable";
+declare module "@/components/projectsTable/ProjectItem";
+declare module "@/components/projectsTable/ProjectsTableHeader";
+declare module "@/components/projectsTable/RenderIconByCategory";
+declare module "@/components/Overview/MyTaskOverview";
+declare module "@/components/Overview/MyWork";
+declare module "@/components/Overview/OverviewHeader";
+declare module "@/components/Overview/ProjectsOverview";
+declare module "@/components/Overview/ProjectItemsOverview";
+declare module "@/components/Overview/RenderProjectItems";
+declare module "@/components/Overview/MyTaskList";
+declare module "@/components/Overview/MyTaskItems";
+declare module "@/components/BoxIcon/BoxIcon";
+declare module "@/components/taskAccordion/TaskHeader";
+declare module "@/components/taskAccordion/TaskAccordion";
+declare module "@/components/taskAccordion/TaskItem";
+declare module "@/components/taskAccordion/taskList";
+declare module "@/components/taskAccordion/customAccordion";
+declare module "@/components/forms/EditProjectForm";
+declare module "@/components/forms/CreateProjectForm";
+declare module "@/components/buttons/Facebook/Facebook";
+declare module "@/components/buttons/Google/Google";
+declare module "@/components/TaskDetail/TaskDetail";
+declare module "@/components/TaskDetail/TaskDetailHeader";
+declare module "@/components/TaskDetail/TaskDetailContent";
+declare module "@/components/TaskDetail/TaskDetailItem";
+declare module "@/components/TaskDetail/TaskDetailSubstaks";
+declare module "@/components/Header/Header";
+declare module "@/components/buttons/SocialBtns";
+declare module "@/components/forms/SignInForm";
+declare module "@/components/Selects/FilterSelect";
 
 declare module "@/context/AppContextProvider";
 declare module "@/stores/index";
@@ -14,12 +52,29 @@ declare module "@/stores/container/container";
 declare module "@/stores/Actions/Theme/storeTheme";
 declare module "@/stores/useGetNativeBalance/useGetNativeBalance";
 declare module "@/stores/useGetWalletTokenBalances/useGetWalletTokenBalances";
+declare module "@/stores/Tasks/createTasksSlice";
+declare module "@/stores/user/storeUser";
 
 declare module "@/routes/routes";
 
+declare module "@/screens/EditForm";
 declare module "@/screens/home";
 declare module "@/screens/notFoundPage";
-
+declare module "@/screens/signIn";
+declare module "@/screens/signUp";
+declare module "@/screens/members";
 declare module "@/theme/theme";
+declare module "@/screens/project/projects";
+declare module "@/screens/project/myTask";
+declare module "@/screens/project/report";
+declare module "@/screens/project/layout";
+
+declare module "@/hooks/usePagination";
+declare module "@/hooks/useSignUp";
+declare module "@/hooks/useSignIn";
+
+declare module "@/utils/colors";
+
+declare module "@/config/apiConfig";
 
 /// <reference types="vite/client"/>

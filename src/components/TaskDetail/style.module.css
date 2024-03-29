@@ -1,0 +1,79 @@
+.title{
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.table{
+    --borderColor: #E0E3E8;
+    border: 1px solid var(--borderColor);
+    border-radius: 8px;
+    border-collapse: separate;
+    width: 100%;
+    overflow-x: auto;
+    display: block;
+}
+
+.headText{
+    color: #6B6E75
+}   
+
+.table, th,td{
+    padding: 15px 20px;
+    text-align: left;
+}
+
+.table td {
+    width: 100%;
+}
+  
+
+.table tr{
+    border-bottom: 1px solid var(--borderColor);
+    display: flex; 
+    align-items: center;
+    justify-content: space-between;
+}
+
+.table tr > *{
+    flex: 1 0 150px
+}
+
+.table tr:last-child{
+    border-bottom: none;
+}
+
+.assignee{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.assignee img{
+    --size: 50px;
+    width: var(--size);
+    height: var(--size);
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.icon{
+    cursor: pointer;
+    user-select: none;
+}
+
+
+.addSubstask{
+    padding:  20px;
+    color: #868C97;
+    font-size: 18px;
+    cursor: pointer;
+    user-select: none;
+    width: max-content;
+}
+
+.addSubstask button{
+    width: 200px;
+    margin-top: 30px;
+}
+
+
