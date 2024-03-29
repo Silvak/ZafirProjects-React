@@ -30,11 +30,11 @@ const TableRowComponent = ({
         }}
       >
         {!isMobile && (
-          <TableCell style={{ width: "12px"}}>
+          <TableCell style={{ width: "12px" }}>
             <Checkbox
               checked={isItemSelected}
               onChange={() => handleCheckboxClick(row.name)}
-              sx={{ color: "lightgray", borderRadius: 8, width:"min-content" }}
+              sx={{ color: "lightgray", borderRadius: 8, width: "min-content" }}
               className="checkbox-contact"
             />
           </TableCell>
@@ -62,9 +62,9 @@ const TableRowComponent = ({
                         : row[column.id] === "Deal Unqualified"
                         ? "#E55D57"
                         : row[column.id] === "Good Timing"
-                        ? "#2ECC71" 
+                        ? "#2ECC71"
                         : row[column.id] === "Good"
-                        ? "#2E86C1" 
+                        ? "#2E86C1"
                         : "blue",
                     backgroundColor:
                       row[column.id] === "Bad Timing"
