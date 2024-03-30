@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import Checkbox from "@mui/material/Checkbox";
@@ -16,7 +16,15 @@ const TableHeader = ({
   membersData,
   columns,
 }) => {
-  const [selectedOption, setSelectedOption] = useState("Leads");
+  const [selectedOption, setSelectedOption] = useState("All");
+  const [leadOwners, setLeadOwners] = useState([]);
+
+  useEffect(() => {
+    const uniqueLeadOwners = [
+      ...new Set(membersData.map((member) => member.leadOwner)),
+    ];
+    setLeadOwners(uniqueLeadOwners.sort());
+  }, [membersData]);
 
   const headers = [
     {
@@ -28,20 +36,12 @@ const TableHeader = ({
       label: "NAME",
     },
     {
-      id: "phone",
-      label: "PHONE NUMBER",
-    },
-    {
-      id: "",
-      label: "",
-    },
-    {
       id: "project",
       label: "PROJECT",
     },
     {
-      id: "lead_status",
-      label: "LEAD STATUS",
+      id: "rol",
+      label: "ROL",
     },
     {
       id: "lead_owner",
@@ -58,6 +58,11 @@ const TableHeader = ({
   const handleFilterClick = () => {
     alert("Apreté el botón de Filter");
   };
+
+  const filteredData =
+    selectedOption === "All"
+      ? membersData
+      : membersData.filter((member) => member.leadOwner === selectedOption);
 
   return (
     <>
@@ -153,7 +158,7 @@ const TableHeader = ({
                         }}
                       >
                         <MenuItem
-                          value="Leads"
+                          value="All"
                           style={{ fontSize: "12px", fontWeight: "normal" }}
                           sx={{
                             "&:hover": {
@@ -162,28 +167,31 @@ const TableHeader = ({
                             },
                             "&.Mui-selected": {
                               backgroundColor: "lightblue",
-                              color: "white",
+                              color: "black",
                             },
                           }}
                         >
-                          Leads
+                          All
                         </MenuItem>
-                        <MenuItem
-                          value="Item1"
-                          style={{ fontSize: "12px", fontWeight: "normal" }}
-                          sx={{
-                            "&:hover": {
-                              backgroundColor: "cyan",
-                              color: "gray",
-                            },
-                            "&.Mui-selected": {
-                              backgroundColor: "lightblue",
-                              color: "white",
-                            },
-                          }}
-                        >
-                          Item1
-                        </MenuItem>
+                        {leadOwners.map((leadOwner, index) => (
+                          <MenuItem
+                            key={index}
+                            value={leadOwner}
+                            style={{ fontSize: "12px", fontWeight: "normal" }}
+                            sx={{
+                              "&:hover": {
+                                backgroundColor: "cyan",
+                                color: "black",
+                              },
+                              "&.Mui-selected": {
+                                backgroundColor: "lightblue",
+                                color: "black",
+                              },
+                            }}
+                          >
+                            {leadOwner}
+                          </MenuItem>
+                        ))}
                       </Select>
                     </Grid>
                     <Grid item>
@@ -210,19 +218,22 @@ const TableHeader = ({
       </TableRow>
       <TableRow>
         {!isMobile && (
-          <TableCell>
+          <TableCell style={{ width: "5px" }}>
             <Checkbox
-              style={{ color: "lightgray", width:"min-content" }}
+              style={{
+                color: "lightgray",
+                width: "min-content",
+              }}
               indeterminate={
                 selectedRows.length > 0 &&
-                selectedRows.length < membersData.length
+                selectedRows.length < filteredData.length
               }
-              checked={selectedRows.length === membersData.length}
+              checked={selectedRows.length === filteredData.length}
               onChange={() =>
                 setSelectedRows(
-                  selectedRows.length === membersData.length
+                  selectedRows.length === filteredData.length
                     ? []
-                    : membersData.map((data) => data.name)
+                    : filteredData.map((data) => data.name)
                 )
               }
             />
@@ -234,17 +245,18 @@ const TableHeader = ({
               key={header.id}
               align="left"
               style={{
-                minWidth:
-                  header.id === "name"
-                    ? "15rem"
-                    : header.id === "phone"
-                    ? "10rem"
-                    : header.id === "lead_status"
-                    ? "10rem"
-                    : header.Width,
+                // minWidth:
+                //   header.id === "name"
+                //     ? "10rem"
+                //     : header.id === "phone"
+                //     ? "8rem"
+                //     : header.id === "lead_status"
+                //     ? "15rem"
+                //     : "5rem",
+                // marginInline: "5rem",
                 fontWeight: "bold",
                 color: "gray",
-                textAlign: header.id === "name" ? "left" : "center",
+                // textAlign: header.id === "name" ? "left" : "center",
               }}
             >
               {header.label}

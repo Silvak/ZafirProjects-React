@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import Checkbox from "@mui/material/Checkbox";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import DeleteIcon from "@mui/icons-material/Delete";
 import CircleIcon from "@mui/icons-material/Circle";
+import avatar from "../../assets/Img/png/defaultUser.png";
 
 import "./styles.css";
 
@@ -13,10 +14,12 @@ const TableRowComponent = ({
   isMobile,
   handleRowClick,
   handleCheckboxClick,
+  handleDeleteClick,
   row,
   isSelected,
   columns,
 }) => {
+  const [deleteClicked, setDeleteClicked] = useState(false);
   const isItemSelected = isSelected(row.name);
   const isExpanded = isMobile && isItemSelected;
 
@@ -25,17 +28,15 @@ const TableRowComponent = ({
       <TableRow
         hover={!isMobile}
         style={{
-          cursor: isMobile ? "default" : "pointer",
           backgroundColor: isItemSelected ? "lightblue" : "inherit",
         }}
       >
         {!isMobile && (
-          <TableCell style={{ width: "12px"}}>
+          <TableCell className="checkbox-contact">
             <Checkbox
               checked={isItemSelected}
               onChange={() => handleCheckboxClick(row.name)}
-              sx={{ color: "lightgray", borderRadius: 8, width:"min-content" }}
-              className="checkbox-contact"
+              sx={{ color: "lightgray" }}
             />
           </TableCell>
         )}
@@ -62,9 +63,9 @@ const TableRowComponent = ({
                         : row[column.id] === "Deal Unqualified"
                         ? "#E55D57"
                         : row[column.id] === "Good Timing"
-                        ? "#2ECC71" 
+                        ? "#2ECC71"
                         : row[column.id] === "Good"
-                        ? "#2E86C1" 
+                        ? "#2E86C1"
                         : "blue",
                     backgroundColor:
                       row[column.id] === "Bad Timing"
@@ -84,7 +85,6 @@ const TableRowComponent = ({
                     display: "inline-block",
                     borderRadius: "12px",
                     padding: "0.5rem 0.8rem",
-                    marginLeft: "1rem",
                     fontSize: "14px",
                   }}
                 >
@@ -101,8 +101,8 @@ const TableRowComponent = ({
               align="left"
               style={{
                 fontWeight: "bold",
-                width: column.minWidth,
-                fontSize: "16px",
+                width: "auto",
+                fontSize: "14px",
                 padding: !isMobile ? "0px" : "12px",
                 backgroundColor:
                   column.id === "lead_status" ? "cyan" : "inherit",
@@ -112,9 +112,23 @@ const TableRowComponent = ({
               }
             >
               {column.id === "action" && !isMobile && (
-                <MoreHorizIcon
-                  style={{ marginLeft: "24px" }}
-                  onClick={() => alert("Action de '...' more")}
+                <DeleteIcon
+                  style={{
+                    marginLeft: "24px",
+                    cursor: "pointer",
+                    color: deleteClicked ? "blue" : "inherit",
+                    transition: "color 0.2s ease-in-out",
+                  }}
+                  onMouseEnter="this.style.color='#0F0'"
+                  onMouseOut="this.style.color='#00F'"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setDeleteClicked(true);
+                    setTimeout(() => {
+                      setDeleteClicked(false);
+                      handleDeleteClick(row);
+                    }, 200);
+                  }}
                 />
               )}
               {!isMobile &&
@@ -123,28 +137,26 @@ const TableRowComponent = ({
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    marginRight: "10rem",
                   }}
                 >
                   {column.id === "name" && (
                     <img
                       style={{
-                        width: "48px",
-                        marginRight: "20px",
+                        width: "32px",
+                        marginRight: "5px",
                         borderRadius: "50%",
                       }}
-                      src={row["photo"]}
+                      src={avatar}
                     />
                   )}
                   {column.id === "leadOwner" && (
                     <img
                       style={{
-                        width: "48px",
-                        marginRight: "2rem",
+                        width: "32px",
+                        marginRight: "5px",
                         borderRadius: "50%",
-                        marginLeft: "5rem",
                       }}
-                      src={row["photoOwner"]}
+                      src={avatar}
                     />
                   )}
                   <div style={{ display: "flex", flexDirection: "column" }}>
@@ -153,12 +165,14 @@ const TableRowComponent = ({
                     </div>
                     {column.id === "name" && (
                       <div style={{ flex: 1, color: "gray" }}>
-                        {row["mail"]}
+                        {row["email"]}
                       </div>
                     )}
                   </div>
                 </div>
-              ) : !isMobile && column.id !== "photo" && column.id !== "mail" ? (
+              ) : !isMobile &&
+                column.id !== "photo" &&
+                column.id !== "email" ? (
                 column.id === "phone" ? (
                   <span>
                     ({row[column.id].substr(0, 3)}) {row[column.id].substr(3)}
@@ -201,7 +215,7 @@ const TableRowComponent = ({
                     {column.label !== "Name" && column.id !== "action" ? (
                       <React.Fragment>
                         {column.id === "photo" ? (
-                          <img src={row["photo"]} width="56px" alt="Photo" />
+                          <img src={avatar} width="56px" alt="Photo" />
                         ) : (
                           <span style={{ fontWeight: "normal" }}>
                             {": " + row[column.id]}
