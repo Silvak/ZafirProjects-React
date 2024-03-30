@@ -13,4 +13,12 @@ export const useStore = create((set) => ({
     }
   },
   setSelectedProject: (project) => set({ selectedProject: project }),
+  updateProjects: async () => {
+    try {
+      const { data } = await axiosInstance.get("/projects");
+      set({ projectsData: data });
+    } catch (error) {
+      console.error("Error actualizando proyectos:", error);
+    }
+  },
 }));

@@ -36,12 +36,12 @@ const TableHeader = ({
       label: "NAME",
     },
     {
-      id: "email",
-      label: "EMAIL",
-    },
-    {
       id: "project",
       label: "PROJECT",
+    },
+    {
+      id: "rol",
+      label: "ROL",
     },
     {
       id: "lead_owner",
@@ -218,9 +218,12 @@ const TableHeader = ({
       </TableRow>
       <TableRow>
         {!isMobile && (
-          <TableCell>
+          <TableCell style={{ width: "5px" }}>
             <Checkbox
-              style={{ color: "lightgray", width: "min-content" }}
+              style={{
+                color: "lightgray",
+                width: "min-content",
+              }}
               indeterminate={
                 selectedRows.length > 0 &&
                 selectedRows.length < filteredData.length
@@ -242,17 +245,18 @@ const TableHeader = ({
               key={header.id}
               align="left"
               style={{
-                minWidth:
-                  header.id === "name"
-                    ? "15rem"
-                    : header.id === "phone"
-                    ? "10rem"
-                    : header.id === "lead_status"
-                    ? "10rem"
-                    : header.Width,
+                // minWidth:
+                //   header.id === "name"
+                //     ? "10rem"
+                //     : header.id === "phone"
+                //     ? "8rem"
+                //     : header.id === "lead_status"
+                //     ? "15rem"
+                //     : "5rem",
+                // marginInline: "5rem",
                 fontWeight: "bold",
                 color: "gray",
-                textAlign: header.id === "name" ? "left" : "center",
+                // textAlign: header.id === "name" ? "left" : "center",
               }}
             >
               {header.label}
