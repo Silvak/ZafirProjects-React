@@ -11,14 +11,15 @@ import TablePagination from "@/components/tableMembers/tablePagination.jsx";
 import { useStore } from "@/stores/Projects/actualProject";
 import Button from "@mui/material/Button";
 import usePagination from "@/hooks/usePagination";
+import { axiosInstance } from "../config/apiConfig";
 
 const columns = [
-  { id: "photo", label: "", minWidth: 0 },
-  { id: "name", label: "Name", minWidth: 0 },
-  { id: "email", label: "Email", minWidth: 0 },
-  { id: "project", label: "Project", minWidth: 100 },
-  { id: "leadOwner", label: "Lead Owner", minWidth: 0 },
-  { id: "action", label: "", minWidth: 50 },
+  { id: "photo", label: "" },
+  { id: "name", label: "Name" },
+  { id: "project", label: "Project" },
+  { id: "rol", label: "Rol" },
+  { id: "leadOwner", label: "Lead Owner" },
+  { id: "action", label: "" },
 ];
 
 const useStyles = makeStyles((theme) => ({
@@ -39,21 +40,21 @@ const MembersTable = () => {
   const isMobile = useMediaQuery("(max-width:600px)");
   const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } =
     usePagination({});
-  const { projectsData } = useStore();
+  const { selectedProject, updateProjects } = useStore();
+
   const [allMemberData, setAllMemberData] = useState([]);
 
   useEffect(() => {
-    const allMembers = projectsData.reduce((acc, project) => {
-      return acc.concat(
-        project.members_id.map((member) => ({
-          ...member,
-          project: project.name,
-          leadOwner: project.responsible,
-        }))
-      );
-    }, []);
-    setAllMemberData(allMembers);
-  }, [projectsData]);
+    if (selectedProject) {
+      const projectMembers = selectedProject.members_id.map((member) => ({
+        ...member,
+        project: selectedProject.name,
+        leadOwner: selectedProject.responsible,
+      }));
+
+      setAllMemberData(projectMembers);
+    }
+  }, [selectedProject]);
 
   const handleRowClick = (rowName) => {
     const selectedIndex = selectedRows.indexOf(rowName);
@@ -78,6 +79,22 @@ const MembersTable = () => {
   const isSelected = (rowName) => selectedRows.indexOf(rowName) !== -1;
 
   const handleButtonMore = () => alert("toqué el botón +Add Create");
+
+  const handleDeleteClick = async (memberToDelete) => {
+    try {
+      await axiosInstance.post(
+        `/projects/${selectedProject.id}/remove-member`,
+        { memberId: memberToDelete._id }
+      );
+      const updateAllMember = allMemberData.filter(
+        (member) => member._id !== memberToDelete._id
+      );
+      await updateProjects();
+      setAllMemberData(updateAllMember);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
 
   return (
     <div style={{ backgroundColor: "#ECEFF3" }}>
@@ -134,6 +151,7 @@ const MembersTable = () => {
                     isMobile={isMobile}
                     handleRowClick={handleRowClick}
                     handleCheckboxClick={handleRowClick}
+                    handleDeleteClick={handleDeleteClick}
                     row={row}
                     isSelected={isSelected}
                     columns={columns}
