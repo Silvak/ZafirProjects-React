@@ -15,16 +15,21 @@ const TableHeader = ({
   setSelectedRows,
   membersData,
   columns,
+  filteredSearchData,
+  searchTerm,
+  setSearchTerm,
+  selectedOption,
+  setSelectedOption,
+  filteredData,
 }) => {
-  const [selectedOption, setSelectedOption] = useState("All");
   const [leadOwners, setLeadOwners] = useState([]);
 
   useEffect(() => {
     const uniqueLeadOwners = [
-      ...new Set(membersData.map((member) => member.leadOwner)),
+      ...new Set(filteredData.map((member) => member.leadOwner)),
     ];
     setLeadOwners(uniqueLeadOwners.sort());
-  }, [membersData]);
+  }, [filteredData]);
 
   const headers = [
     {
@@ -53,16 +58,11 @@ const TableHeader = ({
     },
   ];
 
-  const totalRows = membersData.length;
+  const totalRows = filteredData.length;
 
   const handleFilterClick = () => {
     alert("Apreté el botón de Filter");
   };
-
-  const filteredData =
-    selectedOption === "All"
-      ? membersData
-      : membersData.filter((member) => member.leadOwner === selectedOption);
 
   return (
     <>
@@ -97,6 +97,8 @@ const TableHeader = ({
                             '"Poppins", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"',
                           paddingLeft: "40px",
                         }}
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
                       />
                       <SearchIcon
                         style={{
@@ -132,6 +134,8 @@ const TableHeader = ({
                               '"Poppins", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"',
                             paddingLeft: "40px",
                           }}
+                          value={searchTerm}
+                          onChange={(e) => setSearchTerm(e.target.value)}
                         />
                         <SearchIcon
                           style={{
@@ -140,6 +144,7 @@ const TableHeader = ({
                             left: "10px",
                             transform: "translateY(-50%)",
                             color: "gray",
+                            cursor: "pointer",
                           }}
                         />
                       </div>
@@ -226,14 +231,14 @@ const TableHeader = ({
               }}
               indeterminate={
                 selectedRows.length > 0 &&
-                selectedRows.length < filteredData.length
+                selectedRows.length < filteredSearchData.length
               }
-              checked={selectedRows.length === filteredData.length}
+              checked={selectedRows.length === filteredSearchData.length}
               onChange={() =>
                 setSelectedRows(
-                  selectedRows.length === filteredData.length
+                  selectedRows.length === filteredSearchData.length
                     ? []
-                    : filteredData.map((data) => data.name)
+                    : filteredSearchData.map((data) => data.name)
                 )
               }
             />

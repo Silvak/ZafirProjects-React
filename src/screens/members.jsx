@@ -41,8 +41,9 @@ const MembersTable = () => {
   const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } =
     usePagination({});
   const { selectedProject, updateProjects } = useStore();
-
   const [allMemberData, setAllMemberData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedOption, setSelectedOption] = useState("All");
 
   useEffect(() => {
     if (selectedProject) {
@@ -51,7 +52,6 @@ const MembersTable = () => {
         project: selectedProject.name,
         leadOwner: selectedProject.responsible,
       }));
-
       setAllMemberData(projectMembers);
     }
   }, [selectedProject]);
@@ -96,6 +96,17 @@ const MembersTable = () => {
     }
   };
 
+  const filteredSearchData = allMemberData.filter((member) =>
+    member.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const filteredData =
+    selectedOption === "All"
+      ? filteredSearchData
+      : filteredSearchData.filter(
+          (member) => member.leadOwner === selectedOption
+        );
+
   return (
     <div style={{ backgroundColor: "#ECEFF3" }}>
       <div
@@ -138,9 +149,15 @@ const MembersTable = () => {
               setSelectedRows={setSelectedRows}
               membersData={allMemberData}
               columns={columns}
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              filteredSearchData={filteredSearchData}
+              selectedOption={selectedOption}
+              setSelectedOption={setSelectedOption}
+              filteredData={filteredData}
             />
             <TableBody>
-              {allMemberData
+              {filteredData
                 .slice(
                   (page - 1) * rowsPerPage,
                   (page - 1) * rowsPerPage + rowsPerPage
@@ -155,6 +172,8 @@ const MembersTable = () => {
                     row={row}
                     isSelected={isSelected}
                     columns={columns}
+                    setAllMemberData={setAllMemberData}
+                    allMemberData={allMemberData}
                   />
                 ))}
             </TableBody>
