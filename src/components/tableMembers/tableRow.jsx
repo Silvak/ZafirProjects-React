@@ -1,12 +1,21 @@
 import React, { useState } from "react";
-import TableRow from "@material-ui/core/TableRow";
-import TableCell from "@material-ui/core/TableCell";
-import Checkbox from "@mui/material/Checkbox";
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
+import { TableRow, TableCell } from "@material-ui/core/";
+import {
+  Modal,
+  Paper,
+  TextField,
+  Button,
+  Typography,
+  Checkbox,
+  Grid,
+} from "@mui/material/";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CircleIcon from "@mui/icons-material/Circle";
+import EditIcon from "@mui/icons-material/Edit";
 import avatar from "../../assets/Img/png/defaultUser.png";
+import { useBoundStore } from "@/stores/index";
+import { axiosInstance } from "../../config/apiConfig";
+import { useStore } from "@/stores/Projects/actualProject";
 
 import "./styles.css";
 
@@ -18,10 +27,48 @@ const TableRowComponent = ({
   row,
   isSelected,
   columns,
+  setAllMemberData,
+  allMemberData,
 }) => {
   const [deleteClicked, setDeleteClicked] = useState(false);
+  const [editClicked, setEditClicked] = useState(false);
   const isItemSelected = isSelected(row.name);
   const isExpanded = isMobile && isItemSelected;
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newName, setNewName] = useState(row.name);
+  const [newRol, setNewRol] = useState(row.rol);
+  const { updateProjects } = useStore();
+  const { ChangeStateAlert, ChangeTitleAlert } = useBoundStore();
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleSaveData = async (rowData, newValues) => {
+    console.log("Row data:", rowData);
+    console.log("New values:", newValues);
+    await axiosInstance.put(`/members/${rowData.id}`, {
+      name: newValues.name,
+      rol: newValues.rol,
+    });
+    const updatedAllMember = allMemberData.map((member) => {
+      if (member._id === rowData._id) {
+        return { ...member, name: newValues.name, rol: newValues.rol };
+      } else {
+        return member;
+      }
+    });
+
+    setAllMemberData(updatedAllMember);
+    await updateProjects();
+    ChangeTitleAlert("Los datos han sido actualizados correctamente");
+    ChangeStateAlert(true);
+    closeModal();
+  };
 
   return (
     <React.Fragment key={row.name}>
@@ -112,24 +159,40 @@ const TableRowComponent = ({
               }
             >
               {column.id === "action" && !isMobile && (
-                <DeleteIcon
-                  style={{
-                    marginLeft: "24px",
-                    cursor: "pointer",
-                    color: deleteClicked ? "blue" : "inherit",
-                    transition: "color 0.2s ease-in-out",
-                  }}
-                  onMouseEnter="this.style.color='#0F0'"
-                  onMouseOut="this.style.color='#00F'"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setDeleteClicked(true);
-                    setTimeout(() => {
-                      setDeleteClicked(false);
-                      handleDeleteClick(row);
-                    }, 200);
-                  }}
-                />
+                <div>
+                  <DeleteIcon
+                    style={{
+                      marginLeft: "24px",
+                      cursor: "pointer",
+                      color: deleteClicked ? "blue" : "inherit",
+                      transition: "color 0.2s ease-in-out",
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setDeleteClicked(true);
+                      setTimeout(() => {
+                        setDeleteClicked(false);
+                        handleDeleteClick(row);
+                      }, 200);
+                    }}
+                  />
+                  <EditIcon
+                    style={{
+                      cursor: "pointer",
+                      marginLeft: "10px",
+                      color: editClicked ? "blue" : "inherit",
+                      transition: "color 0.2s ease-in-out",
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setEditClicked(true);
+                      setTimeout(() => {
+                        setEditClicked(false);
+                        openModal();
+                      }, 200);
+                    }}
+                  />
+                </div>
               )}
               {!isMobile &&
               (column.id === "name" || column.id === "leadOwner") ? (
@@ -232,6 +295,66 @@ const TableRowComponent = ({
           </TableCell>
         </TableRow>
       )}
+      <Modal open={isModalOpen} onClose={closeModal}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <Paper style={{ padding: "20px" }}>
+            <h2>Editando {row.name}</h2>
+            <form>
+              <TextField
+                label="Nombre"
+                value={newName}
+                onChange={(e) => setNewName(e.target.value)}
+                fullWidth
+                style={{ marginBlock: 8 }}
+              />
+              <TextField
+                label="Rol"
+                value={newRol}
+                onChange={(e) => setNewRol(e.target.value)}
+                fullWidth
+                style={{ marginBottom: 8 }}
+              />
+              <Grid container justifyContent="flex-end" gap={2}>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      padding: "0.6rem",
+                      height: "min-content",
+                      borderRadius: "12px",
+                    }}
+                    onClick={closeModal}
+                  >
+                    Cerrar
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      padding: "0.6rem",
+                      height: "min-content",
+                      borderRadius: "12px",
+                    }}
+                    onClick={() =>
+                      handleSaveData(row, { name: newName, rol: newRol })
+                    }
+                  >
+                    Guardar
+                  </Button>
+                </Grid>
+              </Grid>
+            </form>
+          </Paper>
+        </div>
+      </Modal>
     </React.Fragment>
   );
 };
