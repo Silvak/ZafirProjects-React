@@ -4,12 +4,12 @@ import CloudCircleIcon from "@mui/icons-material/CloudCircle";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import ItemNav from "@/components/navBar/itemNav";
-import { useStore } from "@/stores/Projects/actualProject";
+import { useBoundStore } from "../../../stores";
 
 function ProjectSelect(props) {
   const [open, setOpen] = useState(false);
   const { fetchProjects, projectsData, selectedProject, setSelectedProject } =
-    useStore();
+    useBoundStore();
 
   useEffect(() => {
     fetchProjects();

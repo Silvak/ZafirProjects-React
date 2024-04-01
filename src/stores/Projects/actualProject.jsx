@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { axiosInstance } from "@/config/apiConfig";
 
-export const useStore = create((set) => ({
+export const actualProject = (set) => ({
   projectsData: [],
   selectedProject: undefined,
   fetchProjects: async () => {
@@ -21,4 +21,4 @@ export const useStore = create((set) => ({
       console.error("Error actualizando proyectos:", error);
     }
   },
-}));
+});

@@ -1,6 +1,7 @@
 import UserAvatar from "@/assets/Img/png/userImageMan.png";
 import { Box, TableCell } from "@mui/material";
 import { RenderIconByCategory } from "./RenderIconByCategory";
+import { fixDate } from "@/utils/fixDate";
 //styles
 import css from "./styles.module.css";
 //icons
@@ -24,14 +25,17 @@ const BoxFlex = ({ children, sx }) => {
 };
 
 const ProjectsTableItem = ({
-  projectName,
-  quantityTasks,
-  date,
-  attachments,
-  category,
+  name,
   status,
+  start,
   username,
+  // quantityTasks,
+  // date,
+  // attachments,
+  // category,
 }) => {
+  const { fixStart } = fixDate(start);
+
   return (
     <TableCell
       sx={{
@@ -46,7 +50,7 @@ const ProjectsTableItem = ({
       onClick={() => alert("ir al proyecto")}
     >
       <BoxFlex sx={{ flex: 2 }}>
-        <div
+        {/* <div
           style={{
             display: "grid",
             placeContent: "center",
@@ -56,10 +60,10 @@ const ProjectsTableItem = ({
           }}
         >
           <RenderIconByCategory category={category} />
-        </div>
+        </div> */}
         <Box sx={{ marginLeft: "20px" }}>
-          <h2 className={css.projectName}>{projectName}</h2>
-          <small className={css.quantityTasks}>{quantityTasks}</small>
+          <h2 className={css.projectName}>{name}</h2>
+          {/* <small className={css.quantityTasks}>{quantityTasks}</small> */}
         </Box>
       </BoxFlex>
       <BoxFlex>
@@ -68,13 +72,13 @@ const ProjectsTableItem = ({
       </BoxFlex>
       <BoxFlex>
         <MdCalendarMonth color="#6B6E75" size="20px" />
-        <p className="date">{date}</p>
+        <p className="date">{fixStart}</p>
       </BoxFlex>
       <BoxFlex>
         <MdAttachFile color="#6B6E75" size="20px" />
-        <p> {attachments.length} files</p>
+        {/* <p> {attachments.length} files</p> */}1 files
       </BoxFlex>
-      <BoxFlex>
+      {/* <BoxFlex>
         {status.name === "In progress" ? (
           <div
             style={{
@@ -104,7 +108,7 @@ const ProjectsTableItem = ({
             <span style={{ color: "#E55D57" }}>Issues</span>
           </div>
         )}
-      </BoxFlex>
+      </BoxFlex> */}
     </TableCell>
   );
 };
