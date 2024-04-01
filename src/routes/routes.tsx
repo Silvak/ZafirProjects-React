@@ -35,7 +35,6 @@ export default function Navigator() {
       navigate("/home");
     }
   }, [Authenticated]);
-
   return (
     <React.Suspense
       fallback={
@@ -75,7 +74,7 @@ export default function Navigator() {
           <Routes>
             <Route path="/home" element={<Home />} />
 
-            <Route path="/project" element={<Projects />} />
+            <Route path="/projects" element={<Projects />} />
 
             <Route path="/project/:id" element={<Layout />}>
               <Route index element={<MyTask />} />
