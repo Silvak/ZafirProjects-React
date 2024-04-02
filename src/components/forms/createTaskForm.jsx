@@ -20,10 +20,14 @@ import { useBoundStore } from "../../stores/index";
 import user1 from "../../assets/Img/png/userImageMan.png";
 import user2 from "../../assets/Img/png/userImageWoman.png";
 import user3 from "../../assets/Img/png/userImage.png";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+
+  const [selectedDate, setSelectedDate] = useState(null);
 
   const [taskName, setTaskName] = useState(placeholderTaskName);
   const [startDate, setStartDate] = useState("");
@@ -87,7 +91,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
           paddingBottom: "15px",
         }}
       >
-        <Grid container spacing={2} sx={{marginTop:"13px"}}>
+        <Grid container spacing={2} sx={{ marginTop: "13px" }}>
           <Grid item xs={12}>
             <Typography sx={{ fontSize: "0.2rem", fontWeight: "normal" }}>
               Task name
@@ -104,13 +108,11 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
 
           <Grid item xs={6}>
             <Typography sx={{ fontSize: "0.85rem" }}>Start date</Typography>
-            <TextField
-              fullWidth
-              value={startDate}
-              variant="outlined"
-              size="small"
-              onChange={(e) => setStartDate(e.target.value)}
-              sx={{ fontSize: "2rem" }}
+            <DatePicker
+              selected={selectedDate}
+              onChange={(date) => setSelectedDate(date)}
+              dateFormat="dd/MM/yyyy"
+              placeholderText="Selecciona una fecha"
             />
           </Grid>
 
