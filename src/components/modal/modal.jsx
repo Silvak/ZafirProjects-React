@@ -13,13 +13,17 @@ const modalStyle = {
 };
 
 const ModalGlobal = () => {
-  const { stateModal, titleModal, ChangeStateModal, contentModal, isVisibleButton } =
-    useBoundStore((state) => state, shallow);
+  const {
+    stateModal,
+    titleModal,
+    ChangeStateModal,
+    contentModal,
+    isVisibleButton,
+  } = useBoundStore((state) => state, shallow);
 
   const handleClose = () => {
     ChangeStateModal(false);
   };
-  console.log(isVisibleButton);
   return (
     <Modal
       open={stateModal}
@@ -38,54 +42,56 @@ const ModalGlobal = () => {
           ...modalStyle,
           minHeight: "100vh",
           padding: "20px",
-          
         }}
       >
-        <Box sx={{maxWidth: "100%"}}> {/* width off */}
-          <Typography
-            variant="h4"
-            sx={{
-              bgcolor: "#FFFFFF",
-              color: "black",
-              fontWeight: "bold",
-              borderTopLeftRadius: "16px",
-              borderTopRightRadius: "16px",
-              borderBottomLeftRadius: 0,
-              borderBottomRightRadius: 0,
-              paddingTop: "20px",
-              paddingLeft: "35px",
-              paddingBottom: "7px",
-              borderBottom: "1px solid white"
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                border: "none"
+        <Box sx={{ maxWidth: "100%" }}>
+          {" "}
+          {/* width off */}
+          {titleModal && (
+            <Typography
+              variant="h4"
+              sx={{
+                bgcolor: "#FFFFFF",
+                color: "black",
+                fontWeight: "bold",
+                borderTopLeftRadius: "16px",
+                borderTopRightRadius: "16px",
+                borderBottomLeftRadius: 0,
+                borderBottomRightRadius: 0,
+                paddingTop: "20px",
+                paddingLeft: "35px",
+                paddingBottom: "7px",
+                borderBottom: "1px solid white",
               }}
             >
-              {titleModal}
-              {/* Close Modal */}
-              { isVisibleButton && (
-              <Button
-                sx={{
-                  margin: "0",
-                  bgcolor: "white",
+              <div
+                style={{
                   display: "flex",
-                  justifyContent: "flex-end",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  border: "none",
                 }}
-                title="Close"
-                variant="text"
-                onClick={handleClose}
               >
-                X
-              </Button>)
-              }
-              
-            </div>
-          </Typography>
+                {titleModal}
+                {/* Close Modal */}
+                {isVisibleButton && (
+                  <Button
+                    sx={{
+                      margin: "0",
+                      bgcolor: "white",
+                      display: "flex",
+                      justifyContent: "flex-end",
+                    }}
+                    title="Close"
+                    variant="text"
+                    onClick={handleClose}
+                  >
+                    X
+                  </Button>
+                )}
+              </div>
+            </Typography>
+          )}
           <div>{contentModal}</div>
         </Box>
       </Box>
