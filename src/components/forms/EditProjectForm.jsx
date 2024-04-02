@@ -18,9 +18,14 @@ import user1 from "../../assets/Img/png/userImageMan.png";
 import { fixDate } from "@/utils/fixDate";
 
 function EditProjectForm({ project }) {
-  const { ChangeStateModal } = useBoundStore();
   const theme = createTheme();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+
+  const { ChangeStateModal } = useBoundStore();
+  const { fixStart, fixEnd } = fixDate(project?.start, project?.end);
+
+  const { updateProject } = useBoundStore();
+
   const [selectedUser, setSelectedUser] = useState("");
   const [selectedMember, setSelectedMember] = useState("");
   const [teamMembers, setTeamMembers] = useState(project?.["members_id"] || []);
@@ -30,26 +35,26 @@ function EditProjectForm({ project }) {
       : project?.responsible || []
   );
   const [formData, setFormData] = useState({
-    name: "",
-    start: "",
-    end: "",
-    description: "",
-    link: "",
-    github: "",
+    name: project?.name,
+    start: fixStart,
+    end: fixEnd,
+    description: project?.description,
+    link: project?.link || "",
+    github: project?.github || "",
     leaders: teamLeaders,
     members: teamMembers,
   });
-
-  console.log(project);
-
-  const { fixStart, fixEnd } = fixDate(project?.start, project?.end);
 
   const handleClose = () => {
     ChangeStateModal(false);
   };
 
-  const handleSubmit = () => {
-    SubmitEvent(formData);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // SubmitEvent(formData);
+    const { name } = formData;
+    updateProject(project?._id, { name });
+    console.log("FORMDATA:", { name });
   };
 
   const handleLeaderToChange = (e) => {
@@ -91,17 +96,18 @@ function EditProjectForm({ project }) {
     const eventValue = event.target.value;
     setFormData({
       ...formData,
-      [eventName]: [...formData[eventName], eventValue],
+      [eventName]: eventValue,
     });
 
-    console.log(formData);
+    // console.log(formData);
   };
-
   return (
     <ThemeProvider theme={theme}>
       {/* row - colum */}
       <Paper
         elevation={1}
+        component="form"
+        onSubmit={handleSubmit}
         sx={{
           maxWidth: isMobile ? "90vw" : "fit-content",
           padding: "39px",
@@ -126,7 +132,7 @@ function EditProjectForm({ project }) {
           </Typography>
           <TextField
             size="small"
-            value={project?.name}
+            value={formData.name}
             name="name"
             onChange={handleChange}
             sx={{
@@ -198,7 +204,7 @@ function EditProjectForm({ project }) {
             size="small"
             name="description"
             onChange={handleChange}
-            value={project?.description}
+            value={formData.description}
             sx={{
               width: "100%",
             }}
@@ -218,6 +224,7 @@ function EditProjectForm({ project }) {
             size="small"
             name="link"
             onChange={handleChange}
+            value={formData.link}
             sx={{
               width: "100%",
             }}
@@ -238,6 +245,7 @@ function EditProjectForm({ project }) {
             size="small"
             name="github"
             onChange={handleChange}
+            value={formData.github}
             sx={{
               width: "100%",
             }}
@@ -279,15 +287,6 @@ function EditProjectForm({ project }) {
                 title="Remove"
                 key={index}
                 alt={member}
-                // src={
-                //   member === "user1"
-                //     ? user1
-                //     : member === "user2"
-                //     ? user2
-                //     : member === "user3"
-                //     ? user3
-                //     : ""
-                // }
                 src={user1}
                 onClick={() => handleRemoveLeader(member)}
                 style={{ transition: "opacity 0.3s ease-in-out" }}
@@ -343,15 +342,6 @@ function EditProjectForm({ project }) {
                 title="Remove"
                 key={index}
                 alt={member}
-                // src={
-                //   member === "user1"
-                //     ? user1
-                //     : member === "user2"
-                //     ? user2
-                //     : member === "user3"
-                //     ? user3
-                //     : ""
-                // }
                 src={user1}
                 onClick={() => handleRemoveMember(member)}
                 style={{ transition: "opacity 0.3s ease-in-out" }}
