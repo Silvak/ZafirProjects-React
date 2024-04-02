@@ -45,13 +45,17 @@ const MembersTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedOption, setSelectedOption] = useState("All");
 
+  console.log(selectedProject);
+
   useEffect(() => {
     if (selectedProject) {
       const projectMembers = selectedProject.members_id.map((member) => ({
         ...member,
         project: selectedProject.name,
         leadOwner: selectedProject.responsible,
+        projectId: selectedProject.id,
       }));
+
       setAllMemberData(projectMembers);
     }
   }, [selectedProject]);
@@ -59,7 +63,6 @@ const MembersTable = () => {
   const handleRowClick = (rowName) => {
     const selectedIndex = selectedRows.indexOf(rowName);
     let newSelected = [];
-
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selectedRows, rowName);
     } else if (selectedIndex === 0) {
@@ -97,7 +100,7 @@ const MembersTable = () => {
   };
 
   const filteredSearchData = allMemberData.filter((member) =>
-    member.name.toLowerCase().includes(searchTerm.toLowerCase())
+    member.member.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const filteredData =
