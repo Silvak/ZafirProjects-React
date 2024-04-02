@@ -31,7 +31,7 @@ const ModalGlobal = () => {
       disableEnforceFocus
       sx={{
         "& .MuiBackdrop-root": {
-          backgroundColor: "transparent",
+          backgroundColor: "rgba(0, 0, 0, 0.1)",
           backdropFilter: "blur(3px)",
         },
         overflowY: "-moz-hidden-unscrollable",
