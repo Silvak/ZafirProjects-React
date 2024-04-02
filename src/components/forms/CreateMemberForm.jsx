@@ -51,11 +51,10 @@ function CreateMember() {
         rol: formData.role,
       });
 
-      await updateProjects();
-
       const projectUpdated = await addMemberToProject(data._id, formData.role);
 
       setSelectedProject(projectUpdated);
+      await updateProjects();
 
       ChangeTitleAlert("Nuevo miembro agregado");
       ChangeStateAlert(true);
