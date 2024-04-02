@@ -74,6 +74,7 @@ declare module "@/hooks/usePagination";
 declare module "@/hooks/useSignUp";
 declare module "@/hooks/useSignIn";
 declare module "@/hooks/useProjectsOverview";
+declare module "@/hooks/useEditProjectForm";
 
 declare module "@/utils/colors";
 declare module "@/utils/fixDate";
