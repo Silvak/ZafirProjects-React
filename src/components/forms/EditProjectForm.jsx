@@ -18,21 +18,26 @@ import user1 from "../../assets/Img/png/userImageMan.png";
 import user2 from "../../assets/Img/png/userImageWoman.png";
 import user3 from "../../assets/Img/png/userImage.png";
 
-function EditProjectForm() {
-  const { ChangeStateModal } = useBoundStore();
+function EditProjectForm({ project }) {
   const theme = createTheme();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+
+  const { ChangeStateModal } = useBoundStore();
+  const { fixStart, fixEnd } = fixDate(project?.start, project?.end);
+
+  const { updateProject } = useBoundStore();
+
   const [selectedUser, setSelectedUser] = useState("");
   const [selectedMember, setSelectedMember] = useState("");
   const [teamMembers, setTeamMembers] = useState([]);
   const [teamLeaders, setLeaders] = useState([]);
   const [formData, setFormData] = useState({
-    name: "",
-    start: "",
-    end: "",
-    description: "",
-    link: "",
-    github: "",
+    name: project?.name,
+    start: fixStart,
+    end: fixEnd,
+    description: project?.description,
+    link: project?.link || "",
+    github: project?.github || "",
     leaders: teamLeaders,
     members: teamMembers,
   });
@@ -42,8 +47,12 @@ function EditProjectForm() {
   }
   
 
-  const handleSubmit = () => {
-    SubmitEvent(formData);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // SubmitEvent(formData);
+    const { name } = formData;
+    updateProject(project?._id, { name });
+    console.log("FORMDATA:", { name });
   };
   
   const handleLeaderToChange = (e) => {
@@ -85,17 +94,18 @@ function EditProjectForm() {
     const eventValue = event.target.value;
     setFormData({
       ...formData,
-      [eventName]: [...formData[eventName], eventValue],
+      [eventName]: eventValue,
     });
 
-    console.log(formData);
+    // console.log(formData);
   };
-
   return (
     <ThemeProvider theme={theme}>
       {/* row - colum */}
       <Paper
         elevation={1}
+        component="form"
+        onSubmit={handleSubmit}
         sx={{
           maxWidth: isMobile ? "90vw" : "fit-content",
           padding: "39px",
@@ -121,6 +131,7 @@ function EditProjectForm() {
           </Typography>
           <TextField
             size="small"
+            value={formData.name}
             placeholder="Project name..."
             name="name"
             onChange={handleChange}
@@ -189,6 +200,7 @@ function EditProjectForm() {
             size="small"
             name="description"
             onChange={handleChange}
+            value={formData.description}
             placeholder="..."
             sx={{
               width: "100%",
@@ -209,6 +221,7 @@ function EditProjectForm() {
             size="small"
             name="link"
             onChange={handleChange}
+            value={formData.link}
             sx={{
               width: "100%",
             }}
@@ -229,6 +242,7 @@ function EditProjectForm() {
             size="small"
             name="github"
             onChange={handleChange}
+            value={formData.github}
             sx={{
               width: "100%",
             }}
@@ -297,7 +311,6 @@ function EditProjectForm() {
               )}
             </Box>
           </Grid>
-          
         <Grid
           item
           sx={{
