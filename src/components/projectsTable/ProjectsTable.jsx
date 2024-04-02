@@ -5,7 +5,7 @@ import ProjectsTableItem from "@/components/projectsTable/ProjectsTableItem";
 import TablePagination from "@/components/tableMembers/tablePagination";
 
 import usePagination from "@/hooks/usePagination";
-import { useBoundStore } from "../../stores";
+import { projectsData } from "../../mockData/projectsData";
 
 const username = "John Doe";
 
@@ -13,8 +13,7 @@ const ProjectsTable = () => {
   const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } =
     usePagination({});
 
-  const { projectsData } = useBoundStore();
-  const totalProjects = projectsData?.length;
+  const totalProjects = projectsData.length;
 
   return (
     <Table
@@ -38,19 +37,18 @@ const ProjectsTable = () => {
             },
           }}
         >
-          {projectsData.length > 0 &&
-            projectsData
-              .slice(
-                (page - 1) * rowsPerPage,
-                (page - 1) * rowsPerPage + rowsPerPage
-              )
-              .map((project) => (
-                <ProjectsTableItem
-                  {...project}
-                  key={project.id}
-                  username={username}
-                />
-              ))}
+          {projectsData
+            .slice(
+              (page - 1) * rowsPerPage,
+              (page - 1) * rowsPerPage + rowsPerPage
+            )
+            .map((project) => (
+              <ProjectsTableItem
+                {...project}
+                key={project.id}
+                username={username}
+              />
+            ))}
         </TableRow>
       </TableBody>
 

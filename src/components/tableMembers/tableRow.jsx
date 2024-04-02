@@ -1,22 +1,13 @@
 import React, { useState } from "react";
-import { TableRow, TableCell } from "@material-ui/core/";
-import {
-  Modal,
-  Paper,
-  TextField,
-  Button,
-  Typography,
-  Checkbox,
-  Grid,
-} from "@mui/material/";
+import { TableRow, TableCell, Grid } from "@mui/material";
+import Checkbox from "@mui/material/Checkbox";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CircleIcon from "@mui/icons-material/Circle";
 import EditIcon from "@mui/icons-material/Edit";
+import Typography from "@mui/material/Typography";
 import avatar from "../../assets/Img/png/defaultUser.png";
 import { useBoundStore } from "@/stores/index";
-import { axiosInstance } from "../../config/apiConfig";
-import { useStore } from "@/stores/Projects/actualProject";
-
+import EditMember from "./editMember";
 import "./styles.css";
 
 const TableRowComponent = ({
@@ -30,48 +21,27 @@ const TableRowComponent = ({
   setAllMemberData,
   allMemberData,
 }) => {
+  const isItemSelected = isSelected(row.member.name);
   const [deleteClicked, setDeleteClicked] = useState(false);
   const [editClicked, setEditClicked] = useState(false);
-  const isItemSelected = isSelected(row.name);
   const isExpanded = isMobile && isItemSelected;
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newName, setNewName] = useState(row.name);
-  const [newRol, setNewRol] = useState(row.rol);
-  const { updateProjects } = useStore();
-  const { ChangeStateAlert, ChangeTitleAlert } = useBoundStore();
+  const { ChangeStateModal, ChangeTitleModal, ChangeContentModal } =
+    useBoundStore();
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleSaveData = async (rowData, newValues) => {
-    console.log("Row data:", rowData);
-    console.log("New values:", newValues);
-    await axiosInstance.put(`/members/${rowData.id}`, {
-      name: newValues.name,
-      rol: newValues.rol,
-    });
-    const updatedAllMember = allMemberData.map((member) => {
-      if (member._id === rowData._id) {
-        return { ...member, name: newValues.name, rol: newValues.rol };
-      } else {
-        return member;
-      }
-    });
-
-    setAllMemberData(updatedAllMember);
-    await updateProjects();
-    ChangeTitleAlert("Los datos han sido actualizados correctamente");
-    ChangeStateAlert(true);
-    closeModal();
+  const openModal = (row) => {
+    ChangeTitleModal("");
+    ChangeContentModal(
+      <EditMember
+        row={row}
+        setAllMemberData={setAllMemberData}
+        allMemberData={allMemberData}
+      />
+    );
+    ChangeStateModal(true);
   };
 
   return (
-    <React.Fragment key={row.name}>
+    <React.Fragment key={row.member.name}>
       <TableRow
         hover={!isMobile}
         style={{
@@ -82,65 +52,14 @@ const TableRowComponent = ({
           <TableCell className="checkbox-contact">
             <Checkbox
               checked={isItemSelected}
-              onChange={() => handleCheckboxClick(row.name)}
+              onChange={() => handleCheckboxClick(row.member.name)}
               sx={{ color: "lightgray" }}
             />
           </TableCell>
         )}
 
         {columns.map((column) => {
-          let cellContent = row[column.id];
-
-          if (column.id === "ledStatus") {
-            cellContent = (
-              <div
-                style={{
-                  minWidth: "11rem",
-                }}
-              >
-                <div
-                  style={{
-                    color:
-                      row[column.id] === "Bad Timing"
-                        ? "#F28C43"
-                        : row[column.id] === "New"
-                        ? "#7662EA"
-                        : row[column.id] === "Contracted"
-                        ? "#429482"
-                        : row[column.id] === "Deal Unqualified"
-                        ? "#E55D57"
-                        : row[column.id] === "Good Timing"
-                        ? "#2ECC71"
-                        : row[column.id] === "Good"
-                        ? "#2E86C1"
-                        : "blue",
-                    backgroundColor:
-                      row[column.id] === "Bad Timing"
-                        ? "#FDEEE3"
-                        : row[column.id] === "New"
-                        ? "#ECE9FF"
-                        : row[column.id] === "Contracted"
-                        ? "#E5F3DD"
-                        : row[column.id] === "Deal Unqualified"
-                        ? "#FFEBEA"
-                        : row[column.id] === "Good Timing"
-                        ? "#D5F5E3"
-                        : row[column.id] === "Good"
-                        ? "#D6EAF8"
-                        : "cyan",
-
-                    display: "inline-block",
-                    borderRadius: "12px",
-                    padding: "0.5rem 0.8rem",
-                    fontSize: "14px",
-                  }}
-                >
-                  <CircleIcon sx={{ fontSize: "13px", marginRight: "5px" }} />
-                  <span>{row[column.id]}</span>
-                </div>
-              </div>
-            );
-          }
+          let cellContent = row.member[column.id];
 
           return (
             <TableCell
@@ -153,11 +72,18 @@ const TableRowComponent = ({
                 padding: !isMobile ? "0px" : "12px",
                 backgroundColor:
                   column.id === "lead_status" ? "cyan" : "inherit",
+                cursor: column.id === "name" ? "pointer" : "inherit",
               }}
               onClick={
-                column.id === "name" ? () => handleRowClick(row.name) : null
+                column.id === "name"
+                  ? () => handleRowClick(row.member.name)
+                  : null
               }
             >
+              {column.id === "project" && !isMobile && (
+                <span style={{ marginLeft: 10 }}>{row.project}</span>
+              )}
+
               {column.id === "action" && !isMobile && (
                 <div>
                   <DeleteIcon
@@ -188,7 +114,7 @@ const TableRowComponent = ({
                       setEditClicked(true);
                       setTimeout(() => {
                         setEditClicked(false);
-                        openModal();
+                        openModal(row);
                       }, 200);
                     }}
                   />
@@ -205,8 +131,8 @@ const TableRowComponent = ({
                   {column.id === "name" && (
                     <img
                       style={{
-                        width: "32px",
-                        marginRight: "5px",
+                        width: 32,
+                        marginRight: "10px",
                         borderRadius: "50%",
                       }}
                       src={avatar}
@@ -215,7 +141,7 @@ const TableRowComponent = ({
                   {column.id === "leadOwner" && (
                     <img
                       style={{
-                        width: "32px",
+                        width: 24,
                         marginRight: "5px",
                         borderRadius: "50%",
                       }}
@@ -228,7 +154,7 @@ const TableRowComponent = ({
                     </div>
                     {column.id === "name" && (
                       <div style={{ flex: 1, color: "gray" }}>
-                        {row["email"]}
+                        {row.member["email"]}
                       </div>
                     )}
                   </div>
@@ -236,10 +162,8 @@ const TableRowComponent = ({
               ) : !isMobile &&
                 column.id !== "photo" &&
                 column.id !== "email" ? (
-                column.id === "phone" ? (
-                  <span>
-                    ({row[column.id].substr(0, 3)}) {row[column.id].substr(3)}
-                  </span>
+                column.id === "rol" ? (
+                  <span>{row.rolToProject}</span>
                 ) : (
                   cellContent
                 )
@@ -279,9 +203,13 @@ const TableRowComponent = ({
                       <React.Fragment>
                         {column.id === "photo" ? (
                           <img src={avatar} width="56px" alt="Photo" />
-                        ) : (
+                        ) : column.label !== "Rol" ? (
                           <span style={{ fontWeight: "normal" }}>
                             {": " + row[column.id]}
+                          </span>
+                        ) : (
+                          <span style={{ fontWeight: "normal" }}>
+                            {": " + row.rolToProject}
                           </span>
                         )}
                       </React.Fragment>
@@ -295,66 +223,6 @@ const TableRowComponent = ({
           </TableCell>
         </TableRow>
       )}
-      <Modal open={isModalOpen} onClose={closeModal}>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
-          }}
-        >
-          <Paper style={{ padding: "20px" }}>
-            <h2>Editando {row.name}</h2>
-            <form>
-              <TextField
-                label="Nombre"
-                value={newName}
-                onChange={(e) => setNewName(e.target.value)}
-                fullWidth
-                style={{ marginBlock: 8 }}
-              />
-              <TextField
-                label="Rol"
-                value={newRol}
-                onChange={(e) => setNewRol(e.target.value)}
-                fullWidth
-                style={{ marginBottom: 8 }}
-              />
-              <Grid container justifyContent="flex-end" gap={2}>
-                <Grid item>
-                  <Button
-                    variant="contained"
-                    sx={{
-                      padding: "0.6rem",
-                      height: "min-content",
-                      borderRadius: "12px",
-                    }}
-                    onClick={closeModal}
-                  >
-                    Cerrar
-                  </Button>
-                </Grid>
-                <Grid item>
-                  <Button
-                    variant="contained"
-                    sx={{
-                      padding: "0.6rem",
-                      height: "min-content",
-                      borderRadius: "12px",
-                    }}
-                    onClick={() =>
-                      handleSaveData(row, { name: newName, rol: newRol })
-                    }
-                  >
-                    Guardar
-                  </Button>
-                </Grid>
-              </Grid>
-            </form>
-          </Paper>
-        </div>
-      </Modal>
     </React.Fragment>
   );
 };
