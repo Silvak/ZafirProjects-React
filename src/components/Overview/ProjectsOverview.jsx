@@ -1,34 +1,20 @@
-import { useState } from "react";
-import { projectsData } from "../../mockData/projectsData";
-import ProjectsTableItem from "@/components/projectsTable/ProjectsTableItem";
-import EastIcon from '@mui/icons-material/East';
-import EditProjectForm from "../forms/EditProjectForm";
+import EastIcon from "@mui/icons-material/East";
 import {
-  Typography,
-  Grid,
   Box,
-  ThemeProvider,
-  createTheme,
+  Grid,
   Table,
   TableBody,
   TableRow,
-  useMediaQuery,
+  ThemeProvider,
+  Typography,
 } from "@mui/material";
-import { useBoundStore } from "../../stores";
 import { NavLink } from "react-router-dom";
 import ProjectItemsOverview from "./ProjectItemsOverview";
+import { useProjectsOverview } from "@/hooks/useProjectsOverview";
+import EditProjectForm from "@/components/forms/EditProjectForm";
 
 function ProjectsOverview() {
-  const theme = createTheme();
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
-  const { ChangeStateModal, ChangeContentModal, ChangeTitleModal } = useBoundStore();
-  const handleEdit = () => {
-    ChangeTitleModal("Edit Project");
-    ChangeContentModal(<EditProjectForm />);
-    ChangeStateModal(true);
-  }
-  
-
+  const { projectsData, handleEdit, isMobile, theme } = useProjectsOverview();
 
   return (
     <ThemeProvider theme={theme}>
@@ -60,17 +46,25 @@ function ProjectsOverview() {
               Projects
             </Typography>
           </Grid>
-          <Grid item
+          <Grid
+            item
             sx={{
-                marginTop: "26px",
-                marginRight: "30px",
-                marginLeft: isMobile ? "30px" : "",
-                backgroundColor: isMobile ? "#ECE9FF" : ""
+              marginTop: "26px",
+              marginRight: "30px",
+              marginLeft: isMobile ? "30px" : "",
+              backgroundColor: isMobile ? "#ECE9FF" : "",
             }}
           >
-            <NavLink to="/projects" style={{ textDecoration: "none", display: "flex", fontFamily: "Poppins" }}>
+            <NavLink
+              to="/projects"
+              style={{
+                textDecoration: "none",
+                display: "flex",
+                fontFamily: "Poppins",
+              }}
+            >
               View all
-              <EastIcon xs sx={{marginLeft: "6px"}}/>
+              <EastIcon xs sx={{ marginLeft: "6px" }} />
             </NavLink>
           </Grid>
         </Grid>
@@ -84,7 +78,6 @@ function ProjectsOverview() {
             borderBottom: "none",
           }}
         >
-
           <TableBody sx={{ display: "grid" }}>
             <TableRow
               sx={{
@@ -96,13 +89,21 @@ function ProjectsOverview() {
                 },
               }}
             >
-              {projectsData.map((project) => (
-                  <ProjectItemsOverview
-                    handleEdit={handleEdit}
-                    {...project}
-                    key={project.id}
-                  />
-                ))}
+              {projectsData.length === 0 ? (
+                <p>Sin projectos</p>
+              ) : (
+                projectsData
+                  .slice(0, 8)
+                  .map((project) => (
+                    <ProjectItemsOverview
+                      handleEdit={() =>
+                        handleEdit(<EditProjectForm project={project} />)
+                      }
+                      {...project}
+                      key={project.id}
+                    />
+                  ))
+              )}
             </TableRow>
           </TableBody>
         </Table>

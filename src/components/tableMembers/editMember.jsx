@@ -9,12 +9,11 @@ import {
 import { useState } from "react";
 import { useBoundStore } from "@/stores/index";
 import { axiosInstance } from "../../config/apiConfig";
-import { useStore } from "@/stores/Projects/actualProject";
 
 function EditMember({ row, setAllMemberData, allMemberData }) {
   const [newName, setNewName] = useState(row.member.name);
   const [newRol, setNewRol] = useState(row.rolToProject);
-  const { updateProjects } = useStore();
+  const { updateProjects } = useBoundStore();
   const { ChangeStateModal, ChangeStateAlert, ChangeTitleAlert } =
     useBoundStore();
 

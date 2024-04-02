@@ -54,6 +54,7 @@ declare module "@/stores/useGetNativeBalance/useGetNativeBalance";
 declare module "@/stores/useGetWalletTokenBalances/useGetWalletTokenBalances";
 declare module "@/stores/Tasks/createTasksSlice";
 declare module "@/stores/user/storeUser";
+declare module "@/stores/Projects/actualProject";
 
 declare module "@/routes/routes";
 
@@ -72,8 +73,10 @@ declare module "@/screens/project/layout";
 declare module "@/hooks/usePagination";
 declare module "@/hooks/useSignUp";
 declare module "@/hooks/useSignIn";
+declare module "@/hooks/useProjectsOverview";
 
 declare module "@/utils/colors";
+declare module "@/utils/fixDate";
 
 declare module "@/config/apiConfig";
 

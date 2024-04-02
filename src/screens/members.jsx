@@ -8,10 +8,10 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import TableHeader from "@/components/tableMembers/tableHeader.jsx";
 import TableRowComponent from "@/components/tableMembers/tableRow.jsx";
 import TablePagination from "@/components/tableMembers/tablePagination.jsx";
-import { useStore } from "@/stores/Projects/actualProject";
 import Button from "@mui/material/Button";
 import usePagination from "@/hooks/usePagination";
 import { axiosInstance } from "../config/apiConfig";
+import { useBoundStore } from "../stores";
 
 const columns = [
   { id: "photo", label: "" },
@@ -40,7 +40,7 @@ const MembersTable = () => {
   const isMobile = useMediaQuery("(max-width:600px)");
   const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } =
     usePagination({});
-  const { selectedProject, updateProjects } = useStore();
+  const { selectedProject, updateProjects } = useBoundStore();
   const [allMemberData, setAllMemberData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedOption, setSelectedOption] = useState("All");
