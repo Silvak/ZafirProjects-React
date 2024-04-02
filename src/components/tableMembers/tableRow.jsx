@@ -28,8 +28,6 @@ const TableRowComponent = ({
   const { ChangeStateModal, ChangeTitleModal, ChangeContentModal } =
     useBoundStore();
 
-  console.log("row", row);
-
   const openModal = (row) => {
     ChangeTitleModal("");
     ChangeContentModal(
