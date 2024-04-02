@@ -81,7 +81,12 @@ function CreateMember() {
         style={{
           padding: "20px",
           backgroundColor: "#fff",
-          width: "35vw",
+          width: "30vw",
+          borderBottomLeftRadius: "16px",
+          borderBottomRightRadius: "16px",
+          borderTopLeftRadius: "0px",
+          borderTopRightRadius: "0px",
+          paddingBottom: "25px",
         }}
       >
         <Grid
