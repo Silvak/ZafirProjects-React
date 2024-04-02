@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import Checkbox from "@mui/material/Checkbox";
@@ -15,8 +15,21 @@ const TableHeader = ({
   setSelectedRows,
   membersData,
   columns,
+  filteredSearchData,
+  searchTerm,
+  setSearchTerm,
+  selectedOption,
+  setSelectedOption,
+  filteredData,
 }) => {
-  const [selectedOption, setSelectedOption] = useState("Leads");
+  const [leadOwners, setLeadOwners] = useState([]);
+
+  useEffect(() => {
+    const uniqueLeadOwners = [
+      ...new Set(filteredData.map((member) => member.leadOwner)),
+    ];
+    setLeadOwners(uniqueLeadOwners.sort());
+  }, [filteredData]);
 
   const headers = [
     {
@@ -28,20 +41,12 @@ const TableHeader = ({
       label: "NAME",
     },
     {
-      id: "phone",
-      label: "PHONE NUMBER",
-    },
-    {
-      id: "",
-      label: "",
-    },
-    {
       id: "project",
       label: "PROJECT",
     },
     {
-      id: "lead_status",
-      label: "LEAD STATUS",
+      id: "rol",
+      label: "ROL",
     },
     {
       id: "lead_owner",
@@ -53,7 +58,7 @@ const TableHeader = ({
     },
   ];
 
-  const totalRows = membersData.length;
+  const totalRows = filteredData.length;
 
   const handleFilterClick = () => {
     alert("Apreté el botón de Filter");
@@ -92,6 +97,8 @@ const TableHeader = ({
                             '"Poppins", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"',
                           paddingLeft: "40px",
                         }}
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
                       />
                       <SearchIcon
                         style={{
@@ -127,6 +134,8 @@ const TableHeader = ({
                               '"Poppins", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"',
                             paddingLeft: "40px",
                           }}
+                          value={searchTerm}
+                          onChange={(e) => setSearchTerm(e.target.value)}
                         />
                         <SearchIcon
                           style={{
@@ -135,6 +144,7 @@ const TableHeader = ({
                             left: "10px",
                             transform: "translateY(-50%)",
                             color: "gray",
+                            cursor: "pointer",
                           }}
                         />
                       </div>
@@ -153,7 +163,7 @@ const TableHeader = ({
                         }}
                       >
                         <MenuItem
-                          value="Leads"
+                          value="All"
                           style={{ fontSize: "12px", fontWeight: "normal" }}
                           sx={{
                             "&:hover": {
@@ -162,28 +172,31 @@ const TableHeader = ({
                             },
                             "&.Mui-selected": {
                               backgroundColor: "lightblue",
-                              color: "white",
+                              color: "black",
                             },
                           }}
                         >
-                          Leads
+                          All
                         </MenuItem>
-                        <MenuItem
-                          value="Item1"
-                          style={{ fontSize: "12px", fontWeight: "normal" }}
-                          sx={{
-                            "&:hover": {
-                              backgroundColor: "cyan",
-                              color: "gray",
-                            },
-                            "&.Mui-selected": {
-                              backgroundColor: "lightblue",
-                              color: "white",
-                            },
-                          }}
-                        >
-                          Item1
-                        </MenuItem>
+                        {leadOwners.map((leadOwner, index) => (
+                          <MenuItem
+                            key={index}
+                            value={leadOwner}
+                            style={{ fontSize: "12px", fontWeight: "normal" }}
+                            sx={{
+                              "&:hover": {
+                                backgroundColor: "cyan",
+                                color: "black",
+                              },
+                              "&.Mui-selected": {
+                                backgroundColor: "lightblue",
+                                color: "black",
+                              },
+                            }}
+                          >
+                            {leadOwner}
+                          </MenuItem>
+                        ))}
                       </Select>
                     </Grid>
                     <Grid item>
@@ -210,19 +223,22 @@ const TableHeader = ({
       </TableRow>
       <TableRow>
         {!isMobile && (
-          <TableCell>
+          <TableCell style={{ width: "5px" }}>
             <Checkbox
-              style={{ color: "lightgray", width:"min-content" }}
+              style={{
+                color: "lightgray",
+                width: "min-content",
+              }}
               indeterminate={
                 selectedRows.length > 0 &&
-                selectedRows.length < membersData.length
+                selectedRows.length < filteredSearchData.length
               }
-              checked={selectedRows.length === membersData.length}
+              checked={selectedRows.length === filteredSearchData.length}
               onChange={() =>
                 setSelectedRows(
-                  selectedRows.length === membersData.length
+                  selectedRows.length === filteredSearchData.length
                     ? []
-                    : membersData.map((data) => data.name)
+                    : filteredSearchData.map((data) => data.member.name)
                 )
               }
             />
@@ -234,17 +250,18 @@ const TableHeader = ({
               key={header.id}
               align="left"
               style={{
-                minWidth:
-                  header.id === "name"
-                    ? "15rem"
-                    : header.id === "phone"
-                    ? "10rem"
-                    : header.id === "lead_status"
-                    ? "10rem"
-                    : header.Width,
+                // minWidth:
+                //   header.id === "name"
+                //     ? "10rem"
+                //     : header.id === "phone"
+                //     ? "8rem"
+                //     : header.id === "lead_status"
+                //     ? "15rem"
+                //     : "5rem",
+                // marginInline: "5rem",
                 fontWeight: "bold",
                 color: "gray",
-                textAlign: header.id === "name" ? "left" : "center",
+                // textAlign: header.id === "name" ? "left" : "center",
               }}
             >
               {header.label}
