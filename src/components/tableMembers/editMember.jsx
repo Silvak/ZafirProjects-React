@@ -65,7 +65,10 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
 
   return (
     <ThemeProvider theme={theme}>
-      <Paper elevation={3} style={{ padding: "20px", backgroundColor: "#fff" }}>
+      <Paper
+        elevation={3}
+        style={{ padding: "20px", backgroundColor: "#fff", maxWidth: "35vw" }}
+      >
         <h2 style={{ marginBlock: 8 }}>Edit {row.member.name}</h2>
         <form>
           <TextField
