@@ -12,6 +12,7 @@ import Button from "@mui/material/Button";
 import usePagination from "@/hooks/usePagination";
 import { axiosInstance } from "../config/apiConfig";
 import { useBoundStore } from "../stores";
+import CreateMember from "@/components/forms/CreateMemberForm";
 
 const columns = [
   { id: "photo", label: "" },
@@ -40,12 +41,17 @@ const MembersTable = () => {
   const isMobile = useMediaQuery("(max-width:600px)");
   const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } =
     usePagination({});
-  const { selectedProject, updateProjects } = useBoundStore();
+  const {
+    selectedProject,
+    updateProjects,
+    ChangeStateModal,
+    ChangeTitleModal,
+    ChangeContentModal,
+  } = useBoundStore();
+
   const [allMemberData, setAllMemberData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedOption, setSelectedOption] = useState("All");
-
-  console.log(selectedProject);
 
   useEffect(() => {
     if (selectedProject) {
@@ -81,7 +87,16 @@ const MembersTable = () => {
 
   const isSelected = (rowName) => selectedRows.indexOf(rowName) !== -1;
 
-  const handleButtonMore = () => alert("toqué el botón +Add Create");
+  const handleButtonMore = (allMemberData) => {
+    ChangeTitleModal("Create new member");
+    ChangeContentModal(
+      <CreateMember
+        setAllMemberData={setAllMemberData}
+        allMemberData={allMemberData}
+      />
+    );
+    ChangeStateModal(true);
+  };
 
   const handleDeleteClick = async (memberToDelete) => {
     try {
@@ -133,11 +148,13 @@ const MembersTable = () => {
         </h6>
         <Button
           variant="contained"
-          onClick={handleButtonMore}
+          disableRipple
+          onClick={() => handleButtonMore(allMemberData)}
           sx={{
             padding: "0.6rem",
             height: "min-content",
             borderRadius: "12px",
+            color: "white",
           }}
         >
           + Add new contact

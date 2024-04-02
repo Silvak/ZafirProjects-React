@@ -7,15 +7,18 @@ import {
   useTheme,
 } from "@mui/material";
 import { useState } from "react";
-import { useBoundStore } from "@/stores/index";
-import { axiosInstance } from "../../config/apiConfig";
+import { useBoundStore } from "@/stores";
+import { axiosInstance } from "@/config/apiConfig";
 
 function EditMember({ row, setAllMemberData, allMemberData }) {
   const [newName, setNewName] = useState(row.member.name);
   const [newRol, setNewRol] = useState(row.rolToProject);
-  const { updateProjects } = useBoundStore();
-  const { ChangeStateModal, ChangeStateAlert, ChangeTitleAlert } =
-    useBoundStore();
+  const {
+    ChangeStateModal,
+    ChangeStateAlert,
+    ChangeTitleAlert,
+    updateProjects,
+  } = useBoundStore();
 
   const theme = useTheme();
 
@@ -98,7 +101,7 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
             fullWidth
             style={{ marginBottom: 8 }}
           />
-          <Grid container justifyContent="flex-end" sx={{ mt: 2 }}>
+          <Grid container justifyContent="space-between" sx={{ mt: 2 }}>
             <Grid item>
               <Button
                 disableRipple
