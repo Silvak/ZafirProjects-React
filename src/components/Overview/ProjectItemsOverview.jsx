@@ -1,34 +1,18 @@
 import { Box, TableCell, useMediaQuery } from "@mui/material";
 import { RenderProjectItems } from "./RenderProjectItems";
-import EditIcon from "@mui/icons-material/Edit";
-
-const BoxFlex = ({ children, sx }) => {
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
-  return (
-    <Box
-      sx={{
-        display: isMobile ? "grid" : "flex",
-        alignItems: "center",
-        justifyContent: isMobile ? "center" : "flex-start", // *
-        gap: "10px",
-        flex: 1,
-        ...sx,
-      }}
-    >
-      {children}
-    </Box>
-  );
-};
+import { BsPen, BsTrash3 } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 const ProjectItemsOverview = ({
+  _id,
   name,
   description,
   handleEdit,
+  handleDelete,
   // quantityTasks,
   // category,
 }) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
-
   return (
     <TableCell
       sx={{
@@ -41,11 +25,10 @@ const ProjectItemsOverview = ({
           cursor: "pointer",
         },
         height: "auto",
-        width: "auto",
+        width: "100%",
       }}
     >
-      <BoxFlex sx={{ flex: 2 }}>
-        {/* <div
+      {/* <div
           style={{
             display: isMobile ? "flex" : "grid",
             placeContent: "center",
@@ -59,33 +42,60 @@ const ProjectItemsOverview = ({
         >
           <RenderProjectItems category={category} />
         </div> */}
+      <Link
+        to={`/project/${_id}`}
+        style={{ color: "inherit", textDecoration: "none" }}
+      >
         <Box>
           <div
-            onClick={() => alert("ir al proyecto")}
+            // onClick={() => navigate(`/project/${id}`)}
             style={{ fontFamily: "Poppins" }}
           >
             <h2 className="projectName">{name}</h2>
           </div>
           <small className="quantityTasks" style={{ fontFamily: "Poppins" }}>
             {/* {quantityTasks} | {item} */}
-            {description}
+            {description.length > 25
+              ? `${description.slice(0, 25)}...`
+              : description}
           </small>
         </Box>
+      </Link>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "80px",
+          marginLeft: isMobile ? "unset" : "auto",
+          gap: "20px",
+        }}
+      >
         <div
           style={{
             display: "flex",
-            marginLeft: isMobile ? "" : "auto",
             color: "#6B6E75",
-            justifyContent: isMobile ? "center" : "",
-            backgroundColor: isMobile ? "white" : "",
+            justifyContent: "center",
             borderRadius: "12px",
             width: isMobile ? "auto" : "",
           }}
           onClick={handleEdit}
         >
-          <EditIcon />
+          <BsPen />
         </div>
-      </BoxFlex>
+        <div
+          style={{
+            display: "flex",
+            color: "#6B6E75",
+            justifyContent: isMobile ? "center" : "",
+            borderRadius: "12px",
+            width: isMobile ? "auto" : "",
+          }}
+          onClick={() => handleDelete(_id)}
+        >
+          <BsTrash3 />
+        </div>
+      </Box>
     </TableCell>
   );
 };

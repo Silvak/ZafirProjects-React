@@ -9,6 +9,8 @@ export function useProjectsOverview() {
   const {
     projectsData,
     fetchProjects,
+    updateProjects,
+    deleteProject,
     ChangeStateModal,
     ChangeContentModal,
     ChangeTitleModal,
@@ -20,6 +22,15 @@ export function useProjectsOverview() {
     ChangeStateModal(true);
   };
 
+  const handleDelete = async (id) => {
+    try {
+      await deleteProject(id);
+      await updateProjects();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     fetchProjects();
   }, []);
@@ -27,6 +38,7 @@ export function useProjectsOverview() {
   return {
     projectsData,
     handleEdit,
+    handleDelete,
     isMobile,
     theme,
   };

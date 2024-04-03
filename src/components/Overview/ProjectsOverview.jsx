@@ -14,16 +14,16 @@ import { useProjectsOverview } from "@/hooks/useProjectsOverview";
 import EditProjectForm from "@/components/forms/EditProjectForm";
 
 function ProjectsOverview() {
-  const { projectsData, handleEdit, isMobile, theme } = useProjectsOverview();
+  const { projectsData, handleEdit, handleDelete, isMobile, theme } =
+    useProjectsOverview();
   return (
     <ThemeProvider theme={theme}>
       <Box
         sx={{
           backgroundColor: "#ffffff",
           height: "auto",
-          // width: "360px",
+          width: "100%",
           borderRadius: "20px",
-          // minWidth: "360px",
         }}
       >
         <Grid
@@ -51,7 +51,6 @@ function ProjectsOverview() {
               marginTop: "26px",
               marginRight: "30px",
               marginLeft: isMobile ? "30px" : "",
-              backgroundColor: isMobile ? "#ECE9FF" : "",
             }}
           >
             <NavLink
@@ -59,6 +58,7 @@ function ProjectsOverview() {
               style={{
                 textDecoration: "none",
                 display: "flex",
+                alignItems: "center",
                 fontFamily: "Poppins",
               }}
             >
@@ -75,6 +75,7 @@ function ProjectsOverview() {
             display: "block",
             padding: "10px",
             borderBottom: "none",
+            width: "100%",
           }}
         >
           <TableBody sx={{ display: "grid" }}>
@@ -84,7 +85,7 @@ function ProjectsOverview() {
                 borderBottom: "none",
                 "&>*": {
                   borderBottom: "none",
-                  width: "max(900px, 100%)",
+                  width: "100%",
                 },
               }}
             >
@@ -92,9 +93,10 @@ function ProjectsOverview() {
                 <p>Sin projectos</p>
               ) : (
                 projectsData
-                  .slice(0, 8)
+                  .slice(0, 6)
                   .map((project) => (
                     <ProjectItemsOverview
+                      handleDelete={handleDelete}
                       handleEdit={() =>
                         handleEdit(<EditProjectForm project={project} />)
                       }

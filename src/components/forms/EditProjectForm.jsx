@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import user1 from "../../assets/Img/png/userImageMan.png";
-import { useEditProjectForm } from "@/hooks/useEditProjectForm";
+import { useProject } from "@/hooks/useProject";
 
 function EditProjectForm({ project }) {
   const {
@@ -32,7 +32,7 @@ function EditProjectForm({ project }) {
     selectedMember,
     teamMembers,
     teamLeaders,
-  } = useEditProjectForm(project);
+  } = useProject({ project });
 
   return (
     <ThemeProvider theme={theme}>

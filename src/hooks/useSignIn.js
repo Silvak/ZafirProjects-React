@@ -35,7 +35,7 @@ const useSignIn = () => {
             ChangeTitleAlert("");
             ChangeStateAlert(false);
             setUser({
-              uid: data.user.id,
+              uid: data.user._id,
               name: data.user.name,
               email: data.user.email,
               rol: data.user.rol,
