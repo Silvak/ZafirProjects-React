@@ -36,4 +36,12 @@ export const actualProject = (set) => ({
       console.error("Error creando proyecto:", error);
     }
   },
+  deleteProject: async (id) => {
+    try {
+      const data = await axiosInstance.delete(`/projects/${id}`);
+      console.log("DATA", data);
+    } catch (error) {
+      console.error("Error eliminando proyecto:", error);
+    }
+  },
 });
