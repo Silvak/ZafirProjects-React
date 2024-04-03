@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
 import TableContainer from "@material-ui/core/TableContainer";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -23,20 +21,7 @@ const columns = [
   { id: "action", label: "" },
 ];
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: theme.spacing(2),
-    [theme.breakpoints.down("sm")]: {
-      maxWidth: "75vw",
-    },
-  },
-  container: {
-    overflowY: "auto",
-  },
-}));
-
 const MembersTable = () => {
-  const classes = useStyles();
   const [selectedRows, setSelectedRows] = useState([]);
   const isMobile = useMediaQuery("(max-width:600px)");
   const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } =
@@ -126,7 +111,7 @@ const MembersTable = () => {
         );
 
   return (
-    <div style={{ backgroundColor: "#ECEFF3" }}>
+    <div>
       <div
         style={{
           display: "flex",
@@ -160,8 +145,16 @@ const MembersTable = () => {
           + Add new contact
         </Button>
       </div>
-      <Paper className={classes.root} style={{ borderRadius: "16px" }}>
-        <TableContainer className={classes.container}>
+      <TableContainer>
+        <div
+          style={{
+            backgroundColor: "#fff",
+            borderRadius: 20,
+            padding: 20,
+            width: "98%",
+            marginInline: "auto",
+          }}
+        >
           <Table stickyHeader aria-label="sticky table">
             <TableHeader
               isMobile={isMobile}
@@ -198,8 +191,8 @@ const MembersTable = () => {
                 ))}
             </TableBody>
           </Table>
-        </TableContainer>
-      </Paper>
+        </div>
+      </TableContainer>
       <TablePagination
         rowsPerPage={rowsPerPage}
         handleChangeRowsPerPage={handleChangeRowsPerPage}

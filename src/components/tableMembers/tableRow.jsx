@@ -40,7 +40,7 @@ const TableRowComponent = ({
   };
 
   return (
-    <React.Fragment key={row.member.name}>
+    <React.Fragment key={row.member._id}>
       <TableRow
         hover={!isMobile}
         style={{
@@ -57,12 +57,12 @@ const TableRowComponent = ({
           </TableCell>
         )}
 
-        {columns.map((column) => {
+        {columns.map((column, index) => {
           let cellContent = row.member[column.id];
 
           return (
             <TableCell
-              key={column.id}
+              key={index}
               align="left"
               style={{
                 fontWeight: "bold",
@@ -186,8 +186,8 @@ const TableRowComponent = ({
         <TableRow>
           <TableCell colSpan={6}>
             <Grid container spacing={1}>
-              {columns.map((column) => (
-                <Grid item xs={12} sm={6} key={column.id}>
+              {columns.map((column, index) => (
+                <Grid item xs={12} sm={6} key={index}>
                   <Typography
                     variant="body2"
                     component="div"
