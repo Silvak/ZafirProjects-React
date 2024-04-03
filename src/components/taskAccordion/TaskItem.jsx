@@ -323,7 +323,7 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
                 cursor: "pointer",
                 visibility: isMobile ? "hidden" : "inherits",
               }}
-              onClick={handleMoreIcon(task)}
+              onClick={() => handleMoreIcon(task)}
               sx={{ ml: "2rem" }}
             />
           )}
