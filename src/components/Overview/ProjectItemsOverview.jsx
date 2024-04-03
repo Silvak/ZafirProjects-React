@@ -1,15 +1,15 @@
 import { Box, TableCell, useMediaQuery } from "@mui/material";
 import { RenderProjectItems } from "./RenderProjectItems";
-import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from "@mui/icons-material/Edit";
 
-const BoxFlex = ({ children, sx, }) => {
+const BoxFlex = ({ children, sx }) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   return (
     <Box
       sx={{
         display: isMobile ? "grid" : "flex",
         alignItems: "center",
-        justifyContent: isMobile ? "center" :"flex-start", // *
+        justifyContent: isMobile ? "center" : "flex-start", // *
         gap: "10px",
         flex: 1,
         ...sx,
@@ -20,17 +20,14 @@ const BoxFlex = ({ children, sx, }) => {
   );
 };
 
-
-
 const ProjectItemsOverview = ({
-  projectName,
-  quantityTasks,
-  category,
-  item,
-  handleEdit
+  name,
+  description,
+  handleEdit,
+  // quantityTasks,
+  // category,
 }) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
-
 
   return (
     <TableCell
@@ -48,7 +45,7 @@ const ProjectItemsOverview = ({
       }}
     >
       <BoxFlex sx={{ flex: 2 }}>
-        <div
+        {/* <div
           style={{
             display: isMobile ? "flex" : "grid",
             placeContent: "center",
@@ -56,22 +53,34 @@ const ProjectItemsOverview = ({
             borderRadius: "12px",
             padding: "10px",
             width: isMobile ? "auto" : "",
-            justifyContent: isMobile ? "center" : ""
-
+            justifyContent: isMobile ? "center" : "",
           }}
           onClick={() => alert("ir al proyecto")}
         >
           <RenderProjectItems category={category} />
-        </div>
+        </div> */}
         <Box>
-          <div onClick={() => alert("ir al proyecto")} style={{fontFamily: "Poppins"}}>
-            <h2 className="projectName">{projectName}</h2>
+          <div
+            onClick={() => alert("ir al proyecto")}
+            style={{ fontFamily: "Poppins" }}
+          >
+            <h2 className="projectName">{name}</h2>
           </div>
-          <small className="quantityTasks" style={{fontFamily: "Poppins"}}>
-            {quantityTasks} | {item}
+          <small className="quantityTasks" style={{ fontFamily: "Poppins" }}>
+            {/* {quantityTasks} | {item} */}
+            {description}
           </small>
         </Box>
-        <div style={{ display: "flex", marginLeft: isMobile ? "" : 'auto', color: "#6B6E75", justifyContent: isMobile ? "center" : "", backgroundColor: isMobile ? "white" : "", borderRadius: "12px", width: isMobile ? "auto" : ""}}
+        <div
+          style={{
+            display: "flex",
+            marginLeft: isMobile ? "" : "auto",
+            color: "#6B6E75",
+            justifyContent: isMobile ? "center" : "",
+            backgroundColor: isMobile ? "white" : "",
+            borderRadius: "12px",
+            width: isMobile ? "auto" : "",
+          }}
           onClick={handleEdit}
         >
           <EditIcon />

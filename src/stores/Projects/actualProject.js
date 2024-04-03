@@ -22,7 +22,7 @@ export const actualProject = (set) => ({
   },
   updateProject: async (id, newProject) => {
     try {
-      const { data } = await axiosInstance.put(`/projects/${id}`, newProject);
+      const data = await axiosInstance.put(`/projects/${id}`, newProject);
       console.log("DATA", data);
     } catch (error) {
       console.error("Error actualizando proyecto:", error);

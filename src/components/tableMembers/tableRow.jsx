@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import { TableRow, TableCell, Grid } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import DeleteIcon from "@mui/icons-material/Delete";
-import CircleIcon from "@mui/icons-material/Circle";
 import EditIcon from "@mui/icons-material/Edit";
 import Typography from "@mui/material/Typography";
-import avatar from "../../assets/Img/png/defaultUser.png";
+import avatar from "@/assets/Img/png/defaultUser.png";
 import { useBoundStore } from "@/stores/index";
-import EditMember from "./editMember";
+import EditMember from "@/components/forms/EditMemberForm";
 import "./styles.css";
 
 const TableRowComponent = ({
