@@ -28,4 +28,12 @@ export const actualProject = (set) => ({
       console.error("Error actualizando proyecto:", error);
     }
   },
+  addProject: async (userId, newProject) => {
+    try {
+      const data = await axiosInstance.post(`/projects/${userId}`, newProject);
+      console.log("DATA", data);
+    } catch (error) {
+      console.error("Error creando proyecto:", error);
+    }
+  },
 });

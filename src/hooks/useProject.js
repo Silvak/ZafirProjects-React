@@ -1,15 +1,13 @@
-import { fixDate } from "@/utils/fixDate";
 import { useState } from "react";
 import { createTheme, useMediaQuery } from "@mui/material";
 import { useBoundStore } from "../stores";
 
-export function useEditProjectForm(project) {
+export function useProject({ project, isCreated = false }) {
   const theme = createTheme();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
-  const { updateProject, updateProjects, ChangeStateModal } = useBoundStore();
-
-  // const { fixStart, fixEnd } = fixDate(project?.start, project?.end);
+  const { User, addProject, updateProject, updateProjects, ChangeStateModal } =
+    useBoundStore();
 
   const [isLoading, setIsLoading] = useState(false);
   const [selectedUser, setSelectedUser] = useState("");
@@ -21,14 +19,14 @@ export function useEditProjectForm(project) {
       : project?.responsible || []
   );
   const [formData, setFormData] = useState({
-    name: project?.name,
+    name: project?.name || "",
     start: project?.start
       ? new Date(project.start).toISOString().substring(0, 10)
       : "",
     end: project?.end
       ? new Date(project.end).toISOString().substring(0, 10)
       : "",
-    description: project?.description,
+    description: project?.description || "",
     link: project?.link || "",
     github: project?.github || "",
     leaders: teamLeaders,
@@ -43,11 +41,13 @@ export function useEditProjectForm(project) {
     e.preventDefault();
     setIsLoading(true);
     try {
-      // Actualiza el proyecto
-      await updateProject(project?._id, formData);
-      // Actualiza la lista de proyectos
-      await updateProjects();
+      if (isCreated) {
+        await addProject(User.uid, formData);
+      } else {
+        await updateProject(project?._id, formData);
+      }
       // Después de que ambas operaciones asincrónicas se completen, cierra el modal
+      await updateProjects();
       setIsLoading(false);
       handleClose();
     } catch (error) {

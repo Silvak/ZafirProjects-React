@@ -18,85 +18,36 @@ import AddIcon from "@mui/icons-material/Add";
 import user1 from "../../assets/Img/png/userImageMan.png";
 import user2 from "../../assets/Img/png/userImageWoman.png";
 import user3 from "../../assets/Img/png/userImage.png";
+import { useProject } from "@/hooks/useProject";
 
 function CreateProjectForm() {
-  const { ChangeStateModal } = useBoundStore();
-  const theme = createTheme();
-  const [selectedUser, setSelectedUser] = useState("");
-  const [selectedMember, setSelectedMember] = useState("");
-  const [teamMembers, setTeamMembers] = useState([]);
-  const [teamLeaders, setLeaders] = useState([]);
-  const [formData, setFormData] = useState({
-    name: "",
-    start: "",
-    end: "",
-    description: "",
-    link: "",
-    github: "",
-    leaders: teamLeaders,
-    members: teamMembers,
-  });
-
-  const handleClose = () => {
-    ChangeStateModal(false);
-  };
-
-  const handleSubmit = () => {
-    SubmitEvent(formData);
-  };
-
-  const handleLeaderToChange = (e) => {
-    setSelectedUser(e.target.value);
-  };
-  const handleMemberToChange = (e) => {
-    setSelectedMember(e.target.value);
-  };
-
-  const handleAddLeaders = () => {
-    if (selectedUser && !teamLeaders.includes(selectedUser)) {
-      setLeaders([...teamLeaders, selectedUser]);
-      setSelectedUser("");
-    }
-  };
-  const handleAddMembers = () => {
-    if (selectedMember && !teamMembers.includes(selectedMember)) {
-      setTeamMembers([...teamMembers, selectedMember]);
-      setSelectedMember("");
-    }
-  };
-
-  const handleRemoveLeader = (memberToRemove) => {
-    const updatedMembers = teamLeaders.filter(
-      (member) => member !== memberToRemove
-    );
-    setLeaders(updatedMembers);
-  };
-
-  const handleRemoveMember = (memberToRemove) => {
-    const updatedMembers = teamMembers.filter(
-      (member) => member !== memberToRemove
-    );
-    setTeamMembers(updatedMembers);
-  };
-
-  const handleChange = (event) => {
-    const eventName = event.target.name;
-    const eventValue = event.target.value;
-    setFormData({
-      ...formData,
-      [eventName]: [...formData[eventName], eventValue],
-    });
-
-    console.log(formData);
-  };
-
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+  const {
+    theme,
+    isMobile,
+    formData,
+    handleChange,
+    handleSubmit,
+    handleLeaderToChange,
+    handleMemberToChange,
+    handleAddLeaders,
+    handleAddMembers,
+    handleRemoveLeader,
+    handleRemoveMember,
+    isLoading,
+    handleClose,
+    selectedUser,
+    selectedMember,
+    teamMembers,
+    teamLeaders,
+  } = useProject({ project: null, isCreated: true });
 
   return (
     <ThemeProvider theme={theme}>
       {/* row - colum */}
       <Paper
         elevation={1}
+        component="form"
+        onSubmit={handleSubmit}
         sx={{
           maxWidth: isMobile ? "90vw" : "fit-content",
           padding: "39px",
@@ -109,21 +60,9 @@ function CreateProjectForm() {
           borderBottomRightRadius: "16px",
         }}
       >
-        {/* <Grid
-          item
-          sx={{
-            marginBottom: "30px",
-          }}
-        >
-          <Typography variant="h5" fontFamily={"Poppins"} fontWeight={"bold"}>
-            Add Project
-          </Typography>
-        </Grid> */}
-
         <Grid
           item
           sx={{
-            // width: "444px",
             marginBottom: "20px",
           }}
         >
@@ -150,7 +89,6 @@ function CreateProjectForm() {
           <Grid
             item
             sx={{
-              // width: "216px",
               marginRight: "12px",
             }}
           >
@@ -160,24 +98,21 @@ function CreateProjectForm() {
             <TextField
               size="small"
               name="start"
+              type="date"
               onChange={handleChange}
               sx={{
                 width: "100%",
               }}
             />
           </Grid>
-          <Grid
-            item
-            sx={{
-              // width: "216px",
-            }}
-          >
+          <Grid item>
             <Typography fontFamily={"Poppins"} color={"#6B6E75"}>
               End date
             </Typography>
             <TextField
               size="small"
               name="end"
+              type="date"
               onChange={handleChange}
               sx={{
                 width: "100%",
@@ -411,7 +346,7 @@ function CreateProjectForm() {
               "&:hover": { backgroundColor: "black" },
             }}
           >
-            Save
+            {isLoading ? "Creating..." : "Save"}
           </Button>
         </Grid>
       </Paper>

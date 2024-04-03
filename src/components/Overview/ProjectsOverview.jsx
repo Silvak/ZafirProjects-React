@@ -92,7 +92,7 @@ function ProjectsOverview() {
                 <p>Sin projectos</p>
               ) : (
                 projectsData
-                  .slice(0, 8)
+                  .slice(0, 6)
                   .map((project) => (
                     <ProjectItemsOverview
                       handleEdit={() =>
