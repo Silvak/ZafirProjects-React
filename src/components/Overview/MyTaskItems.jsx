@@ -19,7 +19,7 @@ import { priorityColors, statusColors } from "@/utils/colors";
 
 function MyTaskItems({ tasks }) {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
-  console.log(tasks);
+  // console.log(tasks);
 
   const formatDate = (dateString) => {
     const today = new Date();

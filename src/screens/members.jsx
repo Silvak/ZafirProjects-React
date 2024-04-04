@@ -138,8 +138,6 @@ const MembersTable = () => {
           (member) => member.leadOwner === selectedOption
         );
 
-  console.log(filteredData.length, allMemberData.length);
-
   return (
     <div>
       <div>
