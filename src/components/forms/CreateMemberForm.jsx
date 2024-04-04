@@ -1,32 +1,41 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   Button,
   Grid,
   Paper,
   TextField,
-  ThemeProvider,
   Typography,
   createTheme,
+  ThemeProvider,
+  Select,
+  MenuItem,
+  InputLabel,
 } from "@mui/material";
-import { useBoundStore } from "../../stores";
-import { axiosInstance } from "../../config/apiConfig";
+import { useBoundStore } from "@/stores";
+import { axiosInstance } from "@/config/apiConfig";
+import useFormatText from "@/hooks/useFormatText";
+import roles from "@/utils/roles";
 
 function CreateMember() {
   const {
     ChangeStateModal,
     ChangeStateAlert,
     ChangeTitleAlert,
+    ChangeStateAlertError,
+    ChangeTitleAlertError,
     updateProjects,
     selectedProject,
     setSelectedProject,
   } = useBoundStore();
-
+  const [newRol, setNewRol] = useState("Select Role");
+  const [customRol, setCustomRol] = useState("");
   const theme = createTheme();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     role: "",
   });
+  const [customRolEnabled, setCustomRolEnabled] = useState(false);
 
   const handleClose = () => {
     ChangeStateModal(false);
@@ -45,12 +54,18 @@ function CreateMember() {
 
   const handleSubmit = async () => {
     try {
+      if (!formData.name || !formData.email || !formData.role) {
+        ChangeTitleAlertError("Faltan ingresar datos");
+        ChangeStateAlertError(true);
+        return;
+      }
       const { data } = await axiosInstance.post(`/members`, {
         name: formData.name,
         email: formData.email,
-        rol: formData.role,
+        rol: customRol || newRol,
       });
 
+      formData.role = customRol || newRol;
       const projectUpdated = await addMemberToProject(data._id, formData.role);
 
       setSelectedProject(projectUpdated);
@@ -67,15 +82,19 @@ function CreateMember() {
   const handleChange = (event) => {
     const eventName = event.target.name;
     const eventValue = event.target.value;
-    setFormData({
-      ...formData,
-      [eventName]: eventValue,
-    });
+
+    if (eventName === "name") {
+      setFormData({ ...formData, name: useFormatText(event.target.value) });
+    } else {
+      setFormData({
+        ...formData,
+        [eventName]: eventValue,
+      });
+    }
   };
 
   return (
     <ThemeProvider theme={theme}>
-      {/* row - colum */}
       <Paper
         elevation={0}
         style={{
@@ -87,6 +106,7 @@ function CreateMember() {
           borderTopLeftRadius: "0px",
           borderTopRightRadius: "0px",
           paddingBottom: "25px",
+          marginBottom: 100,
         }}
       >
         <Grid
@@ -130,16 +150,69 @@ function CreateMember() {
           }}
         >
           <Typography fontFamily={"Poppins"} color={"#6B6E75"}>
-            Role
-          </Typography>
-          <TextField
-            size="small"
-            fullWidth
-            placeholder="enter a role"
-            name="role"
-            onChange={handleChange}
-          />
+            Select Role
+          </Typography>{" "}
+          <Grid item xs={6}>
+            <Select
+              size="small"
+              value={newRol}
+              onChange={(e) => {
+                const selectedRole = e.target.value;
+                setNewRol(selectedRole);
+                setCustomRolEnabled(selectedRole === "Other");
+              }}
+              fullWidth
+              style={{
+                marginBottom: 8,
+                borderRadius: 6,
+                padding: 0,
+              }}
+              MenuProps={{
+                PaperProps: {
+                  style: {
+                    borderTopLeftRadius: 0,
+                    borderTopRightRadius: 0,
+                    backgroundColor: "#fff",
+                    marginTop: 6,
+                    padding: 0,
+                    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
+                  },
+                },
+              }}
+            >
+              {roles.map((role) => (
+                <MenuItem
+                  key={role}
+                  value={role}
+                  style={{ backgroundColor: "#fff", cursor: "pointer" }}
+                >
+                  {role}
+                </MenuItem>
+              ))}
+            </Select>
+          </Grid>
         </Grid>
+
+        {customRolEnabled && (
+          <Grid
+            item
+            size="small"
+            sx={{
+              marginBottom: "20px",
+            }}
+          >
+            <Typography fontFamily={"Poppins"} color={"#6B6E75"}>
+              Custom Role
+            </Typography>
+            <TextField
+              size="small"
+              fullWidth
+              placeholder="enter a custom role"
+              value={customRol}
+              onChange={(e) => setCustomRol(useFormatText(e.target.value))}
+            />
+          </Grid>
+        )}
 
         <Grid container justifyContent="space-between" sx={{ mt: 2 }}>
           <Grid item>

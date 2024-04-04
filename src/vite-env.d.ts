@@ -6,6 +6,7 @@ declare module "@/components/navBar/navBarDrawer";
 declare module "@/components/buttons/buttonPrimary";
 declare module "@/components/inputs/inputSearchNavbar";
 declare module "@/components/alert/alert";
+declare module "@/components/alert/alertError";
 declare module "@/components/modal/modal";
 declare module "@/components/navBar/itemNav";
 declare module "@/components/navBar/ItemMenu";

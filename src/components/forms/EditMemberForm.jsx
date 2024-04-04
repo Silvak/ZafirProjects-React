@@ -5,14 +5,20 @@ import {
   Paper,
   ThemeProvider,
   useTheme,
+  Select,
+  MenuItem,
+  InputLabel,
 } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useBoundStore } from "@/stores";
 import { axiosInstance } from "@/config/apiConfig";
+import roles from "@/utils/roles";
+import useFormatText from "@/hooks/useFormatText";
 
 function EditMember({ row, setAllMemberData, allMemberData }) {
   const [newName, setNewName] = useState(row.member.name);
-  const [newRol, setNewRol] = useState(row.rolToProject);
+  const [newRol, setNewRol] = useState(row.rolToProject || "Select Role");
+  const [customRol, setCustomRol] = useState("");
   const {
     ChangeStateModal,
     ChangeStateAlert,
@@ -21,6 +27,11 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
   } = useBoundStore();
 
   const theme = useTheme();
+  const [customRolEnabled, setCustomRolEnabled] = useState(false);
+
+  useEffect(() => {
+    setNewRol(row.rolToProject);
+  }, [row.rolToProject]);
 
   const closeModal = () => {
     ChangeStateModal(false);
@@ -36,7 +47,7 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
         `/projects/${rowData.projectId}/change-member-role`,
         {
           memberId: rowData.member._id,
-          newRole: newValues.rol,
+          newRole: customRolEnabled ? customRol : newValues.rol,
         }
       );
 
@@ -48,7 +59,7 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
               ...member.member,
               name: newValues.name,
             },
-            rolToProject: newValues.rol,
+            rolToProject: customRolEnabled ? customRol : newValues.rol,
           };
         } else {
           return member;
@@ -72,9 +83,10 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
         style={{
           padding: "20px",
           backgroundColor: "#fff",
-          maxWidth: "30vw",
+          maxWidth: "35vw",
           borderRadius: "16px",
           paddingBottom: "25px",
+          marginBottom: 150,
         }}
       >
         <h2 style={{ marginBlock: 8 }}>Edit {row.member.name}</h2>
@@ -96,17 +108,67 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
           <TextField
             label="Nombre"
             value={newName}
-            onChange={(e) => setNewName(e.target.value)}
+            onChange={(e) => setNewName(useFormatText(e.target.value))}
             fullWidth
             style={{ marginBottom: 8 }}
           />
-          <TextField
-            label="Rol"
-            value={newRol}
-            onChange={(e) => setNewRol(e.target.value)}
-            fullWidth
-            style={{ marginBottom: 8 }}
-          />
+          <InputLabel
+            id="select-role-label"
+            sx={{ color: "black", ml: 1, mt: 1, mb: 0.5, fontWeight: 400 }}
+          >
+            Select Role
+          </InputLabel>
+          <Grid container spacing={2} alignItems="center">
+            <Grid item xs={6}>
+              <Select
+                value={newRol}
+                onChange={(e) => {
+                  const selectedRole = e.target.value;
+                  setNewRol(selectedRole);
+                  setCustomRolEnabled(selectedRole === "Other");
+                }}
+                fullWidth
+                style={{
+                  marginBottom: 8,
+                  borderRadius: 12,
+                  padding: 0,
+                }}
+                MenuProps={{
+                  PaperProps: {
+                    style: {
+                      borderTopLeftRadius: 0,
+                      borderTopRightRadius: 0,
+                      backgroundColor: "#fff",
+                      marginTop: 6,
+                      padding: 0,
+                      boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
+                    },
+                  },
+                }}
+              >
+                {roles.map((role) => (
+                  <MenuItem
+                    key={role}
+                    value={role}
+                    style={{ backgroundColor: "#fff", cursor: "pointer" }}
+                  >
+                    {role}
+                  </MenuItem>
+                ))}
+              </Select>
+            </Grid>
+            <Grid item xs={6}>
+              {customRolEnabled && (
+                <TextField
+                  label="Custom Role"
+                  value={customRol}
+                  onChange={(e) => setCustomRol(useFormatText(e.target.value))}
+                  fullWidth
+                  style={{ marginBottom: 8, width: "auto", borderRadius: 12 }}
+                />
+              )}
+            </Grid>
+          </Grid>
           <Grid container justifyContent="space-between" sx={{ mt: 2 }}>
             <Grid item>
               <Button

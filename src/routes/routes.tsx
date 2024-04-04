@@ -5,6 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import Navbar from "@/components/navBar/navBar";
 import NavbarDrawer from "@/components/navBar/navBarDrawer";
 import AlertGlobal from "@/components/alert/alert";
+import AlertGlobalError from "@/components/alert/alertError";
 import ModalGlobal from "@/components/modal/modal";
 import { storeUser } from "@/stores/user/storeUser";
 import { useBoundStore } from "@/stores/index";
@@ -32,7 +33,7 @@ export default function Navigator() {
     if (!Authenticated) {
       navigate("/sign-in");
     } else {
-      navigate("/home");
+      navigate("/");
     }
   }, [Authenticated]);
 
@@ -97,6 +98,7 @@ export default function Navigator() {
 
       {/*other tools */}
       <AlertGlobal />
+      <AlertGlobalError />
       <ModalGlobal />
     </React.Suspense>
   );

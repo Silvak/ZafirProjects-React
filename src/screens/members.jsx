@@ -11,6 +11,7 @@ import usePagination from "@/hooks/usePagination";
 import { axiosInstance } from "../config/apiConfig";
 import { useBoundStore } from "../stores";
 import CreateMember from "@/components/forms/CreateMemberForm";
+import ConfirmForm from "../components/forms/ConfirmForm";
 
 const columns = [
   { id: "photo", label: "" },
@@ -32,11 +33,14 @@ const MembersTable = () => {
     ChangeStateModal,
     ChangeTitleModal,
     ChangeContentModal,
+    ChangeStateAlert,
+    ChangeTitleAlert,
   } = useBoundStore();
 
   const [allMemberData, setAllMemberData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedOption, setSelectedOption] = useState("All");
+  const [memberToDelete, setMemberToDelete] = useState(null);
 
   useEffect(() => {
     if (selectedProject) {
@@ -84,6 +88,19 @@ const MembersTable = () => {
   };
 
   const handleDeleteClick = async (memberToDelete) => {
+    setMemberToDelete(memberToDelete);
+    ChangeTitleModal("");
+    ChangeContentModal(
+      <ConfirmForm
+        handleCancelDelete={handleCancelDelete}
+        handleConfirmDelete={handleConfirmDelete}
+        memberToDelete={memberToDelete}
+      />
+    );
+    ChangeStateModal(true);
+  };
+
+  const handleConfirmDelete = async (memberToDelete) => {
     try {
       await axiosInstance.post(
         `/projects/${selectedProject.id}/remove-member`,
@@ -94,13 +111,24 @@ const MembersTable = () => {
       );
       await updateProjects();
       setAllMemberData(updateAllMember);
+      ChangeStateModal(false);
+      ChangeTitleAlert("Miembro eliminado exitosamente");
+      ChangeStateAlert(true);
     } catch (error) {
       console.error(error.message);
     }
   };
 
-  const filteredSearchData = allMemberData.filter((member) =>
-    member.member.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const handleCancelDelete = () => {
+    setMemberToDelete(null);
+    ChangeStateModal(false);
+  };
+
+  const filteredSearchData = allMemberData.filter(
+    (member) =>
+      member &&
+      member.member &&
+      member.member.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const filteredData =
@@ -110,96 +138,100 @@ const MembersTable = () => {
           (member) => member.leadOwner === selectedOption
         );
 
+  console.log(filteredData.length, allMemberData.length);
+
   return (
     <div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          textAlign: "center",
-          alignItems: "center",
-          marginInline: "1rem",
-        }}
-      >
-        <h6
-          style={{
-            fontWeight: "bold",
-            fontSize: "24px",
-            marginBottom: "2rem",
-            marginTop: "2rem",
-          }}
-        >
-          Equipo
-        </h6>
-        <Button
-          variant="contained"
-          disableRipple
-          onClick={() => handleButtonMore(allMemberData)}
-          sx={{
-            padding: "0.6rem",
-            height: "min-content",
-            borderRadius: "12px",
-            color: "white",
-          }}
-        >
-          + Add new contact
-        </Button>
-      </div>
-      <TableContainer>
+      <div>
         <div
           style={{
-            backgroundColor: "#fff",
-            borderRadius: 20,
-            padding: 20,
-            width: "98%",
-            marginInline: "auto",
+            display: "flex",
+            justifyContent: "space-between",
+            textAlign: "center",
+            alignItems: "center",
+            marginInline: "1rem",
           }}
         >
-          <Table stickyHeader aria-label="sticky table">
-            <TableHeader
-              isMobile={isMobile}
-              selectedRows={selectedRows}
-              setSelectedRows={setSelectedRows}
-              membersData={allMemberData}
-              columns={columns}
-              searchTerm={searchTerm}
-              setSearchTerm={setSearchTerm}
-              filteredSearchData={filteredSearchData}
-              selectedOption={selectedOption}
-              setSelectedOption={setSelectedOption}
-              filteredData={filteredData}
-            />
-            <TableBody>
-              {filteredData
-                .slice(
-                  (page - 1) * rowsPerPage,
-                  (page - 1) * rowsPerPage + rowsPerPage
-                )
-                .map((row) => (
-                  <TableRowComponent
-                    key={row.name}
-                    isMobile={isMobile}
-                    handleRowClick={handleRowClick}
-                    handleCheckboxClick={handleRowClick}
-                    handleDeleteClick={handleDeleteClick}
-                    row={row}
-                    isSelected={isSelected}
-                    columns={columns}
-                    setAllMemberData={setAllMemberData}
-                    allMemberData={allMemberData}
-                  />
-                ))}
-            </TableBody>
-          </Table>
+          <h6
+            style={{
+              fontWeight: "bold",
+              fontSize: "24px",
+              marginBottom: "2rem",
+              marginTop: "2rem",
+            }}
+          >
+            Equipo
+          </h6>
+          <Button
+            variant="contained"
+            disableRipple
+            onClick={() => handleButtonMore(allMemberData)}
+            sx={{
+              padding: "0.6rem",
+              height: "min-content",
+              borderRadius: "12px",
+              color: "white",
+            }}
+          >
+            + Add new contact
+          </Button>
         </div>
-      </TableContainer>
-      <TablePagination
-        rowsPerPage={rowsPerPage}
-        handleChangeRowsPerPage={handleChangeRowsPerPage}
-        page={page}
-        handleChangePage={handleChangePage}
-        data={allMemberData}
-      />
+        <TableContainer>
+          <div
+            style={{
+              backgroundColor: "#fff",
+              borderRadius: 20,
+              padding: 20,
+              width: "98%",
+              marginInline: "auto",
+            }}
+          >
+            <Table stickyHeader aria-label="sticky table">
+              <TableHeader
+                isMobile={isMobile}
+                selectedRows={selectedRows}
+                setSelectedRows={setSelectedRows}
+                membersData={allMemberData}
+                columns={columns}
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                filteredSearchData={filteredSearchData}
+                selectedOption={selectedOption}
+                setSelectedOption={setSelectedOption}
+                filteredData={filteredData}
+              />
+              <TableBody>
+                {filteredData
+                  .slice(
+                    (page - 1) * rowsPerPage,
+                    (page - 1) * rowsPerPage + rowsPerPage
+                  )
+                  .map((row, index) => (
+                    <TableRowComponent
+                      key={index}
+                      isMobile={isMobile}
+                      handleRowClick={handleRowClick}
+                      handleCheckboxClick={handleRowClick}
+                      handleDeleteClick={handleDeleteClick}
+                      row={row}
+                      isSelected={isSelected}
+                      columns={columns}
+                      setAllMemberData={setAllMemberData}
+                      allMemberData={allMemberData}
+                    />
+                  ))}
+              </TableBody>
+            </Table>
+          </div>
+        </TableContainer>
+        <TablePagination
+          rowsPerPage={rowsPerPage}
+          handleChangeRowsPerPage={handleChangeRowsPerPage}
+          page={page}
+          handleChangePage={handleChangePage}
+          data={filteredData}
+        />
+      </div>
     </div>
   );
 };
