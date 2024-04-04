@@ -1,8 +1,17 @@
+import { axiosInstance } from "../../config/apiConfig";
 import { mockTasks } from "../../mockData/taskData";
 
 export const createTasksSlice = (set) => ({
-  tasks: mockTasks,
-  addTask: (newTask) => set((state) => ({ tasks: [...state.tasks, newTask] })),
+  tasks: [],
+  addTask: async (taskData) => {
+    try {
+      console.log(taskData);
+      const data = await axiosInstance.post(`/tasksList`, taskData);
+      console.log(taskData);
+    } catch (error) {
+      console.error("Error creating task", error);
+    }
+  },
   setTasks: (id, status) =>
     set((state) => ({
       tasks: state.tasks.map((task) => {
@@ -22,4 +31,12 @@ export const createTasksSlice = (set) => ({
         task.id === updateTask.id ? updateTask : task
       ),
     })),
+  fetchTasks: async () => {
+    try {
+      const { data } = await axiosInstance.get("/tasksList");
+      set({ tasks: data });
+    } catch (error) {
+      console.error("Error fetching tasks", error);
+    }
+  },
 });

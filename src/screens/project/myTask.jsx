@@ -1,5 +1,5 @@
 import useMediaQuery from "@mui/material/useMediaQuery";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import CreateTaskForm from "@/components/forms/createTaskForm";
@@ -11,12 +11,29 @@ const App = () => {
   const [view, setView] = useState("Format List");
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("md"));
 
-  const { tasks, ChangeStateModal, ChangeContentModal, ChangeTitleModal } =
-    useBoundStore();
+  const {
+    tasks,
+    ChangeStateModal,
+    ChangeContentModal,
+    ChangeTitleModal,
+    fetchTasks,
+  } = useBoundStore();
 
-  let pendingTasks = tasks.filter((task) => task.status === "Pending");
-  let backlogTasks = tasks.filter((task) => task.status === "Backlog");
-  let workingTasks = tasks.filter((task) => task.status === "Working");
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await fetchTasks();
+      } catch (error) {
+        console.error("Error fetching tasks", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  let pendingTasks = tasks.filter((task) => task.state === "Pending");
+  let backlogTasks = tasks.filter((task) => task.state === "Backlog");
+  let workingTasks = tasks.filter((task) => task.state === "Working");
 
   const handleButton = (buttonName) => {
     setView(buttonName);
