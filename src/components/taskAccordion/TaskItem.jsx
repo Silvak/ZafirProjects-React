@@ -119,7 +119,7 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
           marginTop: "16px",
           cursor: "pointer",
         }}
-        onClick={isMobile && handleMoreIcon(task)}
+        onClick={isMobile ? handleMoreIcon(task) : undefined}
       >
         {taskData.name}
       </Typography>
