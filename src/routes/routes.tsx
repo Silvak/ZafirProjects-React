@@ -73,7 +73,7 @@ export default function Navigator() {
       {Authenticated ? (
         <NavbarDrawer>
           <Routes>
-            <Route path="/home" element={<Home />} />
+            <Route path="/" element={<Home />} />
 
             <Route path="/projects" element={<Projects />} />
 
