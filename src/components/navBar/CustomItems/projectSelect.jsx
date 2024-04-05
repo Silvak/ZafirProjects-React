@@ -84,6 +84,13 @@ function ProjectSelect(props) {
               />
             </ListItemButton>
           ))}
+          <ListItemButton sx={{ m: 0, p: 0 }}>
+            <ItemNav
+              to={`/projects`}
+              title={"View more"}
+              //icon={submenuItem.icon}
+            />
+          </ListItemButton>
         </Collapse>
       )}
     </List>
