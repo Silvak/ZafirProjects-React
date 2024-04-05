@@ -6,6 +6,7 @@ declare module "@/components/navBar/navBarDrawer";
 declare module "@/components/buttons/buttonPrimary";
 declare module "@/components/inputs/inputSearchNavbar";
 declare module "@/components/alert/alert";
+declare module "@/components/alert/alertError";
 declare module "@/components/modal/modal";
 declare module "@/components/navBar/itemNav";
 declare module "@/components/navBar/ItemMenu";
@@ -56,6 +57,7 @@ declare module "@/stores/useGetNativeBalance/useGetNativeBalance";
 declare module "@/stores/useGetWalletTokenBalances/useGetWalletTokenBalances";
 declare module "@/stores/Tasks/createTasksSlice";
 declare module "@/stores/user/storeUser";
+declare module "@/stores/Projects/actualProject";
 
 declare module "@/routes/routes";
 
@@ -77,7 +79,12 @@ declare module "@/hooks/useSignUp";
 declare module "@/hooks/useSignIn";
 declare module "@/hooks/ganttChart/useDateRange";
 declare module "@/hooks/ganttChart/useTaskWidth";
+declare module "@/hooks/useProjectsOverview";
+declare module "@/hooks/useProject";
 
 declare module "@/utils/colors";
+declare module "@/utils/fixDate";
+
+declare module "@/config/apiConfig";
 
 /// <reference types="vite/client"/>

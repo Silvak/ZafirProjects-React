@@ -8,11 +8,9 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-export default function AlertGlobal() {
-  const { stateAlert, titleAlert, ChangeStateAlert } = useBoundStore(
-    (state) => state,
-    shallow
-  );
+export default function AlertGlobalError() {
+  const { stateAlertError, titleAlertError, ChangeStateAlertError } =
+    useBoundStore((state) => state, shallow);
 
   function TransitionRight(props) {
     return <Slide {...props} direction="left" />;
@@ -22,20 +20,20 @@ export default function AlertGlobal() {
     if (reason === "clickaway") {
       return;
     }
-    ChangeStateAlert(false);
+    ChangeStateAlertError(false);
   };
 
   return (
     <Stack sx={{ width: "100%" }}>
       <Snackbar
-        open={stateAlert}
+        open={stateAlertError}
         autoHideDuration={2500}
         onClose={handleClose}
         anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
         TransitionComponent={TransitionRight}
       >
-        <Alert severity="success" onClose={handleClose} sx={{ width: "100%" }}>
-          <Typography variant="body2">{titleAlert}</Typography>
+        <Alert severity="error" onClose={handleClose} sx={{ width: "100%" }}>
+          <Typography variant="body2">{titleAlertError}</Typography>
         </Alert>
       </Snackbar>
       {/* <Alert severity="error">This is an error message!</Alert>

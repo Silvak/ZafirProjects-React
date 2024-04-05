@@ -21,7 +21,7 @@ const TaskAccordion = ({ title, status, tasks, handleAddTask, view }) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const isKanbanView = view == "View Kanban";
 
-  const { setTasks } = useBoundStore();
+  const { setTasks, fetchTask } = useBoundStore();
 
   const ExpandIcon = ({ expanded }) => {
     return (

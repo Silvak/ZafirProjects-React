@@ -19,6 +19,23 @@ import { priorityColors, statusColors } from "@/utils/colors";
 
 function MyTaskItems({ tasks }) {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+  // console.log(tasks);
+
+  const formatDate = (dateString) => {
+    const today = new Date();
+    const date = new Date(dateString);
+    const options = { year: "numeric", month: "long", day: "numeric" };
+
+    if (
+      date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear()
+    ) {
+      return "Today";
+    } else {
+      return date.toLocaleDateString("en-US", options);
+    }
+  };
 
   const handleClipIcon = () => {
     alert("toqueé el icono del clip");
@@ -40,7 +57,7 @@ function MyTaskItems({ tasks }) {
                 key={index}
                 elevation={0}
                 sx={{
-                  opacity: task.status === "Completed" ? 0.5 : 1,
+                  opacity: task.state === "Completed" ? 0.5 : 1,
                   borderRadius: "18px",
                   width: "99%",
                   marginLeft: "auto",
@@ -54,7 +71,7 @@ function MyTaskItems({ tasks }) {
                   noWrap
                   style={{ fontSize: "14px", marginTop: "16px" }}
                 >
-                  {task.task}
+                  {task.data[0].name}
                 </Typography>
                 <Grid
                   container
@@ -73,13 +90,13 @@ function MyTaskItems({ tasks }) {
                         fontWeight: "bold",
                         paddingInline: "8px",
                         borderRadius: "6px",
-                        ...priorityColors[task.priority],
+                        // ...priorityColors[task.priority],
                       }}
                     >
                       <Circle
                         sx={{ fontSize: "10px", marginRight: "2px" }}
                       ></Circle>
-                      {task.priority}
+                      {"priority"}
                     </Typography>
                   </Grid>
 
@@ -104,7 +121,7 @@ function MyTaskItems({ tasks }) {
                             fontWeight: "bold",
                           }}
                         >
-                          {task.notification}
+                          {"5"}
                         </Typography>
                       </div>
 
@@ -128,7 +145,7 @@ function MyTaskItems({ tasks }) {
                           }}
                         >
                           {" "}
-                          {task.attachments.length}
+                          {"1"}
                         </Typography>
                       </div>
                     </div>
@@ -161,7 +178,7 @@ function MyTaskItems({ tasks }) {
                         noWrap
                         style={{ fontSize: "14px", fontWeight: "bold" }}
                       >
-                        {task.date}
+                        {formatDate(task.start)}
                       </Typography>
                     </div>
                   </Grid>
@@ -189,10 +206,10 @@ function MyTaskItems({ tasks }) {
                         padding: "4px 8px",
                         textAlign: "center",
                         alignItems: "center",
-                        ...statusColors[task.status],
+                        ...statusColors[task.state],
                       }}
                     >
-                      {task.status}
+                      {task.state}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -207,7 +224,7 @@ function MyTaskItems({ tasks }) {
                   key={index}
                   elevation={0}
                   sx={{
-                    opacity: task.status === "Completed" ? 0.5 : 1,
+                    opacity: task.state === "Completed" ? 0.5 : 1,
                     overflowY: "auto",
                     borderBottom: "1px solid #E0E3E8",
                     marginBottom: "5px",
@@ -220,7 +237,7 @@ function MyTaskItems({ tasks }) {
                     noWrap
                     style={{ fontSize: "14px", marginTop: "16px" }}
                   >
-                    {task.task}
+                    {task.data[0].name}
                   </Typography>
                   <Grid item xs={12} sm={2} sx={{ marginBottom: "10px" }}>
                     <Typography
@@ -232,13 +249,13 @@ function MyTaskItems({ tasks }) {
                         fontWeight: "bold",
                         paddingInline: "8px",
                         borderRadius: "6px",
-                        ...priorityColors[task.priority],
+                        // ...priorityColors[task.priority],
                       }}
                     >
                       <Circle
                         sx={{ fontSize: "10px", marginRight: "2px" }}
                       ></Circle>
-                      {task.priority}
+                      {"priority"}
                     </Typography>
                   </Grid>
 
@@ -263,7 +280,7 @@ function MyTaskItems({ tasks }) {
                             fontWeight: "bold",
                           }}
                         >
-                          {task.notification}
+                          {"notification"}
                         </Typography>
                       </div>
 
@@ -287,7 +304,7 @@ function MyTaskItems({ tasks }) {
                           }}
                         >
                           {" "}
-                          {task.attachments.length}
+                          {"attachments.length"}
                         </Typography>
                       </div>
                     </div>
@@ -366,10 +383,10 @@ function MyTaskItems({ tasks }) {
                           padding: "4px 8px",
                           textAlign: "center",
                           alignItems: "center",
-                          ...statusColors[task.status],
+                          ...statusColors[task.state],
                         }}
                       >
-                        {task.status}
+                        {task.state}
                       </Typography>
                     </Grid>
                   </Grid>

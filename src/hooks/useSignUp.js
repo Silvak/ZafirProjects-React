@@ -1,18 +1,19 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useBoundStore } from "@/stores/index";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../context/User/UserContext";
 
 function useSignUp() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setConfirmPassword] = useState(false);
-
-  const { setDataPerfilUser, setUser, setAuthenticated } = useBoundStore(
+  const { Register } = useContext(UserContext);
+  const { ChangeStateAlert, ChangeTitleAlert } = useBoundStore(
     (state) => state
   );
 
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
@@ -24,18 +25,26 @@ function useSignUp() {
 
     const user = {
       firstName,
-      lastName,
       email,
       password,
-      confirmPassword,
     };
 
-    if (Object.values(user).includes("")) return alert("Empty fields!");
-
-    setDataPerfilUser(user);
-    setUser(user);
-    setAuthenticated(true);
-    navigate("/sign-in");
+    Register(user)
+      .then((response) => {
+        if (response.status === 201) {
+          ChangeTitleAlert(response.data.message);
+          ChangeStateAlert(true);
+          setTimeout(() => {
+            ChangeTitleAlert("");
+            ChangeStateAlert(false);
+            navigate("/sign-in");
+          }, 1500);
+        }
+      })
+      .catch((error) => {
+        ChangeTitleAlert(error.message);
+        ChangeStateAlert(true);
+      });
   };
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);

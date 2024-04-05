@@ -1,10 +1,12 @@
 import UserAvatar from "@/assets/Img/png/userImageMan.png";
 import { Box, TableCell } from "@mui/material";
 import { RenderIconByCategory } from "./RenderIconByCategory";
+import { fixDate } from "@/utils/fixDate";
 //styles
 import css from "./styles.module.css";
 //icons
 import { MdAttachFile, MdCalendarMonth } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 const BoxFlex = ({ children, sx }) => {
   return (
@@ -24,29 +26,36 @@ const BoxFlex = ({ children, sx }) => {
 };
 
 const ProjectsTableItem = ({
-  projectName,
-  quantityTasks,
-  date,
-  attachments,
-  category,
+  id,
+  name,
   status,
+  start,
   username,
+  // quantityTasks,
+  // date,
+  // attachments,
+  // category,
 }) => {
+  const { fixStart } = fixDate(start);
+
   return (
-    <TableCell
-      sx={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        "&:hover": {
-          backgroundColor: "rgba(0, 0, 0, 0.1)",
-          cursor: "pointer",
-        },
-      }}
-      onClick={() => alert("ir al proyecto")}
+    <Link
+      to={`/project/${id}`}
+      style={{ color: "inherit", textDecoration: "none" }}
     >
-      <BoxFlex sx={{ flex: 2 }}>
-        <div
+      <TableCell
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          "&:hover": {
+            backgroundColor: "rgba(0, 0, 0, 0.1)",
+            cursor: "pointer",
+          },
+        }}
+      >
+        <BoxFlex sx={{ flex: 2 }}>
+          {/* <div
           style={{
             display: "grid",
             placeContent: "center",
@@ -56,25 +65,25 @@ const ProjectsTableItem = ({
           }}
         >
           <RenderIconByCategory category={category} />
-        </div>
-        <Box sx={{ marginLeft: "20px" }}>
-          <h2 className={css.projectName}>{projectName}</h2>
-          <small className={css.quantityTasks}>{quantityTasks}</small>
-        </Box>
-      </BoxFlex>
-      <BoxFlex>
-        <img src={UserAvatar} alt="user avatar" width={40} height={40} />
-        <p className={css.username}>{username}</p>
-      </BoxFlex>
-      <BoxFlex>
-        <MdCalendarMonth color="#6B6E75" size="20px" />
-        <p className="date">{date}</p>
-      </BoxFlex>
-      <BoxFlex>
-        <MdAttachFile color="#6B6E75" size="20px" />
-        <p> {attachments.length} files</p>
-      </BoxFlex>
-      <BoxFlex>
+        </div> */}
+          <Box sx={{ marginLeft: "20px" }}>
+            <h2 className={css.projectName}>{name}</h2>
+            {/* <small className={css.quantityTasks}>{quantityTasks}</small> */}
+          </Box>
+        </BoxFlex>
+        <BoxFlex>
+          <img src={UserAvatar} alt="user avatar" width={40} height={40} />
+          <p className={css.username}>{username}</p>
+        </BoxFlex>
+        <BoxFlex>
+          <MdCalendarMonth color="#6B6E75" size="20px" />
+          <p className="date">{fixStart}</p>
+        </BoxFlex>
+        <BoxFlex>
+          <MdAttachFile color="#6B6E75" size="20px" />
+          {/* <p> {attachments.length} files</p> */}1 files
+        </BoxFlex>
+        {/* <BoxFlex>
         {status.name === "In progress" ? (
           <div
             style={{
@@ -104,8 +113,9 @@ const ProjectsTableItem = ({
             <span style={{ color: "#E55D57" }}>Issues</span>
           </div>
         )}
-      </BoxFlex>
-    </TableCell>
+      </BoxFlex> */}
+      </TableCell>
+    </Link>
   );
 };
 export default ProjectsTableItem;

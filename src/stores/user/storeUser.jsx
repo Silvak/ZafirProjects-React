@@ -1,9 +1,17 @@
-export const storeUser = (set) => ({
-  DataPerfilUser: [], // DATA_PERFIL_USER
-  User: [], // DATA_USER
-  Authenticated: true, // USER_AUTHENTICATED
+import { persist } from "zustand/middleware";
 
-  setDataPerfilUser: (value) => set({ DataPerfilUser: value }),
-  setUser: (value) => set({ User: value }),
-  setAuthenticated: (value) => set({ Authenticated: value }),
-});
+export const storeUser = persist(
+  (set) => ({
+    DataPerfilUser: [],
+    User: {},
+    Authenticated: false,
+
+    setDataPerfilUser: (value) => set({ DataPerfilUser: value }),
+    setUser: (value) => set({ User: value }),
+    setAuthenticated: (value) => set({ Authenticated: value }),
+  }),
+  {
+    name: "user-storage", // Nombre para identificar el almacenamiento
+    getStorage: () => sessionStorage, // Utilizar sessionStorage para persistir el estado
+  }
+);

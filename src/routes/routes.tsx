@@ -1,11 +1,15 @@
 import * as React from "react";
+import { useEffect } from "react";
 import { Grid, CardMedia, CircularProgress, Toolbar } from "@mui/material";
 import { Route, Routes } from "react-router-dom";
 import Navbar from "@/components/navBar/navBar";
 import NavbarDrawer from "@/components/navBar/navBarDrawer";
 import AlertGlobal from "@/components/alert/alert";
+import AlertGlobalError from "@/components/alert/alertError";
 import ModalGlobal from "@/components/modal/modal";
 import { storeUser } from "@/stores/user/storeUser";
+import { useBoundStore } from "@/stores/index";
+import { useNavigate } from "react-router-dom";
 
 const Home = React.lazy(() => import("@/screens/home"));
 const NotFoundPage = React.lazy(() => import("@/screens/notFoundPage"));
@@ -20,8 +24,19 @@ const Report = React.lazy(() => import("@/screens/project/report"));
 const Gantt = React.lazy(() => import("@/screens/project/gantt"));
 
 export default function Navigator() {
-  const { Authenticated } = storeUser();
+  const { Authenticated } = useBoundStore();
+  // const { Authenticated } = storeUser();
+  const navigate = useNavigate();
+
   let Logo = "";
+
+  useEffect(() => {
+    if (!Authenticated) {
+      navigate("/sign-in");
+    } else {
+      navigate("/");
+    }
+  }, [Authenticated]);
 
   return (
     <React.Suspense
@@ -60,15 +75,16 @@ export default function Navigator() {
       {Authenticated ? (
         <NavbarDrawer>
           <Routes>
-            <Route index element={<Home />} />
+            <Route path="/" element={<Home />} />
 
-            <Route path="/project" element={<Projects />} />
+            <Route path="/projects" element={<Projects />} />
 
             <Route path="/project/:id" element={<Layout />}>
               <Route index element={<MyTask />} />
               <Route path="tasks" element={<MyTask />} />
               <Route path="report" element={<Report />} />
               <Route path="gantt" element={<Gantt />} />
+
             </Route>
 
             <Route path="/members" element={<Members />} />
@@ -85,6 +101,7 @@ export default function Navigator() {
 
       {/*other tools */}
       <AlertGlobal />
+      <AlertGlobalError />
       <ModalGlobal />
     </React.Suspense>
   );

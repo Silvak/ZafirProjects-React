@@ -1,44 +1,29 @@
-import { useState } from "react";
-import { projectsData } from "../../mockData/projectsData";
-import ProjectsTableItem from "@/components/projectsTable/ProjectsTableItem";
-import EastIcon from '@mui/icons-material/East';
-import EditProjectForm from "../forms/EditProjectForm";
+import EastIcon from "@mui/icons-material/East";
 import {
-  Typography,
-  Grid,
   Box,
-  ThemeProvider,
-  createTheme,
+  Grid,
   Table,
   TableBody,
   TableRow,
-  useMediaQuery,
+  ThemeProvider,
+  Typography,
 } from "@mui/material";
-import { useBoundStore } from "../../stores";
 import { NavLink } from "react-router-dom";
 import ProjectItemsOverview from "./ProjectItemsOverview";
+import { useProjectsOverview } from "@/hooks/useProjectsOverview";
+import EditProjectForm from "@/components/forms/EditProjectForm";
 
 function ProjectsOverview() {
-  const theme = createTheme();
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
-  const { ChangeStateModal, ChangeContentModal, ChangeTitleModal } = useBoundStore();
-  const handleEdit = () => {
-    ChangeTitleModal("Edit Project");
-    ChangeContentModal(<EditProjectForm />);
-    ChangeStateModal(true);
-  }
-  
-
-
+  const { projectsData, handleEdit, handleDelete, isMobile, theme } =
+    useProjectsOverview();
   return (
     <ThemeProvider theme={theme}>
       <Box
         sx={{
           backgroundColor: "#ffffff",
           height: "auto",
-          // width: "360px",
+          width: "100%",
           borderRadius: "20px",
-          // minWidth: "360px",
         }}
       >
         <Grid
@@ -60,17 +45,25 @@ function ProjectsOverview() {
               Projects
             </Typography>
           </Grid>
-          <Grid item
+          <Grid
+            item
             sx={{
-                marginTop: "26px",
-                marginRight: "30px",
-                marginLeft: isMobile ? "30px" : "",
-                backgroundColor: isMobile ? "#ECE9FF" : ""
+              marginTop: "26px",
+              marginRight: "30px",
+              marginLeft: isMobile ? "30px" : "",
             }}
           >
-            <NavLink to="/projects" style={{ textDecoration: "none", display: "flex", fontFamily: "Poppins" }}>
+            <NavLink
+              to="/projects"
+              style={{
+                textDecoration: "none",
+                display: "flex",
+                alignItems: "center",
+                fontFamily: "Poppins",
+              }}
+            >
               View all
-              <EastIcon xs sx={{marginLeft: "6px"}}/>
+              <EastIcon xs sx={{ marginLeft: "6px" }} />
             </NavLink>
           </Grid>
         </Grid>
@@ -82,9 +75,9 @@ function ProjectsOverview() {
             display: "block",
             padding: "10px",
             borderBottom: "none",
+            width: "100%",
           }}
         >
-
           <TableBody sx={{ display: "grid" }}>
             <TableRow
               sx={{
@@ -92,17 +85,26 @@ function ProjectsOverview() {
                 borderBottom: "none",
                 "&>*": {
                   borderBottom: "none",
-                  width: "max(900px, 100%)",
+                  width: "100%",
                 },
               }}
             >
-              {projectsData.map((project) => (
-                  <ProjectItemsOverview
-                    handleEdit={handleEdit}
-                    {...project}
-                    key={project.id}
-                  />
-                ))}
+              {projectsData.length === 0 ? (
+                <p>Sin projectos</p>
+              ) : (
+                projectsData
+                  .slice(0, 6)
+                  .map((project) => (
+                    <ProjectItemsOverview
+                      handleDelete={handleDelete}
+                      handleEdit={() =>
+                        handleEdit(<EditProjectForm project={project} />)
+                      }
+                      {...project}
+                      key={project.id}
+                    />
+                  ))
+              )}
             </TableRow>
           </TableBody>
         </Table>

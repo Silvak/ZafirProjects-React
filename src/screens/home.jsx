@@ -1,19 +1,10 @@
-import {
-  useTheme,
-  Box,
-  IconButton,
-  Button,
-  Typography,
-  Grid,
-} from "@mui/material";
+import { useTheme, Box, Grid } from "@mui/material";
 import OverviewHeader from "@/components/Overview/OverviewHeader";
 import MyWorkGlance from "@/components/Overview/MyWork";
 import MyTaskOverview from "@/components/Overview/MyTaskOverview";
 import ProjectsOverview from "@/components/Overview/ProjectsOverview";
 
 function MyApp() {
-  const theme = useTheme();
-
   const handleOpenAlert = () => {
     ChangeStateAlert(true);
   };
@@ -27,13 +18,9 @@ function MyApp() {
         sx={{
           display: "flex",
           flexDirection: "column",
-          // width: "100%",
-          // alignItems: "center",
-          // justifyContent: "center",
           bgcolor: "background.default",
           color: "text.primary",
           borderRadius: 1,
-          // p: 3,
           gap: "20px",
           m: "24px",
         }}
@@ -50,7 +37,8 @@ function MyApp() {
             sx={{
               display: "flex",
               justifyContent: "space-between",
-              width: "fit-content",
+              width: "100%",
+              maxWidth: "400px",
               margin: 1,
             }}
           >

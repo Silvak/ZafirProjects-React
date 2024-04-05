@@ -10,8 +10,8 @@ const TaskDetailContent = ({ task }) => {
       <GridItem label="Date" detailText={date} />
       <Grid item xs={12}>
         <p style={{ color: "#6B6E75", marginBottom: "5px" }}>Assigned to</p>
-
-        <Box sx={{ display: "flex", gap: "5px" }}>
+        {"Members"}
+        {/* <Box sx={{ display: "flex", gap: "5px" }}>
           {Array.isArray(assignees) ? (
             assignees.map((element) => (
               <img
@@ -39,7 +39,7 @@ const TaskDetailContent = ({ task }) => {
               }}
             />
           )}
-        </Box>
+        </Box> */}
       </Grid>
       <GridItem label="Priority" detailText={priority} />
       <GridItem label="Tags" detailText="tag1, tag2" />

@@ -9,15 +9,17 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Logout, Settings } from "@mui/icons-material";
 import { useBoundStore } from "@/stores/index";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../../context/User/UserContext";
 
 export default function UserProfileButton() {
-  const { setDataPerfilUser, setUser, setAuthenticated } = useBoundStore(
+  const { LogoutFunc } = useContext(UserContext);
+  const { User, setDataPerfilUser, setUser, setAuthenticated } = useBoundStore(
     (state) => state
   );
 
@@ -34,11 +36,12 @@ export default function UserProfileButton() {
     setAnchorEl(null);
   };
 
-  const handleLogout = () => {
-    setUser([]);
-    setDataPerfilUser([]);
-    setAuthenticated(false);
-    navigate("/sign-in");
+  const handleLogout = async () => {
+    await LogoutFunc();
+    // setUser([]);
+    // setDataPerfilUser([]);
+    // setAuthenticated(false);
+    // navigate("/sign-in");
   };
 
   return (
@@ -75,9 +78,9 @@ export default function UserProfileButton() {
               variant="h7"
               color={theme.palette.text.fourth}
             >
-              Alexander
+              {User?.name}
             </Typography>
-            <Typography level="body-xs">Admin</Typography>
+            <Typography level="body-xs">{User?.rol}</Typography>
           </Box>
           {open ? (
             <KeyboardArrowUpIcon sx={{ marginLeft: 2 }} />
@@ -136,8 +139,8 @@ export default function UserProfileButton() {
           </ListItemIcon>
           Settings
         </MenuItem>
-        <MenuItem key="logout" onClick={handleClose}>
-          <ListItemIcon onClick={handleLogout}>
+        <MenuItem key="logout" onClick={handleLogout}>
+          <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
           Logout
