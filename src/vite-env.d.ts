@@ -45,6 +45,8 @@ declare module "@/components/Header/Header";
 declare module "@/components/buttons/SocialBtns";
 declare module "@/components/forms/SignInForm";
 declare module "@/components/Selects/FilterSelect";
+declare module "@/components/ganttChart/TaskElement";
+declare module "@/components/ganttChart/GanttChart";
 
 declare module "@/context/AppContextProvider";
 declare module "@/stores/index";
@@ -73,6 +75,8 @@ declare module "@/screens/project/gantt";
 declare module "@/hooks/usePagination";
 declare module "@/hooks/useSignUp";
 declare module "@/hooks/useSignIn";
+declare module "@/hooks/ganttChart/useDateRange";
+declare module "@/hooks/ganttChart/useTaskWidth";
 
 declare module "@/utils/colors";
 
