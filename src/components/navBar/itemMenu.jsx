@@ -7,6 +7,7 @@ import TaskOutlinedIcon from "@mui/icons-material/TaskOutlined";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { BiGroup } from "react-icons/bi";
+import { useBoundStore } from "../../stores";
 
 export const items = [
   {
@@ -54,12 +55,15 @@ export const items = [
 
 function ItemMenu(props) {
   const [openIndex, setOpenIndex] = useState(null);
+  const { selectedProject } = useBoundStore();
 
   const handleClick = (index) => {
     if (props.open !== false) {
       setOpenIndex(openIndex === index ? null : index);
     }
   };
+
+  console.log("selectedProject", selectedProject._id);
 
   return (
     <List
@@ -101,14 +105,34 @@ function ItemMenu(props) {
                 timeout="auto"
                 unmountOnExit
               >
-                {element.submenu.map((submenuItem, submenuIndex) => (
+                {/* {element.submenu.map((submenuItem, submenuIndex) => (
                   <ItemNav
                     key={`submenu-item-${index}-${submenuIndex}`}
                     to={submenuItem.url}
                     title={submenuItem.title}
                     sx={{ pl: 8 }}
                   />
-                ))}
+                ))} */}
+                <ItemNav
+                  to={`project/${selectedProject._id}`}
+                  title="My project"
+                  sx={{ pl: 8 }}
+                />
+                <ItemNav
+                  to={`/project/${selectedProject._id}/tasks`}
+                  title="Project Tasks"
+                  sx={{ pl: 8 }}
+                />
+                <ItemNav
+                  to={`/project/${selectedProject._id}/report`}
+                  title="report"
+                  sx={{ pl: 8 }}
+                />
+                <ItemNav
+                  to={`/project/1111/gantt`}
+                  title="gantt"
+                  sx={{ pl: 8 }}
+                />
               </Collapse>
             </>
           ) : (
