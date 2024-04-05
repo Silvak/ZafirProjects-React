@@ -105,14 +105,6 @@ function ItemMenu(props) {
                 timeout="auto"
                 unmountOnExit
               >
-                {/* {element.submenu.map((submenuItem, submenuIndex) => (
-                  <ItemNav
-                    key={`submenu-item-${index}-${submenuIndex}`}
-                    to={submenuItem.url}
-                    title={submenuItem.title}
-                    sx={{ pl: 8 }}
-                  />
-                ))} */}
                 <ItemNav
                   to={`project/${selectedProject._id}`}
                   title="My project"
@@ -129,7 +121,7 @@ function ItemMenu(props) {
                   sx={{ pl: 8 }}
                 />
                 <ItemNav
-                  to={`/project/1111/gantt`}
+                  to={`/project/${selectedProject._id}/gantt`}
                   title="gantt"
                   sx={{ pl: 8 }}
                 />
