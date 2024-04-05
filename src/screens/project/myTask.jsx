@@ -13,27 +13,30 @@ const App = () => {
 
   const {
     tasks,
+    myTasks,
     ChangeStateModal,
     ChangeContentModal,
     ChangeTitleModal,
     fetchTasks,
+    fetchTasksById,
+    selectedProject,
   } = useBoundStore();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await fetchTasks();
+        await fetchTasksById(selectedProject._id);
       } catch (error) {
         console.error("Error fetching tasks", error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [selectedProject]);
 
-  let pendingTasks = tasks.filter((task) => task.state === "Pending");
-  let backlogTasks = tasks.filter((task) => task.state === "Backlog");
-  let workingTasks = tasks.filter((task) => task.state === "Working");
+  let pendingTasks = myTasks.filter((task) => task.state === "Pending");
+  let backlogTasks = myTasks.filter((task) => task.state === "Backlog");
+  let workingTasks = myTasks.filter((task) => task.state === "Working");
 
   const handleButton = (buttonName) => {
     setView(buttonName);

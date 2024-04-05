@@ -17,13 +17,21 @@ const filtersData = [
 ];
 
 function MyTask() {
-  const { tasks, addTask, fetchTasks } = useBoundStore();
+  const {
+    tasks,
+    myTasks,
+    fetchTasksById,
+    addTask,
+    fetchTasks,
+    selectedProject,
+  } = useBoundStore();
   const theme = createTheme();
   const [selectedValue, setSelectedValue] = useState("This Week");
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const handleSelectChange = (event) => {
     setSelectedValue(event.target.value);
   };
+
   // const workingTasks = tasks.filter(
   //   (task) => task.state !== "Pending" && task.state !== "Backlog"
   // );
@@ -31,14 +39,14 @@ function MyTask() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await fetchTasks();
+        await fetchTasksById(selectedProject._id);
       } catch (error) {
         console.error("Error fetching tasks", error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [selectedProject]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -84,7 +92,10 @@ function MyTask() {
           </Grid>
         </Grid>
         {/* Task list */}
-        <MyTaskList tasks={tasks} handleAddTask={() => handleAddTask("", "")} />
+        <MyTaskList
+          tasks={myTasks}
+          handleAddTask={() => handleAddTask("", "")}
+        />
       </Grid>
     </ThemeProvider>
   );

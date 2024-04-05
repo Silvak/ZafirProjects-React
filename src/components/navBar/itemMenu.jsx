@@ -7,49 +7,51 @@ import TaskOutlinedIcon from "@mui/icons-material/TaskOutlined";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { BiGroup } from "react-icons/bi";
-
-export const items = [
-  {
-    title: "overview",
-    url: "/",
-    icon: <BrokenImageOutlinedIcon />,
-    submenu: [],
-  },
-  {
-    title: "My tasks",
-    url: "/project/1111/tasks",
-    icon: <TaskOutlinedIcon />,
-    submenu: [],
-  },
-  {
-    title: "project",
-    url: "/",
-    icon: <FolderCopyOutlinedIcon />,
-    submenu: [
-      {
-        title: "My project",
-        url: "/project/1111",
-      },
-      {
-        title: "Project Tasks",
-        url: "/project/1111/tasks",
-      },
-      {
-        title: "report",
-        url: "/project/1111/report",
-      },
-    ],
-  },
-  {
-    title: "members",
-    url: "/members",
-    icon: <BiGroup />,
-    submenu: [],
-  },
-];
+import { useBoundStore } from "../../stores";
 
 function ItemMenu(props) {
   const [openIndex, setOpenIndex] = useState(null);
+  const { selectedProject } = useBoundStore();
+
+  const items = [
+    {
+      title: "overview",
+      url: "/",
+      icon: <BrokenImageOutlinedIcon />,
+      submenu: [],
+    },
+    {
+      title: "My tasks",
+      url: `/project/${selectedProject._id}/tasks`,
+      icon: <TaskOutlinedIcon />,
+      submenu: [],
+    },
+    {
+      title: "project",
+      url: "/",
+      icon: <FolderCopyOutlinedIcon />,
+      submenu: [
+        {
+          title: "My project",
+          url: `/project/${selectedProject._id}`,
+        },
+        {
+          title: "Project Tasks",
+          url: `/project/${selectedProject._id}/tasks`,
+        },
+        {
+          title: "report",
+          url: `/project/${selectedProject._id}/report`,
+        },
+      ],
+    },
+    {
+      title: "members",
+      url: "/members",
+      icon: <BiGroup />,
+      submenu: [],
+    },
+  ];
 
   const handleClick = (index) => {
     if (props.open !== false) {
