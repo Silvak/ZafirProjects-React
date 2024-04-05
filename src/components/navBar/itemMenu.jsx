@@ -38,6 +38,10 @@ export const items = [
         title: "report",
         url: "/project/1111/report",
       },
+      {
+        title: "gantt",
+        url: "/project/1111/gantt",
+      },
     ],
   },
   {
