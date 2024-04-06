@@ -26,7 +26,7 @@ const BoxFlex = ({ children, sx }) => {
 };
 
 const ProjectsTableItem = ({
-  id,
+  _id,
   name,
   status,
   start,
@@ -40,7 +40,7 @@ const ProjectsTableItem = ({
 
   return (
     <Link
-      to={`/project/${id}`}
+      to={`/project/${_id}`}
       style={{ color: "inherit", textDecoration: "none" }}
     >
       <TableCell

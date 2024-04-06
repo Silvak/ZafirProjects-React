@@ -21,7 +21,7 @@ const App = () => {
     fetchTasksById,
     selectedProject,
   } = useBoundStore();
-
+  console.log(tasks);
   useEffect(() => {
     let idProject = "";
     if (selectedProject) {
@@ -78,7 +78,7 @@ const App = () => {
               title="Working Tasks"
               tasks={workingTasks}
               view={view}
-              status="Working"
+              state="Working"
               handleAddTask={() => handleAddTask()}
             />
           </div>
@@ -87,7 +87,7 @@ const App = () => {
               title="Pending Tasks"
               tasks={pendingTasks}
               view={view}
-              status="Pending"
+              state="Pending"
               handleAddTask={() => handleAddTask()}
             />
           </div>
@@ -96,7 +96,7 @@ const App = () => {
               title="BackLog"
               tasks={backlogTasks}
               view={view}
-              status="Backlog"
+              state="Backlog"
               handleAddTask={() => handleAddTask()}
             />
           </div>

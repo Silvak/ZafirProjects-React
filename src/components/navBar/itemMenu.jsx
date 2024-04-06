@@ -59,6 +59,8 @@ function ItemMenu(props) {
     }
   };
 
+  console.log("selectedProject", selectedProject._id);
+
   return (
     <List
       sx={{
@@ -99,14 +101,26 @@ function ItemMenu(props) {
                 timeout="auto"
                 unmountOnExit
               >
-                {element.submenu.map((submenuItem, submenuIndex) => (
-                  <ItemNav
-                    key={`submenu-item-${index}-${submenuIndex}`}
-                    to={submenuItem.url}
-                    title={submenuItem.title}
-                    sx={{ pl: 8 }}
-                  />
-                ))}
+                <ItemNav
+                  to={`project/${selectedProject._id}`}
+                  title="My project"
+                  sx={{ pl: 8 }}
+                />
+                <ItemNav
+                  to={`/project/${selectedProject._id}/tasks`}
+                  title="Project Tasks"
+                  sx={{ pl: 8 }}
+                />
+                <ItemNav
+                  to={`/project/${selectedProject._id}/report`}
+                  title="report"
+                  sx={{ pl: 8 }}
+                />
+                <ItemNav
+                  to={`/project/${selectedProject._id}/gantt`}
+                  title="gantt"
+                  sx={{ pl: 8 }}
+                />
               </Collapse>
             </>
           ) : (

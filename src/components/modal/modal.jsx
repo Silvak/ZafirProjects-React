@@ -24,6 +24,7 @@ const ModalGlobal = () => {
   const handleClose = () => {
     ChangeStateModal(false);
   };
+
   return (
     <Modal
       open={stateModal}
@@ -47,6 +48,7 @@ const ModalGlobal = () => {
         <Box sx={{ maxWidth: "100%" }}>
           {" "}
           {/* width off */}
+
           {titleModal && (
             <Typography
               variant="h4"
@@ -92,6 +94,7 @@ const ModalGlobal = () => {
               </div>
             </Typography>
           )}
+
           <div>{contentModal}</div>
         </Box>
       </Box>
