@@ -6,7 +6,7 @@ import {
   createTheme,
   useMediaQuery,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useBoundStore } from "../../stores/index"; // Importa el hook useBoundStore aquí
 import MyTaskList from "./MyTaskList";
 
@@ -17,28 +17,42 @@ const filtersData = [
 ];
 
 function MyTask() {
-  const { tasks, addTask, fetchTasks } = useBoundStore();
+  const {
+    tasks,
+    myTasks,
+    fetchTasksById,
+    addTask,
+    fetchTasks,
+    selectedProject,
+  } = useBoundStore();
   const theme = createTheme();
   const [selectedValue, setSelectedValue] = useState("This Week");
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+
   const handleSelectChange = (event) => {
     setSelectedValue(event.target.value);
   };
+
   // const workingTasks = tasks.filter(
   //   (task) => task.state !== "Pending" && task.state !== "Backlog"
   // );
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await fetchTasks();
-      } catch (error) {
-        console.error("Error fetching tasks", error);
+    if (!myTasks) {
+      let idProject = "";
+      if (selectedProject) {
+        idProject = selectedProject._id;
       }
-    };
-
-    fetchData();
-  }, []);
+      const fetchData = async () => {
+        try {
+          await fetchTasksById(idProject);
+        } catch (error) {
+          console.error("Error fetching tasks", error);
+        }
+      };
+      fetchData();
+    }
+  }, [selectedProject]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -84,7 +98,12 @@ function MyTask() {
           </Grid>
         </Grid>
         {/* Task list */}
-        <MyTaskList tasks={tasks} handleAddTask={() => handleAddTask("", "")} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <MyTaskList
+            tasks={myTasks}
+            handleAddTask={() => handleAddTask("", "")}
+          />
+        </Suspense>
       </Grid>
     </ThemeProvider>
   );

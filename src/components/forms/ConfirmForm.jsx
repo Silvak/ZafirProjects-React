@@ -6,13 +6,20 @@ function ConfirmForm({
   memberToDelete,
 }) {
   return (
-    <div>
+    <div style={{ maxWidth: "32vw" }}>
       <Paper
         elevation={5}
         style={{ padding: 20, backgroundColor: "#fff", borderRadius: 12 }}
       >
-        <Typography variant="h6" sx={{ mb: 4, mt: 2 }}>
-          Are you sure you want to delete to {memberToDelete.member.name}?
+        <Typography
+          variant="h6"
+          sx={{ mb: 4, mt: 2 }}
+          style={{ fontSize: 18, letterSpacing: -1 }}
+        >
+          Are you sure you want to delete to{" "}
+          <strong style={{ color: "black" }}>
+            {memberToDelete.member.name}?
+          </strong>
         </Typography>
         <div
           style={{

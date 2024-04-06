@@ -3,6 +3,7 @@ import { mockTasks } from "../../mockData/taskData";
 
 export const createTasksSlice = (set) => ({
   tasks: [],
+  myTasks: [],
   addTask: async (taskData) => {
     try {
       console.log(taskData);
@@ -35,6 +36,14 @@ export const createTasksSlice = (set) => ({
     try {
       const { data } = await axiosInstance.get("/tasksList");
       set({ tasks: data });
+    } catch (error) {
+      console.error("Error fetching tasks", error);
+    }
+  },
+  fetchTasksById: async (projectId) => {
+    try {
+      const { data } = await axiosInstance.get(`/tasksList/${projectId}`);
+      set({ myTasks: data });
     } catch (error) {
       console.error("Error fetching tasks", error);
     }
