@@ -6,7 +6,7 @@ import {
   createTheme,
   useMediaQuery,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useBoundStore } from "../../stores/index"; // Importa el hook useBoundStore aquí
 import MyTaskList from "./MyTaskList";
 
@@ -28,6 +28,7 @@ function MyTask() {
   const theme = createTheme();
   const [selectedValue, setSelectedValue] = useState("This Week");
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+
   const handleSelectChange = (event) => {
     setSelectedValue(event.target.value);
   };
@@ -37,9 +38,13 @@ function MyTask() {
   // );
 
   useEffect(() => {
+    let idProject = "";
+    if (selectedProject) {
+      idProject = selectedProject._id;
+    }
     const fetchData = async () => {
       try {
-        await fetchTasksById(selectedProject._id);
+        await fetchTasksById(idProject);
       } catch (error) {
         console.error("Error fetching tasks", error);
       }
@@ -92,10 +97,12 @@ function MyTask() {
           </Grid>
         </Grid>
         {/* Task list */}
-        <MyTaskList
-          tasks={myTasks}
-          handleAddTask={() => handleAddTask("", "")}
-        />
+        <Suspense fallback={<div>Loading...</div>}>
+          <MyTaskList
+            tasks={myTasks}
+            handleAddTask={() => handleAddTask("", "")}
+          />
+        </Suspense>
       </Grid>
     </ThemeProvider>
   );

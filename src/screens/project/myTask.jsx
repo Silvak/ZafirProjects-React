@@ -23,9 +23,13 @@ const App = () => {
   } = useBoundStore();
 
   useEffect(() => {
+    let idProject = "";
+    if (selectedProject) {
+      idProject = selectedProject._id;
+    }
     const fetchData = async () => {
       try {
-        await fetchTasksById(selectedProject._id);
+        await fetchTasksById(idProject);
       } catch (error) {
         console.error("Error fetching tasks", error);
       }
