@@ -21,7 +21,7 @@ const App = () => {
     fetchTasksById,
     selectedProject,
   } = useBoundStore();
-  console.log(tasks);
+
   useEffect(() => {
     let idProject = "";
     if (selectedProject) {

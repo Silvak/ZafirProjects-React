@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { List, ListItemButton, Collapse } from "@mui/material";
 import ItemNav from "@/components/navBar/itemNav";
 import BrokenImageOutlinedIcon from "@mui/icons-material/BrokenImageOutlined";
@@ -12,54 +12,61 @@ import { useBoundStore } from "../../stores";
 function ItemMenu(props) {
   const [openIndex, setOpenIndex] = useState(null);
   const { selectedProject } = useBoundStore();
+  const [itemsActual, setItemsActual] = useState();
+  let items = [];
+  if (selectedProject) {
+    items = [
+      {
+        title: "overview",
+        url: "/",
+        icon: <BrokenImageOutlinedIcon />,
+        submenu: [],
+      },
+      {
+        title: "My tasks",
+        url: `/project/${selectedProject._id}/tasks`,
+        icon: <TaskOutlinedIcon />,
+        submenu: [],
+      },
+      {
+        title: "project",
+        url: "/",
+        icon: <FolderCopyOutlinedIcon />,
+        submenu: [
+          {
+            title: "My project",
+            url: `/project/${selectedProject._id}`,
+          },
+          {
+            title: "Project Tasks",
+            url: `/project/${selectedProject._id}/tasks`,
+          },
+          {
+            title: "report",
+            url: `/project/${selectedProject._id}/report`,
+          },
+        ],
+      },
+      {
+        title: "members",
+        url: "/members",
+        icon: <BiGroup />,
+        submenu: [],
+      },
+    ];
+  }
 
-  const items = [
-    {
-      title: "overview",
-      url: "/",
-      icon: <BrokenImageOutlinedIcon />,
-      submenu: [],
-    },
-    {
-      title: "My tasks",
-      url: `/project/${selectedProject._id}/tasks`,
-      icon: <TaskOutlinedIcon />,
-      submenu: [],
-    },
-    {
-      title: "project",
-      url: "/",
-      icon: <FolderCopyOutlinedIcon />,
-      submenu: [
-        {
-          title: "My project",
-          url: `/project/${selectedProject._id}`,
-        },
-        {
-          title: "Project Tasks",
-          url: `/project/${selectedProject._id}/tasks`,
-        },
-        {
-          title: "report",
-          url: `/project/${selectedProject._id}/report`,
-        },
-      ],
-    },
-    {
-      title: "members",
-      url: "/members",
-      icon: <BiGroup />,
-      submenu: [],
-    },
-  ];
+  useEffect(() => {
+    if (selectedProject) {
+      setItemsActual(items);
+    }
+  }, []);
 
   const handleClick = (index) => {
     if (props.open !== false) {
       setOpenIndex(openIndex === index ? null : index);
     }
   };
-
-  console.log("selectedProject", selectedProject._id);
 
   return (
     <List
@@ -73,7 +80,7 @@ function ItemMenu(props) {
         marginTop: "48px",
       }}
     >
-      {items.map((element, index) => (
+      {itemsActual?.map((element, index) => (
         <div key={`item-${index}`}>
           {element.submenu.length > 0 ? (
             <>

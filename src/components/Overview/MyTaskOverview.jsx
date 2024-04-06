@@ -38,19 +38,20 @@ function MyTask() {
   // );
 
   useEffect(() => {
-    let idProject = "";
-    if (selectedProject) {
-      idProject = selectedProject._id;
-    }
-    const fetchData = async () => {
-      try {
-        await fetchTasksById(idProject);
-      } catch (error) {
-        console.error("Error fetching tasks", error);
+    if (!myTasks) {
+      let idProject = "";
+      if (selectedProject) {
+        idProject = selectedProject._id;
       }
-    };
-
-    fetchData();
+      const fetchData = async () => {
+        try {
+          await fetchTasksById(idProject);
+        } catch (error) {
+          console.error("Error fetching tasks", error);
+        }
+      };
+      fetchData();
+    }
   }, [selectedProject]);
 
   return (
