@@ -9,58 +9,59 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { BiGroup } from "react-icons/bi";
 import { useBoundStore } from "../../stores";
 
-function ItemMenu(props) {
-  const [openIndex, setOpenIndex] = useState(null);
-  const { selectedProject } = useBoundStore();
-  const [itemsActual, setItemsActual] = useState();
-  let items = [];
-  if (selectedProject) {
-    items = [
-      {
-        title: "overview",
-        url: "/",
-        icon: <BrokenImageOutlinedIcon />,
-        submenu: [],
-      },
-      {
-        title: "My tasks",
-        url: `/project/${selectedProject._id}/tasks`,
-        icon: <TaskOutlinedIcon />,
-        submenu: [],
-      },
-      {
-        title: "project",
-        url: "/",
-        icon: <FolderCopyOutlinedIcon />,
-        submenu: [
-          {
-            title: "My project",
-            url: `/project/${selectedProject._id}`,
-          },
-          {
-            title: "Project Tasks",
-            url: `/project/${selectedProject._id}/tasks`,
-          },
-          {
-            title: "report",
-            url: `/project/${selectedProject._id}/report`,
-          },
-        ],
-      },
-      {
-        title: "members",
-        url: "/members",
-        icon: <BiGroup />,
-        submenu: [],
-      },
-    ];
-  }
+function initializeItems(selectedProject) {
+  return [
+    {
+      title: "overview",
+      url: "/",
+      icon: <BrokenImageOutlinedIcon />,
+      submenu: [],
+    },
+    {
+      title: "My tasks",
+      url: `/project/${selectedProject?._id}/tasks`,
+      icon: <TaskOutlinedIcon />,
+      submenu: [],
+    },
+    {
+      title: "project",
+      url: "/",
+      icon: <FolderCopyOutlinedIcon />,
+      submenu: [
+        {
+          title: "My project",
+          url: `/project/${selectedProject?._id}`,
+        },
+        {
+          title: "Project Tasks",
+          url: `/project/${selectedProject?._id}/tasks`,
+        },
+        {
+          title: "report",
+          url: `/project/${selectedProject?._id}/report`,
+        },
+        {
+          title: "gantt",
+          url: `/project/${selectedProject?._id}/gantt`,
+        },
+      ],
+    },
+    {
+      title: "members",
+      url: "/members",
+      icon: <BiGroup />,
+      submenu: [],
+    },
+  ];
+}
 
-  useEffect(() => {
-    if (selectedProject) {
-      setItemsActual(items);
-    }
-  }, []);
+function ItemMenu(props) {
+  const { selectedProject } = useBoundStore();
+
+  const [openIndex, setOpenIndex] = useState(null);
+  const [itemsActual, setItemsActual] = useState(
+    initializeItems(selectedProject)
+  );
 
   const handleClick = (index) => {
     if (props.open !== false) {
@@ -81,7 +82,7 @@ function ItemMenu(props) {
       }}
     >
       {itemsActual?.map((element, index) => (
-        <div key={`item-${index}`}>
+        <>
           {element.submenu.length > 0 ? (
             <>
               <ListItemButton
@@ -108,26 +109,9 @@ function ItemMenu(props) {
                 timeout="auto"
                 unmountOnExit
               >
-                <ItemNav
-                  to={`project/${selectedProject._id}`}
-                  title="My project"
-                  sx={{ pl: 8 }}
-                />
-                <ItemNav
-                  to={`/project/${selectedProject._id}/tasks`}
-                  title="Project Tasks"
-                  sx={{ pl: 8 }}
-                />
-                <ItemNav
-                  to={`/project/${selectedProject._id}/report`}
-                  title="report"
-                  sx={{ pl: 8 }}
-                />
-                <ItemNav
-                  to={`/project/${selectedProject._id}/gantt`}
-                  title="gantt"
-                  sx={{ pl: 8 }}
-                />
+                {element.submenu.map((link) => (
+                  <ItemNav to={link.url} title={link.title} sx={{ pl: 8 }} />
+                ))}
               </Collapse>
             </>
           ) : (
@@ -138,7 +122,7 @@ function ItemMenu(props) {
               icon={element.icon}
             />
           )}
-        </div>
+        </>
       ))}
     </List>
   );
