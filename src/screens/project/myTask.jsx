@@ -7,10 +7,14 @@ import TaskHeader from "@/components/taskAccordion/taskHeader";
 import TaskList from "@/components/taskAccordion/taskList";
 import { useBoundStore } from "@/stores/index";
 
+import { useParams } from "react-router-dom";
+
 const App = () => {
   const [view, setView] = useState("Format List");
+
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("md"));
 
+  const params = useParams();
   const {
     tasks,
     myTasks,
@@ -23,20 +27,19 @@ const App = () => {
   } = useBoundStore();
 
   useEffect(() => {
-    let idProject = "";
-    if (selectedProject) {
-      idProject = selectedProject._id;
-    }
-    const fetchData = async () => {
-      try {
-        await fetchTasksById(idProject);
-      } catch (error) {
-        console.error("Error fetching tasks", error);
-      }
-    };
+    if (params.id) {
+      const fetchData = async () => {
+        try {
+          // Only fetch tasks if idProject has changed
+          await fetchTasksById(params.id);
+        } catch (error) {
+          console.error("Error fetching tasks", error);
+        }
+      };
 
-    fetchData();
-  }, [selectedProject]);
+      fetchData();
+    }
+  }, [params.id]);
 
   let pendingTasks = myTasks.filter((task) => task.state === "Pending");
   let backlogTasks = myTasks.filter((task) => task.state === "Backlog");
