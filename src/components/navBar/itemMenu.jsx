@@ -9,11 +9,8 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { BiGroup } from "react-icons/bi";
 import { useBoundStore } from "../../stores";
 
-function ItemMenu(props) {
-  const [openIndex, setOpenIndex] = useState(null);
-  const { selectedProject } = useBoundStore();
-  const [itemsActual, setItemsActual] = useState();
-  let items = [
+function initializeItems(selectedProject) {
+  return [
     {
       title: "overview",
       url: "/",
@@ -22,7 +19,7 @@ function ItemMenu(props) {
     },
     {
       title: "My tasks",
-      url: `/project/${selectedProject._id}/tasks`,
+      url: `/project/${selectedProject?._id}/tasks`,
       icon: <TaskOutlinedIcon />,
       submenu: [],
     },
@@ -33,19 +30,19 @@ function ItemMenu(props) {
       submenu: [
         {
           title: "My project",
-          url: `/project/${selectedProject._id}`,
+          url: `/project/${selectedProject?._id}`,
         },
         {
           title: "Project Tasks",
-          url: `/project/${selectedProject._id}/tasks`,
+          url: `/project/${selectedProject?._id}/tasks`,
         },
         {
           title: "report",
-          url: `/project/${selectedProject._id}/report`,
+          url: `/project/${selectedProject?._id}/report`,
         },
         {
           title: "gantt",
-          url: `/project/${selectedProject._id}/gantt`,
+          url: `/project/${selectedProject?._id}/gantt`,
         },
       ],
     },
@@ -56,12 +53,15 @@ function ItemMenu(props) {
       submenu: [],
     },
   ];
+}
 
-  useEffect(() => {
-    if (selectedProject) {
-      setItemsActual(items);
-    }
-  }, [selectedProject]);
+function ItemMenu(props) {
+  const { selectedProject } = useBoundStore();
+
+  const [openIndex, setOpenIndex] = useState(null);
+  const [itemsActual, setItemsActual] = useState(
+    initializeItems(selectedProject)
+  );
 
   const handleClick = (index) => {
     if (props.open !== false) {
@@ -82,7 +82,7 @@ function ItemMenu(props) {
       }}
     >
       {itemsActual?.map((element, index) => (
-        <div key={`item-${index}`}>
+        <>
           {element.submenu.length > 0 ? (
             <>
               <ListItemButton
@@ -122,7 +122,7 @@ function ItemMenu(props) {
               icon={element.icon}
             />
           )}
-        </div>
+        </>
       ))}
     </List>
   );
