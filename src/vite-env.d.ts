@@ -84,6 +84,7 @@ declare module "@/hooks/useProject";
 
 declare module "@/utils/colors";
 declare module "@/utils/fixDate";
+declare module "@/utils/src/utils/validateCreateProject.js";
 
 declare module "@/config/apiConfig";
 
