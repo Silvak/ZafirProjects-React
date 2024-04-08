@@ -39,6 +39,7 @@ function CreateProjectForm() {
     selectedMember,
     teamMembers,
     teamLeaders,
+    error,
   } = useProject({ project: null, isCreated: true });
 
   return (
@@ -305,6 +306,7 @@ function CreateProjectForm() {
             )}
           </Box>
         </Grid>
+        <Box>{error && <span>{error}</span>}</Box>
         <Grid
           sx={{
             display: "flex",

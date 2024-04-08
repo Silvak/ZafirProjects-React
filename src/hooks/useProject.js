@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { createTheme, useMediaQuery } from "@mui/material";
 import { useBoundStore } from "../stores";
+import validateCreateProject from "@/utils/validateCreateProject";
+import { isJSDocNonNullableType } from "typescript";
 
 export function useProject({ project, isCreated = false }) {
   const theme = createTheme();
@@ -9,6 +11,7 @@ export function useProject({ project, isCreated = false }) {
   const { User, addProject, updateProject, updateProjects, ChangeStateModal } =
     useBoundStore();
 
+  const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedUser, setSelectedUser] = useState("");
   const [selectedMember, setSelectedMember] = useState("");
@@ -42,14 +45,23 @@ export function useProject({ project, isCreated = false }) {
     setIsLoading(true);
     try {
       if (isCreated) {
-        await addProject(User.uid, formData);
+        const isValid = validateCreateProject(formData);
+
+        if (!isValid) {
+          setError("Por favor, completa los campos");
+          setIsLoading(false);
+          setTimeout(() => {
+            setError(null);
+          }, 1500);
+        } else {
+          await addProject(User.uid, formData);
+          await updateProjects();
+          setIsLoading(false);
+          handleClose();
+        }
       } else {
         await updateProject(project?._id, formData);
       }
-      // Después de que ambas operaciones asincrónicas se completen, cierra el modal
-      await updateProjects();
-      setIsLoading(false);
-      handleClose();
     } catch (error) {
       console.error(error);
     }
@@ -117,5 +129,6 @@ export function useProject({ project, isCreated = false }) {
     selectedMember,
     teamMembers,
     teamLeaders,
+    error,
   };
 }
