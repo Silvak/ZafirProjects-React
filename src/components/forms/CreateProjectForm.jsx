@@ -30,7 +30,6 @@ function CreateProjectForm() {
     handleClose,
     teamMembers,
     teamLeaders,
-    error,
     selectedLeader,
     selectedMember,
     filteredLeaders,
@@ -328,7 +327,7 @@ function CreateProjectForm() {
             )}
           </Box>
         </Grid>
-        <Box>{error && <span>{error}</span>}</Box>
+
         {/* buttons */}
         <Grid
           sx={{
