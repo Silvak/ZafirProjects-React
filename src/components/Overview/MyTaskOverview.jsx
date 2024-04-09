@@ -7,7 +7,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { useEffect, useState, Suspense } from "react";
-import { useBoundStore } from "../../stores/index"; // Importa el hook useBoundStore aquí
+import { useBoundStore } from "../../stores/index";
 import MyTaskList from "./MyTaskList";
 
 const filtersData = [
@@ -38,14 +38,10 @@ function MyTask() {
   // );
 
   useEffect(() => {
-    if (!myTasks) {
-      let idProject = "";
-      if (selectedProject) {
-        idProject = selectedProject._id;
-      }
+    if (selectedProject) {
       const fetchData = async () => {
         try {
-          await fetchTasksById(idProject);
+          await fetchTasksById(selectedProject._id);
         } catch (error) {
           console.error("Error fetching tasks", error);
         }
