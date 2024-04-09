@@ -27,6 +27,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useParams } from "react-router-dom";
+import { useProject } from "@/hooks/useProject";
 
 const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
   const theme = useTheme();
@@ -41,6 +42,13 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState("");
   const [tags, setTags] = useState("");
+  const {
+    selectedLeader,
+    filteredLeaders,
+    handleSuggestionChange,
+    handleSuggestionClick,
+  } = useProject({ project: null, isCreated: true });
+
   const {
     addTask,
     setTask,
@@ -90,6 +98,8 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
   const [teamMembers, setTeamMembers] = useState([]);
 
   const handleCreate = async () => {
+    console.log("Leader que vamos a mandar al back: ", selectedLeader);
+
     if (
       !taskName ||
       !selectedDate ||
@@ -103,7 +113,9 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
       return;
     }
     try {
-      await addTask(taskData);
+      console.log(taskData);
+
+      // await addTask(taskData);
     } catch (error) {
       alert("Error creating task", error);
     }
@@ -114,8 +126,10 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
     ChangeStateModal(false);
   };
 
-  const handleAssignToChange = (e) => {
-    setSelectedUser(e.target.value);
+  const handleAssignToChange = (newLeader) => {
+    console.log(newLeader);
+    setSelectedUser(newLeader);
+    console.log("Leader que vamos a mandar al back: ", selectedUser);
   };
 
   const handleAddMember = () => {
@@ -218,25 +232,55 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
                 sx={{ fontSize: "2rem" }}
               />
             </Grid>
-
-            <Grid item xs={12}>
+            <Grid
+              item
+              xs={12}
+              sx={
+                {
+                  // width: "444px",
+                  // marginBottom: "20px",
+                }
+              }
+            >
               <Typography sx={{ fontSize: "0.85rem" }}>Assigne to</Typography>
+
               <TextField
-                fullWidth
-                variant="outlined"
                 size="small"
-                sx={{ fontSize: "2", fontWeight: "normal" }}
-                placeholder="Search Leader"
-                value={selectedUser}
-                onChange={handleAssignToChange}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    handleAddMember();
-                  }
+                name="leaders"
+                value={selectedLeader}
+                onChange={(e) => handleSuggestionChange(e, "leader")}
+                placeholder="Search leader"
+                sx={{
+                  width: "100%",
                 }}
               />
-            </Grid>
+              <div
+                style={{
+                  // marginTop: 6,
+                  marginLeft: 4,
+                  cursor: "pointer",
+                  padding: 8,
+                }}
+              >
+                {filteredLeaders.map((user) => (
+                  <p
+                    key={user.id}
+                    onClick={() => handleSuggestionClick(user, "leader")}
+                  >
+                    {user.name}
+                  </p>
+                ))}
+              </div>
 
+              {/* <IconButton
+                title="Add Leader"
+                sx={{ bgcolor: "lightgray" }}
+                onClick={() => handleAssignToChange(selectedLeader)}
+              >
+                <AddIcon />
+              </IconButton> */}
+            </Grid>
+            {/* 
             <Grid item xs={12}>
               <Box
                 sx={{
@@ -276,7 +320,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
                   </IconButton>
                 )}
               </Box>
-            </Grid>
+            </Grid> */}
 
             <Grid item xs={12}>
               <Typography sx={{ fontSize: "0.85rem" }}>Priority</Typography>
