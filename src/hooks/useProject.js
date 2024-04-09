@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { createTheme, useMediaQuery } from "@mui/material";
-import { useBoundStore } from "../stores";
 import validateCreateProject from "@/utils/validateCreateProject";
-import { isJSDocNonNullableType } from "typescript";
+import useSuggestionUsers from "@/hooks/useSuggestionUsers";
+import { createTheme, useMediaQuery } from "@mui/material";
+import { useState } from "react";
+import { useBoundStore } from "../stores";
 
 export function useProject({ project, isCreated = false }) {
   const theme = createTheme();
@@ -11,10 +11,19 @@ export function useProject({ project, isCreated = false }) {
   const { User, addProject, updateProject, updateProjects, ChangeStateModal } =
     useBoundStore();
 
+  const {
+    selectedLeader,
+    setSelectedLeader,
+    selectedMember,
+    setSelectedMember,
+    filteredLeaders,
+    filteredMembers,
+    handleSuggestionChange,
+    handleSuggestionClick,
+  } = useSuggestionUsers();
+
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedUser, setSelectedUser] = useState("");
-  const [selectedMember, setSelectedMember] = useState("");
   const [teamMembers, setTeamMembers] = useState(project?.["members_id"] || []);
   const [teamLeaders, setLeaders] = useState(
     typeof project?.responsible === "string"
@@ -24,10 +33,10 @@ export function useProject({ project, isCreated = false }) {
   const [formData, setFormData] = useState({
     name: project?.name || "",
     start: project?.start
-      ? new Date(project.start).toISOString().substring(0, 10)
+      ? new Date(project.start).toISOString().substring(0, 10) //format date
       : "",
     end: project?.end
-      ? new Date(project.end).toISOString().substring(0, 10)
+      ? new Date(project.end).toISOString().substring(0, 10) //format date
       : "",
     description: project?.description || "",
     link: project?.link || "",
@@ -67,9 +76,6 @@ export function useProject({ project, isCreated = false }) {
     }
   };
 
-  const handleLeaderToChange = (e) => {
-    setSelectedUser(e.target.value);
-  };
   const handleMemberToChange = (e) => {
     setSelectedMember(e.target.value);
   };
@@ -77,9 +83,10 @@ export function useProject({ project, isCreated = false }) {
   const handleAddLeaders = () => {
     if (selectedUser && !teamLeaders.includes(selectedUser)) {
       setLeaders([...teamLeaders, selectedUser]);
-      setSelectedUser("");
+      setSelectedLeader("");
     }
   };
+
   const handleAddMembers = () => {
     if (selectedMember && !teamMembers.includes(selectedMember)) {
       setTeamMembers([...teamMembers, selectedMember]);
@@ -111,13 +118,13 @@ export function useProject({ project, isCreated = false }) {
 
     // console.log(formData);
   };
+
   return {
     theme,
     isMobile,
     formData,
     handleChange,
     handleSubmit,
-    handleLeaderToChange,
     handleMemberToChange,
     handleAddLeaders,
     handleAddMembers,
@@ -125,10 +132,18 @@ export function useProject({ project, isCreated = false }) {
     handleRemoveMember,
     isLoading,
     handleClose,
-    selectedUser,
     selectedMember,
     teamMembers,
     teamLeaders,
     error,
+
+    selectedLeader,
+    setSelectedLeader,
+    selectedMember,
+    setSelectedMember,
+    filteredLeaders,
+    filteredMembers,
+    handleSuggestionChange,
+    handleSuggestionClick,
   };
 }

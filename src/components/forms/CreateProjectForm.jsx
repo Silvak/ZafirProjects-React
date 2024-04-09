@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Box,
   Button,
@@ -7,12 +6,9 @@ import {
   TextField,
   ThemeProvider,
   Typography,
-  createTheme,
   Avatar,
   IconButton,
-  useMediaQuery,
 } from "@mui/material";
-import { useBoundStore } from "../../stores";
 
 import AddIcon from "@mui/icons-material/Add";
 import user1 from "../../assets/Img/png/userImageMan.png";
@@ -24,22 +20,23 @@ function CreateProjectForm() {
   const {
     theme,
     isMobile,
-    formData,
     handleChange,
     handleSubmit,
-    handleLeaderToChange,
-    handleMemberToChange,
     handleAddLeaders,
     handleAddMembers,
     handleRemoveLeader,
     handleRemoveMember,
     isLoading,
     handleClose,
-    selectedUser,
-    selectedMember,
     teamMembers,
     teamLeaders,
     error,
+    selectedLeader,
+    selectedMember,
+    filteredLeaders,
+    filteredMembers,
+    handleSuggestionChange,
+    handleSuggestionClick,
   } = useProject({ project: null, isCreated: true });
 
   return (
@@ -181,6 +178,7 @@ function CreateProjectForm() {
             }}
           />
         </Grid>
+        {/* leader */}
         <Grid
           item
           sx={{
@@ -194,14 +192,26 @@ function CreateProjectForm() {
           <TextField
             size="small"
             name="leaders"
-            value={selectedUser}
-            onChange={handleLeaderToChange}
+            value={selectedLeader}
+            onChange={(e) => handleSuggestionChange(e, "leader")}
             placeholder="Search leader"
             sx={{
               width: "100%",
             }}
           />
         </Grid>
+
+        <div>
+          {filteredLeaders.map((user) => (
+            <p
+              key={user.id}
+              onClick={() => handleSuggestionClick(user, "leader")}
+            >
+              {user.name}
+            </p>
+          ))}
+        </div>
+
         <Grid item xs={12}>
           <Box
             sx={{
@@ -243,7 +253,7 @@ function CreateProjectForm() {
             )}
           </Box>
         </Grid>
-
+        {/* members */}
         <Grid
           item
           sx={{
@@ -258,13 +268,25 @@ function CreateProjectForm() {
             size="small"
             name="members"
             value={selectedMember}
-            onChange={handleMemberToChange}
+            onChange={(e) => handleSuggestionChange(e, "member")}
             placeholder="Search a member"
             sx={{
               width: "100%",
             }}
           />
         </Grid>
+
+        <div>
+          {filteredMembers.map((user) => (
+            <p
+              key={user.id}
+              onClick={() => handleSuggestionClick(user, "member")}
+            >
+              {user.name}
+            </p>
+          ))}
+        </div>
+
         <Grid item xs={12}>
           <Box
             sx={{
@@ -307,6 +329,7 @@ function CreateProjectForm() {
           </Box>
         </Grid>
         <Box>{error && <span>{error}</span>}</Box>
+        {/* buttons */}
         <Grid
           sx={{
             display: "flex",

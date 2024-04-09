@@ -81,6 +81,7 @@ declare module "@/hooks/ganttChart/useDateRange";
 declare module "@/hooks/ganttChart/useTaskWidth";
 declare module "@/hooks/useProjectsOverview";
 declare module "@/hooks/useProject";
+declare module "@/hooks/useSuggestionUsers";
 
 declare module "@/utils/colors";
 declare module "@/utils/fixDate";
