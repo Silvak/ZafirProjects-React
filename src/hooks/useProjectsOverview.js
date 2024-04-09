@@ -31,9 +31,9 @@ export function useProjectsOverview() {
     }
   };
 
-  useEffect(() => {
-    fetchProjects();
-  }, []);
+  // useEffect(() => {
+  //   fetchProjects();
+  // }, []);
 
   return {
     projectsData,
