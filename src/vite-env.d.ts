@@ -48,6 +48,7 @@ declare module "@/components/forms/SignInForm";
 declare module "@/components/Selects/FilterSelect";
 declare module "@/components/ganttChart/TaskElement";
 declare module "@/components/ganttChart/GanttChart";
+declare module "@/components/SuggestionList/SuggestionList";
 
 declare module "@/context/AppContextProvider";
 declare module "@/stores/index";

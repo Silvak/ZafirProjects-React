@@ -8,8 +8,15 @@ export function useProject({ project, isCreated = false }) {
   const theme = createTheme();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
-  const { User, addProject, updateProject, updateProjects, ChangeStateModal } =
-    useBoundStore();
+  const {
+    User,
+    addProject,
+    updateProject,
+    updateProjects,
+    ChangeStateModal,
+    ChangeTitleAlertError,
+    ChangeStateAlertError,
+  } = useBoundStore();
 
   const {
     selectedLeader,
@@ -22,7 +29,6 @@ export function useProject({ project, isCreated = false }) {
     handleSuggestionClick,
   } = useSuggestionUsers();
 
-  const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [teamMembers, setTeamMembers] = useState(project?.["members_id"] || []);
   const [teamLeaders, setLeaders] = useState(
@@ -51,17 +57,13 @@ export function useProject({ project, isCreated = false }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
     try {
       if (isCreated) {
         const isValid = validateCreateProject(formData);
 
         if (!isValid) {
-          setError("Por favor, completa los campos");
-          setIsLoading(false);
-          setTimeout(() => {
-            setError(null);
-          }, 1500);
+          ChangeTitleAlertError("Faltan ingresar datos");
+          ChangeStateAlertError(true);
         } else {
           await addProject(User.uid, formData);
           await updateProjects();
@@ -69,11 +71,14 @@ export function useProject({ project, isCreated = false }) {
           handleClose();
         }
       } else {
+        setIsLoading(true);
+
         await updateProject(project?._id, formData);
       }
     } catch (error) {
       console.error(error);
     }
+    setIsLoading(false);
   };
 
   const handleMemberToChange = (e) => {
@@ -135,8 +140,6 @@ export function useProject({ project, isCreated = false }) {
     selectedMember,
     teamMembers,
     teamLeaders,
-    error,
-
     selectedLeader,
     setSelectedLeader,
     selectedMember,
