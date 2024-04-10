@@ -27,6 +27,7 @@ export function useProject({ project, isCreated = false }) {
     filteredMembers,
     handleSuggestionChange,
     handleSuggestionClick,
+    resetSuggestions,
   } = useSuggestionUsers();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -86,9 +87,10 @@ export function useProject({ project, isCreated = false }) {
   };
 
   const handleAddLeaders = () => {
-    if (selectedUser && !teamLeaders.includes(selectedUser)) {
-      setLeaders([...teamLeaders, selectedUser]);
+    if (selectedLeader && !teamLeaders.includes(selectedLeader)) {
+      setLeaders([...teamLeaders, selectedLeader]);
       setSelectedLeader("");
+      resetSuggestions("leader");
     }
   };
 
@@ -96,6 +98,7 @@ export function useProject({ project, isCreated = false }) {
     if (selectedMember && !teamMembers.includes(selectedMember)) {
       setTeamMembers([...teamMembers, selectedMember]);
       setSelectedMember("");
+      resetSuggestions("member");
     }
   };
 

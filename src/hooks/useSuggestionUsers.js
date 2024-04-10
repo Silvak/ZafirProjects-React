@@ -64,13 +64,24 @@ function useSuggestionUsers() {
     }
   };
 
+  const resetSuggestions = (type) => {
+    if (type === "leader") {
+      setFilteredLeaders([]);
+    } else {
+      setFilteredMembers([]);
+    }
+  };
+
   return {
     selectedLeader,
+    setSelectedLeader,
     selectedMember,
+    setSelectedMember,
     filteredLeaders,
     filteredMembers,
     handleSuggestionChange,
     handleSuggestionClick,
+    resetSuggestions,
   };
 }
 
