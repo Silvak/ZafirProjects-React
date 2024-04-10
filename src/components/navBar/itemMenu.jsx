@@ -59,9 +59,11 @@ function ItemMenu(props) {
   const { selectedProject } = useBoundStore();
 
   const [openIndex, setOpenIndex] = useState(null);
-  const [itemsActual, setItemsActual] = useState(
-    initializeItems(selectedProject)
-  );
+  const [itemsActual, setItemsActual] = useState(null);
+
+  useEffect(() => {
+    setItemsActual(initializeItems(selectedProject));
+  }, [selectedProject]);
 
   const handleClick = (index) => {
     if (props.open !== false) {
@@ -86,11 +88,13 @@ function ItemMenu(props) {
           {element.submenu.length > 0 ? (
             <>
               <ListItemButton
+                key={`list-item-buttom-${index}`}
                 onClick={() => handleClick(index)}
                 sx={{ m: 0, p: 0 }}
                 disableRipple
               >
                 <ItemNav
+                  key={`item-nav-${index}`}
                   to={element.url}
                   title={element.title}
                   icon={element.icon}
@@ -105,6 +109,7 @@ function ItemMenu(props) {
               </ListItemButton>
 
               <Collapse
+                key={`collapse-${index}`}
                 in={openIndex === index && props.open}
                 timeout="auto"
                 unmountOnExit
