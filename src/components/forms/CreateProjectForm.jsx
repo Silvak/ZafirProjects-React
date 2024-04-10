@@ -15,6 +15,7 @@ import user1 from "../../assets/Img/png/userImageMan.png";
 import user2 from "../../assets/Img/png/userImageWoman.png";
 import user3 from "../../assets/Img/png/userImage.png";
 import { useProject } from "@/hooks/useProject";
+import SuggestionList from "@/components/SuggestionList/SuggestionList";
 
 function CreateProjectForm() {
   const {
@@ -178,38 +179,34 @@ function CreateProjectForm() {
           />
         </Grid>
         {/* leader */}
-        <Grid
-          item
-          sx={{
-            // width: "444px",
-            marginBottom: "20px",
-          }}
-        >
-          <Typography fontFamily={"Poppins"} color={"#6B6E75"}>
-            Team leaders
-          </Typography>
-          <TextField
-            size="small"
-            name="leaders"
-            value={selectedLeader}
-            onChange={(e) => handleSuggestionChange(e, "leader")}
-            placeholder="Search leader"
+        <Box sx={{ position: "relative" }}>
+          <Grid
+            item
             sx={{
-              width: "100%",
+              // width: "444px",
+              marginBottom: "20px",
             }}
-          />
-        </Grid>
+          >
+            <Typography fontFamily={"Poppins"} color={"#6B6E75"}>
+              Team leaders
+            </Typography>
+            <TextField
+              size="small"
+              name="leaders"
+              value={selectedLeader}
+              onChange={(e) => handleSuggestionChange(e, "leader")}
+              placeholder="Search leader"
+              sx={{
+                width: "100%",
+              }}
+            />
+          </Grid>
 
-        <div>
-          {filteredLeaders.map((user) => (
-            <p
-              key={user.id}
-              onClick={() => handleSuggestionClick(user, "leader")}
-            >
-              {user.name}
-            </p>
-          ))}
-        </div>
+          <SuggestionList
+            usersList={filteredLeaders}
+            onClick={handleSuggestionClick}
+          />
+        </Box>
 
         <Grid item xs={12}>
           <Box
@@ -252,39 +249,35 @@ function CreateProjectForm() {
             )}
           </Box>
         </Grid>
-        {/* members */}
-        <Grid
-          item
-          sx={{
-            // width: "444px",
-            marginBottom: "20px",
-          }}
-        >
-          <Typography fontFamily={"Poppins"} color={"#6B6E75"}>
-            Add members
-          </Typography>
-          <TextField
-            size="small"
-            name="members"
-            value={selectedMember}
-            onChange={(e) => handleSuggestionChange(e, "member")}
-            placeholder="Search a member"
-            sx={{
-              width: "100%",
-            }}
-          />
-        </Grid>
 
-        <div>
-          {filteredMembers.map((user) => (
-            <p
-              key={user.id}
-              onClick={() => handleSuggestionClick(user, "member")}
-            >
-              {user.name}
-            </p>
-          ))}
-        </div>
+        {/* members */}
+        <Box sx={{ position: "relative" }}>
+          <Grid
+            item
+            sx={{
+              // width: "444px",
+              marginBottom: "20px",
+            }}
+          >
+            <Typography fontFamily={"Poppins"} color={"#6B6E75"}>
+              Add members
+            </Typography>
+            <TextField
+              size="small"
+              name="members"
+              value={selectedMember}
+              onChange={(e) => handleSuggestionChange(e, "member")}
+              placeholder="Search a member"
+              sx={{
+                width: "100%",
+              }}
+            />
+          </Grid>
+          <SuggestionList
+            usersList={filteredMembers}
+            onClick={handleSuggestionClick}
+          />
+        </Box>
 
         <Grid item xs={12}>
           <Box
