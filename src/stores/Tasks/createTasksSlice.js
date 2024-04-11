@@ -7,7 +7,10 @@ export const createTasksSlice = (set) => ({
   addTask: async (taskData) => {
     try {
       console.log(taskData);
-      const data = await axiosInstance.post(`/tasksList`, taskData);
+      const data = await axiosInstance.post(
+        `/tasksList/660b037505e97aba86580b25`,
+        taskData
+      );
       console.log(taskData);
     } catch (error) {
       console.error("Error creating task", error);

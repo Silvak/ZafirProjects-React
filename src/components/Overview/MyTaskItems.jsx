@@ -24,7 +24,7 @@ function MyTaskItems({ tasks }) {
   const formatDate = (dateString) => {
     const today = new Date();
     const date = new Date(dateString);
-    const options = { year: "numeric", month: "long", day: "numeric" };
+    const options = { year: "numeric", month: "short", day: "numeric" };
 
     if (
       date.getDate() === today.getDate() &&
@@ -90,13 +90,13 @@ function MyTaskItems({ tasks }) {
                         fontWeight: "bold",
                         paddingInline: "8px",
                         borderRadius: "6px",
-                        // ...priorityColors[task.priority],
+                        ...priorityColors[task.priority],
                       }}
                     >
                       <Circle
                         sx={{ fontSize: "10px", marginRight: "2px" }}
                       ></Circle>
-                      {"priority"}
+                      {task.priority}
                     </Typography>
                   </Grid>
 
@@ -249,13 +249,13 @@ function MyTaskItems({ tasks }) {
                         fontWeight: "bold",
                         paddingInline: "8px",
                         borderRadius: "6px",
-                        // ...priorityColors[task.priority],
+                        ...priorityColors[task.priority],
                       }}
                     >
                       <Circle
                         sx={{ fontSize: "10px", marginRight: "2px" }}
                       ></Circle>
-                      {"priority"}
+                      {task.priority}
                     </Typography>
                   </Grid>
 

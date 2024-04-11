@@ -18,11 +18,27 @@ import TaskDetail from "../TaskDetail/TaskDetail";
 import { statusColors, priorityColors } from "../../utils/colors";
 
 const TaskItem = ({ task, isMobile, isKanbanView }) => {
-  // Para la fecha en formato escrito
-  const dateString = task.start;
-  const date = new Date(dateString);
-  const options = { year: "numeric", month: "long", day: "numeric" };
-  const localeDate = date.toLocaleDateString("en-US", options);
+  // // Para la fecha en formato escrito
+  // const dateString = task.start;
+  // const date = new Date(dateString);
+  // const options = { year: "numeric", month: "short", day: "numeric" };
+  // const localeDate = date.toLocaleDateString("en-US", options);
+
+  const formatDate = (dateString) => {
+    const today = new Date();
+    const date = new Date(dateString);
+    const options = { year: "numeric", month: "short", day: "numeric" };
+
+    if (
+      date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear()
+    ) {
+      return "Today";
+    } else {
+      return date.toLocaleDateString("en-US", options);
+    }
+  };
 
   // Task Data
   const taskData = task.data[0];
@@ -142,11 +158,11 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
               paddingBlock: "2px",
               borderRadius: "6px",
               margin: isMobile ? "10px 0" : "0",
-              // ...priorityColors[task.priority],
+              ...priorityColors[task.priority],
             }}
           >
             <Circle sx={{ fontSize: "10px", marginRight: "2px" }}></Circle>
-            {"prior"}
+            {task.priority}
           </Typography>
         </Grid>
         {isKanbanView && (
@@ -293,7 +309,7 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
               noWrap
               style={{ fontSize: "14px", fontWeight: "bold" }}
             >
-              {localeDate}
+              {formatDate(task.start)}
             </Typography>
           </div>
         </Grid>

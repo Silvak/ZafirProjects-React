@@ -59,13 +59,13 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
         {
           name: taskName,
           description: description,
-          priority: priority,
           tags: tags,
         },
       ],
       start: selectedDate,
       end: selectedEndDate,
       state: tags,
+      priority: priority,
       projectId: 1111,
     });
   }, [taskName, startDate, endDate, description, priority, tags]);
@@ -75,13 +75,13 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
       {
         name: taskName,
         description: description,
-        priority: priority,
         tags: tags,
       },
     ],
     start: selectedDate,
     end: selectedEndDate,
     state: tags,
+    priority: priority,
     projectId: 1111,
   });
   // console.log(taskData);
@@ -175,30 +175,41 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
               />
             </Grid>
 
-            <Grid item xs={7}>
-              <Typography sx={{ fontSize: "0.85rem" }}>Start date</Typography>
-              <Box sx={{ width: "100%" }}>
-                <DemoContainer components={["DatePicker"]}>
-                  <DatePicker
-                    label="Start"
-                    onChange={handleDateChange}
-                    slotProps={{ textField: { size: "small" } }}
-                  />
-                </DemoContainer>
-              </Box>
+            <Grid
+              item
+              xs={6}
+              sx={
+                {
+                  // marginRight: "12px",
+                }
+              }
+            >
+              <Typography fontFamily={"Poppins"} color={"#6B6E75"}>
+                Start date
+              </Typography>
+              <TextField
+                size="small"
+                name="start"
+                type="date"
+                onChange={handleDateChange}
+                sx={{
+                  width: "100%",
+                }}
+              />
             </Grid>
-
-            <Grid item xs={4}>
-              <Typography sx={{ fontSize: "0.85rem" }}>End date</Typography>
-              <Box sx={{ width: "100%" }}>
-                <DemoContainer components={["DatePicker"]}>
-                  <DatePicker
-                    label="End"
-                    onChange={handleEndDateChange}
-                    slotProps={{ textField: { size: "small" } }}
-                  />
-                </DemoContainer>
-              </Box>
+            <Grid xs={6} item>
+              <Typography fontFamily={"Poppins"} color={"#6B6E75"}>
+                End date
+              </Typography>
+              <TextField
+                size="small"
+                name="end"
+                type="date"
+                onChange={handleEndDateChange}
+                sx={{
+                  width: "100%",
+                }}
+              />
             </Grid>
 
             <Grid item xs={12}>
@@ -318,11 +329,10 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
                   <CustomMenuItem value="In Progress">
                     In Progress
                   </CustomMenuItem>
+                  <CustomMenuItem value="Pending">Pending</CustomMenuItem>
                   <CustomMenuItem value="Issues">Issues</CustomMenuItem>
                   <CustomMenuItem value="Review">Review</CustomMenuItem>
                   <CustomMenuItem value="Completed">Completed</CustomMenuItem>
-                  <CustomMenuItem value="Working">Working</CustomMenuItem>
-                  <CustomMenuItem value="Pending">Pending</CustomMenuItem>
                   <CustomMenuItem value="Backlog">Backlog</CustomMenuItem>
                 </Select>
               </FormControl>

@@ -43,7 +43,7 @@ const App = () => {
 
   let pendingTasks = myTasks.filter((task) => task.state === "Pending");
   let backlogTasks = myTasks.filter((task) => task.state === "Backlog");
-  let workingTasks = myTasks.filter((task) => task.state === "Working");
+  let workingTasks = myTasks.filter((task) => task.state === "In Progress");
 
   const handleButton = (buttonName) => {
     setView(buttonName);
@@ -81,7 +81,7 @@ const App = () => {
               title="Working Tasks"
               tasks={workingTasks}
               view={view}
-              state="Working"
+              state="In Progress"
               handleAddTask={() => handleAddTask()}
             />
           </div>
