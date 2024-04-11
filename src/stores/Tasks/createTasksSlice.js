@@ -1,5 +1,4 @@
 import { axiosInstance } from "../../config/apiConfig";
-import { mockTasks } from "../../mockData/taskData";
 
 export const createTasksSlice = (set) => ({
   tasks: [],
@@ -29,12 +28,26 @@ export const createTasksSlice = (set) => ({
     set((state) => ({
       tasks: state.tasks.filter((task) => task.id !== taskIdToDelete),
     })),
-  updateTask: (updateTask) =>
-    set((state) => ({
-      tasks: state.tasks.map((task) =>
-        task.id === updateTask.id ? updateTask : task
-      ),
-    })),
+
+  updateTask: async (taskId, state, projectId) => {
+    if (!taskId || state === undefined || state === null) {
+      console.log("Faltan parametros");
+      return;
+    }
+    try {
+      const newData = {
+        state,
+      };
+      const res = await axiosInstance.put(`/tasksList/${taskId}`, newData);
+      if (res.status === 200) {
+        createTasksSlice(set).fetchTasksById(projectId);
+      }
+      console.log(res);
+    } catch (e) {
+      console.log(e);
+    }
+  },
+
   fetchTasks: async () => {
     try {
       const { data } = await axiosInstance.get("/tasksList");
@@ -47,6 +60,7 @@ export const createTasksSlice = (set) => ({
     try {
       const { data } = await axiosInstance.get(`/tasksList/${projectId}`);
       set({ myTasks: data });
+      console.log("desde el store:", data);
     } catch (error) {
       console.error("Error fetching tasks", error);
     }

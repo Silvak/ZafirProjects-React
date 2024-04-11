@@ -16,7 +16,6 @@ const App = () => {
 
   const params = useParams();
   const {
-    tasks,
     myTasks,
     ChangeStateModal,
     ChangeContentModal,
@@ -41,9 +40,20 @@ const App = () => {
     }
   }, [params.id]);
 
-  let pendingTasks = myTasks.filter((task) => task.state === "Pending");
-  let backlogTasks = myTasks.filter((task) => task.state === "Backlog");
-  let workingTasks = myTasks.filter((task) => task.state === "In Progress");
+  const [pendingTasks, setPendingTasks] = useState([]);
+  const [backlogTasks, setBacklogTasks] = useState([]);
+  const [workingTasks, setWorkingTasks] = useState([]);
+
+  // let pendingTasks = myTasks.filter((task) => task.state === "Pending");
+  // let backlogTasks = myTasks.filter((task) => task.state === "Backlog");
+  // let workingTasks = myTasks.filter((task) => task.state === "In Progress");
+
+  useEffect(() => {
+    console.log(backlogTasks);
+    setPendingTasks(myTasks.filter((task) => task.state === "Pending"));
+    setBacklogTasks(myTasks.filter((task) => task.state === "Backlog"));
+    setWorkingTasks(myTasks.filter((task) => task.state === "In Progress"));
+  }, [myTasks]);
 
   const handleButton = (buttonName) => {
     setView(buttonName);
@@ -78,7 +88,7 @@ const App = () => {
         >
           <div>
             <TaskList
-              title="Working Tasks"
+              title="In progress Tasks"
               tasks={workingTasks}
               view={view}
               state="In Progress"

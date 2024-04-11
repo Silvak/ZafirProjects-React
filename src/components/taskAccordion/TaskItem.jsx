@@ -1,5 +1,5 @@
 import { Grid, Paper, Typography } from "@mui/material";
-import { useDrag } from "react-dnd";
+import { useDrag, useDrop } from "react-dnd";
 
 //icons
 import {
@@ -17,7 +17,7 @@ import { useBoundStore } from "../../stores";
 import TaskDetail from "../TaskDetail/TaskDetail";
 import { statusColors, priorityColors } from "../../utils/colors";
 
-const TaskItem = ({ task, isMobile, isKanbanView }) => {
+const TaskItem = ({ task, isMobile, isKanbanView, onDragStart }) => {
   // // Para la fecha en formato escrito
   // const dateString = task.start;
   // const date = new Date(dateString);
@@ -54,6 +54,11 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
     []
   );
 
+  // Ejecuta la función `handleDragStart` cuando se inicia el arrastre
+  const handleDragStart = () => {
+    onDragStart(task._id);
+  };
+
   const {
     ChangeStateModal,
     ChangeTitleModal,
@@ -84,6 +89,7 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
           " rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px",
       }}
       ref={dragRef}
+      onDragStart={handleDragStart}
     >
       {/* iconos para vista Kanban */}
       {isMobile ||
