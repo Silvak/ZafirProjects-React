@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Box,
   Button,
@@ -7,39 +6,37 @@ import {
   TextField,
   ThemeProvider,
   Typography,
-  createTheme,
   Avatar,
   IconButton,
-  useMediaQuery,
 } from "@mui/material";
-import { useBoundStore } from "../../stores";
 
 import AddIcon from "@mui/icons-material/Add";
 import user1 from "../../assets/Img/png/userImageMan.png";
 import user2 from "../../assets/Img/png/userImageWoman.png";
 import user3 from "../../assets/Img/png/userImage.png";
 import { useProject } from "@/hooks/useProject";
+import SuggestionList from "@/components/SuggestionList/SuggestionList";
 
 function CreateProjectForm() {
   const {
     theme,
     isMobile,
-    formData,
     handleChange,
     handleSubmit,
-    handleLeaderToChange,
-    handleMemberToChange,
     handleAddLeaders,
     handleAddMembers,
     handleRemoveLeader,
     handleRemoveMember,
     isLoading,
     handleClose,
-    selectedUser,
-    selectedMember,
     teamMembers,
     teamLeaders,
-    error,
+    selectedLeader,
+    selectedMember,
+    filteredLeaders,
+    filteredMembers,
+    handleSuggestionChange,
+    handleSuggestionClick,
   } = useProject({ project: null, isCreated: true });
 
   return (
@@ -181,27 +178,36 @@ function CreateProjectForm() {
             }}
           />
         </Grid>
-        <Grid
-          item
-          sx={{
-            // width: "444px",
-            marginBottom: "20px",
-          }}
-        >
-          <Typography fontFamily={"Poppins"} color={"#6B6E75"}>
-            Team leaders
-          </Typography>
-          <TextField
-            size="small"
-            name="leaders"
-            value={selectedUser}
-            onChange={handleLeaderToChange}
-            placeholder="Search leader"
+        {/* leader */}
+        <Box sx={{ position: "relative" }}>
+          <Grid
+            item
             sx={{
-              width: "100%",
+              // width: "444px",
+              marginBottom: "20px",
             }}
+          >
+            <Typography fontFamily={"Poppins"} color={"#6B6E75"}>
+              Team leaders
+            </Typography>
+            <TextField
+              size="small"
+              name="leaders"
+              value={selectedLeader}
+              onChange={(e) => handleSuggestionChange(e, "leader")}
+              placeholder="Search leader"
+              sx={{
+                width: "100%",
+              }}
+            />
+          </Grid>
+
+          <SuggestionList
+            usersList={filteredLeaders}
+            onClick={handleSuggestionClick}
           />
-        </Grid>
+        </Box>
+
         <Grid item xs={12}>
           <Box
             sx={{
@@ -244,27 +250,35 @@ function CreateProjectForm() {
           </Box>
         </Grid>
 
-        <Grid
-          item
-          sx={{
-            // width: "444px",
-            marginBottom: "20px",
-          }}
-        >
-          <Typography fontFamily={"Poppins"} color={"#6B6E75"}>
-            Add members
-          </Typography>
-          <TextField
-            size="small"
-            name="members"
-            value={selectedMember}
-            onChange={handleMemberToChange}
-            placeholder="Search a member"
+        {/* members */}
+        <Box sx={{ position: "relative" }}>
+          <Grid
+            item
             sx={{
-              width: "100%",
+              // width: "444px",
+              marginBottom: "20px",
             }}
+          >
+            <Typography fontFamily={"Poppins"} color={"#6B6E75"}>
+              Add members
+            </Typography>
+            <TextField
+              size="small"
+              name="members"
+              value={selectedMember}
+              onChange={(e) => handleSuggestionChange(e, "member")}
+              placeholder="Search a member"
+              sx={{
+                width: "100%",
+              }}
+            />
+          </Grid>
+          <SuggestionList
+            usersList={filteredMembers}
+            onClick={handleSuggestionClick}
           />
-        </Grid>
+        </Box>
+
         <Grid item xs={12}>
           <Box
             sx={{
@@ -306,7 +320,8 @@ function CreateProjectForm() {
             )}
           </Box>
         </Grid>
-        <Box>{error && <span>{error}</span>}</Box>
+
+        {/* buttons */}
         <Grid
           sx={{
             display: "flex",

@@ -1,20 +1,36 @@
-import { useState } from "react";
-import { createTheme, useMediaQuery } from "@mui/material";
-import { useBoundStore } from "../stores";
 import validateCreateProject from "@/utils/validateCreateProject";
-import { isJSDocNonNullableType } from "typescript";
+import useSuggestionUsers from "@/hooks/useSuggestionUsers";
+import { createTheme, useMediaQuery } from "@mui/material";
+import { useState } from "react";
+import { useBoundStore } from "../stores";
 
 export function useProject({ project, isCreated = false }) {
   const theme = createTheme();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
-  const { User, addProject, updateProject, updateProjects, ChangeStateModal } =
-    useBoundStore();
+  const {
+    User,
+    addProject,
+    updateProject,
+    updateProjects,
+    ChangeStateModal,
+    ChangeTitleAlertError,
+    ChangeStateAlertError,
+  } = useBoundStore();
 
-  const [error, setError] = useState(null);
+  const {
+    selectedLeader,
+    setSelectedLeader,
+    selectedMember,
+    setSelectedMember,
+    filteredLeaders,
+    filteredMembers,
+    handleSuggestionChange,
+    handleSuggestionClick,
+    resetSuggestions,
+  } = useSuggestionUsers();
+
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedUser, setSelectedUser] = useState("");
-  const [selectedMember, setSelectedMember] = useState("");
   const [teamMembers, setTeamMembers] = useState(project?.["members_id"] || []);
   const [teamLeaders, setLeaders] = useState(
     typeof project?.responsible === "string"
@@ -24,10 +40,10 @@ export function useProject({ project, isCreated = false }) {
   const [formData, setFormData] = useState({
     name: project?.name || "",
     start: project?.start
-      ? new Date(project.start).toISOString().substring(0, 10)
+      ? new Date(project.start).toISOString().substring(0, 10) //format date
       : "",
     end: project?.end
-      ? new Date(project.end).toISOString().substring(0, 10)
+      ? new Date(project.end).toISOString().substring(0, 10) //format date
       : "",
     description: project?.description || "",
     link: project?.link || "",
@@ -42,17 +58,13 @@ export function useProject({ project, isCreated = false }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
     try {
       if (isCreated) {
         const isValid = validateCreateProject(formData);
 
         if (!isValid) {
-          setError("Por favor, completa los campos");
-          setIsLoading(false);
-          setTimeout(() => {
-            setError(null);
-          }, 1500);
+          ChangeTitleAlertError("Faltan ingresar datos");
+          ChangeStateAlertError(true);
         } else {
           await addProject(User.uid, formData);
           await updateProjects();
@@ -60,30 +72,33 @@ export function useProject({ project, isCreated = false }) {
           handleClose();
         }
       } else {
+        setIsLoading(true);
+
         await updateProject(project?._id, formData);
       }
     } catch (error) {
       console.error(error);
     }
+    setIsLoading(false);
   };
 
-  const handleLeaderToChange = (e) => {
-    setSelectedUser(e.target.value);
-  };
   const handleMemberToChange = (e) => {
     setSelectedMember(e.target.value);
   };
 
   const handleAddLeaders = () => {
-    if (selectedUser && !teamLeaders.includes(selectedUser)) {
-      setLeaders([...teamLeaders, selectedUser]);
-      setSelectedUser("");
+    if (selectedLeader && !teamLeaders.includes(selectedLeader)) {
+      setLeaders([...teamLeaders, selectedLeader]);
+      setSelectedLeader("");
+      resetSuggestions("leader");
     }
   };
+
   const handleAddMembers = () => {
     if (selectedMember && !teamMembers.includes(selectedMember)) {
       setTeamMembers([...teamMembers, selectedMember]);
       setSelectedMember("");
+      resetSuggestions("member");
     }
   };
 
@@ -111,13 +126,13 @@ export function useProject({ project, isCreated = false }) {
 
     // console.log(formData);
   };
+
   return {
     theme,
     isMobile,
     formData,
     handleChange,
     handleSubmit,
-    handleLeaderToChange,
     handleMemberToChange,
     handleAddLeaders,
     handleAddMembers,
@@ -125,10 +140,16 @@ export function useProject({ project, isCreated = false }) {
     handleRemoveMember,
     isLoading,
     handleClose,
-    selectedUser,
     selectedMember,
     teamMembers,
     teamLeaders,
-    error,
+    selectedLeader,
+    setSelectedLeader,
+    selectedMember,
+    setSelectedMember,
+    filteredLeaders,
+    filteredMembers,
+    handleSuggestionChange,
+    handleSuggestionClick,
   };
 }

@@ -29,14 +29,15 @@ function OverviewHeader() {
 
   // Obtiene el día de la semana
   const days = [
-    "Domingo",
-    "Lunes",
-    "Martes",
-    "Miércoles",
-    "Jueves",
-    "Viernes",
-    "Sábado",
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
   ];
+
   const dayOfWeek = days[currentDate.getDay()];
 
   // Obtiene el día del mes
@@ -44,19 +45,20 @@ function OverviewHeader() {
 
   // Obtiene el mes
   const months = [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre",
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
+
   const month = months[currentDate.getMonth()];
 
   // Obtiene el año
