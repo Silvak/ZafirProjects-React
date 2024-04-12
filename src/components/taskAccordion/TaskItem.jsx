@@ -1,5 +1,5 @@
 import { Grid, Paper, Typography } from "@mui/material";
-import { useDrag } from "react-dnd";
+import { useDrag, useDrop } from "react-dnd";
 
 //icons
 import {
@@ -18,12 +18,6 @@ import TaskDetail from "../TaskDetail/TaskDetail";
 import { statusColors, priorityColors } from "../../utils/colors";
 
 const TaskItem = ({ task, isMobile, isKanbanView }) => {
-  // // Para la fecha en formato escrito
-  // const dateString = task.start;
-  // const date = new Date(dateString);
-  // const options = { year: "numeric", month: "short", day: "numeric" };
-  // const localeDate = date.toLocaleDateString("en-US", options);
-
   const formatDate = (dateString) => {
     const today = new Date();
     const date = new Date(dateString);
@@ -46,7 +40,7 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
   const [{ opacity }, dragRef] = useDrag(
     () => ({
       type: "task",
-      item: { id: task.id },
+      item: { id: task._id },
       collect: (monitor) => ({
         opacity: monitor.isDragging() ? 0.5 : 1,
       }),
