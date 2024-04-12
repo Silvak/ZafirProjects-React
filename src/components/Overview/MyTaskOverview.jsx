@@ -51,7 +51,7 @@ function MyTask() {
       fetchData();
     }
   }, [selectedProject]);
-  console.log("CANTIDAD DE TASK: ", MyTask.length);
+  // console.log("CANTIDAD DE TASK: ", MyTask.length);
 
   const filteredTasks = myTasks.filter((task) => {
     const taskDate = new Date(task.start);

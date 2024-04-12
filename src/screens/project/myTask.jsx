@@ -44,12 +44,7 @@ const App = () => {
   const [backlogTasks, setBacklogTasks] = useState([]);
   const [workingTasks, setWorkingTasks] = useState([]);
 
-  // let pendingTasks = myTasks.filter((task) => task.state === "Pending");
-  // let backlogTasks = myTasks.filter((task) => task.state === "Backlog");
-  // let workingTasks = myTasks.filter((task) => task.state === "In Progress");
-
   useEffect(() => {
-    console.log(backlogTasks);
     setPendingTasks(myTasks.filter((task) => task.state === "Pending"));
     setBacklogTasks(myTasks.filter((task) => task.state === "Backlog"));
     setWorkingTasks(myTasks.filter((task) => task.state === "In Progress"));
