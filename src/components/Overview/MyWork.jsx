@@ -16,9 +16,10 @@ import { useBoundStore } from "../../stores/index";
 import { isInThisWeek, isInThisMonth, isToday } from "../../hooks/useDates";
 
 const filtersData = [
-  { id: 1, label: "This month", value: "This month" },
-  { id: 2, label: "This week", value: "This week" },
-  { id: 3, label: "Today", value: "Today" },
+  { id: 1, label: "All", value: "All" },
+  { id: 2, label: "This month", value: "This Month" },
+  { id: 3, label: "This week", value: "This Week" },
+  { id: 4, label: "Today", value: "Today" },
 ];
 
 function MyWorkGlance() {
@@ -31,7 +32,7 @@ function MyWorkGlance() {
     fetchTasks,
     selectedProject,
   } = useBoundStore();
-  const [filterOption, setFilterOption] = useState("This Month");
+  const [filterOption, setFilterOption] = useState("All");
   // const { pending, progress, issues, review, completed } = myWorkData;
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
@@ -61,6 +62,8 @@ function MyWorkGlance() {
         return isInThisMonth(taskDate);
       case "Today":
         return isToday(taskDate);
+      case "All":
+        return true;
       default:
         return true; // Si la opción de filtro es "All", mostrar todas las tareas
     }
@@ -161,7 +164,7 @@ function MyWorkGlance() {
                   <option
                     value={filter.value}
                     key={filter.id}
-                    onClick={() => handleFilter("")}
+                    onChange={() => handleFilter("")}
                   >
                     {filter.label}
                   </option>
