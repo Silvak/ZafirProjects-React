@@ -1,17 +1,12 @@
 // Define una función para determinar si una fecha está dentro de la semana actual
 export const isInThisWeek = (date) => {
-  const today = new Date();
-  const firstDayOfWeek = new Date(
-    today.getFullYear(),
-    today.getMonth(),
-    today.getDate() - today.getDay()
-  );
-  const lastDayOfWeek = new Date(
-    today.getFullYear(),
-    today.getMonth(),
-    today.getDate() + (6 - today.getDay())
-  );
-  return date >= firstDayOfWeek && date <= lastDayOfWeek;
+  const currentDate = new Date();
+  const today = currentDate.getDay();
+  const startOfWeek = new Date(currentDate);
+  startOfWeek.setDate(currentDate.getDate() - today);
+  const endOfWeek = new Date(currentDate);
+  endOfWeek.setDate(currentDate.getDate() + (6 - today));
+  return date >= startOfWeek && date <= endOfWeek;
 };
 
 // Define una función para determinar si una fecha está dentro del mes actual
