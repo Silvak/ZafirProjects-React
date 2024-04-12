@@ -56,8 +56,10 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
     updateTask,
     fetchTask,
     ChangeStateModal,
+    selectedProject,
   } = useBoundStore();
 
+  console.log(selectedLeader);
   // const { id } = useParams();
 
   useEffect(() => {
@@ -73,8 +75,9 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
       start: selectedDate,
       end: selectedEndDate,
       state: tags,
+      members: selectedLeader,
       priority: priority,
-      projectId: 1111,
+      projectId: selectedProject._id,
     });
   }, [taskName, startDate, endDate, description, priority, tags]);
 
@@ -89,8 +92,9 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
     start: selectedDate,
     end: selectedEndDate,
     state: tags,
+    members: selectedLeader,
     priority: priority,
-    projectId: 1111,
+    projectId: selectedProject._id,
   });
   // console.log(taskData);
 
@@ -106,7 +110,8 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
       !selectedEndDate ||
       !description ||
       !priority ||
-      !tags
+      !tags ||
+      !selectedLeader
     ) {
       // Si algún campo obligatorio está vacío, muestra un mensaje de error y no crees la tarea
       alert("Por favor, rellena todos los campos obligatorios.");

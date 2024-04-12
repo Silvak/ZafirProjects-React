@@ -13,7 +13,8 @@ import MyTaskList from "./MyTaskList";
 import { isInThisWeek, isInThisMonth, isToday } from "../../hooks/useDates";
 
 const filtersData = [
-  { id: 1, label: "This week", value: "This week" },
+  { id: 1, label: "All", value: "All" },
+  { id: 4, label: "This week", value: "This week" },
   { id: 2, label: "This month", value: "This month" },
   { id: 3, label: "Today", value: "Today" },
 ];
@@ -28,7 +29,7 @@ function MyTask() {
     selectedProject,
   } = useBoundStore();
   const theme = createTheme();
-  const [filterOption, setFilterOption] = useState("This Week");
+  const [filterOption, setFilterOption] = useState("All");
 
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
@@ -51,19 +52,20 @@ function MyTask() {
       fetchData();
     }
   }, [selectedProject]);
-  // console.log("CANTIDAD DE TASK: ", MyTask.length);
+  // console.log("CANTIDAD DE TASK: ", myTasks.length);
 
   const filteredTasks = myTasks.filter((task) => {
     const taskDate = new Date(task.start);
+    console.log("FilteredOption", filterOption);
     switch (filterOption) {
-      case "This Week":
+      case "This week":
         return isInThisWeek(taskDate);
-      case "This Month":
+      case "This month":
         return isInThisMonth(taskDate);
       case "Today":
         return isToday(taskDate);
       default:
-        "This Week";
+        "All";
         return true; // Si la opción de filtro es "All", mostrar todas las tareas
     }
   });
@@ -122,11 +124,7 @@ function MyTask() {
                 }}
               >
                 {filtersData.map((filter) => (
-                  <option
-                    value={filter.value}
-                    key={filter.id}
-                    onClick={() => handleFilter("")}
-                  >
+                  <option value={filter.value} key={filter.id}>
                     {filter.label}
                   </option>
                 ))}
