@@ -38,6 +38,7 @@ export const createTasksSlice = (set) => ({
       const newData = {
         state,
       };
+      console.log(newData);
       const res = await axiosInstance.put(`/tasksList/${taskId}`, newData);
       if (res.status === 200) {
         createTasksSlice(set).fetchTasksById(projectId);
@@ -60,7 +61,7 @@ export const createTasksSlice = (set) => ({
     try {
       const { data } = await axiosInstance.get(`/tasksList/${projectId}`);
       set({ myTasks: data });
-      console.log("desde el store:", data);
+      // console.log("desde el store:", data);
     } catch (error) {
       console.error("Error fetching tasks", error);
     }

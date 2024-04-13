@@ -17,13 +17,7 @@ import { useBoundStore } from "../../stores";
 import TaskDetail from "../TaskDetail/TaskDetail";
 import { statusColors, priorityColors } from "../../utils/colors";
 
-const TaskItem = ({ task, isMobile, isKanbanView, onDragStart }) => {
-  // // Para la fecha en formato escrito
-  // const dateString = task.start;
-  // const date = new Date(dateString);
-  // const options = { year: "numeric", month: "short", day: "numeric" };
-  // const localeDate = date.toLocaleDateString("en-US", options);
-
+const TaskItem = ({ task, isMobile, isKanbanView }) => {
   const formatDate = (dateString) => {
     const today = new Date();
     const date = new Date(dateString);
@@ -46,18 +40,13 @@ const TaskItem = ({ task, isMobile, isKanbanView, onDragStart }) => {
   const [{ opacity }, dragRef] = useDrag(
     () => ({
       type: "task",
-      item: { id: task.id },
+      item: { id: task._id },
       collect: (monitor) => ({
         opacity: monitor.isDragging() ? 0.5 : 1,
       }),
     }),
     []
   );
-
-  // Ejecuta la función `handleDragStart` cuando se inicia el arrastre
-  const handleDragStart = () => {
-    onDragStart(task._id);
-  };
 
   const {
     ChangeStateModal,
@@ -89,7 +78,6 @@ const TaskItem = ({ task, isMobile, isKanbanView, onDragStart }) => {
           " rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px",
       }}
       ref={dragRef}
-      onDragStart={handleDragStart}
     >
       {/* iconos para vista Kanban */}
       {isMobile ||

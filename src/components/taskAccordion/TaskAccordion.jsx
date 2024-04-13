@@ -14,7 +14,6 @@ import TaskItem from "./TaskItem";
 import CustomAccordion from "./customAccordion";
 import { useDrop } from "react-dnd";
 import { useBoundStore } from "../../stores";
-import { axiosInstance } from "../../config/apiConfig";
 import { useParams } from "react-router-dom";
 
 const TaskAccordion = ({ title, state, tasks, handleAddTask, view }) => {
@@ -26,17 +25,20 @@ const TaskAccordion = ({ title, state, tasks, handleAddTask, view }) => {
   const { updateTask } = useBoundStore();
   const params = useParams();
 
-  const [{ opacity, dropTarget, isOver }, drop] = useDrop({
-    accept: ["task"], // Especifica el tipo de elemento que se puede soltar
-    drop: (dropResult) => {
-      // Recibe información sobre el destino en `dropResult`
-      // console.log("Elemento soltado en:", state); // ID del destino
-    },
-  });
-
   const addTaskToList = async (taskId) => {
     await updateTask(taskId, state, params.id);
   };
+
+  const [{ opacity, dropTarget, isOver }, drop] = useDrop({
+    accept: ["task"], // Specifies the type of item that can be dropped
+    drop: (dropResult) => {
+      // Receive information about the destination in `dropResult`
+      const taskId = dropResult.id;
+      if (taskId) {
+        addTaskToList(taskId);
+      }
+    },
+  });
 
   const ExpandIcon = ({ expanded }) => {
     return (
