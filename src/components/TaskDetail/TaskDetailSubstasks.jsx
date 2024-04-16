@@ -2,12 +2,13 @@ import { Box, Button, useMediaQuery } from "@mui/material";
 import { RxEyeOpen } from "react-icons/rx";
 import { useBoundStore } from "../../stores";
 import { statusColors } from "../../utils/colors";
-import CreateTaskForm from "../forms/createTaskForm";
 import TaskDetail from "./TaskDetail";
 //mock
 import { subsTasksData } from "../../mockData/taskData";
 //styles
 import css from "./style.module.css";
+import SubTaskForm from "../forms/subtaskForm";
+import { useEffect } from "react";
 
 const tableHeadData = [
   { id: 1, label: "Name" },
@@ -17,10 +18,24 @@ const tableHeadData = [
   { id: 5, label: "Action" },
 ];
 
-const TaskDetailSubstasks = () => {
+const TaskDetailSubstasks = ({ taskId }) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await fetchSubtasks();
+      } catch (error) {
+        console.error("Error fetching tasks", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const {
+    subtasks,
+    fetchSubtasks,
     ChangeStateModal,
     ChangeTitleModal,
     ChangeContentModal,
@@ -29,14 +44,14 @@ const TaskDetailSubstasks = () => {
 
   const handleAddTask = () => {
     ChangeStateModal(true);
-    ChangeTitleModal("Add Task");
-    ChangeContentModal(<CreateTaskForm />);
+    ChangeTitleModal("Add SubTask");
+    ChangeContentModal(<SubTaskForm taskId={taskId} />);
   };
 
   const handleViewSubstask = () => {
     ChangeStateModal(true);
     ChangeTitleModal("Substask Detail");
-    ChangeContentModal(<TaskDetail task={subsTasksData[0]} />);
+    ChangeContentModal(<TaskDetail task={subtasks} />);
     ChangeIsVisibleButton(true);
   };
 
@@ -55,19 +70,19 @@ const TaskDetailSubstasks = () => {
           ))}
         </tr>
 
-        {subsTasksData &&
-          subsTasksData.map((item) => (
+        {subtasks &&
+          subtasks.map((item) => (
             <tr key={item.id}>
               <td>
-                <strong>{item.task}</strong>
+                <strong>{item.name}</strong>
               </td>
               <td>
-                <div className={css.assignee}>
-                  <img
+                <div>
+                  {/* <img
                     src={item.assignees.profilePhoto}
                     alt={`Photo of ${item.assignees.name}`}
-                  />
-                  <strong>{item.assignees.name}</strong>
+                  /> */}
+                  <strong>{item.members}</strong>
                 </div>
               </td>
               <td>
@@ -82,7 +97,7 @@ const TaskDetailSubstasks = () => {
                   {item.status}
                 </div>
               </td>
-              <td>{item.date}</td>
+              <td>{item.start}</td>
               <td className={css.icon}>
                 <Button color="inherit" onClick={handleViewSubstask}>
                   <RxEyeOpen size={25} />
@@ -91,7 +106,7 @@ const TaskDetailSubstasks = () => {
             </tr>
           ))}
 
-        <tr className={css.addSubstask}>
+        <tr>
           <Button color="inherit" onClick={handleAddTask}>
             + Add substask
           </Button>

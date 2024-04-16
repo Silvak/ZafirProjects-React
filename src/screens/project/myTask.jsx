@@ -1,5 +1,5 @@
 import useMediaQuery from "@mui/material/useMediaQuery";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import CreateTaskForm from "@/components/forms/createTaskForm";
@@ -7,16 +7,48 @@ import TaskHeader from "@/components/taskAccordion/taskHeader";
 import TaskList from "@/components/taskAccordion/taskList";
 import { useBoundStore } from "@/stores/index";
 
+import { useParams } from "react-router-dom";
+
 const App = () => {
   const [view, setView] = useState("Format List");
+
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("md"));
 
-  const { tasks, ChangeStateModal, ChangeContentModal, ChangeTitleModal } =
-    useBoundStore();
+  const params = useParams();
+  const {
+    myTasks,
+    ChangeStateModal,
+    ChangeContentModal,
+    ChangeTitleModal,
+    fetchTasks,
+    fetchTasksById,
+    selectedProject,
+  } = useBoundStore();
 
-  let pendingTasks = tasks.filter((task) => task.status === "Pending");
-  let backlogTasks = tasks.filter((task) => task.status === "Backlog");
-  let workingTasks = tasks.filter((task) => task.status === "Working");
+  useEffect(() => {
+    if (params.id) {
+      const fetchData = async () => {
+        try {
+          // Only fetch tasks if idProject has changed
+          await fetchTasksById(params.id);
+        } catch (error) {
+          console.error("Error fetching tasks", error);
+        }
+      };
+
+      fetchData();
+    }
+  }, [params.id]);
+
+  const [pendingTasks, setPendingTasks] = useState([]);
+  const [backlogTasks, setBacklogTasks] = useState([]);
+  const [workingTasks, setWorkingTasks] = useState([]);
+
+  useEffect(() => {
+    setPendingTasks(myTasks.filter((task) => task.state === "Pending"));
+    setBacklogTasks(myTasks.filter((task) => task.state === "Backlog"));
+    setWorkingTasks(myTasks.filter((task) => task.state === "In Progress"));
+  }, [myTasks]);
 
   const handleButton = (buttonName) => {
     setView(buttonName);
@@ -51,10 +83,10 @@ const App = () => {
         >
           <div>
             <TaskList
-              title="Working Tasks"
+              title="In progress Tasks"
               tasks={workingTasks}
               view={view}
-              status="Working"
+              state="In Progress"
               handleAddTask={() => handleAddTask()}
             />
           </div>
@@ -63,7 +95,7 @@ const App = () => {
               title="Pending Tasks"
               tasks={pendingTasks}
               view={view}
-              status="Pending"
+              state="Pending"
               handleAddTask={() => handleAddTask()}
             />
           </div>
@@ -72,7 +104,7 @@ const App = () => {
               title="BackLog"
               tasks={backlogTasks}
               view={view}
-              status="Backlog"
+              state="Backlog"
               handleAddTask={() => handleAddTask()}
             />
           </div>

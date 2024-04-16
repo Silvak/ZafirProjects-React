@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { List, ListItemButton, Collapse } from "@mui/material";
 import ItemNav from "@/components/navBar/itemNav";
 import BrokenImageOutlinedIcon from "@mui/icons-material/BrokenImageOutlined";
@@ -7,49 +7,63 @@ import TaskOutlinedIcon from "@mui/icons-material/TaskOutlined";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { BiGroup } from "react-icons/bi";
+import { useBoundStore } from "../../stores";
 
-export const items = [
-  {
-    title: "overview",
-    url: "/",
-    icon: <BrokenImageOutlinedIcon />,
-    submenu: [],
-  },
-  {
-    title: "My tasks",
-    url: "/project/1111/tasks",
-    icon: <TaskOutlinedIcon />,
-    submenu: [],
-  },
-  {
-    title: "project",
-    url: "/",
-    icon: <FolderCopyOutlinedIcon />,
-    submenu: [
-      {
-        title: "My project",
-        url: "/project/1111",
-      },
-      {
-        title: "Project Tasks",
-        url: "/project/1111/tasks",
-      },
-      {
-        title: "report",
-        url: "/project/1111/report",
-      },
-    ],
-  },
-  {
-    title: "members",
-    url: "/members",
-    icon: <BiGroup />,
-    submenu: [],
-  },
-];
+function initializeItems(selectedProject) {
+  return [
+    {
+      title: "overview",
+      url: "/",
+      icon: <BrokenImageOutlinedIcon />,
+      submenu: [],
+    },
+    {
+      title: "My tasks",
+      url: `/project/${selectedProject?._id}/tasks`,
+      icon: <TaskOutlinedIcon />,
+      submenu: [],
+    },
+    {
+      title: "project",
+      url: "/",
+      icon: <FolderCopyOutlinedIcon />,
+      submenu: [
+        {
+          title: "My project",
+          url: `/project/${selectedProject?._id}`,
+        },
+        {
+          title: "Project Tasks",
+          url: `/project/${selectedProject?._id}/tasks`,
+        },
+        {
+          title: "report",
+          url: `/project/${selectedProject?._id}/report`,
+        },
+        {
+          title: "gantt",
+          url: `/project/${selectedProject?._id}/gantt`,
+        },
+      ],
+    },
+    {
+      title: "members",
+      url: "/members",
+      icon: <BiGroup />,
+      submenu: [],
+    },
+  ];
+}
 
 function ItemMenu(props) {
+  const { selectedProject } = useBoundStore();
+
   const [openIndex, setOpenIndex] = useState(null);
+  const [itemsActual, setItemsActual] = useState(null);
+
+  useEffect(() => {
+    setItemsActual(initializeItems(selectedProject));
+  }, [selectedProject]);
 
   const handleClick = (index) => {
     if (props.open !== false) {
@@ -69,16 +83,18 @@ function ItemMenu(props) {
         marginTop: "48px",
       }}
     >
-      {items.map((element, index) => (
-        <div key={`item-${index}`}>
+      {itemsActual?.map((element, index) => (
+        <>
           {element.submenu.length > 0 ? (
             <>
               <ListItemButton
+                key={`list-item-buttom-${index}`}
                 onClick={() => handleClick(index)}
                 sx={{ m: 0, p: 0 }}
                 disableRipple
               >
                 <ItemNav
+                  key={`item-nav-${index}`}
                   to={element.url}
                   title={element.title}
                   icon={element.icon}
@@ -93,17 +109,13 @@ function ItemMenu(props) {
               </ListItemButton>
 
               <Collapse
+                key={`collapse-${index}`}
                 in={openIndex === index && props.open}
                 timeout="auto"
                 unmountOnExit
               >
-                {element.submenu.map((submenuItem, submenuIndex) => (
-                  <ItemNav
-                    key={`submenu-item-${index}-${submenuIndex}`}
-                    to={submenuItem.url}
-                    title={submenuItem.title}
-                    sx={{ pl: 8 }}
-                  />
+                {element.submenu.map((link) => (
+                  <ItemNav to={link.url} title={link.title} sx={{ pl: 8 }} />
                 ))}
               </Collapse>
             </>
@@ -115,7 +127,7 @@ function ItemMenu(props) {
               icon={element.icon}
             />
           )}
-        </div>
+        </>
       ))}
     </List>
   );

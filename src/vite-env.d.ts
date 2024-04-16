@@ -6,6 +6,7 @@ declare module "@/components/navBar/navBarDrawer";
 declare module "@/components/buttons/buttonPrimary";
 declare module "@/components/inputs/inputSearchNavbar";
 declare module "@/components/alert/alert";
+declare module "@/components/alert/alertError";
 declare module "@/components/modal/modal";
 declare module "@/components/navBar/itemNav";
 declare module "@/components/navBar/ItemMenu";
@@ -34,6 +35,7 @@ declare module "@/components/taskAccordion/taskList";
 declare module "@/components/taskAccordion/customAccordion";
 declare module "@/components/forms/EditProjectForm";
 declare module "@/components/forms/CreateProjectForm";
+declare module "@/components/forms/SubtaskForm";
 declare module "@/components/buttons/Facebook/Facebook";
 declare module "@/components/buttons/Google/Google";
 declare module "@/components/TaskDetail/TaskDetail";
@@ -45,6 +47,9 @@ declare module "@/components/Header/Header";
 declare module "@/components/buttons/SocialBtns";
 declare module "@/components/forms/SignInForm";
 declare module "@/components/Selects/FilterSelect";
+declare module "@/components/ganttChart/TaskElement";
+declare module "@/components/ganttChart/GanttChart";
+declare module "@/components/SuggestionList/SuggestionList";
 
 declare module "@/context/AppContextProvider";
 declare module "@/stores/index";
@@ -53,7 +58,9 @@ declare module "@/stores/Actions/Theme/storeTheme";
 declare module "@/stores/useGetNativeBalance/useGetNativeBalance";
 declare module "@/stores/useGetWalletTokenBalances/useGetWalletTokenBalances";
 declare module "@/stores/Tasks/createTasksSlice";
+declare module "@/stores/Tasks/createSubtasksSlice";
 declare module "@/stores/user/storeUser";
+declare module "@/stores/Projects/actualProject";
 
 declare module "@/routes/routes";
 
@@ -68,12 +75,20 @@ declare module "@/screens/project/projects";
 declare module "@/screens/project/myTask";
 declare module "@/screens/project/report";
 declare module "@/screens/project/layout";
+declare module "@/screens/project/gantt";
 
 declare module "@/hooks/usePagination";
 declare module "@/hooks/useSignUp";
 declare module "@/hooks/useSignIn";
+declare module "@/hooks/ganttChart/useDateRange";
+declare module "@/hooks/ganttChart/useTaskWidth";
+declare module "@/hooks/useProjectsOverview";
+declare module "@/hooks/useProject";
+declare module "@/hooks/useSuggestionUsers";
 
 declare module "@/utils/colors";
+declare module "@/utils/fixDate";
+declare module "@/utils/src/utils/validateCreateProject.js";
 
 declare module "@/config/apiConfig";
 

@@ -1,53 +1,63 @@
-import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
+import React, { useState, useEffect } from "react";
 import TableContainer from "@material-ui/core/TableContainer";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
-import { membersData } from "@/mockData/membersData";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import TableHeader from "@/components/tableMembers/tableHeader.jsx";
 import TableRowComponent from "@/components/tableMembers/tableRow.jsx";
 import TablePagination from "@/components/tableMembers/tablePagination.jsx";
 import Button from "@mui/material/Button";
-
 import usePagination from "@/hooks/usePagination";
+import { axiosInstance } from "../config/apiConfig";
+import { useBoundStore } from "../stores";
+import CreateMember from "@/components/forms/CreateMemberForm";
+import ConfirmForm from "../components/forms/ConfirmForm";
 
 const columns = [
-  { id: "photo", label: "", minWidth: 0 },
-  { id: "name", label: "Name", minWidth: 0 },
-  { id: "phoneNumber", label: "Phone", minWidth: 0 },
-  { id: "mail", label: "Email", minWidth: 0 },
-  { id: "project", label: "Project", minWidth: 100 },
-  { id: "ledStatus", label: "Lead Status", minWidth: 0 },
-  { id: "leadOwner", label: "Lead Owner", minWidth: 0 },
-  { id: "action", label: "", minWidth: 50 },
+  { id: "photo", label: "" },
+  { id: "name", label: "Name" },
+  { id: "project", label: "Project" },
+  { id: "rol", label: "Rol" },
+  { id: "leadOwner", label: "Lead Owner" },
+  { id: "action", label: "" },
 ];
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: theme.spacing(2),
-    [theme.breakpoints.down("sm")]: {
-      maxWidth: "75vw",
-    },
-  },
-  container: {
-    overflowY: "auto",
-  },
-}));
-
 const MembersTable = () => {
-  const classes = useStyles();
   const [selectedRows, setSelectedRows] = useState([]);
   const isMobile = useMediaQuery("(max-width:600px)");
-
   const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } =
     usePagination({});
+  const {
+    selectedProject,
+    updateProjects,
+    ChangeStateModal,
+    ChangeTitleModal,
+    ChangeContentModal,
+    ChangeStateAlert,
+    ChangeTitleAlert,
+  } = useBoundStore();
+
+  const [allMemberData, setAllMemberData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedOption, setSelectedOption] = useState("All");
+  const [memberToDelete, setMemberToDelete] = useState(null);
+
+  useEffect(() => {
+    if (selectedProject) {
+      const projectMembers = selectedProject.members_id.map((member) => ({
+        ...member,
+        project: selectedProject.name,
+        leadOwner: selectedProject.responsible,
+        projectId: selectedProject.id,
+      }));
+
+      setAllMemberData(projectMembers);
+    }
+  }, [selectedProject]);
 
   const handleRowClick = (rowName) => {
     const selectedIndex = selectedRows.indexOf(rowName);
     let newSelected = [];
-
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selectedRows, rowName);
     } else if (selectedIndex === 0) {
@@ -66,79 +76,160 @@ const MembersTable = () => {
 
   const isSelected = (rowName) => selectedRows.indexOf(rowName) !== -1;
 
-  const handleButtonMore = () => alert("toqué el botón +Add Create");
+  const handleButtonMore = (allMemberData) => {
+    ChangeTitleModal("Create new member");
+    ChangeContentModal(
+      <CreateMember
+        setAllMemberData={setAllMemberData}
+        allMemberData={allMemberData}
+      />
+    );
+    ChangeStateModal(true);
+  };
+
+  const handleDeleteClick = async (memberToDelete) => {
+    setMemberToDelete(memberToDelete);
+    ChangeTitleModal("");
+    ChangeContentModal(
+      <ConfirmForm
+        handleCancelDelete={handleCancelDelete}
+        handleConfirmDelete={handleConfirmDelete}
+        memberToDelete={memberToDelete}
+      />
+    );
+    ChangeStateModal(true);
+  };
+
+  const handleConfirmDelete = async (memberToDelete) => {
+    try {
+      await axiosInstance.post(
+        `/projects/${selectedProject.id}/remove-member`,
+        { memberId: memberToDelete._id }
+      );
+      const updateAllMember = allMemberData.filter(
+        (member) => member._id !== memberToDelete._id
+      );
+      await updateProjects();
+      setAllMemberData(updateAllMember);
+      ChangeStateModal(false);
+      ChangeTitleAlert("Miembro eliminado exitosamente");
+      ChangeStateAlert(true);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setMemberToDelete(null);
+    ChangeStateModal(false);
+  };
+
+  const filteredSearchData = allMemberData.filter(
+    (member) =>
+      member &&
+      member.member &&
+      member.member.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const filteredData =
+    selectedOption === "All"
+      ? filteredSearchData
+      : filteredSearchData.filter(
+          (member) => member.leadOwner === selectedOption
+        );
 
   return (
-    <div style={{ backgroundColor: "#ECEFF3" }}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          textAlign: "center",
-          alignItems: "center",
-          marginInline: "1rem",
-        }}
-      >
-        <h6
+    <div>
+      <div>
+        <div
           style={{
-            fontWeight: "bold",
-            fontSize: "24px",
-            marginBottom: "2rem",
-            marginTop: "2rem",
+            display: "flex",
+            justifyContent: "space-between",
+            textAlign: "center",
+            alignItems: "center",
+            marginInline: "1rem",
           }}
         >
-          Equipo
-        </h6>
-        <Button
-          variant="contained"
-          onClick={handleButtonMore}
-          sx={{
-            padding: "0.6rem",
-            height: "min-content",
-            borderRadius: "12px",
-          }}
-        >
-          + Add new contact
-        </Button>
-      </div>
-      <Paper className={classes.root} style={{ borderRadius: "16px" }}>
-        <TableContainer className={classes.container}>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHeader
-              isMobile={isMobile}
-              selectedRows={selectedRows}
-              setSelectedRows={setSelectedRows}
-              membersData={membersData}
-              columns={columns}
-            />
-            <TableBody>
-              {membersData
-                .slice(
-                  (page - 1) * rowsPerPage,
-                  (page - 1) * rowsPerPage + rowsPerPage
-                )
-                .map((row) => (
-                  <TableRowComponent
-                    key={row.name}
-                    isMobile={isMobile}
-                    handleRowClick={handleRowClick}
-                    handleCheckboxClick={handleRowClick}
-                    row={row}
-                    isSelected={isSelected}
-                    columns={columns}
-                  />
-                ))}
-            </TableBody>
-          </Table>
+          <h6
+            style={{
+              fontWeight: "bold",
+              fontSize: "24px",
+              marginBottom: "2rem",
+              marginTop: "2rem",
+            }}
+          >
+            Equipo
+          </h6>
+          <Button
+            variant="contained"
+            disableRipple
+            onClick={() => handleButtonMore(allMemberData)}
+            sx={{
+              padding: "0.6rem",
+              height: "min-content",
+              borderRadius: "12px",
+              color: "white",
+            }}
+          >
+            + Add new contact
+          </Button>
+        </div>
+        <TableContainer>
+          <div
+            style={{
+              backgroundColor: "#fff",
+              borderRadius: 20,
+              padding: 20,
+              width: "98%",
+              marginInline: "auto",
+            }}
+          >
+            <Table stickyHeader aria-label="sticky table">
+              <TableHeader
+                isMobile={isMobile}
+                selectedRows={selectedRows}
+                setSelectedRows={setSelectedRows}
+                membersData={allMemberData}
+                columns={columns}
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                filteredSearchData={filteredSearchData}
+                selectedOption={selectedOption}
+                setSelectedOption={setSelectedOption}
+                filteredData={filteredData}
+              />
+              <TableBody>
+                {filteredData
+                  .slice(
+                    (page - 1) * rowsPerPage,
+                    (page - 1) * rowsPerPage + rowsPerPage
+                  )
+                  .map((row, index) => (
+                    <TableRowComponent
+                      key={index}
+                      isMobile={isMobile}
+                      handleRowClick={handleRowClick}
+                      handleCheckboxClick={handleRowClick}
+                      handleDeleteClick={handleDeleteClick}
+                      row={row}
+                      isSelected={isSelected}
+                      columns={columns}
+                      setAllMemberData={setAllMemberData}
+                      allMemberData={allMemberData}
+                    />
+                  ))}
+              </TableBody>
+            </Table>
+          </div>
         </TableContainer>
-      </Paper>
-      <TablePagination
-        rowsPerPage={rowsPerPage}
-        handleChangeRowsPerPage={handleChangeRowsPerPage}
-        page={page}
-        handleChangePage={handleChangePage}
-        data={membersData}
-      />
+        <TablePagination
+          rowsPerPage={rowsPerPage}
+          handleChangeRowsPerPage={handleChangeRowsPerPage}
+          page={page}
+          handleChangePage={handleChangePage}
+          data={filteredData}
+        />
+      </div>
     </div>
   );
 };

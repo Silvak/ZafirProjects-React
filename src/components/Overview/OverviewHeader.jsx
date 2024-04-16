@@ -15,25 +15,50 @@ import CreateProjectForm from "../forms/CreateProjectForm";
 function OverviewHeader() {
   const theme = createTheme();
   const { name } = userData;
-  const {ChangeStateModal, ChangeContentModal, ChangeTitleModal } = useBoundStore();
+  const { User, ChangeStateModal, ChangeContentModal, ChangeTitleModal } =
+    useBoundStore();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+
   const handleCreate = () => {
     ChangeTitleModal("Add Project");
     ChangeContentModal(<CreateProjectForm />);
     ChangeStateModal(true);
-  }
+  };
   //Date
   const currentDate = new Date();
 
   // Obtiene el día de la semana
-  const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+
   const dayOfWeek = days[currentDate.getDay()];
 
   // Obtiene el día del mes
   const dayOfMonth = currentDate.getDate();
 
   // Obtiene el mes
-  const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
   const month = months[currentDate.getMonth()];
 
   // Obtiene el año
@@ -47,7 +72,6 @@ function OverviewHeader() {
           justifyContent: "space-between",
           alignItems: "center",
           marginTop: "19px",
-          
         }}
       >
         <Grid
@@ -68,7 +92,7 @@ function OverviewHeader() {
               width: "200px",
             }}
           >
-            Hi, {name}
+            Hi, {User?.name}
           </Typography>
           <Typography
             sx={{
@@ -97,7 +121,7 @@ function OverviewHeader() {
               fontSize: "13px",
               fontWeight: 500,
               fontFamily: "Poppins",
-              '&:hover': {backgroundColor: "black"}
+              "&:hover": { backgroundColor: "black" },
             }}
           >
             <AddIcon sx={{ marginRight: "10px" }} />

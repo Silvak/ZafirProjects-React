@@ -193,7 +193,7 @@ const SignUpForm = () => {
           Create an account
         </Button>
         {/* form or */}
-        <Box
+        {/* <Box
           sx={{
             width: "100%",
             height: "50px",
@@ -209,9 +209,9 @@ const SignUpForm = () => {
             Or
           </Typography>
           <Divider sx={{ flex: 1, borderColor: "text.primary" }} />
-        </Box>
+        </Box> */}
         {/* form social btns */}
-        <SocialBtns />
+        {/* <SocialBtns /> */}
       </Box>
     </Box>
   );

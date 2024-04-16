@@ -127,7 +127,7 @@ const SignInForm = () => {
           Sign In
         </Button>
         {/* form or */}
-        <Box
+        {/* <Box
           sx={{
             width: "100%",
             height: "50px",
@@ -143,9 +143,9 @@ const SignInForm = () => {
             Or
           </Typography>
           <Divider sx={{ flex: 1, borderColor: "lightgray" }} />
-        </Box>
+        </Box> */}
         {/* form social btns */}
-        <SocialBtns />
+        {/* <SocialBtns /> */}
       </Box>
     </Box>
   );

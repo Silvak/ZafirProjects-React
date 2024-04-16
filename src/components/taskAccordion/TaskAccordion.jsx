@@ -14,14 +14,31 @@ import TaskItem from "./TaskItem";
 import CustomAccordion from "./customAccordion";
 import { useDrop } from "react-dnd";
 import { useBoundStore } from "../../stores";
+import { useParams } from "react-router-dom";
 
-const TaskAccordion = ({ title, status, tasks, handleAddTask, view }) => {
+const TaskAccordion = ({ title, state, tasks, handleAddTask, view }) => {
   const theme = createTheme();
   const [expanded, setExpanded] = useState(false);
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const isKanbanView = view == "View Kanban";
 
-  const { setTasks } = useBoundStore();
+  const { updateTask } = useBoundStore();
+  const params = useParams();
+
+  const addTaskToList = async (taskId) => {
+    await updateTask(taskId, state, params.id);
+  };
+
+  const [{ opacity, dropTarget, isOver }, drop] = useDrop({
+    accept: ["task"], // Specifies the type of item that can be dropped
+    drop: (dropResult) => {
+      // Receive information about the destination in `dropResult`
+      const taskId = dropResult.id;
+      if (taskId) {
+        addTaskToList(taskId);
+      }
+    },
+  });
 
   const ExpandIcon = ({ expanded }) => {
     return (
@@ -47,22 +64,6 @@ const TaskAccordion = ({ title, status, tasks, handleAddTask, view }) => {
         )}
       </div>
     );
-  };
-
-  //drag  and drop
-  const [{ opacity }, drop] = useDrop(
-    () => ({
-      accept: "task",
-      drop: (item) => addTaskToList(item.id),
-      collect: (monitor) => ({
-        opacity: monitor.isOver() ? 0.5 : 1,
-      }),
-    }),
-    []
-  );
-
-  const addTaskToList = (id) => {
-    setTasks(id, status);
   };
 
   return (
@@ -155,6 +156,7 @@ const TaskAccordion = ({ title, status, tasks, handleAddTask, view }) => {
                 task={task}
                 isMobile={isMobile}
                 isKanbanView={isKanbanView}
+                onDragStart={addTaskToList}
               />
             ))}
           </AccordionDetails>

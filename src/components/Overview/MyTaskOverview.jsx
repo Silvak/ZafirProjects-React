@@ -5,28 +5,69 @@ import {
   Typography,
   createTheme,
   useMediaQuery,
+  Tooltip,
 } from "@mui/material";
-import { useState } from "react";
-import { useBoundStore } from "../../stores/index"; // Importa el hook useBoundStore aquí
+import { useEffect, useState, Suspense } from "react";
+import { useBoundStore } from "../../stores/index";
 import MyTaskList from "./MyTaskList";
+import { isInThisWeek, isInThisMonth, isToday } from "../../hooks/useDates";
 
 const filtersData = [
-  { id: 1, label: "This week", value: "week" },
-  { id: 2, label: "This month", value: "month" },
-  { id: 3, label: "Today", value: "today" },
+  { id: 1, label: "All", value: "All" },
+  { id: 4, label: "This week", value: "This week" },
+  { id: 2, label: "This month", value: "This month" },
+  { id: 3, label: "Today", value: "Today" },
 ];
 
 function MyTask() {
-  const { tasks, addTask } = useBoundStore();
+  const {
+    tasks,
+    myTasks,
+    fetchTasksById,
+    addTask,
+    fetchTasks,
+    selectedProject,
+  } = useBoundStore();
   const theme = createTheme();
-  const [selectedValue, setSelectedValue] = useState("This Week");
+  const [filterOption, setFilterOption] = useState("All");
+
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
-  const handleSelectChange = (event) => {
-    setSelectedValue(event.target.value);
+
+  // const workingTasks = tasks.filter(
+  //   (task) => task.state !== "Pending" && task.state !== "Backlog"
+  // );
+  const handleFilter = (event) => {
+    setFilterOption(event.target.value);
   };
-  const workingTasks = tasks.filter(
-    (task) => task.status !== "Pending" && task.status !== "Backlog"
-  );
+
+  useEffect(() => {
+    if (selectedProject) {
+      const fetchData = async () => {
+        try {
+          await fetchTasksById(selectedProject._id);
+        } catch (error) {
+          console.error("Error fetching tasks", error);
+        }
+      };
+      fetchData();
+    }
+  }, [selectedProject]);
+  // console.log("CANTIDAD DE TASK: ", myTasks.length);
+
+  const filteredTasks = myTasks.filter((task) => {
+    const taskDate = new Date(task.start);
+    switch (filterOption) {
+      case "This week":
+        return isInThisWeek(taskDate);
+      case "This month":
+        return isInThisMonth(taskDate);
+      case "Today":
+        return isToday(taskDate);
+      default:
+        "All";
+        return true; // Si la opción de filtro es "All", mostrar todas las tareas
+    }
+  });
 
   return (
     <ThemeProvider theme={theme}>
@@ -68,14 +109,35 @@ function MyTask() {
           </Grid>
           {/* Select Filter */}
           <Grid item>
-            <FilterSelect data={filtersData} padding="10px" />
+            <Tooltip title="Filter">
+              <select
+                value={filterOption}
+                onChange={handleFilter}
+                style={{
+                  border: "none",
+                  outline: " 1px solid #808080",
+                  background: "white",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  padding: "10px",
+                }}
+              >
+                {filtersData.map((filter) => (
+                  <option value={filter.value} key={filter.id}>
+                    {filter.label}
+                  </option>
+                ))}
+              </select>
+            </Tooltip>
           </Grid>
         </Grid>
         {/* Task list */}
-        <MyTaskList
-          tasks={workingTasks}
-          handleAddTask={() => handleAddTask("", "")}
-        />
+        <Suspense fallback={<div>Loading...</div>}>
+          <MyTaskList
+            tasks={filteredTasks}
+            handleAddTask={() => handleAddTask("", "")}
+          />
+        </Suspense>
       </Grid>
     </ThemeProvider>
   );

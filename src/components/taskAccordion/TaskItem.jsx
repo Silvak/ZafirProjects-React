@@ -1,5 +1,5 @@
 import { Grid, Paper, Typography } from "@mui/material";
-import { useDrag } from "react-dnd";
+import { useDrag, useDrop } from "react-dnd";
 
 //icons
 import {
@@ -18,10 +18,29 @@ import TaskDetail from "../TaskDetail/TaskDetail";
 import { statusColors, priorityColors } from "../../utils/colors";
 
 const TaskItem = ({ task, isMobile, isKanbanView }) => {
+  const formatDate = (dateString) => {
+    const today = new Date();
+    const date = new Date(dateString);
+    const options = { year: "numeric", month: "short", day: "numeric" };
+
+    if (
+      date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear()
+    ) {
+      return "Today";
+    } else {
+      return date.toLocaleDateString("en-US", options);
+    }
+  };
+
+  // Task Data
+  const taskData = task.data[0];
+
   const [{ opacity }, dragRef] = useDrag(
     () => ({
       type: "task",
-      item: { id: task.id },
+      item: { id: task._id },
       collect: (monitor) => ({
         opacity: monitor.isDragging() ? 0.5 : 1,
       }),
@@ -36,7 +55,7 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
     ChangeIsVisibleButton,
   } = useBoundStore((state) => state);
 
-  const handleMoreIcon = (task) => () => {
+  const handleMoreIcon = (task) => {
     ChangeStateModal(true);
     ChangeTitleModal("Task Detail");
     ChangeContentModal(<TaskDetail task={task} />);
@@ -79,7 +98,7 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
                   marginY: 2.5,
                 }}
               >
-                {task.appDesign}
+                {taskData.name}
               </Typography>
               <ArrowForwardIcon
                 style={{ color: "#6B6E75", cursor: "pointer" }}
@@ -87,7 +106,7 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
               />
             </div>
             <Divider sx={{ mb: 2 }}></Divider>
-            {task.screen && (
+            {/* {task.screen && (
               <img
                 src={task.screen}
                 alt="Task Screen"
@@ -98,7 +117,7 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
                   borderRadius: 8,
                 }}
               />
-            )}
+            )} */}
           </div>
         ))}
       <Typography
@@ -110,9 +129,9 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
           marginTop: "16px",
           cursor: "pointer",
         }}
-        onClick={isMobile && handleMoreIcon(task)}
+        onClick={isMobile ? handleMoreIcon(task) : undefined}
       >
-        {task.task}
+        {taskData.name}
       </Typography>
       <Grid
         container
@@ -159,15 +178,15 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
               style={{ fontSize: "14px", fontWeight: "bold" }}
               sx={{ ml: "3rem" }}
             >
-              {task.appDesign}
+              {task.members}
             </Typography>
           </Grid>
         )}
-        {!isKanbanView && (
+        {/* {!isKanbanView && (
           <Grid item xs={12} sm={1} sx={{ marginRight: "3rem" }}>
             <AvatarGroup max={3} style={{ marginRight: isMobile ? "30%" : "" }}>
               {task.assignees.map((assignee, index) => (
-                <Avatar
+                <
                   key={index}
                   alt={assignee.name}
                   src={assignee.profile}
@@ -175,7 +194,7 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
               ))}
             </AvatarGroup>
           </Grid>
-        )}
+        )} */}
         <Grid item xs={12} sm={2}>
           <div
             style={{
@@ -196,7 +215,7 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
                   fontWeight: "bold",
                 }}
               >
-                {task.notification}
+                {"5"}
               </Typography>
             </div>
             {isKanbanView && (
@@ -228,7 +247,7 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
                 }}
               >
                 {" "}
-                {task.attachments.length}
+                {1}
                 {isKanbanView && (
                   <CircleIcon
                     style={{
@@ -240,7 +259,7 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
                 )}
               </Typography>
             </div>
-            {isMobile ||
+            {/* {isMobile ||
               (isKanbanView && (
                 <Grid item xs={12} sm={1}>
                   <AvatarGroup max={2}>
@@ -253,7 +272,7 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
                     ))}
                   </AvatarGroup>
                 </Grid>
-              ))}
+              ))} */}
           </div>
         </Grid>
         <Grid
@@ -284,7 +303,7 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
               noWrap
               style={{ fontSize: "14px", fontWeight: "bold" }}
             >
-              {task.date}
+              {formatDate(task.start)}
             </Typography>
           </div>
         </Grid>
@@ -309,10 +328,10 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
               padding: "4px 8px",
               textAlign: "center",
               alignItems: "center",
-              ...statusColors[task.status],
+              ...statusColors[task.state],
             }}
           >
-            {task.status}
+            {task.state}
           </Typography>
         </Grid>
         <Grid item xs={12} sm={1}>
@@ -323,7 +342,7 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
                 cursor: "pointer",
                 visibility: isMobile ? "hidden" : "inherits",
               }}
-              onClick={handleMoreIcon(task)}
+              onClick={() => handleMoreIcon(task)}
               sx={{ ml: "2rem" }}
             />
           )}
