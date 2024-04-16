@@ -16,6 +16,8 @@ import EditProjectForm from "@/components/forms/EditProjectForm";
 function ProjectsOverview() {
   const { projectsData, handleEdit, handleDelete, isMobile, theme } =
     useProjectsOverview();
+
+  console.log(projectsData);
   return (
     <ThemeProvider theme={theme}>
       <Box
