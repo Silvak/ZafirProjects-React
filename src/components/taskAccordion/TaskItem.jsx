@@ -61,7 +61,7 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
     ChangeIsVisibleButton,
   } = useBoundStore((state) => state);
 
-  const handleMoreIcon = (task) => () => {
+  const handleMoreIcon = (task) => {
     ChangeStateModal(true);
     ChangeTitleModal("Task Detail");
     ChangeContentModal(<TaskDetail task={task} />);
@@ -184,7 +184,7 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
               style={{ fontSize: "14px", fontWeight: "bold" }}
               sx={{ ml: "3rem" }}
             >
-              {"Members"}
+              {task.members}
             </Typography>
           </Grid>
         )}

@@ -56,7 +56,6 @@ function MyTask() {
 
   const filteredTasks = myTasks.filter((task) => {
     const taskDate = new Date(task.start);
-    console.log("FilteredOption", filterOption);
     switch (filterOption) {
       case "This week":
         return isInThisWeek(taskDate);

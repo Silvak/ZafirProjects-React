@@ -1,12 +1,10 @@
 import { axiosInstance } from "../../config/apiConfig";
-import { mockTasks } from "../../mockData/taskData";
 
 export const createTasksSlice = (set) => ({
   tasks: [],
   myTasks: [],
   addTask: async (taskData) => {
     try {
-      console.log(taskData);
       const data = await axiosInstance.post(
         `/tasksList/660b037505e97aba86580b25`,
         taskData

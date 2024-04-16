@@ -2,12 +2,12 @@ import { Box, Button, useMediaQuery } from "@mui/material";
 import { RxEyeOpen } from "react-icons/rx";
 import { useBoundStore } from "../../stores";
 import { statusColors } from "../../utils/colors";
-import CreateTaskForm from "../forms/createTaskForm";
 import TaskDetail from "./TaskDetail";
 //mock
 import { subsTasksData } from "../../mockData/taskData";
 //styles
 import css from "./style.module.css";
+import SubTaskForm from "../forms/subtaskForm";
 
 const tableHeadData = [
   { id: 1, label: "Name" },
@@ -17,10 +17,12 @@ const tableHeadData = [
   { id: 5, label: "Action" },
 ];
 
-const TaskDetailSubstasks = () => {
+const TaskDetailSubstasks = ({ taskId }) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
   const {
+    subtasks,
+    fetchSubtasks,
     ChangeStateModal,
     ChangeTitleModal,
     ChangeContentModal,
@@ -29,8 +31,8 @@ const TaskDetailSubstasks = () => {
 
   const handleAddTask = () => {
     ChangeStateModal(true);
-    ChangeTitleModal("Add Task");
-    ChangeContentModal(<CreateTaskForm />);
+    ChangeTitleModal("Add SubTask");
+    ChangeContentModal(<SubTaskForm taskId={taskId} />);
   };
 
   const handleViewSubstask = () => {

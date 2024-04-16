@@ -2,15 +2,34 @@ import { Grid, Box } from "@mui/material";
 import GridItem from "./TaskDetailItem";
 
 const TaskDetailContent = ({ task }) => {
-  const { appDesign, date, assignees, priority } = task || {};
+  const { start, priority } = task || {};
+
+  const formatDate = (dateString) => {
+    const today = new Date();
+    const date = new Date(dateString);
+    const options = { year: "numeric", month: "short", day: "numeric" };
+
+    if (
+      date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear()
+    ) {
+      return "Today";
+    } else {
+      return date.toLocaleDateString("en-US", options);
+    }
+  };
 
   return (
     <Grid container spacing={3} sx={{ marginTop: "10px" }}>
-      <GridItem label="Task description" detailText={appDesign} />
-      <GridItem label="Date" detailText={date} />
+      <GridItem
+        label="Task description"
+        detailText={task.data[0].description}
+      />
+      <GridItem label="Date" detailText={formatDate(task.start)} />
       <Grid item xs={12}>
         <p style={{ color: "#6B6E75", marginBottom: "5px" }}>Assigned to</p>
-        {"Members"}
+        {task.members}
         {/* <Box sx={{ display: "flex", gap: "5px" }}>
           {Array.isArray(assignees) ? (
             assignees.map((element) => (

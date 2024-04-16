@@ -45,10 +45,9 @@ const ModalGlobal = () => {
           padding: "20px",
         }}
       >
-        <Box sx={{ maxWidth: "100%" }}>
+        <Box sx={{ maxWidth: "99%" }}>
           {" "}
           {/* width off */}
-
           {titleModal && (
             <Typography
               variant="h4"
@@ -94,7 +93,6 @@ const ModalGlobal = () => {
               </div>
             </Typography>
           )}
-
           <div>{contentModal}</div>
         </Box>
       </Box>

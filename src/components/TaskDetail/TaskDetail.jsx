@@ -5,9 +5,10 @@ import TaskDetailSubstasks from "./TaskDetailSubstasks";
 import ChatMessage from "../chatSeccion/chat";
 
 const TaskDetail = ({ task }) => {
-  const { id, task: taskTitle } = task || {};
+  const { id, data } = task || {};
+  const name = data[0].name;
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
-
+  console.log("IDDDD: ", id);
   return (
     <Grid
       container
@@ -35,9 +36,9 @@ const TaskDetail = ({ task }) => {
           overflowY: isMobile ? "none" : "scroll",
         }}
       >
-        <TaskDetailHeader taskId={id} taskTitle={taskTitle} />
+        <TaskDetailHeader taskId={id} taskTitle={name} />
         <TaskDetailContent task={task} />
-        <TaskDetailSubstasks />
+        <TaskDetailSubstasks taskId={id} />
       </Grid>
       <Grid item xs={12} md={5}>
         <ChatMessage />
