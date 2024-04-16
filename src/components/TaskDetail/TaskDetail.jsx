@@ -8,7 +8,6 @@ const TaskDetail = ({ task }) => {
   const { id, data } = task || {};
   const name = data[0].name;
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
-  console.log("IDDDD: ", id);
   return (
     <Grid
       container

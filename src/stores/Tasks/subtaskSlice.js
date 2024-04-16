@@ -4,14 +4,12 @@ export const createSubtasksSlice = (set) => ({
   subtasks: [],
   //   myTasks: [],
   addSubtask: async (taskData) => {
-    console.log(taskData);
     try {
       const data = await axiosInstance.post(
         `/subtaks/${taskData.taskId}`,
         taskData
       );
       alert("subTask creada");
-      console.log(taskData);
     } catch (error) {
       console.error("Error creating subTask", error);
     }

@@ -2,7 +2,7 @@ import { Grid, Box } from "@mui/material";
 import GridItem from "./TaskDetailItem";
 
 const TaskDetailContent = ({ task }) => {
-  const { start, priority } = task || {};
+  const { start, priority, state } = task || {};
 
   const formatDate = (dateString) => {
     const today = new Date();
@@ -61,7 +61,7 @@ const TaskDetailContent = ({ task }) => {
         </Box> */}
       </Grid>
       <GridItem label="Priority" detailText={priority} />
-      <GridItem label="Tags" detailText="tag1, tag2" />
+      <GridItem label="Tags" detailText={state} />
     </Grid>
   );
 };

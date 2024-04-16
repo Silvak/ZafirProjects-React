@@ -96,8 +96,6 @@ const SubTaskForm = ({ placeholderTaskName = "Subtask 1", taskId }) => {
       return;
     }
     try {
-      console.log("IN: ", subtaskData);
-
       await addSubtask(subtaskData);
       handleClose();
     } catch (error) {
