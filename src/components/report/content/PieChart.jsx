@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, Box, Typography, useMediaQuery } from "@mui/material";
 import { PieChart } from "@mui/x-charts/PieChart";
 import { useDrawingArea } from "@mui/x-charts/hooks";
@@ -30,8 +30,19 @@ function PieCenterLabel({ children }) {
   );
 }
 
-export default function CustomPieChart() {
+export default function CustomPieChart({ projectSelected }) {
   const { customTasks, fetchTasksByIdCustom } = useBoundStore();
+  const [flag, setFlag] = useState(false);
+
+  useEffect(() => {
+    const FetchTasks = async () => {
+      if (projectSelected) {
+        const id = projectSelected._id;
+        await fetchTasksByIdCustom(id);
+      }
+    };
+    FetchTasks();
+  }, []);
 
   const inProgressTasks = customTasks.filter(
     (tasks) => tasks.state === "In Progress"

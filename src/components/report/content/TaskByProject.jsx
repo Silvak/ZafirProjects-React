@@ -26,14 +26,10 @@ const CustomTaskCounter = ({ quantityTasks }) => {
 const TaskByProject = () => {
   const { tasks, fetchTasks } = useBoundStore();
   const isLittleScreen = useMediaQuery("(max-width:800px)");
-  const [resultado, setResultado] = useState([]);
-  const [flag, setFlag] = useState(false);
+  const [result, setResult] = useState([]);
 
   useEffect(() => {
-    if (!tasks) {
-      fetchTasks();
-    }
-    setFlag(true);
+    fetchTasks();
   }, []);
 
   useEffect(() => {
@@ -55,11 +51,11 @@ const TaskByProject = () => {
     }
     const uniqueProjectsArray = Object.values(uniqueProjects);
 
-    setResultado(uniqueProjectsArray);
-  }, [flag]);
+    setResult(uniqueProjectsArray.slice(0, 3));
+  }, [tasks]);
 
   const colors = ["#459CED", "#D377F3", "#5D923D"];
-  console.log("RESULTADO", resultado);
+
   const sumOfTasks = tasks?.length;
 
   return (
@@ -105,8 +101,8 @@ const TaskByProject = () => {
           marginTop: "auto",
         }}
       >
-        {resultado &&
-          resultado.map((project, index) => (
+        {result &&
+          result.map((project, index) => (
             <div
               key={project.id}
               style={{
@@ -148,7 +144,7 @@ const TaskByProject = () => {
           marginTop: "8px",
         }}
       >
-        {resultado.map((project, index) => (
+        {result.map((project, index) => (
           <div
             key={project.id}
             style={{ display: "flex", alignItems: "center" }}

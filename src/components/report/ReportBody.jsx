@@ -31,6 +31,7 @@ function ComponentBody() {
           >
             <FirstRow
               setProjectSelected={setProjectSelected}
+              projectSelected={projectSelected}
               projectsData={projectsData}
             />
             <AvatarsGroup
@@ -49,7 +50,7 @@ function ComponentBody() {
               <Typography sx={titleStyle}>Tasks by completion</Typography>
               {/* Contenido para el primer paper en la segunda fila */}
 
-              <PieChart />
+              <PieChart projectSelected={projectSelected} />
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6}>

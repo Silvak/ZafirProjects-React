@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Grid,
   Select,
@@ -13,7 +13,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import "./styles.css";
 
-function FirstRow({ setProjectSelected, projectsData }) {
+function FirstRow({ setProjectSelected, projectsData, projectSelected }) {
   const [selectedOption, setSelectedOption] = useState(projectsData[0] || "");
   const [menuOpen, setMenuOpen] = useState(false);
   const [focused, setFocused] = useState(false);
@@ -24,6 +24,12 @@ function FirstRow({ setProjectSelected, projectsData }) {
     setSelectedOption(event.target.value);
     setProjectSelected(event.target.value);
   };
+
+  useEffect(() => {
+    if (!projectSelected) {
+      setProjectSelected(projectsData[0]);
+    }
+  }, []);
 
   const handleMenuToggle = () => {
     setMenuOpen(!menuOpen);
