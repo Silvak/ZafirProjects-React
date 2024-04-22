@@ -7,12 +7,10 @@ import userImage from "../../../assets/Img/png/userImage.png";
 const UpcomingTask = () => {
   const { tasks, fetchTasks } = useBoundStore();
   const [result, setResult] = useState([]);
-  const [flag, setFlag] = useState(false);
   const isLittleScreen = useMediaQuery("(max-width:800px)");
 
   useEffect(() => {
     fetchTasks();
-    setFlag(true);
   }, []);
 
   useEffect(() => {
@@ -26,16 +24,21 @@ const UpcomingTask = () => {
             name: project.name,
             progress: project.progress,
             totalTasks: 1,
+            completed: task.state === "Completed" ? 1 : 0,
           };
         } else {
           uniqueProjects[project._id].totalTasks++;
+          if (task.state === "Completed") {
+            uniqueProjects[project._id].completed++;
+          }
         }
       });
     }
+
     const uniqueProjectsArray = Object.values(uniqueProjects);
 
     setResult(uniqueProjectsArray.slice(0, 3));
-  }, [flag]);
+  }, [tasks]);
 
   const tasksWithProfilePhotos = result.slice(0, 4);
 
