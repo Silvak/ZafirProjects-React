@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Typography, Divider, useMediaQuery } from "@mui/material";
-import { projectsData } from "../../../mockData/projectsData";
+import { useBoundStore } from "../../../stores/index";
 
 const CustomTaskCounter = ({ quantityTasks }) => {
   return (
@@ -24,19 +24,39 @@ const CustomTaskCounter = ({ quantityTasks }) => {
 };
 
 const TaskByProject = () => {
+  const { tasks, fetchTasks } = useBoundStore();
   const isLittleScreen = useMediaQuery("(max-width:800px)");
+  const [result, setResult] = useState([]);
 
-  const filteredProjects = projectsData
-    .filter(
-      (project) =>
-        project.projectName === "Peceland App Design" ||
-        project.projectName === "Microsoft illustration pack" ||
-        project.projectName === "Nasa cosmic website concept"
-    )
-    .slice(0, 3);
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
+  useEffect(() => {
+    let uniqueProjects = {};
+
+    if (tasks) {
+      tasks.forEach((task) => {
+        const project = task.projectId;
+        if (!uniqueProjects[project._id]) {
+          uniqueProjects[project._id] = {
+            name: project.name,
+            progress: project.progress,
+            totalTasks: 1,
+          };
+        } else {
+          uniqueProjects[project._id].totalTasks++;
+        }
+      });
+    }
+    const uniqueProjectsArray = Object.values(uniqueProjects);
+
+    setResult(uniqueProjectsArray.slice(0, 3));
+  }, [tasks]);
 
   const colors = ["#459CED", "#D377F3", "#5D923D"];
-  const sumOfTasks = filteredProjects[0].quantityTasks + filteredProjects[2].quantityTasks;
+
+  const sumOfTasks = tasks?.length;
 
   return (
     <div
@@ -48,7 +68,8 @@ const TaskByProject = () => {
         marginBottom: "1.2vh",
         borderRadius: "12px",
         border: "1px solid #E0E3E8",
-        marginInline:"18px"
+        marginInline: "18px",
+        minHeight: "290px",
       }}
     >
       {/* Primera fila */}
@@ -73,32 +94,39 @@ const TaskByProject = () => {
         </Typography>
       </div>
       {/* Segunda fila */}
-      <div style={{ display: "flex", justifyContent: "space-around" }}>
-        {filteredProjects.map((project, index) => (
-          <div
-            key={project.id}
-            style={{
-              display: "flex",
-              alignItems: "flex-end",
-              position: "relative",
-            }}
-          >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-around",
+          marginTop: "auto",
+        }}
+      >
+        {result &&
+          result.map((project, index) => (
             <div
+              key={project.id}
               style={{
-                height: `${project.quantityTasks * 5}px`,
-                width: "44px",
-                backgroundColor: colors[index],
-                borderTopLeftRadius: "12px",
-                borderTopRightRadius: "12px",
+                display: "flex",
+                alignItems: "flex-end",
+                position: "relative",
               }}
             >
-              {/* Elemento sobre la barra */}
-              {!isLittleScreen && (
-                <CustomTaskCounter quantityTasks={project.quantityTasks} />
-              )}
+              <div
+                style={{
+                  height: `${project.totalTasks * 5}px`,
+                  width: "44px",
+                  backgroundColor: colors[index],
+                  borderTopLeftRadius: "12px",
+                  borderTopRightRadius: "12px",
+                }}
+              >
+                {/* Elemento sobre la barra */}
+                {!isLittleScreen && (
+                  <CustomTaskCounter quantityTasks={project.totalTasks} />
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
       {/* Divider */}
       <Divider
@@ -116,7 +144,7 @@ const TaskByProject = () => {
           marginTop: "8px",
         }}
       >
-        {filteredProjects.map((project, index) => (
+        {result.map((project, index) => (
           <div
             key={project.id}
             style={{ display: "flex", alignItems: "center" }}
@@ -124,7 +152,6 @@ const TaskByProject = () => {
             <Typography
               variant="body1"
               style={{
-                maxWidth: "6rem",
                 fontSize: isLittleScreen ? "12px" : "14px",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
@@ -132,7 +159,7 @@ const TaskByProject = () => {
                 textAlign: "center",
               }}
             >
-              {project.projectName}
+              {project.name}
             </Typography>
           </div>
         ))}

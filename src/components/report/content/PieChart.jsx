@@ -1,10 +1,11 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, Box, Typography, useMediaQuery } from "@mui/material";
 import { PieChart } from "@mui/x-charts/PieChart";
 import { useDrawingArea } from "@mui/x-charts/hooks";
 import { styled } from "@mui/material/styles";
-import { pieChartData } from "../../../mockData/pieData";
+// import { pieChartData } from "../../../mockData/pieData";
 import { reportData } from "../../../mockData/myWorkData";
+import { useBoundStore } from "../../../stores/index";
 
 const size = {
   width: 300,
@@ -29,7 +30,93 @@ function PieCenterLabel({ children }) {
   );
 }
 
-export default function CustomPieChart() {
+export default function CustomPieChart({ projectSelected }) {
+  const { customTasks, fetchTasksByIdCustom } = useBoundStore();
+  const [flag, setFlag] = useState(false);
+
+  useEffect(() => {
+    const FetchTasks = async () => {
+      if (projectSelected) {
+        const id = projectSelected._id;
+        await fetchTasksByIdCustom(id);
+      }
+    };
+    FetchTasks();
+  }, []);
+
+  const inProgressTasks = customTasks.filter(
+    (tasks) => tasks.state === "In Progress"
+  );
+  const pendingTasks = customTasks.filter((tasks) => tasks.state === "Pending");
+  const issuesTasks = customTasks.filter((tasks) => tasks.state === "Issues");
+  const reviewTasks = customTasks.filter((tasks) => tasks.state === "Review");
+  const completedTasks = customTasks.filter(
+    (tasks) => tasks.state === "Completed"
+  );
+
+  const renderData = {
+    progress: {
+      inProgressTasks,
+      title: "In Progress",
+      total: inProgressTasks.length,
+      color: "#459CED",
+    },
+    pending: {
+      pendingTasks,
+      title: "Pending",
+      total: pendingTasks.length,
+      color: "#6B6E75",
+    },
+    issues: {
+      issuesTasks,
+      title: "Issues",
+      total: issuesTasks.length,
+      color: "#E55D57",
+    },
+    review: {
+      reviewTasks,
+      title: "Review",
+      total: reviewTasks.length,
+      color: "#EBA741",
+    },
+    completed: {
+      completedTasks,
+      title: "Completed",
+      total: completedTasks.length,
+      color: "#429482",
+    },
+  };
+
+  const pieChartData = [
+    {
+      label: "Completed",
+      value: renderData.completed.total,
+      color: renderData.completed.color,
+    },
+    {
+      label: "Pending",
+      value: renderData.pending.total,
+      color: renderData.pending.color,
+    },
+    {
+      label: "Issues",
+      value: renderData.issues.total,
+      color: renderData.issues.color,
+    },
+    {
+      label: "Reviews",
+      value: renderData.review.total,
+      color: renderData.review.color,
+    },
+    {
+      label: "In Progress",
+      value: renderData.progress.total,
+      color: renderData.progress.color,
+    },
+  ];
+
+  const total = customTasks.length;
+
   const isSmallScreen = useMediaQuery("(max-width:950px)");
 
   const revertedPieChartData = [...pieChartData].reverse();
@@ -69,7 +156,7 @@ export default function CustomPieChart() {
               legend: { hidden: true },
             }}
           >
-            <PieCenterLabel>{reportData.total.total}</PieCenterLabel>
+            {total && <PieCenterLabel>{total}</PieCenterLabel>}
           </PieChart>
         </Box>
       </Grid>
