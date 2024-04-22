@@ -35,6 +35,7 @@ declare module "@/components/taskAccordion/taskList";
 declare module "@/components/taskAccordion/customAccordion";
 declare module "@/components/forms/EditProjectForm";
 declare module "@/components/forms/CreateProjectForm";
+declare module "@/components/forms/SubtaskForm";
 declare module "@/components/buttons/Facebook/Facebook";
 declare module "@/components/buttons/Google/Google";
 declare module "@/components/TaskDetail/TaskDetail";
@@ -57,6 +58,7 @@ declare module "@/stores/Actions/Theme/storeTheme";
 declare module "@/stores/useGetNativeBalance/useGetNativeBalance";
 declare module "@/stores/useGetWalletTokenBalances/useGetWalletTokenBalances";
 declare module "@/stores/Tasks/createTasksSlice";
+declare module "@/stores/Tasks/createSubtasksSlice";
 declare module "@/stores/user/storeUser";
 declare module "@/stores/Projects/actualProject";
 

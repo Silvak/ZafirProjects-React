@@ -3,7 +3,7 @@ import { mockTasksGantt } from "@/mockData/taskData";
 import { styled } from "@mui/system";
 import { format } from "date-fns";
 import useDateRange from "@/hooks/ganttChart/useDateRange";
-import TaskElement from "@/components/ganttchart/TaskElement";
+import TaskElement from "@/components/ganttChart/TaskElement";
 
 // ----------------- syles ----------------------
 const TaskTable = styled("div")({

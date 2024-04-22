@@ -18,7 +18,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { useProject } from "@/hooks/useProject";
 
-const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
+const SubTaskForm = ({ placeholderTaskName = "Subtask 1", taskId }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
@@ -26,10 +26,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
   const [selectedEndDate, setSelectedEndDate] = useState(null);
 
   const [taskName, setTaskName] = useState(placeholderTaskName);
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
   const [description, setDescription] = useState("");
-  const [priority, setPriority] = useState("");
   const [tags, setTags] = useState("");
   const {
     selectedLeader,
@@ -39,50 +36,47 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
   } = useProject({ project: null, isCreated: true });
 
   const {
-    addTask,
-    setTask,
-    removeTask,
-    updateTask,
-    fetchTask,
+    addSubtask,
+    setSubtasks,
+    removeSubtask,
+    updateSubtask,
+    fetchSubtasks,
     ChangeStateModal,
     selectedProject,
   } = useBoundStore();
 
   useEffect(() => {
     // Actualizamos el objeto taskData con los valores actuales de los estados
-    setTaskData({
-      data: [
-        {
-          name: taskName,
-          description: description,
-          tags: tags,
-        },
-      ],
+    setsubtaskData({
+      name: taskName,
       start: selectedDate,
       end: selectedEndDate,
-      state: tags,
+      description: description,
+      status: tags,
       members: selectedLeader,
-      priority: priority,
-      projectId: selectedProject._id,
+      taskId: taskId,
     });
-  }, [taskName, startDate, endDate, description, priority, tags]);
+  }, [
+    taskName,
+    selectedDate,
+    selectedEndDate,
+    description,
+    tags,
+    selectedLeader,
+    taskId,
+  ]);
 
-  const [taskData, setTaskData] = useState({
-    data: [
-      {
-        name: taskName,
-        description: description,
-        tags: tags,
-      },
-    ],
+  const [subtaskData, setsubtaskData] = useState({
+    name: taskName,
     start: selectedDate,
     end: selectedEndDate,
-    state: tags,
+    description: description,
+    status: tags,
     members: selectedLeader,
-    priority: priority,
-    projectId: selectedProject._id,
+    taskId: taskId,
   });
 
+  console.log(subtaskData);
   const [selectedUser, setSelectedUser] = useState("");
   const [teamMembers, setTeamMembers] = useState([]);
 
@@ -94,7 +88,6 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
       !selectedDate ||
       !selectedEndDate ||
       !description ||
-      !priority ||
       !tags ||
       !selectedLeader
     ) {
@@ -103,13 +96,11 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
       return;
     }
     try {
-      // console.log(taskData);
-
-      await addTask(taskData);
+      await addSubtask(subtaskData);
+      handleClose();
     } catch (error) {
       alert("Error creating task", error);
     }
-    handleClose();
   };
 
   const handleClose = () => {
@@ -166,7 +157,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
           <Grid container spacing={2} sx={{ marginTop: "13px" }}>
             <Grid item xs={12}>
               <Typography sx={{ fontSize: "0.2rem", fontWeight: "normal" }}>
-                Task name
+                subTask name
               </Typography>
               <TextField
                 variant="outlined"
@@ -316,29 +307,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
             </Grid> */}
 
             <Grid item xs={12}>
-              <Typography sx={{ fontSize: "0.85rem" }}>Priority</Typography>
-              <FormControl fullWidth>
-                <Select
-                  required
-                  value={priority}
-                  variant="outlined"
-                  size="small"
-                  sx={{ fontSize: "2rem", bgcolor: "white" }}
-                  onChange={(e) => setPriority(e.target.value)}
-                  displayEmpty
-                  renderValue={(selected) =>
-                    selected ? selected : "Type: All"
-                  }
-                >
-                  <CustomMenuItem value="High">High</CustomMenuItem>
-                  <CustomMenuItem value="Medium">Medium</CustomMenuItem>
-                  <CustomMenuItem value="Low">Low</CustomMenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-
-            <Grid item xs={12}>
-              <Typography sx={{ fontSize: "0.85rem" }}>Tags</Typography>
+              <Typography sx={{ fontSize: "0.85rem" }}>Status</Typography>
               <FormControl fullWidth>
                 <Select
                   required
@@ -349,7 +318,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
                   onChange={(e) => setTags(e.target.value)}
                   displayEmpty
                   renderValue={(selected) =>
-                    selected ? selected : "Type: All"
+                    selected ? selected : "Type: Select"
                   }
                 >
                   <CustomMenuItem value="In Progress">
@@ -402,7 +371,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
   );
 };
 
-export default CreateTaskForm;
+export default SubTaskForm;
 
 const CustomMenuItem = ({ children, selected, ...props }) => {
   return (
