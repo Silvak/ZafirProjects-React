@@ -39,7 +39,7 @@ function ReportTasks({ customProject }) {
       };
       fetchData();
     }
-  }, [customProject._id]);
+  }, [customProject]);
 
   const filteredTasks = customTasks.filter((task) => {
     const taskDate = new Date(task.start);
