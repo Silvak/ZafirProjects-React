@@ -11,11 +11,9 @@ import {
 } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import { useBoundStore } from "../../../stores/index";
 import "./styles.css";
 
-function FirstRow({ setProjectSelected }) {
-  const { projectsData } = useBoundStore();
+function FirstRow({ setProjectSelected, projectsData }) {
   const [selectedOption, setSelectedOption] = useState(projectsData[0] || "");
   const [menuOpen, setMenuOpen] = useState(false);
   const [focused, setFocused] = useState(false);
