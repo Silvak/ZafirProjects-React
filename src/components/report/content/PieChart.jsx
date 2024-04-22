@@ -105,7 +105,6 @@ export default function CustomPieChart() {
   ];
 
   const total = customTasks.length;
-  console.log("renderdata", renderData);
 
   const isSmallScreen = useMediaQuery("(max-width:950px)");
 

@@ -56,7 +56,7 @@ function ComponentBody() {
             <Paper style={paperStyle}>
               <Typography sx={titleStyle}>Task by project</Typography>
               {/* Contenido para el segundo paper en la segunda fila */}
-              <TaskByProject />
+              <TaskByProject projectSelected={projectSelected} />
             </Paper>
           </Grid>
         </Grid>
