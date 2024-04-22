@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Grid, Paper, Typography, useMediaQuery } from "@mui/material";
 import FirstRow from "./content/FirstRow";
 import AvatarsGroup from "./content/AvatarsGroup";
@@ -10,6 +10,7 @@ import UpcomingTask from "./content/UpcomingTask";
 
 function ComponentBody() {
   const isMobile = useMediaQuery("(max-width:600px)");
+  const [projectSelected, setProjectSelected] = useState(null);
 
   return (
     <Grid container spacing={4} sx={{ mt: 2, paddingX: 2 }}>
@@ -26,8 +27,8 @@ function ComponentBody() {
               alignItems: "center",
             }}
           >
-            <FirstRow />
-            <AvatarsGroup />
+            <FirstRow setProjectSelected={setProjectSelected} />
+            <AvatarsGroup projectSelected={projectSelected} />
           </div>
           <ReportTasks />
         </Paper>
@@ -37,9 +38,7 @@ function ComponentBody() {
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <Paper style={paperStyle}>
-              <Typography sx={titleStyle}>
-              Tasks by completion
-              </Typography>
+              <Typography sx={titleStyle}>Tasks by completion</Typography>
               {/* Contenido para el primer paper en la segunda fila */}
 
               <PieChart />
@@ -47,11 +46,9 @@ function ComponentBody() {
           </Grid>
           <Grid item xs={12} sm={6}>
             <Paper style={paperStyle}>
-              <Typography sx={titleStyle}>
-              Task by project
-              </Typography>
+              <Typography sx={titleStyle}>Task by project</Typography>
               {/* Contenido para el segundo paper en la segunda fila */}
-              <TaskByProject/>
+              <TaskByProject />
             </Paper>
           </Grid>
         </Grid>
@@ -61,20 +58,16 @@ function ComponentBody() {
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <Paper style={paperStyle}>
-              <Typography sx={titleStyle}>
-              Upcoming tasks by asignee
-              </Typography>
+              <Typography sx={titleStyle}>Upcoming tasks by asignee</Typography>
               {/* Contenido para el primer paper en la tercera fila */}
-              <UpcomingTask/>
+              <UpcomingTask />
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Paper style={paperStyle}>
-              <Typography sx={titleStyle}>
-              Project performance
-              </Typography>
+              <Typography sx={titleStyle}>Project performance</Typography>
               {/* Contenido para el segundo paper en la tercera fila */}
-              <TaskByProjectRow/>
+              <TaskByProjectRow />
             </Paper>
           </Grid>
         </Grid>
