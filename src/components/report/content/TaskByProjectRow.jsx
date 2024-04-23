@@ -1,20 +1,46 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Typography, Divider, useMediaQuery } from "@mui/material";
 import { projectsData } from "../../../mockData/projectsData";
 import CircleIcon from "@mui/icons-material/Circle";
+import { useBoundStore } from "../../../stores/index";
 
 const TaskByProjectRow = () => {
+  const { tasks, fetchTasks } = useBoundStore();
+  const [result, setResult] = useState([]);
   const isLittleScreen = useMediaQuery("(max-width:800px)");
 
-  const filteredProjects = projectsData
-    .filter(
-      (project) =>
-        project.projectName === "Peceland App Design" ||
-        project.projectName === "Microsoft illustration pack" ||
-        project.projectName === "Nasa cosmic website concept" ||
-        project.projectName === "Nggolek Utis Dashboard"
-    )
-    .slice(0, 4);
+  const filteredProjects = result.slice(0, 4);
+
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
+  useEffect(() => {
+    let uniqueProjects = {};
+
+    if (tasks) {
+      tasks.forEach((task) => {
+        const project = task.projectId;
+        if (!uniqueProjects[project._id]) {
+          uniqueProjects[project._id] = {
+            name: project.name,
+            progress: project.progress,
+            totalTasks: 1,
+            completed: task.state === "Completed" ? 1 : 0,
+          };
+        } else {
+          uniqueProjects[project._id].totalTasks++;
+          if (task.state === "Completed") {
+            uniqueProjects[project._id].completed++;
+          }
+        }
+      });
+    }
+
+    const uniqueProjectsArray = Object.values(uniqueProjects);
+
+    setResult(uniqueProjectsArray.slice(0, 3));
+  }, [tasks]);
 
   return (
     <div
@@ -30,6 +56,7 @@ const TaskByProjectRow = () => {
         width: "95%",
         paddingTop: 28,
         paddingBlock: 18,
+        minHeight: "330px",
       }}
     >
       <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -46,7 +73,7 @@ const TaskByProjectRow = () => {
             .sort((a, b) => b.completed - a.completed)
             .map((project, index) => (
               <div
-                key={project.id}
+                key={index}
                 style={{
                   display: "flex",
                   flexDirection: "column",
@@ -66,7 +93,7 @@ const TaskByProjectRow = () => {
                     textAlign: "center",
                   }}
                 >
-                  {project.projectName}
+                  {project.name}
                 </Typography>
 
                 <div
@@ -74,7 +101,7 @@ const TaskByProjectRow = () => {
                     display: "flex",
                     justifyContent: "flex-start",
                     gap: "4px",
-                    marginBottom:2,
+                    marginBottom: 2,
                   }}
                 >
                   <Typography
@@ -92,7 +119,7 @@ const TaskByProjectRow = () => {
                       fontWeight: 600,
                     }}
                   >
-                    {project.quantityTasks}
+                    {project.totalTasks}
                   </Typography>
 
                   <CircleIcon
@@ -136,11 +163,11 @@ const TaskByProjectRow = () => {
                   <div
                     style={{
                       width: `${
-                        (project.completed / project.quantityTasks) * 100
+                        (project.completed / project.totalTasks) * 100
                       }%`,
                       height: "100%",
                       backgroundColor: getColor(
-                        (project.completed / project.quantityTasks) * 100
+                        (project.completed / project.totalTasks) * 100
                       ),
                       borderRadius: "2px",
                     }}
@@ -159,17 +186,15 @@ const TaskByProjectRow = () => {
         >
           {filteredProjects.map((project, index) => (
             <Typography
-              key={project.id}
+              key={index}
               variant="body1"
               style={{
                 marginBottom: 8,
-                color: getColor(
-                  (project.completed / project.quantityTasks) * 100
-                ),
+                color: getColor((project.completed / project.totalTasks) * 100),
                 fontWeight: 600,
               }}
             >
-              {Math.round((project.completed / project.quantityTasks) * 100)}%
+              {Math.round((project.completed / project.totalTasks) * 100)}%
             </Typography>
           ))}
         </div>
