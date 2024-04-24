@@ -68,11 +68,11 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
 
       setAllMemberData(updatedAllMember);
       await updateProjects();
-      ChangeTitleAlert("Los datos han sido actualizados correctamente");
+      ChangeTitleAlert("Data has been updated successfully");
       ChangeStateAlert(true);
       closeModal();
     } catch (error) {
-      console.error("Error al guardar los datos:", error);
+      console.error("Error saving data:", error);
     }
   };
 
