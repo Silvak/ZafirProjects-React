@@ -1,7 +1,8 @@
 import * as React from "react";
-import { Box, Button, Modal, Typography } from "@mui/material";
+import { Box, Button, Modal, Typography, IconButton } from "@mui/material";
 import { useBoundStore } from "@/stores/index";
 import { shallow } from "zustand/shallow";
+import CloseIcon from "@mui/icons-material/Close";
 
 const modalStyle = {
   display: "flex",
@@ -76,19 +77,21 @@ const ModalGlobal = () => {
                 {titleModal}
                 {/* Close Modal */}
                 {isVisibleButton && (
-                  <Button
+                  <IconButton
                     sx={{
                       margin: "0",
                       bgcolor: "white",
                       display: "flex",
                       justifyContent: "flex-end",
+                      mr: 2,
                     }}
+                    disableRipple
                     title="Close"
                     variant="text"
                     onClick={handleClose}
                   >
-                    X
-                  </Button>
+                    <CloseIcon />
+                  </IconButton>
                 )}
               </div>
             </Typography>

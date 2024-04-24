@@ -35,7 +35,9 @@ export default function AlertGlobal() {
         TransitionComponent={TransitionRight}
       >
         <Alert severity="success" onClose={handleClose} sx={{ width: "100%" }}>
-          <Typography variant="body2">{titleAlert}</Typography>
+          <Typography variant="body2" sx={{ fontWeight: 600 }}>
+            {titleAlert}
+          </Typography>
         </Alert>
       </Snackbar>
       {/* <Alert severity="error">This is an error message!</Alert>

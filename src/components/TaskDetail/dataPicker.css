@@ -1,0 +1,25 @@
+.date-picker {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+  box-sizing: border-box;
+  background-color: #fff;
+  font-size: 16px;
+  padding: 8px;
+  color: black;
+}
+
+.date-picker-disable {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+  box-sizing: border-box;
+  background-color: #fff;
+  font-size: 16px;
+  padding: 8px;
+  color: gray;
+}
+
+.date-picker-popper {
+  z-index: 1000;
+}
