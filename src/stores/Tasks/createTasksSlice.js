@@ -44,7 +44,7 @@ export const createTasksSlice = (set) => ({
       if (res.status === 200) {
         createTasksSlice(set).fetchTasksById(projectId);
       }
-      console.log(res);
+      return res.data;
     } catch (e) {
       console.log(e);
     }

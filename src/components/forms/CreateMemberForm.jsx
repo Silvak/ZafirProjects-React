@@ -55,7 +55,7 @@ function CreateMember() {
   const handleSubmit = async () => {
     try {
       if (!formData.name || !formData.email || !formData.role) {
-        ChangeTitleAlertError("Faltan ingresar datos");
+        ChangeTitleAlertError("Missing data");
         ChangeStateAlertError(true);
         return;
       }
@@ -71,11 +71,11 @@ function CreateMember() {
       setSelectedProject(projectUpdated);
       await updateProjects();
 
-      ChangeTitleAlert("Nuevo miembro agregado");
+      ChangeTitleAlert("New member added");
       ChangeStateAlert(true);
       handleClose();
     } catch (error) {
-      console.error("Error al guardar los datos:", error.message);
+      console.error("Error saving data:", error.message);
     }
   };
 

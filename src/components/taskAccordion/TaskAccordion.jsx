@@ -26,7 +26,7 @@ const TaskAccordion = ({ title, state, tasks, handleAddTask, view }) => {
   const params = useParams();
 
   const addTaskToList = async (taskId) => {
-    await updateTask(taskId, state, params.id);
+    await updateTask(taskId, { state }, params.id);
   };
 
   const [{ opacity, dropTarget, isOver }, drop] = useDrop({
@@ -39,7 +39,6 @@ const TaskAccordion = ({ title, state, tasks, handleAddTask, view }) => {
       }
     },
   });
-
   const ExpandIcon = ({ expanded }) => {
     return (
       <div
