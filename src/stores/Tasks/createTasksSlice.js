@@ -1,19 +1,19 @@
-import { axiosInstance } from "../../config/apiConfig";
+import { axiosInstance } from '../../config/apiConfig';
 
 export const createTasksSlice = (set) => ({
   tasks: [],
   myTasks: [],
   customTasks: [],
 
-  addTask: async (taskData) => {
+  addTask: async (taskData, projectId) => {
     try {
       const data = await axiosInstance.post(
-        `/tasksList/660b037505e97aba86580b25`,
+        `/tasksList/${projectId}`,
         taskData
       );
-      console.log(taskData);
+      console.log(taskData, projectId);
     } catch (error) {
-      console.error("Error creating task", error);
+      console.error('Error creating task', error);
     }
   },
   setTasks: (id, status) =>
@@ -32,7 +32,7 @@ export const createTasksSlice = (set) => ({
 
   updateTask: async (taskId, state, projectId) => {
     if (!taskId || state === undefined || state === null) {
-      console.log("Faltan parametros");
+      console.log('Faltan parametros');
       return;
     }
     try {
@@ -52,10 +52,10 @@ export const createTasksSlice = (set) => ({
 
   fetchTasks: async () => {
     try {
-      const { data } = await axiosInstance.get("/tasksList");
+      const { data } = await axiosInstance.get('/tasksList');
       set({ tasks: data });
     } catch (error) {
-      console.error("Error fetching tasks", error);
+      console.error('Error fetching tasks', error);
     }
   },
   fetchTasksById: async (projectId) => {
@@ -64,7 +64,7 @@ export const createTasksSlice = (set) => ({
       set({ myTasks: data });
       // console.log("desde el store:", data);
     } catch (error) {
-      console.error("Error fetching tasks", error);
+      console.error('Error fetching tasks', error);
     }
   },
   fetchTasksByIdCustom: async (projectId) => {
@@ -73,7 +73,7 @@ export const createTasksSlice = (set) => ({
       set({ customTasks: data });
       // console.log("desde el store:", data);
     } catch (error) {
-      console.error("Error fetching tasks", error);
+      console.error('Error fetching tasks', error);
     }
   },
 });
