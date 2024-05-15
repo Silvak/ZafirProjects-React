@@ -39,17 +39,8 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
     handleSuggestionClick,
   } = useProject({ project: null, isCreated: true });
 
-  const {
-    addTask,
-    setTask,
-    removeTask,
-    updateTask,
-    fetchTask,
-    ChangeStateModal,
-    selectedProject,
-  } = useBoundStore();
-
-  console.log(projectId);
+  const { addTask, fetchTasksById, ChangeStateModal, selectedProject } =
+    useBoundStore();
 
   useEffect(() => {
     // Actualizamos el objeto taskData con los valores actuales de los estados
@@ -106,9 +97,8 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
       return;
     }
     try {
-      // console.log(taskData);
-
       await addTask(taskData, projectId);
+      await fetchTasksById(projectId);
     } catch (error) {
       alert('Error creating task', error);
     }

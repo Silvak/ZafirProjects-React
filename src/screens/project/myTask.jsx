@@ -21,9 +21,7 @@ const App = () => {
     ChangeStateModal,
     ChangeContentModal,
     ChangeTitleModal,
-    fetchTasks,
     fetchTasksById,
-    selectedProject,
   } = useBoundStore();
 
   useEffect(() => {
