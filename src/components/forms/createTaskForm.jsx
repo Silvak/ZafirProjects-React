@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   Avatar,
   TextField,
@@ -12,25 +12,26 @@ import {
   Grid,
   useMediaQuery,
   ThemeProvider,
-} from "@mui/material";
-import { useBoundStore } from "../../stores/index";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { useProject } from "@/hooks/useProject";
+} from '@mui/material';
+import { useBoundStore } from '../../stores/index';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { useProject } from '@/hooks/useProject';
+import { useParams } from 'react-router-dom';
 
-const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
+const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
 
   const [taskName, setTaskName] = useState(placeholderTaskName);
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [description, setDescription] = useState("");
-  const [priority, setPriority] = useState("");
-  const [tags, setTags] = useState("");
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [description, setDescription] = useState('');
+  const [priority, setPriority] = useState('');
+  const [tags, setTags] = useState('');
   const {
     selectedLeader,
     filteredLeaders,
@@ -38,15 +39,8 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
     handleSuggestionClick,
   } = useProject({ project: null, isCreated: true });
 
-  const {
-    addTask,
-    setTask,
-    removeTask,
-    updateTask,
-    fetchTask,
-    ChangeStateModal,
-    selectedProject,
-  } = useBoundStore();
+  const { addTask, fetchTasksById, ChangeStateModal, selectedProject } =
+    useBoundStore();
 
   useEffect(() => {
     // Actualizamos el objeto taskData con los valores actuales de los estados
@@ -63,7 +57,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
       state: tags,
       members: selectedLeader,
       priority: priority,
-      projectId: selectedProject._id,
+      projectId: projectId,
     });
   }, [taskName, startDate, endDate, description, priority, tags]);
 
@@ -83,11 +77,11 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
     projectId: selectedProject._id,
   });
 
-  const [selectedUser, setSelectedUser] = useState("");
+  const [selectedUser, setSelectedUser] = useState('');
   const [teamMembers, setTeamMembers] = useState([]);
 
   const handleCreate = async () => {
-    console.log("Leader que vamos a mandar al back: ", selectedLeader);
+    console.log('Leader que vamos a mandar al back: ', selectedLeader);
 
     if (
       !taskName ||
@@ -99,15 +93,14 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
       !selectedLeader
     ) {
       // Si algún campo obligatorio está vacío, muestra un mensaje de error y no crees la tarea
-      alert("Por favor, rellena todos los campos obligatorios.");
+      alert('Por favor, rellena todos los campos obligatorios.');
       return;
     }
     try {
-      // console.log(taskData);
-
-      await addTask(taskData);
+      await addTask(taskData, projectId);
+      await fetchTasksById(projectId);
     } catch (error) {
-      alert("Error creating task", error);
+      alert('Error creating task', error);
     }
     handleClose();
   };
@@ -119,13 +112,13 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
   const handleAssignToChange = (newLeader) => {
     console.log(newLeader);
     setSelectedUser(newLeader);
-    console.log("Leader que vamos a mandar al back: ", selectedUser);
+    console.log('Leader que vamos a mandar al back: ', selectedUser);
   };
 
   const handleAddMember = () => {
     if (selectedUser && !teamMembers.includes(selectedUser)) {
       setTeamMembers([...teamMembers, selectedUser]);
-      setSelectedUser("");
+      setSelectedUser('');
     }
   };
 
@@ -150,66 +143,66 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
         <Paper
           elevation={1}
           style={{
-            paddingInline: "2rem",
-            maxHeight: "90vh",
-            width: isMobile ? "" : "35vw",
-            margin: "auto",
-            background: "white",
-            overflowY: "auto",
-            borderBottomLeftRadius: "16px",
-            borderBottomRightRadius: "16px",
-            borderTopLeftRadius: "0px",
-            borderTopRightRadius: "0px",
-            paddingBottom: "15px",
+            paddingInline: '2rem',
+            maxHeight: '90vh',
+            width: isMobile ? '' : '35vw',
+            margin: 'auto',
+            background: 'white',
+            overflowY: 'auto',
+            borderBottomLeftRadius: '16px',
+            borderBottomRightRadius: '16px',
+            borderTopLeftRadius: '0px',
+            borderTopRightRadius: '0px',
+            paddingBottom: '15px',
           }}
         >
-          <Grid container spacing={2} sx={{ marginTop: "13px" }}>
+          <Grid container spacing={2} sx={{ marginTop: '13px' }}>
             <Grid item xs={12}>
-              <Typography sx={{ fontSize: "0.2rem", fontWeight: "normal" }}>
+              <Typography sx={{ fontSize: '0.2rem', fontWeight: 'normal' }}>
                 Task name
               </Typography>
               <TextField
-                variant="outlined"
+                variant='outlined'
                 fullWidth
                 value={taskName}
                 onChange={(e) => setTaskName(e.target.value)}
-                size="small"
+                size='small'
                 required
-                sx={{ fontSize: "2rem" }}
+                sx={{ fontSize: '2rem' }}
               />
             </Grid>
 
             <Grid item xs={6}>
-              <Typography fontFamily={"Poppins"} color={"#6B6E75"}>
+              <Typography fontFamily={'Poppins'} color={'#6B6E75'}>
                 Start date
               </Typography>
               <TextField
-                size="small"
-                name="start"
-                type="date"
+                size='small'
+                name='start'
+                type='date'
                 onChange={handleDateChange}
                 sx={{
-                  width: "100%",
+                  width: '100%',
                 }}
               />
             </Grid>
             <Grid xs={6} item>
-              <Typography fontFamily={"Poppins"} color={"#6B6E75"}>
+              <Typography fontFamily={'Poppins'} color={'#6B6E75'}>
                 End date
               </Typography>
               <TextField
-                size="small"
-                name="end"
-                type="date"
+                size='small'
+                name='end'
+                type='date'
                 onChange={handleEndDateChange}
                 sx={{
-                  width: "100%",
+                  width: '100%',
                 }}
               />
             </Grid>
 
             <Grid item xs={12}>
-              <Typography sx={{ fontSize: "0.85rem" }}>
+              <Typography sx={{ fontSize: '0.85rem' }}>
                 Add a description
               </Typography>
               <TextField
@@ -217,12 +210,12 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
                 fullWidth
                 multiline
                 rows={1}
-                size="small"
-                variant="outlined"
-                placeholder="..."
+                size='small'
+                variant='outlined'
+                placeholder='...'
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                sx={{ fontSize: "2rem" }}
+                sx={{ fontSize: '2rem' }}
               />
             </Grid>
             <Grid
@@ -235,30 +228,30 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
                 }
               }
             >
-              <Typography sx={{ fontSize: "0.85rem" }}>Assigne to</Typography>
+              <Typography sx={{ fontSize: '0.85rem' }}>Assigne to</Typography>
 
               <TextField
-                size="small"
-                name="leaders"
+                size='small'
+                name='leaders'
                 value={selectedLeader}
-                onChange={(e) => handleSuggestionChange(e, "leader")}
-                placeholder="Search leader"
+                onChange={(e) => handleSuggestionChange(e, 'leader')}
+                placeholder='Search leader'
                 sx={{
-                  width: "100%",
+                  width: '100%',
                 }}
               />
               <div
                 style={{
                   // marginTop: 6,
                   marginLeft: 4,
-                  cursor: "pointer",
+                  cursor: 'pointer',
                   padding: 8,
                 }}
               >
                 {filteredLeaders.map((user) => (
                   <p
                     key={user.id}
-                    onClick={() => handleSuggestionClick(user, "leader")}
+                    onClick={() => handleSuggestionClick(user, 'leader')}
                   >
                     {user.name}
                   </p>
@@ -316,50 +309,50 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
             </Grid> */}
 
             <Grid item xs={12}>
-              <Typography sx={{ fontSize: "0.85rem" }}>Priority</Typography>
+              <Typography sx={{ fontSize: '0.85rem' }}>Priority</Typography>
               <FormControl fullWidth>
                 <Select
                   required
                   value={priority}
-                  variant="outlined"
-                  size="small"
-                  sx={{ fontSize: "2rem", bgcolor: "white" }}
+                  variant='outlined'
+                  size='small'
+                  sx={{ fontSize: '2rem', bgcolor: 'white' }}
                   onChange={(e) => setPriority(e.target.value)}
                   displayEmpty
                   renderValue={(selected) =>
-                    selected ? selected : "Type: All"
+                    selected ? selected : 'Type: All'
                   }
                 >
-                  <CustomMenuItem value="High">High</CustomMenuItem>
-                  <CustomMenuItem value="Medium">Medium</CustomMenuItem>
-                  <CustomMenuItem value="Low">Low</CustomMenuItem>
+                  <CustomMenuItem value='High'>High</CustomMenuItem>
+                  <CustomMenuItem value='Medium'>Medium</CustomMenuItem>
+                  <CustomMenuItem value='Low'>Low</CustomMenuItem>
                 </Select>
               </FormControl>
             </Grid>
 
             <Grid item xs={12}>
-              <Typography sx={{ fontSize: "0.85rem" }}>Tags</Typography>
+              <Typography sx={{ fontSize: '0.85rem' }}>Tags</Typography>
               <FormControl fullWidth>
                 <Select
                   required
                   value={tags}
-                  variant="outlined"
-                  size="small"
-                  sx={{ fontSize: "2rem", bgcolor: "white" }}
+                  variant='outlined'
+                  size='small'
+                  sx={{ fontSize: '2rem', bgcolor: 'white' }}
                   onChange={(e) => setTags(e.target.value)}
                   displayEmpty
                   renderValue={(selected) =>
-                    selected ? selected : "Type: All"
+                    selected ? selected : 'Type: All'
                   }
                 >
-                  <CustomMenuItem value="In Progress">
+                  <CustomMenuItem value='In Progress'>
                     In Progress
                   </CustomMenuItem>
-                  <CustomMenuItem value="Pending">Pending</CustomMenuItem>
-                  <CustomMenuItem value="Issues">Issues</CustomMenuItem>
-                  <CustomMenuItem value="Review">Review</CustomMenuItem>
-                  <CustomMenuItem value="Completed">Completed</CustomMenuItem>
-                  <CustomMenuItem value="Backlog">Backlog</CustomMenuItem>
+                  <CustomMenuItem value='Pending'>Pending</CustomMenuItem>
+                  <CustomMenuItem value='Issues'>Issues</CustomMenuItem>
+                  <CustomMenuItem value='Review'>Review</CustomMenuItem>
+                  <CustomMenuItem value='Completed'>Completed</CustomMenuItem>
+                  <CustomMenuItem value='Backlog'>Backlog</CustomMenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -367,30 +360,30 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = "" }) => {
           {/* botones */}
           <div
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              marginBlock: "2rem",
+              display: 'flex',
+              justifyContent: 'space-between',
+              marginBlock: '2rem',
             }}
           >
             <Button
               onClick={handleClose}
-              variant="outlined"
+              variant='outlined'
               sx={{
-                color: "black",
-                bgcolor: "white",
-                borderRadius: "0.5rem",
-                border: "1px gray solid",
+                color: 'black',
+                bgcolor: 'white',
+                borderRadius: '0.5rem',
+                border: '1px gray solid',
               }}
             >
               Cancel
             </Button>
             <Button
               onClick={handleCreate}
-              variant="contained"
+              variant='contained'
               sx={{
-                color: "white",
-                bgcolor: "#7662EA",
-                borderRadius: "0.5rem",
+                color: 'white',
+                bgcolor: '#7662EA',
+                borderRadius: '0.5rem',
               }}
             >
               Create
@@ -408,12 +401,12 @@ const CustomMenuItem = ({ children, selected, ...props }) => {
   return (
     <MenuItem
       sx={{
-        height: "min-content",
-        bgcolor: selected ? "white" : "#B5B5B5",
-        color: selected ? "black" : "white",
-        "&:focus, &:hover": {
-          bgcolor: "cyan",
-          color: "blue",
+        height: 'min-content',
+        bgcolor: selected ? 'white' : '#B5B5B5',
+        color: selected ? 'black' : 'white',
+        '&:focus, &:hover': {
+          bgcolor: 'cyan',
+          color: 'blue',
         },
       }}
       {...props}

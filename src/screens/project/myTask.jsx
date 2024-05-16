@@ -1,28 +1,27 @@
-import useMediaQuery from "@mui/material/useMediaQuery";
-import React, { useEffect, useState } from "react";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import CreateTaskForm from "@/components/forms/createTaskForm";
-import TaskHeader from "@/components/taskAccordion/taskHeader";
-import TaskList from "@/components/taskAccordion/taskList";
-import { useBoundStore } from "@/stores/index";
+import useMediaQuery from '@mui/material/useMediaQuery';
+import React, { useEffect, useState } from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import CreateTaskForm from '@/components/forms/createTaskForm';
+import TaskHeader from '@/components/taskAccordion/taskHeader';
+import TaskList from '@/components/taskAccordion/taskList';
+import { useBoundStore } from '@/stores/index';
 
-import { useParams } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 
 const App = () => {
-  const [view, setView] = useState("Format List");
+  const [view, setView] = useState('Format List');
 
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("md"));
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
 
   const params = useParams();
+
   const {
     myTasks,
     ChangeStateModal,
     ChangeContentModal,
     ChangeTitleModal,
-    fetchTasks,
     fetchTasksById,
-    selectedProject,
   } = useBoundStore();
 
   useEffect(() => {
@@ -32,7 +31,7 @@ const App = () => {
           // Only fetch tasks if idProject has changed
           await fetchTasksById(params.id);
         } catch (error) {
-          console.error("Error fetching tasks", error);
+          console.error('Error fetching tasks', error);
         }
       };
 
@@ -45,9 +44,9 @@ const App = () => {
   const [workingTasks, setWorkingTasks] = useState([]);
 
   useEffect(() => {
-    setPendingTasks(myTasks.filter((task) => task.state === "Pending"));
-    setBacklogTasks(myTasks.filter((task) => task.state === "Backlog"));
-    setWorkingTasks(myTasks.filter((task) => task.state === "In Progress"));
+    setPendingTasks(myTasks.filter((task) => task.state === 'Pending'));
+    setBacklogTasks(myTasks.filter((task) => task.state === 'Backlog'));
+    setWorkingTasks(myTasks.filter((task) => task.state === 'In Progress'));
   }, [myTasks]);
 
   const handleButton = (buttonName) => {
@@ -55,56 +54,58 @@ const App = () => {
   };
 
   const handleAddTask = (title, description) => {
-    ChangeTitleModal("Create Task");
-    ChangeContentModal(<CreateTaskForm placeholderTaskName="task 1" />);
+    ChangeTitleModal('Create Task');
+    ChangeContentModal(
+      <CreateTaskForm placeholderTaskName='task 1' projectId={params.id} />
+    );
     ChangeStateModal(true);
   };
 
   const setColumnsStyle = () => {
-    if (view === "View Kanban" && !isMobile) return "repeat(3,1fr)";
-    if (view === "View Kanban" && isMobile) return "1fr";
+    if (view === 'View Kanban' && !isMobile) return 'repeat(3,1fr)';
+    if (view === 'View Kanban' && isMobile) return '1fr';
   };
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div sx={{ minWidth: "250px" }}>
+      <div sx={{ minWidth: '250px' }}>
         <TaskHeader
-          title="My Task"
+          title='My Task'
           handleAddTask={handleAddTask}
           handleButton={handleButton}
         />
         <div
           style={{
-            display: "grid",
+            display: 'grid',
             gridTemplateColumns: setColumnsStyle(),
-            gap: "1rem",
-            padding: "0 20px",
+            gap: '1rem',
+            padding: '0 20px',
           }}
         >
           <div>
             <TaskList
-              title="In progress Tasks"
+              title='In progress Tasks'
               tasks={workingTasks}
               view={view}
-              state="In Progress"
+              state='In Progress'
               handleAddTask={() => handleAddTask()}
             />
           </div>
           <div>
             <TaskList
-              title="Pending Tasks"
+              title='Pending Tasks'
               tasks={pendingTasks}
               view={view}
-              state="Pending"
+              state='Pending'
               handleAddTask={() => handleAddTask()}
             />
           </div>
           <div>
             <TaskList
-              title="BackLog"
+              title='BackLog'
               tasks={backlogTasks}
               view={view}
-              state="Backlog"
+              state='Backlog'
               handleAddTask={() => handleAddTask()}
             />
           </div>

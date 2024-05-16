@@ -1,30 +1,30 @@
-import React, { useState, useEffect } from "react";
-import TableContainer from "@material-ui/core/TableContainer";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import TableHeader from "@/components/tableMembers/tableHeader.jsx";
-import TableRowComponent from "@/components/tableMembers/tableRow.jsx";
-import TablePagination from "@/components/tableMembers/tablePagination.jsx";
-import Button from "@mui/material/Button";
-import usePagination from "@/hooks/usePagination";
-import { axiosInstance } from "../config/apiConfig";
-import { useBoundStore } from "../stores";
-import CreateMember from "@/components/forms/CreateMemberForm";
-import ConfirmForm from "../components/forms/ConfirmForm";
+import React, { useState, useEffect } from 'react';
+import TableContainer from '@material-ui/core/TableContainer';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import TableHeader from '@/components/tableMembers/tableHeader.jsx';
+import TableRowComponent from '@/components/tableMembers/tableRow.jsx';
+import TablePagination from '@/components/tableMembers/tablePagination.jsx';
+import Button from '@mui/material/Button';
+import usePagination from '@/hooks/usePagination';
+import { axiosInstance } from '../config/apiConfig';
+import { useBoundStore } from '../stores';
+import CreateMember from '@/components/forms/CreateMemberForm';
+import ConfirmForm from '../components/forms/ConfirmForm';
 
 const columns = [
-  { id: "photo", label: "" },
-  { id: "name", label: "Name" },
-  { id: "project", label: "Project" },
-  { id: "rol", label: "Rol" },
-  { id: "leadOwner", label: "Lead Owner" },
-  { id: "action", label: "" },
+  { id: 'photo', label: '' },
+  { id: 'name', label: 'Name' },
+  { id: 'project', label: 'Project' },
+  { id: 'rol', label: 'Rol' },
+  { id: 'leadOwner', label: 'Lead Owner' },
+  { id: 'action', label: '' },
 ];
 
 const MembersTable = () => {
   const [selectedRows, setSelectedRows] = useState([]);
-  const isMobile = useMediaQuery("(max-width:600px)");
+  const isMobile = useMediaQuery('(max-width:600px)');
   const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } =
     usePagination({});
   const {
@@ -38,8 +38,8 @@ const MembersTable = () => {
   } = useBoundStore();
 
   const [allMemberData, setAllMemberData] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedOption, setSelectedOption] = useState("All");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedOption, setSelectedOption] = useState('All');
   const [memberToDelete, setMemberToDelete] = useState(null);
 
   useEffect(() => {
@@ -77,7 +77,7 @@ const MembersTable = () => {
   const isSelected = (rowName) => selectedRows.indexOf(rowName) !== -1;
 
   const handleButtonMore = (allMemberData) => {
-    ChangeTitleModal("Create new member");
+    ChangeTitleModal('Create new member');
     ChangeContentModal(
       <CreateMember
         setAllMemberData={setAllMemberData}
@@ -89,7 +89,7 @@ const MembersTable = () => {
 
   const handleDeleteClick = async (memberToDelete) => {
     setMemberToDelete(memberToDelete);
-    ChangeTitleModal("");
+    ChangeTitleModal('');
     ChangeContentModal(
       <ConfirmForm
         handleCancelDelete={handleCancelDelete}
@@ -112,7 +112,7 @@ const MembersTable = () => {
       await updateProjects();
       setAllMemberData(updateAllMember);
       ChangeStateModal(false);
-      ChangeTitleAlert("Miembro eliminado exitosamente");
+      ChangeTitleAlert('Miembro eliminado exitosamente');
       ChangeStateAlert(true);
     } catch (error) {
       console.error(error.message);
@@ -132,7 +132,7 @@ const MembersTable = () => {
   );
 
   const filteredData =
-    selectedOption === "All"
+    selectedOption === 'All'
       ? filteredSearchData
       : filteredSearchData.filter(
           (member) => member.leadOwner === selectedOption
@@ -143,32 +143,32 @@ const MembersTable = () => {
       <div>
         <div
           style={{
-            display: "flex",
-            justifyContent: "space-between",
-            textAlign: "center",
-            alignItems: "center",
-            marginInline: "1rem",
+            display: 'flex',
+            justifyContent: 'space-between',
+            textAlign: 'center',
+            alignItems: 'center',
+            marginInline: '1rem',
           }}
         >
           <h6
             style={{
-              fontWeight: "bold",
-              fontSize: "24px",
-              marginBottom: "2rem",
-              marginTop: "2rem",
+              fontWeight: 'bold',
+              fontSize: '24px',
+              marginBottom: '2rem',
+              marginTop: '2rem',
             }}
           >
-            Equipo
+            Team
           </h6>
           <Button
-            variant="contained"
+            variant='contained'
             disableRipple
             onClick={() => handleButtonMore(allMemberData)}
             sx={{
-              padding: "0.6rem",
-              height: "min-content",
-              borderRadius: "12px",
-              color: "white",
+              padding: '0.6rem',
+              height: 'min-content',
+              borderRadius: '12px',
+              color: 'white',
             }}
           >
             + Add new contact
@@ -177,14 +177,14 @@ const MembersTable = () => {
         <TableContainer>
           <div
             style={{
-              backgroundColor: "#fff",
+              backgroundColor: '#fff',
               borderRadius: 20,
               padding: 20,
-              width: "98%",
-              marginInline: "auto",
+              width: '98%',
+              marginInline: 'auto',
             }}
           >
-            <Table stickyHeader aria-label="sticky table">
+            <Table stickyHeader aria-label='sticky table'>
               <TableHeader
                 isMobile={isMobile}
                 selectedRows={selectedRows}
