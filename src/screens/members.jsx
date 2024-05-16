@@ -220,17 +220,27 @@ const MembersTable = () => {
                       />
                     ))
                 ) : (
-                  <p
+                  <div
                     style={{
-                      padding: 8,
-                      minWidth: '50vw',
-                      textAlign: 'end',
-                      fontWeight: 600,
-                      paddingTop: 8,
+                      display: 'flex',
+                      width: 'max-content',
+                      justifyContent: 'space-between',
+                      textAlign: 'center',
+                      alignItems: 'center',
+                      marginInline: '1rem',
                     }}
                   >
-                    No members to show
-                  </p>
+                    <h6
+                      style={{
+                        fontWeight: 600,
+                        fontSize: '20px',
+                        marginBottom: '1rem',
+                        marginTop: '1rem',
+                      }}
+                    >
+                      No members to show
+                    </h6>
+                  </div>
                 )}
               </TableBody>
             </Table>
