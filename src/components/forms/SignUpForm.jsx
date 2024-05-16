@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import {
   Box,
   Grid,
@@ -10,11 +10,11 @@ import {
   Button,
   Link as MuiLink,
   Divider,
-} from "@mui/material";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import useSignUp from "@/hooks/useSignUp";
-import SocialBtns from "@/components/buttons/SocialBtns";
+} from '@mui/material';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import useSignUp from '@/hooks/useSignUp';
+import SocialBtns from '@/components/buttons/SocialBtns';
 
 const SignUpForm = () => {
   const {
@@ -29,101 +29,101 @@ const SignUpForm = () => {
   return (
     <Box
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        height: "100%",
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        height: '100%',
         maxWidth: 500,
-        mx: "auto",
-        padding: "30px 0",
+        mx: 'auto',
+        padding: '30px 0',
       }}
     >
       {/* title */}
       <Box>
-        <Typography variant="h2" mb={1}>
+        <Typography variant='h2' mb={1}>
           Sign Up
         </Typography>
-        <Typography variant="body2" component="p" fontWeight={400}>
-          Already have an account?{" "}
-          <Link to="/sign-in" underline="none">
+        <Typography variant='body2' component='p' fontWeight={400}>
+          Already have an account?{' '}
+          <Link to='/sign-in' underline='none'>
             Sign in here
           </Link>
         </Typography>
       </Box>
       {/* form */}
       <Box
-        component="form"
+        component='form'
         noValidate
-        autoComplete="off"
+        autoComplete='off'
         onSubmit={handleSubmit}
-        sx={{ overflow: "hidden", mt: 4 }}
+        sx={{ overflow: 'hidden', mt: 4 }}
       >
         {/* layout inputs */}
         <Grid container spacing={2}>
           <Grid item xs={6}>
-            <Typography variant="body2" sx={{ mb: 1, fontWeight: "normal" }}>
+            <Typography variant='body2' sx={{ mb: 1, fontWeight: 'normal' }}>
               First Name
             </Typography>
             <TextField
-              variant="outlined"
+              variant='outlined'
               required
               fullWidth
-              id="firstname"
-              name="firstname"
-              autoComplete="firstname"
+              id='firstname'
+              name='firstname'
+              autoComplete='firstname'
               autoFocus
-              size="small"
+              size='small'
             />
           </Grid>
           <Grid item xs={6}>
-            <Typography variant="body2" sx={{ mb: 1, fontWeight: "normal" }}>
+            <Typography variant='body2' sx={{ mb: 1, fontWeight: 'normal' }}>
               Last Name
             </Typography>
             <TextField
-              variant="outlined"
+              variant='outlined'
               required
               fullWidth
-              id="lastname"
-              name="lastname"
-              autoComplete="lastname"
-              size="small"
+              id='lastname'
+              name='lastname'
+              autoComplete='lastname'
+              size='small'
             />
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="body2" sx={{ mb: 1, fontWeight: "normal" }}>
+            <Typography variant='body2' sx={{ mb: 1, fontWeight: 'normal' }}>
               Email
             </Typography>
             <TextField
-              variant="outlined"
+              variant='outlined'
               required
               fullWidth
-              id="email"
-              name="email"
-              autoComplete="email"
-              size="small"
+              id='email'
+              name='email'
+              autoComplete='email'
+              size='small'
             />
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="body2" sx={{ mb: 1, fontWeight: "normal" }}>
+            <Typography variant='body2' sx={{ mb: 1, fontWeight: 'normal' }}>
               Password
             </Typography>
             <TextField
-              variant="outlined"
+              variant='outlined'
               required
               fullWidth
-              id="password"
-              name="password"
-              autoComplete="password"
-              size="small"
-              type={showPassword ? "text" : "password"}
+              id='password'
+              name='password'
+              autoComplete='password'
+              size='small'
+              type={showPassword ? 'text' : 'password'}
               InputProps={{
                 endAdornment: (
-                  <InputAdornment position="end">
+                  <InputAdornment position='end'>
                     <IconButton
-                      aria-label="toggle password visibility"
+                      aria-label='toggle password visibility'
                       onClick={handleClickShowPassword}
                       onMouseDown={handleMouseDownPassword}
-                      edge="end"
+                      edge='end'
                     >
                       {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
@@ -133,26 +133,26 @@ const SignUpForm = () => {
             />
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="body2" sx={{ mb: 1, fontWeight: "normal" }}>
+            <Typography variant='body2' sx={{ mb: 1, fontWeight: 'normal' }}>
               Confirm Password
             </Typography>
             <TextField
-              variant="outlined"
+              variant='outlined'
               required
               fullWidth
-              id="confirmpassword"
-              name="confirmpassword"
-              autoComplete="confirmpassword"
-              size="small"
-              type={showConfirmPassword ? "text" : "password"}
+              id='confirmpassword'
+              name='confirmpassword'
+              autoComplete='confirmpassword'
+              size='small'
+              type={showConfirmPassword ? 'text' : 'password'}
               InputProps={{
                 endAdornment: (
-                  <InputAdornment position="end">
+                  <InputAdornment position='end'>
                     <IconButton
-                      aria-label="toggle password visibility"
+                      aria-label='toggle password visibility'
                       onClick={handleClickShowConfirmPassword}
                       onMouseDown={handleMouseDownPassword}
-                      edge="end"
+                      edge='end'
                     >
                       {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
@@ -163,32 +163,33 @@ const SignUpForm = () => {
           </Grid>
         </Grid>
         {/* form terms */}
-        <Box sx={{ display: "flex", gap: 2, alignItems: "center", mt: 4 }}>
+        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mt: 4 }}>
           <Checkbox
-            aria-label="accept"
+            aria-label='accept'
             disableRipple
+            name='terms'
             sx={{
-              color: "text.primary",
+              color: 'text.primary',
             }}
           />
-          <Typography variant="body2" component="p" fontWeight={"normal"}>
+          <Typography variant='body2' component='p' fontWeight={'normal'}>
             By clicking Create an account, I agree that i have read and accepted
-            the{" "}
-            <MuiLink underline="none" href="#">
+            the{' '}
+            <MuiLink underline='none' href='#'>
               Terms of Use
-            </MuiLink>{" "}
-            and{" "}
-            <MuiLink underline="none" href="#">
+            </MuiLink>{' '}
+            and{' '}
+            <MuiLink underline='none' href='#'>
               Privacy Policy.
             </MuiLink>
           </Typography>
         </Box>
         {/* form btn */}
         <Button
-          variant="contained"
-          size="large"
-          sx={{ width: "100%", mt: 4 }}
-          type="submit"
+          variant='contained'
+          size='large'
+          sx={{ width: '100%', mt: 4 }}
+          type='submit'
         >
           Create an account
         </Button>

@@ -1,6 +1,6 @@
 export const storeModal = (set) => ({
   stateModal: false,
-  titleModal: "Modal",
+  titleModal: 'Modal',
   contentModal: null,
   isVisibleButton: false,
   ChangeIsVisibleButton: (value) => set({ isVisibleButton: value }),
