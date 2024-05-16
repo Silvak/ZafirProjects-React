@@ -1,4 +1,4 @@
-import useSignIn from "@/hooks/useSignIn";
+import useSignIn from '@/hooks/useSignIn';
 import {
   Box,
   Button,
@@ -7,11 +7,11 @@ import {
   Typography,
   IconButton,
   Divider,
-} from "@mui/material";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import SocialBtns from "@/components/buttons/SocialBtns";
-import { Link } from "react-router-dom";
+} from '@mui/material';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import SocialBtns from '@/components/buttons/SocialBtns';
+import { Link } from 'react-router-dom';
 
 const SignInForm = () => {
   const { showPassword, handlePasswordVisibility, handleSubmit } = useSignIn();
@@ -19,23 +19,23 @@ const SignInForm = () => {
   return (
     <Box
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center !important",
-        height: "100% !important",
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center !important',
+        height: '100% !important',
         maxWidth: 500,
-        mx: "auto",
+        mx: 'auto',
         px: 4,
       }}
     >
       {/* title */}
       <Box>
-        <Typography variant="h2" mb={1}>
+        <Typography variant='h2' mb={1}>
           Sign In
         </Typography>
-        <Typography variant="body2" component="p" fontWeight={400}>
-          Don't have an account yet?{" "}
-          <Link to="/sign-up" underline="none">
+        <Typography variant='body2' component='p' fontWeight={400}>
+          Don't have an account yet?{' '}
+          <Link to='/sign-up' underline='none'>
             Sign Up Here
           </Link>
         </Typography>
@@ -43,12 +43,12 @@ const SignInForm = () => {
 
       {/* form */}
       <Box
-        component="form"
+        component='form'
         noValidate
         onSubmit={handleSubmit}
         sx={{
-          overflow: "hidden",
-          height: "auto",
+          overflow: 'hidden',
+          height: 'auto',
         }}
       >
         {/* layout inputs */}
@@ -57,51 +57,51 @@ const SignInForm = () => {
             item
             xs={12}
             sx={{
-              fontSize: "1rem",
-              fontWeight: "normal",
+              fontSize: '1rem',
+              fontWeight: 'normal',
               marginTop: 3,
-              color: "gray",
+              color: 'gray',
             }}
           >
             Email
             <TextField
-              variant="outlined"
+              variant='outlined'
               required
               fullWidth
-              id="email"
-              name="email"
-              autoComplete="email"
+              id='email'
+              name='email'
+              autoComplete='email'
               autoFocus
-              size="small"
-              sx={{ marginTop: "8px", fontWeight: "normal" }}
+              size='small'
+              sx={{ marginTop: '8px', fontWeight: 'normal' }}
             />
           </Grid>
           <Grid
             item
             xs={12}
             sx={{
-              fontSize: "1rem",
-              fontWeight: "normal",
+              fontSize: '1rem',
+              fontWeight: 'normal',
               marginTop: 3,
-              color: "gray",
+              color: 'gray',
             }}
           >
-            {" "}
+            {' '}
             Password
             <TextField
-              variant="outlined"
+              variant='outlined'
               required
               fullWidth
-              id="password"
-              name="password"
-              autoComplete="password"
+              id='password'
+              name='password'
+              autoComplete='password'
               autoFocus
-              size="small"
-              type={showPassword ? "text" : "password"}
-              sx={{ marginTop: "8px", fontWeight: "normal" }}
+              size='small'
+              type={showPassword ? 'text' : 'password'}
+              sx={{ marginTop: '8px', fontWeight: 'normal' }}
               InputProps={{
                 endAdornment: (
-                  <IconButton onClick={handlePasswordVisibility} edge="end">
+                  <IconButton onClick={handlePasswordVisibility} edge='end'>
                     {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
                   </IconButton>
                 ),
@@ -110,19 +110,19 @@ const SignInForm = () => {
           </Grid>
           <Grid
             item
-            sx={{ fontSize: "1rem", fontWeight: "normal", marginTop: 2 }}
+            sx={{ fontSize: '1rem', fontWeight: 'normal', marginTop: 2 }}
           >
-            <Link href="/#" underline="none">
-              {"Forgot password?"}
+            <Link href='/#' underline='none'>
+              {'Forgot password?'}
             </Link>
           </Grid>
         </Grid>
         {/* form btn */}
         <Button
-          type="submit"
+          type='submit'
           fullWidth
-          variant="contained"
-          sx={{ borderRadius: 2 }}
+          variant='contained'
+          sx={{ borderRadius: 2, mt: 3 }}
         >
           Sign In
         </Button>
