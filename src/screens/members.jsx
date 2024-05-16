@@ -161,7 +161,7 @@ const MembersTable = () => {
             Team
           </h6>
           <Button
-            variant='contained'
+            variant="contained"
             disableRipple
             onClick={() => handleButtonMore(allMemberData)}
             sx={{
@@ -184,7 +184,7 @@ const MembersTable = () => {
               marginInline: 'auto',
             }}
           >
-            <Table stickyHeader aria-label='sticky table'>
+            <Table stickyHeader aria-label="sticky table">
               <TableHeader
                 isMobile={isMobile}
                 selectedRows={selectedRows}
@@ -199,25 +199,39 @@ const MembersTable = () => {
                 filteredData={filteredData}
               />
               <TableBody>
-                {filteredData
-                  .slice(
-                    (page - 1) * rowsPerPage,
-                    (page - 1) * rowsPerPage + rowsPerPage
-                  )
-                  .map((row, index) => (
-                    <TableRowComponent
-                      key={index}
-                      isMobile={isMobile}
-                      handleRowClick={handleRowClick}
-                      handleCheckboxClick={handleRowClick}
-                      handleDeleteClick={handleDeleteClick}
-                      row={row}
-                      isSelected={isSelected}
-                      columns={columns}
-                      setAllMemberData={setAllMemberData}
-                      allMemberData={allMemberData}
-                    />
-                  ))}
+                {filteredData.length > 0 ? (
+                  filteredData
+                    .slice(
+                      (page - 1) * rowsPerPage,
+                      (page - 1) * rowsPerPage + rowsPerPage
+                    )
+                    .map((row, index) => (
+                      <TableRowComponent
+                        key={index}
+                        isMobile={isMobile}
+                        handleRowClick={handleRowClick}
+                        handleCheckboxClick={handleRowClick}
+                        handleDeleteClick={handleDeleteClick}
+                        row={row}
+                        isSelected={isSelected}
+                        columns={columns}
+                        setAllMemberData={setAllMemberData}
+                        allMemberData={allMemberData}
+                      />
+                    ))
+                ) : (
+                  <p
+                    style={{
+                      padding: 8,
+                      minWidth: '50vw',
+                      textAlign: 'end',
+                      fontWeight: 600,
+                      paddingTop: 8,
+                    }}
+                  >
+                    No members to show
+                  </p>
+                )}
               </TableBody>
             </Table>
           </div>
