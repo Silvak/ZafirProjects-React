@@ -162,11 +162,11 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
                 Task name
               </Typography>
               <TextField
-                variant='outlined'
+                variant="outlined"
                 fullWidth
                 value={taskName}
                 onChange={(e) => setTaskName(e.target.value)}
-                size='small'
+                size="small"
                 required
                 sx={{ fontSize: '2rem' }}
               />
@@ -177,9 +177,9 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
                 Start date
               </Typography>
               <TextField
-                size='small'
-                name='start'
-                type='date'
+                size="small"
+                name="start"
+                type="date"
                 onChange={handleDateChange}
                 sx={{
                   width: '100%',
@@ -191,9 +191,9 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
                 End date
               </Typography>
               <TextField
-                size='small'
-                name='end'
-                type='date'
+                size="small"
+                name="end"
+                type="date"
                 onChange={handleEndDateChange}
                 sx={{
                   width: '100%',
@@ -210,9 +210,9 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
                 fullWidth
                 multiline
                 rows={1}
-                size='small'
-                variant='outlined'
-                placeholder='...'
+                size="small"
+                variant="outlined"
+                placeholder="..."
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 sx={{ fontSize: '2rem' }}
@@ -231,11 +231,11 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
               <Typography sx={{ fontSize: '0.85rem' }}>Assigne to</Typography>
 
               <TextField
-                size='small'
-                name='leaders'
+                size="small"
+                name="leaders"
                 value={selectedLeader}
                 onChange={(e) => handleSuggestionChange(e, 'leader')}
-                placeholder='Search leader'
+                placeholder="Search leader"
                 sx={{
                   width: '100%',
                 }}
@@ -314,8 +314,8 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
                 <Select
                   required
                   value={priority}
-                  variant='outlined'
-                  size='small'
+                  variant="outlined"
+                  size="small"
                   sx={{ fontSize: '2rem', bgcolor: 'white' }}
                   onChange={(e) => setPriority(e.target.value)}
                   displayEmpty
@@ -323,9 +323,9 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
                     selected ? selected : 'Type: All'
                   }
                 >
-                  <CustomMenuItem value='High'>High</CustomMenuItem>
-                  <CustomMenuItem value='Medium'>Medium</CustomMenuItem>
-                  <CustomMenuItem value='Low'>Low</CustomMenuItem>
+                  <CustomMenuItem value="High">High</CustomMenuItem>
+                  <CustomMenuItem value="Medium">Medium</CustomMenuItem>
+                  <CustomMenuItem value="Low">Low</CustomMenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -336,8 +336,8 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
                 <Select
                   required
                   value={tags}
-                  variant='outlined'
-                  size='small'
+                  variant="outlined"
+                  size="small"
                   sx={{ fontSize: '2rem', bgcolor: 'white' }}
                   onChange={(e) => setTags(e.target.value)}
                   displayEmpty
@@ -345,14 +345,14 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
                     selected ? selected : 'Type: All'
                   }
                 >
-                  <CustomMenuItem value='In Progress'>
+                  <CustomMenuItem value="In Progress">
                     In Progress
                   </CustomMenuItem>
-                  <CustomMenuItem value='Pending'>Pending</CustomMenuItem>
-                  <CustomMenuItem value='Issues'>Issues</CustomMenuItem>
-                  <CustomMenuItem value='Review'>Review</CustomMenuItem>
-                  <CustomMenuItem value='Completed'>Completed</CustomMenuItem>
-                  <CustomMenuItem value='Backlog'>Backlog</CustomMenuItem>
+                  <CustomMenuItem value="Pending">Pending</CustomMenuItem>
+                  {/* <CustomMenuItem value="Issues">Issues</CustomMenuItem> */}
+                  {/* <CustomMenuItem value="Review">Review</CustomMenuItem> */}
+                  <CustomMenuItem value="Completed">Completed</CustomMenuItem>
+                  {/* <CustomMenuItem value='Backlog'>Backlog</CustomMenuItem> */}
                 </Select>
               </FormControl>
             </Grid>
@@ -367,7 +367,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
           >
             <Button
               onClick={handleClose}
-              variant='outlined'
+              variant="outlined"
               sx={{
                 color: 'black',
                 bgcolor: 'white',
@@ -379,7 +379,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
             </Button>
             <Button
               onClick={handleCreate}
-              variant='contained'
+              variant="contained"
               sx={{
                 color: 'white',
                 bgcolor: '#7662EA',

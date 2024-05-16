@@ -1,12 +1,12 @@
-import React, { useState, useRef } from "react";
-import { Grid, IconButton, Button, TextField, Typography } from "@mui/material";
-import { EditOutlined as EditOutlinedIcon } from "@mui/icons-material";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { useBoundStore } from "../../stores";
-import "./dataPicker.css";
-import CustomSelect from "./CustomSelect";
-import { useProject } from "@/hooks/useProject";
+import React, { useState, useRef } from 'react';
+import { Grid, IconButton, Button, TextField, Typography } from '@mui/material';
+import { EditOutlined as EditOutlinedIcon } from '@mui/icons-material';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { useBoundStore } from '../../stores';
+import './dataPicker.css';
+import CustomSelect from './CustomSelect';
+import { useProject } from '@/hooks/useProject';
 
 const TaskDetailContent = ({ task }) => {
   const { priority, state } = task || {};
@@ -80,7 +80,7 @@ const TaskDetailContent = ({ task }) => {
       newValues.priority !== task.priority;
 
     if (!changesDetected) {
-      ChangeTitleAlertError("No changes detected. No action required.");
+      ChangeTitleAlertError('No changes detected. No action required.');
       ChangeStateAlertError(true);
       setIsEditing(false);
       return;
@@ -90,12 +90,12 @@ const TaskDetailContent = ({ task }) => {
     try {
       await updateTask(task._id, newValues, params);
       setTimeout(() => {
-        ChangeTitleAlert("Data has been updated successfully");
+        ChangeTitleAlert('Data has been updated successfully');
         ChangeStateAlert(true);
         ChangeStateModal(false);
       }, 1000);
     } catch (error) {
-      ChangeTitleAlertError("Error:", error.message);
+      ChangeTitleAlertError('Error:', error.message);
       ChangeStateAlertError(true);
     }
   };
@@ -109,21 +109,21 @@ const TaskDetailContent = ({ task }) => {
           value={selectedLeader || task.members}
           defaultValue={task.members}
           inputRef={inputRefs.members}
-          onChange={(e) => handleSuggestionChange(e, "leader")}
+          onChange={(e) => handleSuggestionChange(e, 'leader')}
           fullWidth
           disabled={!isEditing}
           sx={{ mt: 4 }}
           InputLabelProps={{
             sx: {
-              color: isEditing ? "inherit" : "blue",
+              color: isEditing ? 'inherit' : 'blue',
             },
           }}
         />
         <div
           style={{
             marginLeft: 4,
-            cursor: "pointer",
-            backgroundColor: "white",
+            cursor: 'pointer',
+            backgroundColor: 'white',
             borderRadius: 12,
           }}
         >
@@ -131,7 +131,7 @@ const TaskDetailContent = ({ task }) => {
             <p
               key={user.id}
               style={{ marginTop: 4 }}
-              onClick={() => handleSuggestionClick(user, "leader")}
+              onClick={() => handleSuggestionClick(user, 'leader')}
             >
               {user.name}
             </p>
@@ -149,7 +149,7 @@ const TaskDetailContent = ({ task }) => {
           disabled={!isEditing}
           InputLabelProps={{
             sx: {
-              color: isEditing ? "inherit" : "blue",
+              color: isEditing ? 'inherit' : 'blue',
             },
           }}
         />
@@ -165,7 +165,7 @@ const TaskDetailContent = ({ task }) => {
           disabled={!isEditing}
           InputLabelProps={{
             sx: {
-              color: isEditing ? "inherit" : "blue",
+              color: isEditing ? 'inherit' : 'blue',
             },
           }}
         />
@@ -176,7 +176,7 @@ const TaskDetailContent = ({ task }) => {
         <CustomSelect
           size="small"
           label="Priority"
-          options={["Low", "Medium", "High"]}
+          options={['Low', 'Medium', 'High']}
           disabled={!isEditing}
           defaultValue={priority}
           inputRef={inputRefs.priority}
@@ -190,12 +190,12 @@ const TaskDetailContent = ({ task }) => {
           size="small"
           label="Tags"
           options={[
-            "Pending",
-            "In Progress",
-            "Issues",
-            "Review",
-            "Completed",
-            "Backlog",
+            'Pending',
+            'In Progress',
+            // "Issues",
+            // "Review",
+            'Completed',
+            // "Backlog",
           ]}
           defaultValue={state}
           inputRef={inputRefs.tags}
@@ -209,8 +209,8 @@ const TaskDetailContent = ({ task }) => {
           variant="h6"
           style={{
             fontSize: 14,
-            fontWeight: "normal",
-            color: isEditing ? "black" : "darkgray",
+            fontWeight: 'normal',
+            color: isEditing ? 'black' : 'darkgray',
           }}
         >
           Deadline
@@ -220,7 +220,7 @@ const TaskDetailContent = ({ task }) => {
           onChange={(date) => setSelectedDate(date)}
           disabled={!isEditing}
           dateFormat="MM/dd/yyyy"
-          className={isEditing ? "date-picker" : "date-picker-disable"}
+          className={isEditing ? 'date-picker' : 'date-picker-disable'}
           popperClassName="date-picker-popper"
         />
       </Grid>
@@ -228,10 +228,10 @@ const TaskDetailContent = ({ task }) => {
         {isEditing ? (
           <div
             style={{
-              display: "flex",
-              alignItems: "center",
-              width: "100%",
-              justifyContent: "space-around",
+              display: 'flex',
+              alignItems: 'center',
+              width: '100%',
+              justifyContent: 'space-around',
             }}
           >
             <Button
@@ -240,7 +240,7 @@ const TaskDetailContent = ({ task }) => {
               onClick={handleCancel}
               disableRipple
               style={{
-                paddingInline: "1.5rem",
+                paddingInline: '1.5rem',
                 borderRadius: 10,
               }}
             >
@@ -252,8 +252,8 @@ const TaskDetailContent = ({ task }) => {
               onClick={handleSave}
               disableRipple
               style={{
-                color: "white",
-                paddingInline: "2rem",
+                color: 'white',
+                paddingInline: '2rem',
                 borderRadius: 10,
               }}
             >
@@ -263,10 +263,10 @@ const TaskDetailContent = ({ task }) => {
         ) : (
           <div
             style={{
-              display: "flex",
-              alignItems: "center",
-              width: "100%",
-              justifyContent: "center",
+              display: 'flex',
+              alignItems: 'center',
+              width: '100%',
+              justifyContent: 'center',
             }}
           >
             <IconButton
@@ -274,13 +274,13 @@ const TaskDetailContent = ({ task }) => {
               color="primary"
               size="small"
               sx={{
-                "&:hover": {
-                  color: "blue",
-                  transition: "color 0.1s",
+                '&:hover': {
+                  color: 'blue',
+                  transition: 'color 0.1s',
                 },
               }}
               style={{
-                cursor: "pointer",
+                cursor: 'pointer',
                 gap: 8,
               }}
               onClick={handleEdit}
