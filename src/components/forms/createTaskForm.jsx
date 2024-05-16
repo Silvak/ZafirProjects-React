@@ -12,12 +12,15 @@ import {
   Grid,
   useMediaQuery,
   ThemeProvider,
+  Box,
+  IconButton,
 } from '@mui/material';
 import { useBoundStore } from '../../stores/index';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { useProject } from '@/hooks/useProject';
-import { useParams } from 'react-router-dom';
+import { AddCircleOutline } from '@mui/icons-material';
+import SuggestionList from '../SuggestionList/SuggestionList';
 
 const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
   const theme = useTheme();
@@ -32,9 +35,18 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
   const [description, setDescription] = useState('');
   const [priority, setPriority] = useState('');
   const [tags, setTags] = useState('');
+
   const {
     selectedLeader,
     filteredLeaders,
+    filteredMembers,
+    selectedMember,
+    teamLeaders,
+    teamMembers,
+    handleAddLeaders,
+    handleAddMembers,
+    handleRemoveLeader,
+    handleRemoveMember,
     handleSuggestionChange,
     handleSuggestionClick,
   } = useProject({ project: null, isCreated: true });
@@ -78,7 +90,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
   });
 
   const [selectedUser, setSelectedUser] = useState('');
-  const [teamMembers, setTeamMembers] = useState([]);
+  // const [teamMembers, setTeamMembers] = useState([]);
 
   const handleCreate = async () => {
     console.log('Leader que vamos a mandar al back: ', selectedLeader);
@@ -107,26 +119,6 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
 
   const handleClose = () => {
     ChangeStateModal(false);
-  };
-
-  const handleAssignToChange = (newLeader) => {
-    console.log(newLeader);
-    setSelectedUser(newLeader);
-    console.log('Leader que vamos a mandar al back: ', selectedUser);
-  };
-
-  const handleAddMember = () => {
-    if (selectedUser && !teamMembers.includes(selectedUser)) {
-      setTeamMembers([...teamMembers, selectedUser]);
-      setSelectedUser('');
-    }
-  };
-
-  const handleRemoveMember = (memberToRemove) => {
-    const updatedMembers = teamMembers.filter(
-      (member) => member !== memberToRemove
-    );
-    setTeamMembers(updatedMembers);
   };
 
   const handleDateChange = (event) => {
@@ -162,24 +154,23 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
                 Task name
               </Typography>
               <TextField
-                variant="outlined"
+                variant='outlined'
                 fullWidth
                 value={taskName}
                 onChange={(e) => setTaskName(e.target.value)}
-                size="small"
+                size='small'
                 required
                 sx={{ fontSize: '2rem' }}
               />
             </Grid>
-
             <Grid item xs={6}>
               <Typography fontFamily={'Poppins'} color={'#6B6E75'}>
                 Start date
               </Typography>
               <TextField
-                size="small"
-                name="start"
-                type="date"
+                size='small'
+                name='start'
+                type='date'
                 onChange={handleDateChange}
                 sx={{
                   width: '100%',
@@ -191,16 +182,15 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
                 End date
               </Typography>
               <TextField
-                size="small"
-                name="end"
-                type="date"
+                size='small'
+                name='end'
+                type='date'
                 onChange={handleEndDateChange}
                 sx={{
                   width: '100%',
                 }}
               />
             </Grid>
-
             <Grid item xs={12}>
               <Typography sx={{ fontSize: '0.85rem' }}>
                 Add a description
@@ -210,41 +200,37 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
                 fullWidth
                 multiline
                 rows={1}
-                size="small"
-                variant="outlined"
-                placeholder="..."
+                size='small'
+                variant='outlined'
+                placeholder='...'
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 sx={{ fontSize: '2rem' }}
               />
             </Grid>
-            <Grid
-              item
-              xs={12}
-              sx={
-                {
-                  // width: "444px",
-                  // marginBottom: "20px",
-                }
-              }
-            >
-              <Typography sx={{ fontSize: '0.85rem' }}>Assigne to</Typography>
-
-              <TextField
-                size="small"
-                name="leaders"
-                value={selectedLeader}
-                onChange={(e) => handleSuggestionChange(e, 'leader')}
-                placeholder="Search leader"
-                sx={{
-                  width: '100%',
-                }}
-              />
-              <div
+            {/* leader */}
+            <Grid item xs={12}>
+              <Box sx={{ position: 'relative' }}>
+                <Typography sx={{ fontSize: '0.85rem' }}>Assigne to</Typography>
+                <TextField
+                  size='small'
+                  name='leaders'
+                  value={selectedLeader}
+                  onChange={(e) => handleSuggestionChange(e, 'leader')}
+                  placeholder='Search leader'
+                  sx={{
+                    width: '100%',
+                  }}
+                />
+                <SuggestionList
+                  usersList={filteredLeaders}
+                  onClick={handleSuggestionClick}
+                  type='leader'
+                />
+              </Box>
+              {/* <div
                 style={{
-                  // marginTop: 6,
                   marginLeft: 4,
-                  cursor: 'pointer',
                   padding: 8,
                 }}
               >
@@ -252,57 +238,80 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
                   <p
                     key={user.id}
                     onClick={() => handleSuggestionClick(user, 'leader')}
+                    style={{ cursor: 'pointer' }}
                   >
                     {user.name}
                   </p>
                 ))}
-              </div>
-
-              {/* <IconButton
-                title="Add Leader"
-                sx={{ bgcolor: "lightgray" }}
-                onClick={() => handleAssignToChange(selectedLeader)}
-              >
-                <AddIcon />
-              </IconButton> */}
+              </div> */}
             </Grid>
-            {/* 
-            <Grid item xs={12}>
+            {/* members */}
+            {/* <Grid
+              item
+              xs={12}
+              sx={{
+                marginBottom: '12px',
+              }}
+            >
+              <Box sx={{ position: 'relative' }}>
+                <Typography fontFamily={'Poppins'} color={'#6B6E75'}>
+                  Add members
+                </Typography>
+                <TextField
+                  size='small'
+                  name='members'
+                  value={selectedMember}
+                  onChange={(e) => handleSuggestionChange(e, 'member')}
+                  placeholder='Search a member'
+                  sx={{
+                    width: '100%',
+                  }}
+                />
+                <SuggestionList
+                  usersList={filteredMembers}
+                  onClick={handleSuggestionClick}
+                  type='member'
+                />
+              </Box>
+            </Grid> */}
+
+            {/* icons members */}
+            {/* <Grid item xs={12}>
               <Box
                 sx={{
-                  display: "flex",
-                  gap: "8px",
-                  marginBottom: "4px",
-                  cursor: "pointer",
+                  display: 'flex',
+                  gap: '8px',
+                  marginBottom: '4px',
+                  cursor: 'pointer',
                 }}
               >
                 {teamMembers.map((member, index) => (
                   <Avatar
-                    title="Remove"
+                    title='Remove'
                     key={index}
                     alt={member}
                     src={
-                      member === "user1"
+                      member === 'user1'
                         ? user1
-                        : member === "user2"
+                        : member === 'user2'
                         ? user2
-                        : member === "user3"
+                        : member === 'user3'
                         ? user3
-                        : ""
+                        : ''
                     }
                     onClick={() => handleRemoveMember(member)}
-                    style={{ transition: "opacity 0.3s ease-in-out" }}
-                    onMouseOver={(e) => (e.currentTarget.style.opacity = "0.7")}
-                    onMouseOut={(e) => (e.currentTarget.style.opacity = "1")}
+                    style={{ transition: 'opacity 0.3s ease-in-out' }}
+                    onMouseOver={(e) => (e.currentTarget.style.opacity = '0.7')}
+                    onMouseOut={(e) => (e.currentTarget.style.opacity = '1')}
                   />
                 ))}
                 {teamMembers.length < 4 && (
                   <IconButton
-                    title="Add Leader"
-                    sx={{ bgcolor: "lightgray" }}
-                    onClick={handleAddMember}
+                    title='Add Leader'
+                    sx={{ bgcolor: 'lightgray' }}
+                    onClick={handleAddMembers}
                   >
-                    <AddIcon />
+                    <AddCircleOutline />
                   </IconButton>
                 )}
               </Box>
@@ -314,8 +323,8 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
                 <Select
                   required
                   value={priority}
-                  variant="outlined"
-                  size="small"
+                  variant='outlined'
+                  size='small'
                   sx={{ fontSize: '2rem', bgcolor: 'white' }}
                   onChange={(e) => setPriority(e.target.value)}
                   displayEmpty
@@ -323,9 +332,9 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
                     selected ? selected : 'Type: All'
                   }
                 >
-                  <CustomMenuItem value="High">High</CustomMenuItem>
-                  <CustomMenuItem value="Medium">Medium</CustomMenuItem>
-                  <CustomMenuItem value="Low">Low</CustomMenuItem>
+                  <CustomMenuItem value='High'>High</CustomMenuItem>
+                  <CustomMenuItem value='Medium'>Medium</CustomMenuItem>
+                  <CustomMenuItem value='Low'>Low</CustomMenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -336,8 +345,8 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
                 <Select
                   required
                   value={tags}
-                  variant="outlined"
-                  size="small"
+                  variant='outlined'
+                  size='small'
                   sx={{ fontSize: '2rem', bgcolor: 'white' }}
                   onChange={(e) => setTags(e.target.value)}
                   displayEmpty
@@ -345,13 +354,13 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
                     selected ? selected : 'Type: All'
                   }
                 >
-                  <CustomMenuItem value="In Progress">
+                  <CustomMenuItem value='In Progress'>
                     In Progress
                   </CustomMenuItem>
-                  <CustomMenuItem value="Pending">Pending</CustomMenuItem>
+                  <CustomMenuItem value='Pending'>Pending</CustomMenuItem>
                   {/* <CustomMenuItem value="Issues">Issues</CustomMenuItem> */}
                   {/* <CustomMenuItem value="Review">Review</CustomMenuItem> */}
-                  <CustomMenuItem value="Completed">Completed</CustomMenuItem>
+                  <CustomMenuItem value='Completed'>Completed</CustomMenuItem>
                   {/* <CustomMenuItem value='Backlog'>Backlog</CustomMenuItem> */}
                 </Select>
               </FormControl>
@@ -367,7 +376,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
           >
             <Button
               onClick={handleClose}
-              variant="outlined"
+              variant='outlined'
               sx={{
                 color: 'black',
                 bgcolor: 'white',
@@ -379,7 +388,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
             </Button>
             <Button
               onClick={handleCreate}
-              variant="contained"
+              variant='contained'
               sx={{
                 color: 'white',
                 bgcolor: '#7662EA',
