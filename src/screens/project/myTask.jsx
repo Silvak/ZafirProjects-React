@@ -40,12 +40,12 @@ const App = () => {
   }, [params.id]);
 
   const [pendingTasks, setPendingTasks] = useState([]);
-  const [backlogTasks, setBacklogTasks] = useState([]);
+  const [completedTasks, setCompletedTasks] = useState([]);
   const [workingTasks, setWorkingTasks] = useState([]);
 
   useEffect(() => {
     setPendingTasks(myTasks.filter((task) => task.state === 'Pending'));
-    setBacklogTasks(myTasks.filter((task) => task.state === 'Backlog'));
+    setCompletedTasks(myTasks.filter((task) => task.state === 'Completed'));
     setWorkingTasks(myTasks.filter((task) => task.state === 'In Progress'));
   }, [myTasks]);
 
@@ -56,7 +56,7 @@ const App = () => {
   const handleAddTask = (title, description) => {
     ChangeTitleModal('Create Task');
     ChangeContentModal(
-      <CreateTaskForm placeholderTaskName='task 1' projectId={params.id} />
+      <CreateTaskForm placeholderTaskName="task 1" projectId={params.id} />
     );
     ChangeStateModal(true);
   };
@@ -70,7 +70,7 @@ const App = () => {
     <DndProvider backend={HTML5Backend}>
       <div sx={{ minWidth: '250px' }}>
         <TaskHeader
-          title='My Task'
+          title="My Task"
           handleAddTask={handleAddTask}
           handleButton={handleButton}
         />
@@ -84,28 +84,28 @@ const App = () => {
         >
           <div>
             <TaskList
-              title='In progress Tasks'
+              title="In progress Tasks"
               tasks={workingTasks}
               view={view}
-              state='In Progress'
+              state="In Progress"
               handleAddTask={() => handleAddTask()}
             />
           </div>
           <div>
             <TaskList
-              title='Pending Tasks'
+              title="Pending Tasks"
               tasks={pendingTasks}
               view={view}
-              state='Pending'
+              state="Pending"
               handleAddTask={() => handleAddTask()}
             />
           </div>
           <div>
             <TaskList
-              title='BackLog'
-              tasks={backlogTasks}
+              title="Completed"
+              tasks={completedTasks}
               view={view}
-              state='Backlog'
+              state="Completed"
               handleAddTask={() => handleAddTask()}
             />
           </div>
