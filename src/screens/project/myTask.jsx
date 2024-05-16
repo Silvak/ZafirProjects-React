@@ -102,7 +102,7 @@ const App = () => {
           </div>
           <div>
             <TaskList
-              title="Completed"
+              title="Completed Tasks"
               tasks={completedTasks}
               view={view}
               state="Completed"
