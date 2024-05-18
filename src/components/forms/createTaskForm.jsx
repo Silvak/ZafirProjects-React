@@ -15,6 +15,7 @@ import {
   Box,
   IconButton,
 } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import { useBoundStore } from '../../stores/index';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -28,21 +29,15 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
 
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
-
   const [taskName, setTaskName] = useState(placeholderTaskName);
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [description, setDescription] = useState('');
-  const [priority, setPriority] = useState('');
-  const [tags, setTags] = useState('');
 
   const {
     selectedLeader,
     filteredLeaders,
     filteredMembers,
     selectedMember,
-    teamLeaders,
     teamMembers,
+    teamLeaders,
     handleAddLeaders,
     handleAddMembers,
     handleRemoveLeader,
@@ -54,55 +49,30 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
   const { addTask, fetchTasksById, ChangeStateModal, selectedProject } =
     useBoundStore();
 
-  useEffect(() => {
-    // Actualizamos el objeto taskData con los valores actuales de los estados
-    setTaskData({
-      data: [
-        {
-          name: taskName,
-          description: description,
-          tags: tags,
-        },
-      ],
-      start: selectedDate,
-      end: selectedEndDate,
-      state: tags,
-      members: selectedLeader,
-      priority: priority,
-      projectId: projectId,
-    });
-  }, [taskName, startDate, endDate, description, priority, tags]);
-
   const [taskData, setTaskData] = useState({
-    data: [
-      {
-        name: taskName,
-        description: description,
-        tags: tags,
-      },
-    ],
-    start: selectedDate,
-    end: selectedEndDate,
-    state: tags,
-    members: selectedLeader,
-    priority: priority,
-    projectId: selectedProject._id,
+    taskName: '',
+    start: '',
+    end: '',
+    state: '',
+    priority: '',
+    projectId: '',
   });
 
-  const [selectedUser, setSelectedUser] = useState('');
-  // const [teamMembers, setTeamMembers] = useState([]);
-
   const handleCreate = async () => {
-    console.log('Leader que vamos a mandar al back: ', selectedLeader);
+    const data = {
+      ...taskData,
+      members: teamMembers,
+    };
+    console.log(data);
 
     if (
-      !taskName ||
-      !selectedDate ||
-      !selectedEndDate ||
-      !description ||
-      !priority ||
-      !tags ||
-      !selectedLeader
+      !taskData.taskName ||
+      !taskData.start ||
+      !taskData.end ||
+      !taskData.description ||
+      !taskData.priority ||
+      !taskData.tags ||
+      teamMembers.length === 0
     ) {
       // Si algún campo obligatorio está vacío, muestra un mensaje de error y no crees la tarea
       alert('Por favor, rellena todos los campos obligatorios.');
@@ -115,6 +85,15 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
       alert('Error creating task', error);
     }
     handleClose();
+  };
+
+  const handleChange = (event) => {
+    const eventName = event.target.name;
+    const eventValue = event.target.value;
+    setTaskData({
+      ...taskData,
+      [eventName]: eventValue,
+    });
   };
 
   const handleClose = () => {
@@ -156,8 +135,9 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
               <TextField
                 variant='outlined'
                 fullWidth
-                value={taskName}
-                onChange={(e) => setTaskName(e.target.value)}
+                value={taskData.taskName}
+                onChange={handleChange}
+                name='taskName'
                 size='small'
                 required
                 sx={{ fontSize: '2rem' }}
@@ -171,7 +151,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
                 size='small'
                 name='start'
                 type='date'
-                onChange={handleDateChange}
+                onChange={handleChange}
                 sx={{
                   width: '100%',
                 }}
@@ -185,7 +165,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
                 size='small'
                 name='end'
                 type='date'
-                onChange={handleEndDateChange}
+                onChange={handleChange}
                 sx={{
                   width: '100%',
                 }}
@@ -203,13 +183,14 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
                 size='small'
                 variant='outlined'
                 placeholder='...'
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                name='description'
+                value={taskData.description}
+                onChange={handleChange}
                 sx={{ fontSize: '2rem' }}
               />
             </Grid>
             {/* leader */}
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <Box sx={{ position: 'relative' }}>
                 <Typography sx={{ fontSize: '0.85rem' }}>Assigne to</Typography>
                 <TextField
@@ -228,25 +209,50 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
                   type='leader'
                 />
               </Box>
-              {/* <div
-                style={{
-                  marginLeft: 4,
-                  padding: 8,
+            </Grid>
+            <Grid item xs={12}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  gap: '8px',
+                  marginBottom: '20px',
+                  cursor: 'pointer',
+                  width: 'fit-content',
                 }}
               >
-                {filteredLeaders.map((user) => (
-                  <p
-                    key={user.id}
-                    onClick={() => handleSuggestionClick(user, 'leader')}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    {user.name}
-                  </p>
+                {teamLeaders.map((member, index) => (
+                  <Avatar
+                    title='Remove'
+                    key={index}
+                    alt={member}
+                    src={
+                      member === 'user1'
+                        ? user1
+                        : member === 'user2'
+                        ? user2
+                        : member === 'user3'
+                        ? user3
+                        : ''
+                    }
+                    onClick={() => handleRemoveLeader(member)}
+                    style={{ transition: 'opacity 0.3s ease-in-out' }}
+                    onMouseOver={(e) => (e.currentTarget.style.opacity = '0.7')}
+                    onMouseOut={(e) => (e.currentTarget.style.opacity = '1')}
+                  />
                 ))}
-              </div> */}
-            </Grid>
+                {teamLeaders.length < 4 && (
+                  <IconButton
+                    title='Add Leader'
+                    sx={{ bgcolor: 'lightgray' }}
+                    onClick={handleAddLeaders}
+                  >
+                    <AddIcon />
+                  </IconButton>
+                )}
+              </Box>
+            </Grid> */}
             {/* members */}
-            {/* <Grid
+            <Grid
               item
               xs={12}
               sx={{
@@ -260,7 +266,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
                 <TextField
                   size='small'
                   name='members'
-                  value={selectedMember}
+                  value={selectedMember.name}
                   onChange={(e) => handleSuggestionChange(e, 'member')}
                   placeholder='Search a member'
                   sx={{
@@ -273,10 +279,10 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
                   type='member'
                 />
               </Box>
-            </Grid> */}
+            </Grid>
 
             {/* icons members */}
-            {/* <Grid item xs={12}>
+            <Grid item xs={12}>
               <Box
                 sx={{
                   display: 'flex',
@@ -311,22 +317,23 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
                     sx={{ bgcolor: 'lightgray' }}
                     onClick={handleAddMembers}
                   >
-                    <AddCircleOutline />
+                    <AddIcon />
                   </IconButton>
                 )}
               </Box>
-            </Grid> */}
+            </Grid>
 
             <Grid item xs={12}>
               <Typography sx={{ fontSize: '0.85rem' }}>Priority</Typography>
               <FormControl fullWidth>
                 <Select
                   required
-                  value={priority}
+                  value={taskData.priority}
                   variant='outlined'
                   size='small'
                   sx={{ fontSize: '2rem', bgcolor: 'white' }}
-                  onChange={(e) => setPriority(e.target.value)}
+                  name='priority'
+                  onChange={handleChange}
                   displayEmpty
                   renderValue={(selected) =>
                     selected ? selected : 'Type: All'
@@ -344,11 +351,12 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
               <FormControl fullWidth>
                 <Select
                   required
-                  value={tags}
+                  value={taskData.tags}
                   variant='outlined'
                   size='small'
                   sx={{ fontSize: '2rem', bgcolor: 'white' }}
-                  onChange={(e) => setTags(e.target.value)}
+                  name='tags'
+                  onChange={handleChange}
                   displayEmpty
                   renderValue={(selected) =>
                     selected ? selected : 'Type: All'

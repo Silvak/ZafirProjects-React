@@ -1,26 +1,26 @@
-import { Grid, useMediaQuery } from "@mui/material";
-import TaskDetailContent from "./TaskDetailContent";
-import TaskDetailHeader from "./TaskDetailHeader";
-import TaskDetailSubstasks from "./TaskDetailSubstasks";
-import ChatMessage from "../chatSeccion/chat";
+import { Grid, useMediaQuery } from '@mui/material';
+import TaskDetailContent from './TaskDetailContent';
+import TaskDetailHeader from './TaskDetailHeader';
+import TaskDetailSubstasks from './TaskDetailSubstasks';
+import ChatMessage from '../chatSeccion/chat';
 
 const TaskDetail = ({ task }) => {
-  const { id, data } = task || {};
-  const name = data[0].name;
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+  const { id } = task || {};
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+
   return (
     <Grid
       container
       sx={{
-        background: "#FFFF",
+        background: '#FFFF',
         margin: 0,
-        height: "100vh",
-        width: "100%",
-        "& > .MuiGrid-item": {
-          padding: "0px",
+        height: '100vh',
+        width: '100%',
+        '& > .MuiGrid-item': {
+          padding: '0px',
         },
-        "& > .MuiGrid-item:nth-of-type(1)": {
-          padding: `10px  ${isMobile ? "10px" : "30px"}`,
+        '& > .MuiGrid-item:nth-of-type(1)': {
+          padding: `10px  ${isMobile ? '10px' : '30px'}`,
         },
       }}
       spacing={4}
@@ -30,12 +30,12 @@ const TaskDetail = ({ task }) => {
         xs={12}
         md={7}
         sx={{
-          color: "#1D1F24",
-          height: "100%",
-          overflowY: isMobile ? "none" : "scroll",
+          color: '#1D1F24',
+          height: '100%',
+          overflowY: isMobile ? 'none' : 'scroll',
         }}
       >
-        <TaskDetailHeader taskId={id} taskTitle={name} />
+        <TaskDetailHeader taskId={id} taskTitle={task.taskName} />
         <TaskDetailContent task={task} />
         <TaskDetailSubstasks taskId={id} />
       </Grid>

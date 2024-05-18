@@ -58,23 +58,17 @@ const TaskDetailContent = ({ task }) => {
 
   const handleSave = async () => {
     const newValues = {
+      taskName: inputRefs.name.current.value,
       state: inputRefs.tags.current.value,
       priority: inputRefs.priority.current.value,
       end: selectedDate,
       members: inputRefs.members.current.value,
-      data: [
-        {
-          name: inputRefs.name.current.value,
-          description: inputRefs.description.current.value,
-          tags: inputRefs.tags.current.value,
-        },
-      ],
     };
 
     const changesDetected =
-      newValues.data[0].name !== task.data[0].name ||
-      newValues.data[0].description !== task.data[0].description ||
-      newValues.data[0].tags !== task.data[0].tags ||
+      newValues.taskName !== task.taskName ||
+      newValues.description !== task.description ||
+      newValues.tags !== task.state ||
       newValues.members !== task.members ||
       newValues.end !== task.end ||
       newValues.priority !== task.priority;
@@ -104,8 +98,8 @@ const TaskDetailContent = ({ task }) => {
     <Grid container spacing={3}>
       <Grid item xs={12}>
         <TextField
-          size="small"
-          label="Leader"
+          size='small'
+          label='Leader'
           value={selectedLeader || task.members}
           defaultValue={task.members}
           inputRef={inputRefs.members}
@@ -140,9 +134,9 @@ const TaskDetailContent = ({ task }) => {
       </Grid>
       <Grid item xs={12}>
         <TextField
-          size="small"
-          label="Task Name"
-          defaultValue={task.data[0].name}
+          size='small'
+          label='Task Name'
+          defaultValue={task.taskName}
           inputRef={inputRefs.name}
           fullWidth
           autoFocus
@@ -156,9 +150,9 @@ const TaskDetailContent = ({ task }) => {
       </Grid>
       <Grid item xs={12}>
         <TextField
-          size="small"
-          label="Task description"
-          defaultValue={task.data[0].description}
+          size='small'
+          label='Task description'
+          defaultValue={task.description}
           inputRef={inputRefs.description}
           fullWidth
           autoFocus
@@ -174,8 +168,8 @@ const TaskDetailContent = ({ task }) => {
       {/* Prioridad con el selector personalizado */}
       <Grid item xs={12}>
         <CustomSelect
-          size="small"
-          label="Priority"
+          size='small'
+          label='Priority'
           options={['Low', 'Medium', 'High']}
           disabled={!isEditing}
           defaultValue={priority}
@@ -187,8 +181,8 @@ const TaskDetailContent = ({ task }) => {
       {/* CustomSelect también para el campo de tags */}
       <Grid item xs={12}>
         <CustomSelect
-          size="small"
-          label="Tags"
+          size='small'
+          label='Tags'
           options={[
             'Pending',
             'In Progress',
@@ -206,7 +200,7 @@ const TaskDetailContent = ({ task }) => {
 
       <Grid item xs={12}>
         <Typography
-          variant="h6"
+          variant='h6'
           style={{
             fontSize: 14,
             fontWeight: 'normal',
@@ -219,9 +213,9 @@ const TaskDetailContent = ({ task }) => {
           selected={selectedDate}
           onChange={(date) => setSelectedDate(date)}
           disabled={!isEditing}
-          dateFormat="MM/dd/yyyy"
+          dateFormat='MM/dd/yyyy'
           className={isEditing ? 'date-picker' : 'date-picker-disable'}
-          popperClassName="date-picker-popper"
+          popperClassName='date-picker-popper'
         />
       </Grid>
       <Grid item xs={12}>
@@ -235,8 +229,8 @@ const TaskDetailContent = ({ task }) => {
             }}
           >
             <Button
-              variant="outlined"
-              color="primary"
+              variant='outlined'
+              color='primary'
               onClick={handleCancel}
               disableRipple
               style={{
@@ -247,8 +241,8 @@ const TaskDetailContent = ({ task }) => {
               Cancel
             </Button>
             <Button
-              variant="contained"
-              color="primary"
+              variant='contained'
+              color='primary'
               onClick={handleSave}
               disableRipple
               style={{
@@ -271,8 +265,8 @@ const TaskDetailContent = ({ task }) => {
           >
             <IconButton
               disableRipple
-              color="primary"
-              size="small"
+              color='primary'
+              size='small'
               sx={{
                 '&:hover': {
                   color: 'blue',

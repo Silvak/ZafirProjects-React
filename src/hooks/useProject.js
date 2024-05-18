@@ -1,12 +1,12 @@
-import validateCreateProject from "@/utils/validateCreateProject";
-import useSuggestionUsers from "@/hooks/useSuggestionUsers";
-import { createTheme, useMediaQuery } from "@mui/material";
-import { useState } from "react";
-import { useBoundStore } from "../stores";
+import validateCreateProject from '@/utils/validateCreateProject';
+import useSuggestionUsers from '@/hooks/useSuggestionUsers';
+import { createTheme, useMediaQuery } from '@mui/material';
+import { useState } from 'react';
+import { useBoundStore } from '../stores';
 
 export function useProject({ project, isCreated = false }) {
   const theme = createTheme();
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   const {
     User,
@@ -28,26 +28,27 @@ export function useProject({ project, isCreated = false }) {
     handleSuggestionChange,
     handleSuggestionClick,
     resetSuggestions,
+    INITIAL_SELECTED_MEMBER,
   } = useSuggestionUsers();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [teamMembers, setTeamMembers] = useState(project?.["members_id"] || []);
+  const [teamMembers, setTeamMembers] = useState(project?.['members_id'] || []);
   const [teamLeaders, setLeaders] = useState(
-    typeof project?.responsible === "string"
+    typeof project?.responsible === 'string'
       ? [project?.responsible]
       : project?.responsible || []
   );
   const [formData, setFormData] = useState({
-    name: project?.name || "",
+    name: project?.name || '',
     start: project?.start
       ? new Date(project.start).toISOString().substring(0, 10) //format date
-      : "",
+      : '',
     end: project?.end
       ? new Date(project.end).toISOString().substring(0, 10) //format date
-      : "",
-    description: project?.description || "",
-    link: project?.link || "",
-    github: project?.github || "",
+      : '',
+    description: project?.description || '',
+    link: project?.link || '',
+    github: project?.github || '',
     leaders: teamLeaders,
     members: teamMembers,
   });
@@ -63,7 +64,7 @@ export function useProject({ project, isCreated = false }) {
         const isValid = validateCreateProject(formData);
 
         if (!isValid) {
-          ChangeTitleAlertError("Faltan ingresar datos");
+          ChangeTitleAlertError('Faltan ingresar datos');
           ChangeStateAlertError(true);
         } else {
           await addProject(User.uid, formData);
@@ -89,16 +90,16 @@ export function useProject({ project, isCreated = false }) {
   const handleAddLeaders = () => {
     if (selectedLeader && !teamLeaders.includes(selectedLeader)) {
       setLeaders([...teamLeaders, selectedLeader]);
-      setSelectedLeader("");
-      resetSuggestions("leader");
+      setSelectedLeader('');
+      resetSuggestions('leader');
     }
   };
 
   const handleAddMembers = () => {
     if (selectedMember && !teamMembers.includes(selectedMember)) {
-      setTeamMembers([...teamMembers, selectedMember]);
-      setSelectedMember("");
-      resetSuggestions("member");
+      setTeamMembers([...teamMembers, selectedMember._id]);
+      setSelectedMember(INITIAL_SELECTED_MEMBER);
+      resetSuggestions('member');
     }
   };
 
