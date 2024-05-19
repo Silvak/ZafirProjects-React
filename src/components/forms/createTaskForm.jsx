@@ -55,7 +55,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
     end: '',
     state: '',
     priority: '',
-    projectId: '',
+    projectId,
   });
 
   const handleCreate = async () => {
@@ -71,7 +71,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
       !taskData.end ||
       !taskData.description ||
       !taskData.priority ||
-      !taskData.tags ||
+      !taskData.state ||
       teamMembers.length === 0
     ) {
       // Si algún campo obligatorio está vacío, muestra un mensaje de error y no crees la tarea
@@ -79,7 +79,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
       return;
     }
     try {
-      await addTask(taskData, projectId);
+      await addTask(data, projectId);
       await fetchTasksById(projectId);
     } catch (error) {
       alert('Error creating task', error);
@@ -347,15 +347,15 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
             </Grid>
 
             <Grid item xs={12}>
-              <Typography sx={{ fontSize: '0.85rem' }}>Tags</Typography>
+              <Typography sx={{ fontSize: '0.85rem' }}>State</Typography>
               <FormControl fullWidth>
                 <Select
                   required
-                  value={taskData.tags}
+                  value={taskData.state}
                   variant='outlined'
                   size='small'
                   sx={{ fontSize: '2rem', bgcolor: 'white' }}
-                  name='tags'
+                  name='state'
                   onChange={handleChange}
                   displayEmpty
                   renderValue={(selected) =>
@@ -366,10 +366,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
                     In Progress
                   </CustomMenuItem>
                   <CustomMenuItem value='Pending'>Pending</CustomMenuItem>
-                  {/* <CustomMenuItem value="Issues">Issues</CustomMenuItem> */}
-                  {/* <CustomMenuItem value="Review">Review</CustomMenuItem> */}
                   <CustomMenuItem value='Completed'>Completed</CustomMenuItem>
-                  {/* <CustomMenuItem value='Backlog'>Backlog</CustomMenuItem> */}
                 </Select>
               </FormControl>
             </Grid>

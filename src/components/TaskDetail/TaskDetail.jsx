@@ -3,10 +3,21 @@ import TaskDetailContent from './TaskDetailContent';
 import TaskDetailHeader from './TaskDetailHeader';
 import TaskDetailSubstasks from './TaskDetailSubstasks';
 import ChatMessage from '../chatSeccion/chat';
+import { useBoundStore } from '../../stores';
+import { useEffect, useState } from 'react';
 
 const TaskDetail = ({ task }) => {
-  const { id } = task || {};
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+
+  const { fetchTaskDetailsById, singleTask } = useBoundStore((state) => state);
+
+  useEffect(() => {
+    fetchTaskDetailsById(task._id);
+  }, [task._id]);
+
+  if (singleTask === null) {
+    return <p>no details</p>;
+  }
 
   return (
     <Grid
@@ -35,9 +46,12 @@ const TaskDetail = ({ task }) => {
           overflowY: isMobile ? 'none' : 'scroll',
         }}
       >
-        <TaskDetailHeader taskId={id} taskTitle={task.taskName} />
-        <TaskDetailContent task={task} />
-        <TaskDetailSubstasks taskId={id} />
+        <TaskDetailHeader
+          taskId={singleTask._id}
+          taskTitle={singleTask.taskName}
+        />
+        <TaskDetailContent task={singleTask} />
+        <TaskDetailSubstasks taskId={singleTask._id} />
       </Grid>
       <Grid item xs={12} md={5}>
         <ChatMessage />
