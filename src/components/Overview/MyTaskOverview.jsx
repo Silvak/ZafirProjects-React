@@ -104,7 +104,7 @@ function MyTask() {
             <Typography
               sx={{ fontSize: '20px', fontWeight: 500, fontFamily: 'Poppins' }}
             >
-              My Task
+              My Tasks
             </Typography>
           </Grid>
           {/* Select Filter */}

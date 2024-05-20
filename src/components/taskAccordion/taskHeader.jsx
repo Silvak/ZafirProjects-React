@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import {
   CalendarToday as CalendarTodayIcon,
   FormatListBulletedRounded as FormatListBulletedRoundedIcon,
@@ -15,8 +16,6 @@ import {
   createTheme,
   useMediaQuery,
 } from '@mui/material';
-import React, { useState } from 'react';
-
 import Header from '@/components/Header/Header';
 import FilterSelect from '@/components/Selects/FilterSelect';
 

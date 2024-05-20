@@ -6,7 +6,6 @@ import CreateTaskForm from '@/components/forms/createTaskForm';
 import TaskHeader from '@/components/taskAccordion/taskHeader';
 import TaskList from '@/components/taskAccordion/taskList';
 import { useBoundStore } from '@/stores/index';
-
 import { useParams } from 'react-router-dom';
 
 const App = () => {
@@ -22,6 +21,7 @@ const App = () => {
     ChangeContentModal,
     ChangeTitleModal,
     fetchTasksById,
+    selectedProject,
   } = useBoundStore();
 
   useEffect(() => {
@@ -70,7 +70,7 @@ const App = () => {
     <DndProvider backend={HTML5Backend}>
       <div sx={{ minWidth: '250px' }}>
         <TaskHeader
-          title='My Task'
+          title={selectedProject.name}
           handleAddTask={handleAddTask}
           handleButton={handleButton}
         />

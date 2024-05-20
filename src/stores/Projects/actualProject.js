@@ -1,47 +1,56 @@
-import { axiosInstance } from "@/config/apiConfig";
+import { axiosInstance } from '@/config/apiConfig';
 
 export const actualProject = (set) => ({
   projectsData: [],
   selectedProject: undefined,
   fetchProjects: async () => {
     try {
-      const { data } = await axiosInstance.get("/projects");
+      const { data } = await axiosInstance.get('/projects');
       set({ projectsData: data, selectedProject: data[0] });
     } catch (error) {
-      console.error("Error fetching projects:", error);
+      console.error('Error fetching projects:', error);
     }
   },
-  setSelectedProject: (project) => set({ selectedProject: project }),
+  setSelectedProject: (project) => {
+    set({ selectedProject: project });
+  },
   updateProjects: async () => {
     try {
-      const { data } = await axiosInstance.get("/projects");
+      const { data } = await axiosInstance.get('/projects');
       set({ projectsData: data });
     } catch (error) {
-      console.error("Error actualizando proyectos:", error);
+      console.error('Error actualizando proyectos:', error);
+    }
+  },
+  selectedProjectById: async (id) => {
+    try {
+      const { data } = await axiosInstance.get(`/projects/${id}`);
+      if (data) {
+        set({ selectedProject: data });
+      }
+    } catch (error) {
+      console.error('Error actualizando proyecto:', error);
     }
   },
   updateProject: async (id, newProject) => {
     try {
       const data = await axiosInstance.put(`/projects/${id}`, newProject);
-      console.log("DATA", data);
     } catch (error) {
-      console.error("Error actualizando proyecto:", error);
+      console.error('Error actualizando proyecto:', error);
     }
   },
   addProject: async (userId, newProject) => {
     try {
       const data = await axiosInstance.post(`/projects/${userId}`, newProject);
-      console.log("DATA", data);
     } catch (error) {
-      console.error("Error creando proyecto:", error);
+      console.error('Error creando proyecto:', error);
     }
   },
   deleteProject: async (id) => {
     try {
       const data = await axiosInstance.delete(`/projects/${id}`);
-      console.log("DATA", data);
     } catch (error) {
-      console.error("Error eliminando proyecto:", error);
+      console.error('Error eliminando proyecto:', error);
     }
   },
 });

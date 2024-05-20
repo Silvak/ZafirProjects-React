@@ -1,7 +1,9 @@
-import { Box, TableCell, useMediaQuery } from "@mui/material";
-import { RenderProjectItems } from "./RenderProjectItems";
-import { BsPen, BsTrash3 } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { Box, TableCell, useMediaQuery } from '@mui/material';
+import { RenderProjectItems } from './RenderProjectItems';
+import { BsPen, BsTrash3 } from 'react-icons/bs';
+import { Link } from 'react-router-dom';
+import { shallow } from 'zustand/shallow';
+import { useBoundStore } from '../../stores';
 
 const ProjectItemsOverview = ({
   _id,
@@ -12,20 +14,27 @@ const ProjectItemsOverview = ({
   // quantityTasks,
   // category,
 }) => {
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+
+  const { selectedProjectById } = useBoundStore((state) => state, shallow);
+
+  const handleSelectProject = (id) => {
+    selectedProjectById(id);
+  };
+
   return (
     <TableCell
       sx={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        borderBottom: "none",
-        "&:hover": {
-          backgroundColor: "rgba(0, 0, 0, 0.1)",
-          cursor: "pointer",
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderBottom: 'none',
+        '&:hover': {
+          backgroundColor: 'rgba(0, 0, 0, 0.1)',
+          cursor: 'pointer',
         },
-        height: "auto",
-        width: "100%",
+        height: 'auto',
+        width: '100%',
       }}
     >
       {/* <div
@@ -44,16 +53,17 @@ const ProjectItemsOverview = ({
         </div> */}
       <Link
         to={`/project/${_id}`}
-        style={{ color: "inherit", textDecoration: "none" }}
+        style={{ color: 'inherit', textDecoration: 'none' }}
+        onClick={() => handleSelectProject(_id)}
       >
         <Box>
           <div
             // onClick={() => navigate(`/project/${id}`)}
-            style={{ fontFamily: "Poppins" }}
+            style={{ fontFamily: 'Poppins' }}
           >
             <h2 className="projectName">{name}</h2>
           </div>
-          <small className="quantityTasks" style={{ fontFamily: "Poppins" }}>
+          <small className="quantityTasks" style={{ fontFamily: 'Poppins' }}>
             {/* {quantityTasks} | {item} */}
             {description.length > 25
               ? `${description.slice(0, 25)}...`
@@ -63,21 +73,21 @@ const ProjectItemsOverview = ({
       </Link>
       <Box
         sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          width: "80px",
-          marginLeft: isMobile ? "unset" : "auto",
-          gap: "20px",
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '80px',
+          marginLeft: isMobile ? 'unset' : 'auto',
+          gap: '20px',
         }}
       >
         <div
           style={{
-            display: "flex",
-            color: "#6B6E75",
-            justifyContent: "center",
-            borderRadius: "12px",
-            width: isMobile ? "auto" : "",
+            display: 'flex',
+            color: '#6B6E75',
+            justifyContent: 'center',
+            borderRadius: '12px',
+            width: isMobile ? 'auto' : '',
           }}
           onClick={handleEdit}
         >
@@ -85,11 +95,11 @@ const ProjectItemsOverview = ({
         </div>
         <div
           style={{
-            display: "flex",
-            color: "#6B6E75",
-            justifyContent: isMobile ? "center" : "",
-            borderRadius: "12px",
-            width: isMobile ? "auto" : "",
+            display: 'flex',
+            color: '#6B6E75',
+            justifyContent: isMobile ? 'center' : '',
+            borderRadius: '12px',
+            width: isMobile ? 'auto' : '',
           }}
           onClick={() => handleDelete(_id)}
         >

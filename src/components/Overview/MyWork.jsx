@@ -32,7 +32,6 @@ function MyWorkGlance() {
     fetchTasks,
     selectedProject,
   } = useBoundStore();
-
   const [filterOption, setFilterOption] = useState('All');
   // const { pending, progress, issues, review, completed } = myWorkData;
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
@@ -183,8 +182,8 @@ function MyWorkGlance() {
         >
           <InfoCard data={renderData.progress} />
           <InfoCard data={renderData.pending} />
-          <InfoCard data={renderData.issues} />
-          <InfoCard data={renderData.review} />
+          {/* <InfoCard data={renderData.issues} /> */}
+          {/* <InfoCard data={renderData.review} /> */}
           <InfoCard data={renderData.completed} />
         </Box>
       </Box>
