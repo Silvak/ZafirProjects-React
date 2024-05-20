@@ -62,13 +62,16 @@ const TaskDetailContent = ({ task }) => {
 
   const handleSave = async () => {
     const members = [task.members[0]._id] || [selectedMember._id];
-    console.log(members);
     const newValues = { ...originalValues, members };
     const params = selectedProject._id;
 
     setIsEditing(false);
     try {
-      await updateTask(task._id, true, newValues, null, params);
+      await updateTask({
+        taskId: task._id,
+        newData: newValues,
+        projectId: params,
+      });
       setTimeout(() => {
         ChangeTitleAlert('Data has been updated successfully');
         ChangeStateAlert(true);

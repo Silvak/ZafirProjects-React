@@ -26,7 +26,11 @@ const TaskAccordion = ({ title, state, tasks, handleAddTask, view }) => {
   const params = useParams();
 
   const addTaskToList = async (taskId) => {
-    await updateTask(taskId, { state }, params.id);
+    await updateTask({
+      taskId: taskId,
+      newData: { state },
+      projectId: params.id,
+    });
   };
 
   const [{ opacity, dropTarget, isOver }, drop] = useDrop({
