@@ -31,34 +31,16 @@ export const createTasksSlice = (set) => ({
       tasks: state.tasks.filter((task) => task.id !== taskIdToDelete),
     })),
 
-  updateTask: async (taskId, isEdit, newData, state, projectId) => {
-    if (isEdit) {
-      try {
-        const res = await axiosInstance.put(`/tasksList/${taskId}`, newData);
-        if (res.status === 200) {
-          createTasksSlice(set).fetchTasksById(projectId);
-        }
-        return res.data;
-      } catch (e) {
-        console.log(e);
+  updateTask: async ({ taskId, newData, projectId }) => {
+    console.log(taskId, newData, projectId);
+    try {
+      const res = await axiosInstance.put(`/tasksList/${taskId}`, newData);
+      if (res.status === 200) {
+        createTasksSlice(set).fetchTasksById(projectId);
       }
-    } else {
-      if (!taskId || state === undefined || state === null) {
-        console.log('Faltan parametros');
-        return;
-      }
-
-      try {
-        const res = await axiosInstance.put(`/tasksList/${taskId}`, {
-          state,
-        });
-        if (res.status === 200) {
-          createTasksSlice(set).fetchTasksById(projectId);
-        }
-        return res.data;
-      } catch (e) {
-        console.log(e);
-      }
+      return res.data;
+    } catch (e) {
+      console.log(e);
     }
   },
   fetchTasks: async () => {

@@ -107,6 +107,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
   const handleEndDateChange = (event) => {
     setSelectedEndDate(event.target.value);
   };
+  console.log(selectedMember);
 
   return (
     <ThemeProvider theme={theme}>
