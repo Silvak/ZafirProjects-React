@@ -1,25 +1,33 @@
-import React, { useState, useRef } from "react";
-import { Grid, IconButton, Button, TextField, Typography } from "@mui/material";
-import { EditOutlined as EditOutlinedIcon } from "@mui/icons-material";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { useBoundStore } from "../../stores";
-import "./dataPicker.css";
-import CustomSelect from "./CustomSelect";
-import { useProject } from "@/hooks/useProject";
+import React, { useState, useRef, useEffect } from 'react';
+import {
+  Grid,
+  IconButton,
+  Button,
+  TextField,
+  Typography,
+  FormControl,
+  Select,
+  MenuItem,
+} from '@mui/material';
+import { EditOutlined as EditOutlinedIcon } from '@mui/icons-material';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { useBoundStore } from '../../stores';
+import './dataPicker.css';
+import CustomSelect from './CustomSelect';
+import { useProject } from '@/hooks/useProject';
 
 const TaskDetailContent = ({ task }) => {
-  const { priority, state } = task || {};
   const [isEditing, setIsEditing] = useState(false);
-  const [originalValues, setOriginalValues] = useState({});
-  const [selectedDate, setSelectedDate] = useState(task.end);
-  const inputRefs = {
-    name: useRef(null),
-    description: useRef(null),
-    tags: useRef(null),
-    members: useRef(null),
-    priority: useRef(null),
-  };
+  const [originalValues, setOriginalValues] = useState({
+    taskName: task.taskName,
+    description: task.description,
+    start: task.start,
+    end: task.end,
+    state: task.state,
+    priority: task.priority,
+  });
+
   const {
     updateTask,
     selectedProject,
@@ -31,229 +39,281 @@ const TaskDetailContent = ({ task }) => {
   } = useBoundStore();
 
   const {
-    selectedLeader,
-    filteredLeaders,
+    selectedMember,
+    filteredMembers,
     handleSuggestionChange,
     handleSuggestionClick,
   } = useProject({ project: null, isCreated: true });
 
   const handleEdit = () => {
-    const name = inputRefs.name.current.value;
-    const description = inputRefs.description.current.value;
-    const tags = inputRefs.tags.current.value;
-    const members = inputRefs.members.current.value;
-    const priority = inputRefs.priority.current.value;
     setIsEditing(true);
-    setOriginalValues({ name, description, tags, members, priority });
   };
 
   const handleCancel = () => {
-    inputRefs.name.current.value = originalValues.name;
-    inputRefs.description.current.value = originalValues.description;
-    inputRefs.tags.current.value = originalValues.tags;
-    inputRefs.members.current.value = originalValues.members;
-    setSelectedDate(task.end);
+    setOriginalValues({
+      taskName: task.taskName,
+      description: task.description,
+      end: task.end,
+      state: task.state,
+      priority: task.priority,
+    });
     setIsEditing(false);
   };
 
   const handleSave = async () => {
-    const newValues = {
-      state: inputRefs.tags.current.value,
-      priority: inputRefs.priority.current.value,
-      end: selectedDate,
-      members: inputRefs.members.current.value,
-      data: [
-        {
-          name: inputRefs.name.current.value,
-          description: inputRefs.description.current.value,
-          tags: inputRefs.tags.current.value,
-        },
-      ],
-    };
-
-    const changesDetected =
-      newValues.data[0].name !== task.data[0].name ||
-      newValues.data[0].description !== task.data[0].description ||
-      newValues.data[0].tags !== task.data[0].tags ||
-      newValues.members !== task.members ||
-      newValues.end !== task.end ||
-      newValues.priority !== task.priority;
-
-    if (!changesDetected) {
-      ChangeTitleAlertError("No changes detected. No action required.");
-      ChangeStateAlertError(true);
-      setIsEditing(false);
-      return;
-    }
-    setIsEditing(false);
+    const members = [task.members[0]._id] || [selectedMember._id];
+    console.log(members);
+    const newValues = { ...originalValues, members };
     const params = selectedProject._id;
+
+    setIsEditing(false);
     try {
-      await updateTask(task._id, newValues, params);
+      await updateTask(task._id, true, newValues, null, params);
       setTimeout(() => {
-        ChangeTitleAlert("Data has been updated successfully");
+        ChangeTitleAlert('Data has been updated successfully');
         ChangeStateAlert(true);
         ChangeStateModal(false);
       }, 1000);
     } catch (error) {
-      ChangeTitleAlertError("Error:", error.message);
+      ChangeTitleAlertError('Error:', error.message);
       ChangeStateAlertError(true);
     }
+
+    // const changesDetected =
+    //   newValues.taskName !== task.taskName ||
+    //   newValues.description !== task.description ||
+    //   newValues.tags !== task.state ||
+    //   newValues.members !== task.members ||
+    //   newValues.end !== task.end ||
+    //   newValues.priority !== task.priority;
+
+    // if (!changesDetected) {
+    //   ChangeTitleAlertError('No changes detected. No action required.');
+    //   ChangeStateAlertError(true);
+    //   setIsEditing(false);
+    //   return;
+    // }
+    // setIsEditing(false);
+    // const params = selectedProject._id;
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setOriginalValues({ ...originalValues, [name]: value });
   };
 
   return (
     <Grid container spacing={3}>
+      {/* MEMBER */}
       <Grid item xs={12}>
-        <TextField
-          size="small"
-          label="Leader"
-          value={selectedLeader || task.members}
-          defaultValue={task.members}
-          inputRef={inputRefs.members}
-          onChange={(e) => handleSuggestionChange(e, "leader")}
-          fullWidth
-          disabled={!isEditing}
-          sx={{ mt: 4 }}
-          InputLabelProps={{
-            sx: {
-              color: isEditing ? "inherit" : "blue",
-            },
-          }}
-        />
+        {isEditing ? (
+          <TextField
+            size='small'
+            label='Member'
+            value={selectedMember.name}
+            onChange={(e) => handleSuggestionChange(e, 'member')}
+            fullWidth
+            disabled={!isEditing}
+            sx={{ mt: 4 }}
+            InputLabelProps={{
+              sx: {
+                color: isEditing ? 'inherit' : 'blue',
+              },
+            }}
+          />
+        ) : (
+          <TextField
+            size='small'
+            label='Member'
+            value={task.members[0].name}
+            onChange={(e) => handleSuggestionChange(e, 'member')}
+            fullWidth
+            disabled={!isEditing}
+            sx={{ mt: 4 }}
+            InputLabelProps={{
+              sx: {
+                color: isEditing ? 'inherit' : 'blue',
+              },
+            }}
+          />
+        )}
+
         <div
           style={{
             marginLeft: 4,
-            cursor: "pointer",
-            backgroundColor: "white",
+            cursor: 'pointer',
+            backgroundColor: 'white',
             borderRadius: 12,
           }}
         >
-          {filteredLeaders.slice(0, 3).map((user) => (
+          {filteredMembers.slice(0, 3).map((user) => (
             <p
               key={user.id}
               style={{ marginTop: 4 }}
-              onClick={() => handleSuggestionClick(user, "leader")}
+              onClick={() => handleSuggestionClick(user, 'member')}
             >
               {user.name}
             </p>
           ))}
         </div>
       </Grid>
+      {/* TASK NAME */}
       <Grid item xs={12}>
         <TextField
-          size="small"
-          label="Task Name"
-          defaultValue={task.data[0].name}
-          inputRef={inputRefs.name}
+          size='small'
+          label='Task Name'
+          defaultValue={originalValues.taskName}
+          name='taskName'
+          fullWidth
+          autoFocus
+          onChange={handleChange}
+          disabled={!isEditing}
+          InputLabelProps={{
+            sx: {
+              color: isEditing ? 'inherit' : 'blue',
+            },
+          }}
+        />
+      </Grid>
+      {/* DESCRIPTION */}
+      <Grid item xs={12}>
+        <TextField
+          size='small'
+          label='Task description'
+          name='description'
+          value={originalValues.description}
+          onChange={handleChange}
           fullWidth
           autoFocus
           disabled={!isEditing}
           InputLabelProps={{
             sx: {
-              color: isEditing ? "inherit" : "blue",
+              color: isEditing ? 'inherit' : 'blue',
             },
           }}
         />
       </Grid>
+      {/* PRIORITY*/}
       <Grid item xs={12}>
-        <TextField
-          size="small"
-          label="Task description"
-          defaultValue={task.data[0].description}
-          inputRef={inputRefs.description}
-          fullWidth
-          autoFocus
-          disabled={!isEditing}
-          InputLabelProps={{
-            sx: {
-              color: isEditing ? "inherit" : "blue",
-            },
-          }}
-        />
+        <Typography sx={{ fontSize: '0.85rem' }}>Priority</Typography>
+        <FormControl fullWidth sx={{ bgcolor: 'white' }}>
+          <Select
+            required
+            value={originalValues.priority}
+            variant='outlined'
+            size='small'
+            sx={{ fontSize: '2rem', bgcolor: 'white' }}
+            name='priority'
+            onChange={handleChange}
+            displayEmpty
+            renderValue={(selected) => (selected ? selected : 'Type: All')}
+            disabled={!isEditing}
+          >
+            <CustomMenuItem value='High'>High</CustomMenuItem>
+            <CustomMenuItem value='Medium'>Medium</CustomMenuItem>
+            <CustomMenuItem value='Low'>Low</CustomMenuItem>
+          </Select>
+        </FormControl>
       </Grid>
-
-      {/* Prioridad con el selector personalizado */}
+      {/* STATE */}
       <Grid item xs={12}>
-        <CustomSelect
-          size="small"
-          label="Priority"
-          options={["Low", "Medium", "High"]}
-          disabled={!isEditing}
-          defaultValue={priority}
-          inputRef={inputRefs.priority}
-          isEditing={isEditing}
-        />
+        <Typography sx={{ fontSize: '0.85rem' }}>State</Typography>
+        <FormControl fullWidth>
+          <Select
+            required
+            value={originalValues.state}
+            variant='outlined'
+            size='small'
+            sx={{ fontSize: '2rem', backgroundColor: 'white' }}
+            name='state'
+            onChange={handleChange}
+            displayEmpty
+            renderValue={(selected) => (selected ? selected : 'Type: All')}
+            disabled={!isEditing}
+          >
+            <CustomMenuItem value='In Progress'>In Progress</CustomMenuItem>
+            <CustomMenuItem value='Pending'>Pending</CustomMenuItem>
+            <CustomMenuItem value='Completed'>Completed</CustomMenuItem>
+          </Select>
+        </FormControl>
       </Grid>
-
-      {/* CustomSelect también para el campo de tags */}
-      <Grid item xs={12}>
-        <CustomSelect
-          size="small"
-          label="Tags"
-          options={[
-            "Pending",
-            "In Progress",
-            "Issues",
-            "Review",
-            "Completed",
-            "Backlog",
-          ]}
-          defaultValue={state}
-          inputRef={inputRefs.tags}
-          disabled={!isEditing}
-          isEditing={isEditing}
-        />
-      </Grid>
-
+      {/* START */}
       <Grid item xs={12}>
         <Typography
-          variant="h6"
+          variant='h6'
           style={{
             fontSize: 14,
-            fontWeight: "normal",
-            color: isEditing ? "black" : "darkgray",
+            fontWeight: 'normal',
+            color: isEditing ? 'black' : 'darkgray',
           }}
         >
-          Deadline
+          Start date
         </Typography>
-        <DatePicker
-          selected={selectedDate}
-          onChange={(date) => setSelectedDate(date)}
-          disabled={!isEditing}
-          dateFormat="MM/dd/yyyy"
-          className={isEditing ? "date-picker" : "date-picker-disable"}
-          popperClassName="date-picker-popper"
+        <TextField
+          size='small'
+          name='start'
+          type='date'
+          onChange={handleChange}
+          defaultValue={task.start}
+          sx={{
+            width: '100%',
+          }}
         />
       </Grid>
+      {/* END */}
+      <Grid item xs={12}>
+        <Typography
+          variant='h6'
+          style={{
+            fontSize: 14,
+            fontWeight: 'normal',
+            color: isEditing ? 'black' : 'darkgray',
+          }}
+        >
+          End date
+        </Typography>
+        <TextField
+          size='small'
+          name='end'
+          type='date'
+          defaultValue={task.end}
+          onChange={handleChange}
+          sx={{
+            width: '100%',
+          }}
+        />
+      </Grid>
+      {/* BUTTONS */}
       <Grid item xs={12}>
         {isEditing ? (
           <div
             style={{
-              display: "flex",
-              alignItems: "center",
-              width: "100%",
-              justifyContent: "space-around",
+              display: 'flex',
+              alignItems: 'center',
+              width: '100%',
+              justifyContent: 'space-around',
             }}
           >
             <Button
-              variant="outlined"
-              color="primary"
+              variant='outlined'
+              color='primary'
               onClick={handleCancel}
               disableRipple
               style={{
-                paddingInline: "1.5rem",
+                paddingInline: '1.5rem',
                 borderRadius: 10,
               }}
             >
               Cancel
             </Button>
             <Button
-              variant="contained"
-              color="primary"
+              variant='contained'
+              color='primary'
               onClick={handleSave}
               disableRipple
               style={{
-                color: "white",
-                paddingInline: "2rem",
+                color: 'white',
+                paddingInline: '2rem',
                 borderRadius: 10,
               }}
             >
@@ -263,24 +323,24 @@ const TaskDetailContent = ({ task }) => {
         ) : (
           <div
             style={{
-              display: "flex",
-              alignItems: "center",
-              width: "100%",
-              justifyContent: "center",
+              display: 'flex',
+              alignItems: 'center',
+              width: '100%',
+              justifyContent: 'center',
             }}
           >
             <IconButton
               disableRipple
-              color="primary"
-              size="small"
+              color='primary'
+              size='small'
               sx={{
-                "&:hover": {
-                  color: "blue",
-                  transition: "color 0.1s",
+                '&:hover': {
+                  color: 'blue',
+                  transition: 'color 0.1s',
                 },
               }}
               style={{
-                cursor: "pointer",
+                cursor: 'pointer',
                 gap: 8,
               }}
               onClick={handleEdit}
@@ -296,3 +356,22 @@ const TaskDetailContent = ({ task }) => {
 };
 
 export default TaskDetailContent;
+
+const CustomMenuItem = ({ children, selected, ...props }) => {
+  return (
+    <MenuItem
+      sx={{
+        height: 'min-content',
+        bgcolor: 'white',
+        color: selected ? 'black' : 'gray',
+        '&:focus, &:hover': {
+          bgcolor: 'cyan',
+          color: 'blue',
+        },
+      }}
+      {...props}
+    >
+      {children}
+    </MenuItem>
+  );
+};

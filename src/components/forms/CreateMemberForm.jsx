@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Button,
   Grid,
@@ -10,11 +10,11 @@ import {
   Select,
   MenuItem,
   InputLabel,
-} from "@mui/material";
-import { useBoundStore } from "@/stores";
-import { axiosInstance } from "@/config/apiConfig";
-import useFormatText from "@/hooks/useFormatText";
-import roles from "@/utils/roles";
+} from '@mui/material';
+import { useBoundStore } from '@/stores';
+import { axiosInstance } from '@/config/apiConfig';
+import useFormatText from '@/hooks/useFormatText';
+import roles from '@/utils/roles';
 
 function CreateMember() {
   const {
@@ -27,13 +27,13 @@ function CreateMember() {
     selectedProject,
     setSelectedProject,
   } = useBoundStore();
-  const [newRol, setNewRol] = useState("Select Role");
-  const [customRol, setCustomRol] = useState("");
+  const [newRol, setNewRol] = useState('Select Role');
+  const [customRol, setCustomRol] = useState('');
   const theme = createTheme();
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    role: "",
+    name: '',
+    email: '',
+    role: '',
   });
   const [customRolEnabled, setCustomRolEnabled] = useState(false);
 
@@ -53,9 +53,10 @@ function CreateMember() {
   };
 
   const handleSubmit = async () => {
+    formData.role = customRol || newRol;
     try {
       if (!formData.name || !formData.email || !formData.role) {
-        ChangeTitleAlertError("Missing data");
+        ChangeTitleAlertError('Missing data');
         ChangeStateAlertError(true);
         return;
       }
@@ -71,19 +72,18 @@ function CreateMember() {
       setSelectedProject(projectUpdated);
       await updateProjects();
 
-      ChangeTitleAlert("New member added");
+      ChangeTitleAlert('New member added');
       ChangeStateAlert(true);
       handleClose();
     } catch (error) {
-      console.error("Error saving data:", error.message);
+      console.error('Error saving data:', error.message);
     }
   };
 
   const handleChange = (event) => {
     const eventName = event.target.name;
     const eventValue = event.target.value;
-
-    if (eventName === "name") {
+    if (eventName === 'name') {
       setFormData({ ...formData, name: useFormatText(event.target.value) });
     } else {
       setFormData({
@@ -98,24 +98,24 @@ function CreateMember() {
       <Paper
         elevation={0}
         style={{
-          padding: "20px",
-          backgroundColor: "#fff",
-          width: "30vw",
-          borderBottomLeftRadius: "16px",
-          borderBottomRightRadius: "16px",
-          borderTopLeftRadius: "0px",
-          borderTopRightRadius: "0px",
-          paddingBottom: "25px",
+          padding: '20px',
+          backgroundColor: '#fff',
+          width: '30vw',
+          borderBottomLeftRadius: '16px',
+          borderBottomRightRadius: '16px',
+          borderTopLeftRadius: '0px',
+          borderTopRightRadius: '0px',
+          paddingBottom: '25px',
           marginBottom: 100,
         }}
       >
         <Grid
           item
           sx={{
-            marginBottom: "20px",
+            marginBottom: '20px',
           }}
         >
-          <Typography fontFamily={"Poppins"} color={"#6B6E75"}>
+          <Typography fontFamily={'Poppins'} color={'#6B6E75'}>
             Email
           </Typography>
           <TextField
@@ -129,10 +129,10 @@ function CreateMember() {
         <Grid
           item
           sx={{
-            marginBottom: "20px",
+            marginBottom: '20px',
           }}
         >
-          <Typography fontFamily={"Poppins"} color={"#6B6E75"}>
+          <Typography fontFamily={'Poppins'} color={'#6B6E75'}>
             Name
           </Typography>
           <TextField
@@ -146,12 +146,12 @@ function CreateMember() {
         <Grid
           item
           sx={{
-            marginBottom: "20px",
+            marginBottom: '20px',
           }}
         >
-          <Typography fontFamily={"Poppins"} color={"#6B6E75"}>
+          <Typography fontFamily={'Poppins'} color={'#6B6E75'}>
             Select Role
-          </Typography>{" "}
+          </Typography>
           <Grid item xs={6}>
             <Select
               size="small"
@@ -159,7 +159,7 @@ function CreateMember() {
               onChange={(e) => {
                 const selectedRole = e.target.value;
                 setNewRol(selectedRole);
-                setCustomRolEnabled(selectedRole === "Other");
+                setCustomRolEnabled(selectedRole === 'Other');
               }}
               fullWidth
               style={{
@@ -172,10 +172,10 @@ function CreateMember() {
                   style: {
                     borderTopLeftRadius: 0,
                     borderTopRightRadius: 0,
-                    backgroundColor: "#fff",
+                    backgroundColor: '#fff',
                     marginTop: 6,
                     padding: 0,
-                    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
+                    boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.2)',
                   },
                 },
               }}
@@ -184,7 +184,7 @@ function CreateMember() {
                 <MenuItem
                   key={role}
                   value={role}
-                  style={{ backgroundColor: "#fff", cursor: "pointer" }}
+                  style={{ backgroundColor: '#fff', cursor: 'pointer' }}
                 >
                   {role}
                 </MenuItem>
@@ -198,10 +198,10 @@ function CreateMember() {
             item
             size="small"
             sx={{
-              marginBottom: "20px",
+              marginBottom: '20px',
             }}
           >
-            <Typography fontFamily={"Poppins"} color={"#6B6E75"}>
+            <Typography fontFamily={'Poppins'} color={'#6B6E75'}>
               Custom Role
             </Typography>
             <TextField
@@ -220,11 +220,11 @@ function CreateMember() {
               disableRipple
               variant="outlined"
               sx={{
-                color: "black",
-                bgcolor: "white",
-                borderRadius: "0.5rem",
-                border: "1px gray solid",
-                minWidth: "6rem",
+                color: 'black',
+                bgcolor: 'white',
+                borderRadius: '0.5rem',
+                border: '1px gray solid',
+                minWidth: '6rem',
               }}
               onClick={handleClose}
             >
@@ -238,10 +238,10 @@ function CreateMember() {
               style={{ marginLeft: 8 }}
               variant="contained"
               sx={{
-                color: "white",
-                bgcolor: "#7662EA",
-                borderRadius: "0.5rem",
-                minWidth: "6rem",
+                color: 'white',
+                bgcolor: '#7662EA',
+                borderRadius: '0.5rem',
+                minWidth: '6rem',
               }}
               onClick={handleSubmit}
             >

@@ -1,21 +1,24 @@
-import UserAvatar from "@/assets/Img/png/userImageMan.png";
-import { Box, TableCell } from "@mui/material";
-import { RenderIconByCategory } from "./RenderIconByCategory";
-import { fixDate } from "@/utils/fixDate";
+import UserAvatar from '@/assets/Img/png/userImageMan.png';
+import { Box, TableCell } from '@mui/material';
+import { RenderIconByCategory } from './RenderIconByCategory';
+import { fixDate } from '@/utils/fixDate';
 //styles
-import css from "./styles.module.css";
+import css from './styles.module.css';
 //icons
-import { MdAttachFile, MdCalendarMonth } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { MdAttachFile, MdCalendarMonth } from 'react-icons/md';
+import { Link } from 'react-router-dom';
+
+import { shallow } from 'zustand/shallow';
+import { useBoundStore } from '../../stores';
 
 const BoxFlex = ({ children, sx }) => {
   return (
     <Box
       sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "flex-start",
-        gap: "10px",
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        gap: '10px',
         flex: 1,
         ...sx,
       }}
@@ -37,20 +40,25 @@ const ProjectsTableItem = ({
   // category,
 }) => {
   const { fixStart } = fixDate(start);
+  const { selectedProjectById } = useBoundStore((state) => state, shallow);
+  const handleSelectProject = (id) => {
+    selectedProjectById(id);
+  };
 
   return (
     <Link
       to={`/project/${_id}`}
-      style={{ color: "inherit", textDecoration: "none" }}
+      style={{ color: 'inherit', textDecoration: 'none' }}
+      onClick={() => handleSelectProject(_id)}
     >
       <TableCell
         sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          "&:hover": {
-            backgroundColor: "rgba(0, 0, 0, 0.1)",
-            cursor: "pointer",
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          '&:hover': {
+            backgroundColor: 'rgba(0, 0, 0, 0.1)',
+            cursor: 'pointer',
           },
         }}
       >
@@ -66,7 +74,7 @@ const ProjectsTableItem = ({
         >
           <RenderIconByCategory category={category} />
         </div> */}
-          <Box sx={{ marginLeft: "20px" }}>
+          <Box sx={{ marginLeft: '20px' }}>
             <h2 className={css.projectName}>{name}</h2>
             {/* <small className={css.quantityTasks}>{quantityTasks}</small> */}
           </Box>

@@ -161,7 +161,7 @@ const MembersTable = () => {
             Team
           </h6>
           <Button
-            variant='contained'
+            variant="contained"
             disableRipple
             onClick={() => handleButtonMore(allMemberData)}
             sx={{
@@ -184,7 +184,7 @@ const MembersTable = () => {
               marginInline: 'auto',
             }}
           >
-            <Table stickyHeader aria-label='sticky table'>
+            <Table stickyHeader aria-label="sticky table">
               <TableHeader
                 isMobile={isMobile}
                 selectedRows={selectedRows}
@@ -199,25 +199,49 @@ const MembersTable = () => {
                 filteredData={filteredData}
               />
               <TableBody>
-                {filteredData
-                  .slice(
-                    (page - 1) * rowsPerPage,
-                    (page - 1) * rowsPerPage + rowsPerPage
-                  )
-                  .map((row, index) => (
-                    <TableRowComponent
-                      key={index}
-                      isMobile={isMobile}
-                      handleRowClick={handleRowClick}
-                      handleCheckboxClick={handleRowClick}
-                      handleDeleteClick={handleDeleteClick}
-                      row={row}
-                      isSelected={isSelected}
-                      columns={columns}
-                      setAllMemberData={setAllMemberData}
-                      allMemberData={allMemberData}
-                    />
-                  ))}
+                {filteredData.length > 0 ? (
+                  filteredData
+                    .slice(
+                      (page - 1) * rowsPerPage,
+                      (page - 1) * rowsPerPage + rowsPerPage
+                    )
+                    .map((row, index) => (
+                      <TableRowComponent
+                        key={index}
+                        isMobile={isMobile}
+                        handleRowClick={handleRowClick}
+                        handleCheckboxClick={handleRowClick}
+                        handleDeleteClick={handleDeleteClick}
+                        row={row}
+                        isSelected={isSelected}
+                        columns={columns}
+                        setAllMemberData={setAllMemberData}
+                        allMemberData={allMemberData}
+                      />
+                    ))
+                ) : (
+                  <div
+                    style={{
+                      display: 'flex',
+                      width: 'max-content',
+                      justifyContent: 'space-between',
+                      textAlign: 'center',
+                      alignItems: 'center',
+                      marginInline: '1rem',
+                    }}
+                  >
+                    <h6
+                      style={{
+                        fontWeight: 600,
+                        fontSize: '20px',
+                        marginBottom: '1rem',
+                        marginTop: '1rem',
+                      }}
+                    >
+                      No members to show
+                    </h6>
+                  </div>
+                )}
               </TableBody>
             </Table>
           </div>

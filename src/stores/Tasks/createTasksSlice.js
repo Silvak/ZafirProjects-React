@@ -4,11 +4,12 @@ export const createTasksSlice = (set) => ({
   tasks: [],
   myTasks: [],
   customTasks: [],
+  singleTask: null,
 
   addTask: async (taskData, projectId) => {
     try {
       const data = await axiosInstance.post(
-        `/tasksList/${projectId}`,
+        `/tasksList/project/${projectId}`,
         taskData
       );
       console.log(taskData, projectId);
@@ -30,26 +31,36 @@ export const createTasksSlice = (set) => ({
       tasks: state.tasks.filter((task) => task.id !== taskIdToDelete),
     })),
 
-  updateTask: async (taskId, state, projectId) => {
-    if (!taskId || state === undefined || state === null) {
-      console.log('Faltan parametros');
-      return;
-    }
-    try {
-      const newData = {
-        state,
-      };
-      console.log(newData);
-      const res = await axiosInstance.put(`/tasksList/${taskId}`, newData);
-      if (res.status === 200) {
-        createTasksSlice(set).fetchTasksById(projectId);
+  updateTask: async (taskId, isEdit, newData, state, projectId) => {
+    if (isEdit) {
+      try {
+        const res = await axiosInstance.put(`/tasksList/${taskId}`, newData);
+        if (res.status === 200) {
+          createTasksSlice(set).fetchTasksById(projectId);
+        }
+        return res.data;
+      } catch (e) {
+        console.log(e);
       }
-      return res.data;
-    } catch (e) {
-      console.log(e);
+    } else {
+      if (!taskId || state === undefined || state === null) {
+        console.log('Faltan parametros');
+        return;
+      }
+
+      try {
+        const res = await axiosInstance.put(`/tasksList/${taskId}`, {
+          state,
+        });
+        if (res.status === 200) {
+          createTasksSlice(set).fetchTasksById(projectId);
+        }
+        return res.data;
+      } catch (e) {
+        console.log(e);
+      }
     }
   },
-
   fetchTasks: async () => {
     try {
       const { data } = await axiosInstance.get('/tasksList');
@@ -58,11 +69,20 @@ export const createTasksSlice = (set) => ({
       console.error('Error fetching tasks', error);
     }
   },
+  fetchTaskDetailsById: async (taskId) => {
+    try {
+      const { data } = await axiosInstance.get(`/tasksList/${taskId}`);
+      set({ singleTask: data });
+    } catch (error) {
+      console.error('Error fetching task detail', error);
+    }
+  },
   fetchTasksById: async (projectId) => {
     try {
-      const { data } = await axiosInstance.get(`/tasksList/${projectId}`);
+      const { data } = await axiosInstance.get(
+        `/tasksList/project/${projectId}`
+      );
       set({ myTasks: data });
-      // console.log("desde el store:", data);
     } catch (error) {
       console.error('Error fetching tasks', error);
     }

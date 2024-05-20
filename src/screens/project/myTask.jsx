@@ -6,7 +6,6 @@ import CreateTaskForm from '@/components/forms/createTaskForm';
 import TaskHeader from '@/components/taskAccordion/taskHeader';
 import TaskList from '@/components/taskAccordion/taskList';
 import { useBoundStore } from '@/stores/index';
-
 import { useParams } from 'react-router-dom';
 
 const App = () => {
@@ -22,6 +21,7 @@ const App = () => {
     ChangeContentModal,
     ChangeTitleModal,
     fetchTasksById,
+    selectedProject,
   } = useBoundStore();
 
   useEffect(() => {
@@ -40,12 +40,12 @@ const App = () => {
   }, [params.id]);
 
   const [pendingTasks, setPendingTasks] = useState([]);
-  const [backlogTasks, setBacklogTasks] = useState([]);
+  const [completedTasks, setCompletedTasks] = useState([]);
   const [workingTasks, setWorkingTasks] = useState([]);
 
   useEffect(() => {
     setPendingTasks(myTasks.filter((task) => task.state === 'Pending'));
-    setBacklogTasks(myTasks.filter((task) => task.state === 'Backlog'));
+    setCompletedTasks(myTasks.filter((task) => task.state === 'Completed'));
     setWorkingTasks(myTasks.filter((task) => task.state === 'In Progress'));
   }, [myTasks]);
 
@@ -70,7 +70,7 @@ const App = () => {
     <DndProvider backend={HTML5Backend}>
       <div sx={{ minWidth: '250px' }}>
         <TaskHeader
-          title='My Task'
+          title={selectedProject.name}
           handleAddTask={handleAddTask}
           handleButton={handleButton}
         />
@@ -102,10 +102,10 @@ const App = () => {
           </div>
           <div>
             <TaskList
-              title='BackLog'
-              tasks={backlogTasks}
+              title='Completed Tasks'
+              tasks={completedTasks}
               view={view}
-              state='Backlog'
+              state='Completed'
               handleAddTask={() => handleAddTask()}
             />
           </div>

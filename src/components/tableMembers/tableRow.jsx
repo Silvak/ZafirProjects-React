@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { TableRow, TableCell, Grid } from "@mui/material";
-import Checkbox from "@mui/material/Checkbox";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import Typography from "@mui/material/Typography";
-import avatar from "@/assets/Img/png/defaultUser.png";
-import { useBoundStore } from "@/stores/index";
-import EditMember from "@/components/forms/EditMemberForm";
-import "./styles.css";
+import React, { useState } from 'react';
+import { TableRow, TableCell, Grid } from '@mui/material';
+import Checkbox from '@mui/material/Checkbox';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import Typography from '@mui/material/Typography';
+import avatar from '@/assets/Img/png/defaultUser.png';
+import { useBoundStore } from '@/stores/index';
+import EditMember from '@/components/forms/EditMemberForm';
+import './styles.css';
 
 const TableRowComponent = ({
   isMobile,
@@ -20,7 +20,7 @@ const TableRowComponent = ({
   setAllMemberData,
   allMemberData,
 }) => {
-  const isItemSelected = isSelected(row.member.name);
+  const isItemSelected = isSelected(row?.member.name);
   const [deleteClicked, setDeleteClicked] = useState(false);
   const [editClicked, setEditClicked] = useState(false);
   const isExpanded = isMobile && isItemSelected;
@@ -28,7 +28,7 @@ const TableRowComponent = ({
     useBoundStore();
 
   const openModal = (row) => {
-    ChangeTitleModal("");
+    ChangeTitleModal('');
     ChangeContentModal(
       <EditMember
         row={row}
@@ -44,7 +44,7 @@ const TableRowComponent = ({
       <TableRow
         hover={!isMobile}
         style={{
-          backgroundColor: isItemSelected ? "lightblue" : "inherit",
+          backgroundColor: isItemSelected ? 'lightblue' : 'inherit',
         }}
       >
         {!isMobile && (
@@ -52,7 +52,7 @@ const TableRowComponent = ({
             <Checkbox
               checked={isItemSelected}
               onChange={() => handleCheckboxClick(row.member.name)}
-              sx={{ color: "lightgray" }}
+              sx={{ color: 'lightgray' }}
             />
           </TableCell>
         )}
@@ -65,32 +65,32 @@ const TableRowComponent = ({
               key={index}
               align="left"
               style={{
-                fontWeight: "bold",
-                width: "auto",
-                fontSize: "14px",
-                padding: !isMobile ? "0px" : "12px",
+                fontWeight: 'bold',
+                width: 'auto',
+                fontSize: '14px',
+                padding: !isMobile ? '0px' : '12px',
                 backgroundColor:
-                  column.id === "lead_status" ? "cyan" : "inherit",
-                cursor: column.id === "name" ? "pointer" : "inherit",
+                  column.id === 'lead_status' ? 'cyan' : 'inherit',
+                cursor: column.id === 'name' ? 'pointer' : 'inherit',
               }}
               onClick={
-                column.id === "name"
+                column.id === 'name'
                   ? () => handleRowClick(row.member.name)
                   : null
               }
             >
-              {column.id === "project" && !isMobile && (
+              {column.id === 'project' && !isMobile && (
                 <span style={{ marginLeft: 10 }}>{row.project}</span>
               )}
 
-              {column.id === "action" && !isMobile && (
+              {column.id === 'action' && !isMobile && (
                 <div>
                   <DeleteIcon
                     style={{
-                      marginLeft: "24px",
-                      cursor: "pointer",
-                      color: deleteClicked ? "blue" : "inherit",
-                      transition: "color 0.2s ease-in-out",
+                      marginLeft: '24px',
+                      cursor: 'pointer',
+                      color: deleteClicked ? 'blue' : 'inherit',
+                      transition: 'color 0.2s ease-in-out',
                     }}
                     onClick={(e) => {
                       e.stopPropagation();
@@ -103,10 +103,10 @@ const TableRowComponent = ({
                   />
                   <EditIcon
                     style={{
-                      cursor: "pointer",
-                      marginLeft: "10px",
-                      color: editClicked ? "blue" : "inherit",
-                      transition: "color 0.2s ease-in-out",
+                      cursor: 'pointer',
+                      marginLeft: '10px',
+                      color: editClicked ? 'blue' : 'inherit',
+                      transition: 'color 0.2s ease-in-out',
                     }}
                     onClick={(e) => {
                       e.stopPropagation();
@@ -120,63 +120,63 @@ const TableRowComponent = ({
                 </div>
               )}
               {!isMobile &&
-              (column.id === "name" || column.id === "leadOwner") ? (
+              (column.id === 'name' || column.id === 'leadOwner') ? (
                 <div
                   style={{
-                    display: "flex",
-                    alignItems: "center",
+                    display: 'flex',
+                    alignItems: 'center',
                   }}
                 >
-                  {column.id === "name" && (
+                  {column.id === 'name' && (
                     <img
                       style={{
                         width: 32,
-                        marginRight: "10px",
-                        borderRadius: "50%",
+                        marginRight: '10px',
+                        borderRadius: '50%',
                       }}
                       src={avatar}
                     />
                   )}
-                  {column.id === "leadOwner" && (
+                  {column.id === 'leadOwner' && (
                     <img
                       style={{
                         width: 24,
-                        marginRight: "5px",
-                        borderRadius: "50%",
+                        marginRight: '5px',
+                        borderRadius: '50%',
                       }}
                       src={avatar}
                     />
                   )}
-                  <div style={{ display: "flex", flexDirection: "column" }}>
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <div style={{ flex: 1 }}>
-                      {column.id === "name" ? cellContent : row["leadOwner"]}
+                      {column.id === 'name' ? cellContent : row['leadOwner']}
                     </div>
-                    {column.id === "name" && (
-                      <div style={{ flex: 1, color: "gray" }}>
-                        {row.member["email"]}
+                    {column.id === 'name' && (
+                      <div style={{ flex: 1, color: 'gray' }}>
+                        {row.member['email']}
                       </div>
                     )}
                   </div>
                 </div>
               ) : !isMobile &&
-                column.id !== "photo" &&
-                column.id !== "email" ? (
-                column.id === "rol" ? (
+                column.id !== 'photo' &&
+                column.id !== 'email' ? (
+                column.id === 'rol' ? (
                   <span>{row.rolToProject}</span>
                 ) : (
                   cellContent
                 )
-              ) : column.id === "name" ? (
+              ) : column.id === 'name' ? (
                 <span
                   style={{
-                    display: "flex",
-                    minWidth: !isMobile ? "5rem" : "10rem",
+                    display: 'flex',
+                    minWidth: !isMobile ? '5rem' : '10rem',
                   }}
                 >
                   {cellContent}
                 </span>
               ) : (
-                ""
+                ''
               )}
             </TableCell>
           );
@@ -192,28 +192,28 @@ const TableRowComponent = ({
                     variant="body2"
                     component="div"
                     style={{
-                      textAlign: "center",
-                      marginRight: "20%",
-                      fontWeight: "normal",
+                      textAlign: 'center',
+                      marginRight: '20%',
+                      fontWeight: 'normal',
                     }}
                   >
-                    <strong>{column.label !== "Name" && column.label} </strong>
-                    {column.label !== "Name" && column.id !== "action" ? (
+                    <strong>{column.label !== 'Name' && column.label} </strong>
+                    {column.label !== 'Name' && column.id !== 'action' ? (
                       <React.Fragment>
-                        {column.id === "photo" ? (
+                        {column.id === 'photo' ? (
                           <img src={avatar} width="56px" alt="Photo" />
-                        ) : column.label !== "Rol" ? (
-                          <span style={{ fontWeight: "normal" }}>
-                            {": " + row[column.id]}
+                        ) : column.label !== 'Rol' ? (
+                          <span style={{ fontWeight: 'normal' }}>
+                            {': ' + row[column.id]}
                           </span>
                         ) : (
-                          <span style={{ fontWeight: "normal" }}>
-                            {": " + row.rolToProject}
+                          <span style={{ fontWeight: 'normal' }}>
+                            {': ' + row.rolToProject}
                           </span>
                         )}
                       </React.Fragment>
                     ) : (
-                      ""
+                      ''
                     )}
                   </Typography>
                 </Grid>

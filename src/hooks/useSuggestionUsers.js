@@ -1,19 +1,27 @@
-import { useEffect, useState } from "react";
-import { axiosInstance } from "../config/apiConfig";
+import { useEffect, useState } from 'react';
+import { axiosInstance } from '../config/apiConfig';
 
 //TODO: crear un componente estilado que muestre las sugerencias mas lindas
 
+const INITIAL_SELECTED_MEMBER = {
+  email: '',
+  id: '',
+  name: '',
+  rol: '',
+  _id: '',
+};
+
 function useSuggestionUsers() {
   const [users, setUsers] = useState([]);
-  const [selectedLeader, setSelectedLeader] = useState("");
-  const [selectedMember, setSelectedMember] = useState("");
+  const [selectedLeader, setSelectedLeader] = useState('');
+  const [selectedMember, setSelectedMember] = useState(INITIAL_SELECTED_MEMBER);
   const [filteredLeaders, setFilteredLeaders] = useState([]);
   const [filteredMembers, setFilteredMembers] = useState([]);
 
   //users
   async function fetchUsers() {
     try {
-      const { data } = await axiosInstance.get("/user");
+      const { data } = await axiosInstance.get('/user');
       setUsers(data);
     } catch (e) {
       console.log(e);
@@ -29,9 +37,9 @@ function useSuggestionUsers() {
     const inputValue = e.target.value;
 
     // for input leader
-    if (type === "leader") {
+    if (type === 'leader') {
       setSelectedLeader(inputValue);
-      if (inputValue === "") {
+      if (inputValue === '') {
         setFilteredLeaders([]);
       } else {
         const filter = users.filter((user) => {
@@ -40,10 +48,10 @@ function useSuggestionUsers() {
         setFilteredLeaders(filter);
       }
     } // for input member
-    else if (type === "member") {
+    else if (type === 'member') {
       setSelectedMember(inputValue);
 
-      if (inputValue === "") {
+      if (inputValue === '') {
         setFilteredMembers([]);
       } else {
         const filter = users.filter((user) => {
@@ -55,17 +63,17 @@ function useSuggestionUsers() {
   };
 
   const handleSuggestionClick = (user, type) => {
-    if (type === "leader") {
-      setSelectedLeader(user.name);
+    if (type === 'leader') {
+      setSelectedLeader(user);
       setFilteredLeaders([]);
     } else {
-      setSelectedMember(user.name);
+      setSelectedMember(user);
       setFilteredMembers([]);
     }
   };
 
   const resetSuggestions = (type) => {
-    if (type === "leader") {
+    if (type === 'leader') {
       setFilteredLeaders([]);
     } else {
       setFilteredMembers([]);
@@ -82,6 +90,7 @@ function useSuggestionUsers() {
     handleSuggestionChange,
     handleSuggestionClick,
     resetSuggestions,
+    INITIAL_SELECTED_MEMBER,
   };
 }
 

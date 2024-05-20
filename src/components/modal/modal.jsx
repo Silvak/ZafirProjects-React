@@ -1,16 +1,16 @@
-import * as React from "react";
-import { Box, Button, Modal, Typography, IconButton } from "@mui/material";
-import { useBoundStore } from "@/stores/index";
-import { shallow } from "zustand/shallow";
-import CloseIcon from "@mui/icons-material/Close";
+import * as React from 'react';
+import { Box, Button, Modal, Typography, IconButton } from '@mui/material';
+import { useBoundStore } from '@/stores/index';
+import { shallow } from 'zustand/shallow';
+import CloseIcon from '@mui/icons-material/Close';
 
 const modalStyle = {
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-  alignItems: "center",
-  padding: "10px",
-  height: "auto",
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: '10px',
+  height: 'auto',
 };
 
 const ModalGlobal = () => {
@@ -32,46 +32,46 @@ const ModalGlobal = () => {
       onClose={handleClose}
       disableEnforceFocus
       sx={{
-        "& .MuiBackdrop-root": {
-          backgroundColor: "rgba(0, 0, 0, 0.1)",
-          backdropFilter: "blur(3px)",
+        '& .MuiBackdrop-root': {
+          backgroundColor: 'rgba(0, 0, 0, 0.1)',
+          backdropFilter: 'blur(3px)',
         },
-        overflowY: "-moz-hidden-unscrollable",
+        overflowY: '-moz-hidden-unscrollable',
       }}
     >
       <Box
         sx={{
           ...modalStyle,
-          minHeight: "100vh",
-          padding: "20px",
+          minHeight: '100vh',
+          padding: '20px',
         }}
       >
-        <Box sx={{ maxWidth: "99%" }}>
-          {" "}
+        <Box sx={{ maxWidth: '99%' }}>
+          {' '}
           {/* width off */}
           {titleModal && (
             <Typography
-              variant="h4"
+              variant='h4'
               sx={{
-                bgcolor: "#FFFFFF",
-                color: "black",
-                fontWeight: "bold",
-                borderTopLeftRadius: "16px",
-                borderTopRightRadius: "16px",
+                bgcolor: '#FFFFFF',
+                color: 'black',
+                fontWeight: 'bold',
+                borderTopLeftRadius: '16px',
+                borderTopRightRadius: '16px',
                 borderBottomLeftRadius: 0,
                 borderBottomRightRadius: 0,
-                paddingTop: "20px",
-                paddingLeft: "35px",
-                paddingBottom: "7px",
-                borderBottom: "1px solid white",
+                paddingTop: '20px',
+                paddingLeft: '35px',
+                paddingBottom: '7px',
+                borderBottom: '1px solid white',
               }}
             >
               <div
                 style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  border: "none",
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  border: 'none',
                 }}
               >
                 {titleModal}
@@ -79,15 +79,15 @@ const ModalGlobal = () => {
                 {isVisibleButton && (
                   <IconButton
                     sx={{
-                      margin: "0",
-                      bgcolor: "white",
-                      display: "flex",
-                      justifyContent: "flex-end",
+                      margin: '0',
+                      bgcolor: 'white',
+                      display: 'flex',
+                      justifyContent: 'flex-end',
                       mr: 2,
                     }}
                     disableRipple
-                    title="Close"
-                    variant="text"
+                    title='Close'
+                    variant='text'
                     onClick={handleClose}
                   >
                     <CloseIcon />
