@@ -17,7 +17,7 @@ function useSuggestionUsers() {
   const [selectedMember, setSelectedMember] = useState(INITIAL_SELECTED_MEMBER);
   const [filteredLeaders, setFilteredLeaders] = useState([]);
   const [filteredMembers, setFilteredMembers] = useState([]);
-
+  console.log(selectedMember);
   //users
   async function fetchUsers() {
     try {
@@ -62,6 +62,7 @@ function useSuggestionUsers() {
     }
   };
 
+  // click on the suggestion
   const handleSuggestionClick = (user, type) => {
     if (type === 'leader') {
       setSelectedLeader(user);

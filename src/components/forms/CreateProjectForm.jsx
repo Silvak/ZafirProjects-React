@@ -193,7 +193,7 @@ function CreateProjectForm() {
             <TextField
               size='small'
               name='leaders'
-              value={selectedLeader}
+              value={selectedLeader.name}
               onChange={(e) => handleSuggestionChange(e, 'leader')}
               placeholder='Search leader'
               sx={{
@@ -266,7 +266,7 @@ function CreateProjectForm() {
             <TextField
               size='small'
               name='members'
-              value={selectedMember}
+              value={selectedMember.name}
               onChange={(e) => handleSuggestionChange(e, 'member')}
               placeholder='Search a member'
               sx={{
