@@ -5,10 +5,10 @@ import { shallow } from 'zustand/shallow';
 import CloseIcon from '@mui/icons-material/Close';
 
 const modalStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
+  // display: 'flex',
+  // flexDirection: 'column',
+  // justifyContent: 'center',
+  // alignItems: 'center',
   padding: '10px',
   height: 'auto',
 };
