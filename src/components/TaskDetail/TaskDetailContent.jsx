@@ -10,23 +10,33 @@ import {
   MenuItem,
 } from '@mui/material';
 import { EditOutlined as EditOutlinedIcon } from '@mui/icons-material';
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useBoundStore } from '../../stores';
 import './dataPicker.css';
-import CustomSelect from './CustomSelect';
 import { useProject } from '@/hooks/useProject';
+import { format } from 'date-fns';
 
 const TaskDetailContent = ({ task }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [originalValues, setOriginalValues] = useState({
-    taskName: task.taskName,
-    description: task.description,
-    start: task.start,
-    end: task.end,
-    state: task.state,
-    priority: task.priority,
+    taskName: '',
+    description: '',
+    start: '',
+    end: '',
+    state: '',
+    priority: '',
   });
+
+  useEffect(() => {
+    setOriginalValues({
+      taskName: task.taskName,
+      description: task.description,
+      start: format(new Date(task.start), 'yyyy/MM/dd'),
+      end: format(new Date(task.end), 'yyyy/MM/dd'),
+      state: task.state,
+      priority: task.priority,
+    });
+  }, [task._id]);
 
   const {
     updateTask,
@@ -81,23 +91,6 @@ const TaskDetailContent = ({ task }) => {
       ChangeTitleAlertError('Error:', error.message);
       ChangeStateAlertError(true);
     }
-
-    // const changesDetected =
-    //   newValues.taskName !== task.taskName ||
-    //   newValues.description !== task.description ||
-    //   newValues.tags !== task.state ||
-    //   newValues.members !== task.members ||
-    //   newValues.end !== task.end ||
-    //   newValues.priority !== task.priority;
-
-    // if (!changesDetected) {
-    //   ChangeTitleAlertError('No changes detected. No action required.');
-    //   ChangeStateAlertError(true);
-    //   setIsEditing(false);
-    //   return;
-    // }
-    // setIsEditing(false);
-    // const params = selectedProject._id;
   };
 
   const handleChange = (e) => {
@@ -255,9 +248,10 @@ const TaskDetailContent = ({ task }) => {
         <TextField
           size='small'
           name='start'
-          type='date'
+          type={isEditing ? 'date' : 'text'}
           onChange={handleChange}
-          defaultValue={task.start}
+          value={originalValues.start}
+          disabled={!isEditing}
           sx={{
             width: '100%',
           }}
@@ -278,8 +272,9 @@ const TaskDetailContent = ({ task }) => {
         <TextField
           size='small'
           name='end'
-          type='date'
-          defaultValue={task.end}
+          type={isEditing ? 'date' : 'text'}
+          value={originalValues.end}
+          disabled={!isEditing}
           onChange={handleChange}
           sx={{
             width: '100%',
