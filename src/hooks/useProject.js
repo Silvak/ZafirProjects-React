@@ -90,7 +90,7 @@ export function useProject({ project, isCreated = false }) {
   const handleAddLeaders = () => {
     if (selectedLeader && !teamLeaders.includes(selectedLeader)) {
       setLeaders([...teamLeaders, selectedLeader]);
-      setSelectedLeader('');
+      setSelectedLeader(INITIAL_SELECTED_MEMBER);
       resetSuggestions('leader');
     }
   };
