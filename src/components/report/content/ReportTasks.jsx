@@ -92,13 +92,13 @@ function ReportTasks({ customProject }) {
       reviewTasks,
       title: 'Review',
       total: reviewTasks.length,
-      color: '#429482',
+      color: '#EBA741',
     },
     completed: {
       completedTasks,
       title: 'Completed',
       total: completedTasks.length,
-      color: '#EBA741',
+      color: '#429482',
     },
   };
 
