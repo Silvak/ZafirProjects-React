@@ -1,17 +1,13 @@
 import { useEffect, useState } from 'react';
-import { myWorkData } from '../../mockData/myWorkData';
 import {
   Typography,
   Grid,
   Box,
   ThemeProvider,
   createTheme,
-  Select,
-  MenuItem,
   useMediaQuery,
   Tooltip,
 } from '@mui/material';
-import FilterSelect from '@/components/Selects/FilterSelect';
 import { useBoundStore } from '../../stores/index';
 import { isInThisWeek, isInThisMonth, isToday } from '../../hooks/useDates';
 
@@ -24,16 +20,8 @@ const filtersData = [
 
 function MyWorkGlance() {
   const theme = createTheme();
-  const {
-    tasks,
-    myTasks,
-    fetchTasksById,
-    addTask,
-    fetchTasks,
-    selectedProject,
-  } = useBoundStore();
+  const { myTasks, fetchTasksById, selectedProject } = useBoundStore();
   const [filterOption, setFilterOption] = useState('All');
-  // const { pending, progress, issues, review, completed } = myWorkData;
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   const handleFilter = (event) => {
@@ -51,34 +39,33 @@ function MyWorkGlance() {
       };
       fetchData();
     }
-  }, [selectedProject]);
+  }, [selectedProject, fetchTasksById]);
 
-  const filteredTasks = myTasks.filter((task) => {
-    const taskDate = new Date(task.start);
-    switch (filterOption) {
-      case 'This Week':
-        return isInThisWeek(taskDate);
-      case 'This Month':
-        return isInThisMonth(taskDate);
-      case 'Today':
-        return isToday(taskDate);
-      case 'All':
-        return true;
-      default:
-        return true; // Si la opción de filtro es "All", mostrar todas las tareas
-    }
-  });
+  const filteredTasks = Array.isArray(myTasks)
+    ? myTasks.filter((task) => {
+        const taskDate = new Date(task.start);
+        switch (filterOption) {
+          case 'This Week':
+            return isInThisWeek(taskDate);
+          case 'This Month':
+            return isInThisMonth(taskDate);
+          case 'Today':
+            return isToday(taskDate);
+          case 'All':
+          default:
+            return true;
+        }
+      })
+    : [];
 
   const inProgressTasks = filteredTasks.filter(
-    (tasks) => tasks.state === 'In Progress'
+    (task) => task.state === 'In Progress'
   );
-  const pendingTasks = filteredTasks.filter(
-    (tasks) => tasks.state === 'Pending'
-  );
-  const issuesTasks = filteredTasks.filter((tasks) => tasks.state === 'Issues');
-  const reviewTasks = filteredTasks.filter((tasks) => tasks.state === 'Review');
+  const pendingTasks = filteredTasks.filter((task) => task.state === 'Pending');
+  const issuesTasks = filteredTasks.filter((task) => task.state === 'Issues');
+  const reviewTasks = filteredTasks.filter((task) => task.state === 'Review');
   const completedTasks = filteredTasks.filter(
-    (tasks) => tasks.state === 'Completed'
+    (task) => task.state === 'Completed'
   );
 
   const renderData = {
@@ -104,13 +91,13 @@ function MyWorkGlance() {
       reviewTasks,
       title: 'Review',
       total: reviewTasks.length,
-      color: '#EBA741',
+      color: '#429482',
     },
     completed: {
       completedTasks,
       title: 'Completed',
       total: completedTasks.length,
-      color: '#429482',
+      color: '#EBA741',
     },
   };
 
@@ -119,9 +106,9 @@ function MyWorkGlance() {
       <Box
         sx={{
           backgroundColor: '#ffffff',
-          height: 'auto', // Cambiado a "auto" para que el contenedor se ajuste al contenido
+          height: 'auto',
           borderRadius: '20px',
-          padding: '20px', // Agregado espacio interno para separar los elementos
+          padding: '20px',
           overflowX: 'auto',
         }}
       >
@@ -146,14 +133,13 @@ function MyWorkGlance() {
             My Work Glance
           </Typography>
           <Grid item>
-            {/* <FilterSelect data={filtersData} padding="10px" /> */}
-            <Tooltip title='Filter'>
+            <Tooltip title="Filter">
               <select
                 value={filterOption}
                 onChange={handleFilter}
                 style={{
                   border: 'none',
-                  outline: ' 1px solid #808080',
+                  outline: '1px solid #808080',
                   background: 'white',
                   borderRadius: '8px',
                   cursor: 'pointer',
@@ -161,11 +147,7 @@ function MyWorkGlance() {
                 }}
               >
                 {filtersData.map((filter) => (
-                  <option
-                    value={filter.value}
-                    key={filter.id}
-                    onChange={() => handleFilter('')}
-                  >
+                  <option value={filter.value} key={filter.id}>
                     {filter.label}
                   </option>
                 ))}
@@ -176,8 +158,8 @@ function MyWorkGlance() {
         <Box
           sx={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', // Distribuye automáticamente los elementos y los hace responsivos
-            gap: '20px', // Agregado espacio entre los elementos
+            gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+            gap: '20px',
           }}
         >
           <InfoCard data={renderData.progress} />
@@ -191,12 +173,7 @@ function MyWorkGlance() {
   );
 }
 
-// Componente separado para los elementos de información
 function InfoCard({ data }) {
-  const [selectedValue, setSelectedValue] = useState('This Week');
-  const handleSelectChange = (event) => {
-    setSelectedValue(event.target.value);
-  };
   return (
     <Grid
       item
@@ -218,11 +195,11 @@ function InfoCard({ data }) {
             width: '8px',
             height: '33px',
             backgroundColor: data.color,
-            marginBottom: '5px', // Agregado espacio inferior para separar del siguiente elemento
+            marginBottom: '5px',
           }}
         />
         <Typography
-          variant='h5'
+          variant="h5"
           sx={{
             marginLeft: 1.5,
             marginBottom: '5px',
