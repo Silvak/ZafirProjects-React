@@ -1,33 +1,35 @@
-import { Box } from "@mui/material";
+import { Box } from '@mui/material';
 
 const TaskDetailHeader = ({ taskId, taskTitle }) => {
+  console.log(taskTitle);
+
   return (
     <Box
       component="header"
       sx={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
       }}
     >
       <h2
         style={{
-          fontSize: "clamp(13px,2vw, 20px)",
-          fontWeight: "bold",
-          textBalance: "balance",
+          fontSize: 'clamp(13px,2vw, 20px)',
+          fontWeight: 'bold',
+          textBalance: 'balance',
         }}
       >
         {taskTitle}
       </h2>
       <Box
         sx={{
-          background: "#E0E3E8",
-          padding: "8px",
-          borderRadius: "8px",
+          background: '#E0E3E8',
+          padding: '8px',
+          borderRadius: '8px',
         }}
       >
         <span
-          style={{ fontSize: "clamp(10px,2vw, 12px)", textAlign: "center" }}
+          style={{ fontSize: 'clamp(10px,2vw, 12px)', textAlign: 'center' }}
         >
           {taskId}
         </span>

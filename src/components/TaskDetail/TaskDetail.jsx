@@ -7,14 +7,18 @@ import { useBoundStore } from '../../stores';
 import { useEffect, useState } from 'react';
 import Loader from '../Loader/Loader';
 
-const TaskDetail = ({ task }) => {
+const TaskDetail = ({ task, isSubtask = false }) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   const { fetchTaskDetailsById, singleTask } = useBoundStore((state) => state);
 
+  console.log(isSubtask);
+  console.log('subtask:', task);
   useEffect(() => {
-    fetchTaskDetailsById(task._id);
+    fetchTaskDetailsById(task._id, isSubtask);
   }, [task._id]);
+
+  console.log(singleTask);
 
   return (
     <Grid
@@ -22,7 +26,9 @@ const TaskDetail = ({ task }) => {
       sx={{
         background: '#FFFF',
         margin: 0,
-        height: '100vh',
+        height: '80vh',
+        borderBottomRightRadius: '14px',
+        borderBottomLeftRadius: '14px',
         width: '100%',
         '& > .MuiGrid-item': {
           padding: '0px',
@@ -36,7 +42,7 @@ const TaskDetail = ({ task }) => {
       {!singleTask ? (
         <Box
           sx={{
-            width: '100%',
+            width: '50vw',
             // width: `${isMobile ? '100%' : '1880px'}`,
             display: 'grid',
             placeContent: 'center',
@@ -58,7 +64,7 @@ const TaskDetail = ({ task }) => {
           >
             <TaskDetailHeader
               taskId={singleTask._id}
-              taskTitle={singleTask.taskName}
+              taskTitle={task.name || singleTask.taskName}
             />
             <TaskDetailContent task={singleTask} />
             <TaskDetailSubstasks taskId={singleTask._id} />

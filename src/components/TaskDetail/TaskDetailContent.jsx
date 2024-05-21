@@ -111,7 +111,7 @@ const TaskDetailContent = ({ task = {} }) => {
           <TextField
             size="small"
             label="Member"
-            value={selectedMember?.name || ''}
+            value={task.members?.[0]?.name || ''}
             onChange={(e) => handleSuggestionChange(e, 'member')}
             fullWidth
             disabled={!isEditing}
