@@ -19,7 +19,6 @@ import { priorityColors, statusColors } from '@/utils/colors';
 
 function MyTaskItems({ tasks }) {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-  console.log(tasks);
 
   const formatDate = (dateString) => {
     const today = new Date();
@@ -66,8 +65,8 @@ function MyTaskItems({ tasks }) {
                 }}
               >
                 <Typography
-                  variant='h6'
-                  fontWeight='bold'
+                  variant="h6"
+                  fontWeight="bold"
                   noWrap
                   style={{ fontSize: '14px', marginTop: '16px' }}
                 >
@@ -77,12 +76,12 @@ function MyTaskItems({ tasks }) {
                   container
                   spacing={0.5}
                   // columns={12}
-                  alignItems='center'
+                  alignItems="center"
                   padding={1}
                 >
                   <Grid item xs={12} sm={2}>
                     <Typography
-                      variant='h6'
+                      variant="h6"
                       noWrap
                       style={{
                         fontSize: '12px',
@@ -114,7 +113,7 @@ function MyTaskItems({ tasks }) {
                           sx={{ mr: '5px', color: 'gray' }}
                         />
                         <Typography
-                          variant='body1'
+                          variant="body1"
                           noWrap
                           style={{
                             fontSize: '14px',
@@ -136,7 +135,7 @@ function MyTaskItems({ tasks }) {
                           onClick={handleClipIcon}
                         />
                         <Typography
-                          variant='body1'
+                          variant="body1"
                           noWrap
                           style={{
                             fontSize: '14px',
@@ -173,8 +172,8 @@ function MyTaskItems({ tasks }) {
                         }}
                       />
                       <Typography
-                        variant='body1'
-                        color='textSecondary'
+                        variant="body1"
+                        color="textSecondary"
                         noWrap
                         style={{ fontSize: '14px', fontWeight: 'bold' }}
                       >
@@ -196,8 +195,8 @@ function MyTaskItems({ tasks }) {
                     }}
                   >
                     <Typography
-                      variant='body1'
-                      color='textSecondary'
+                      variant="body1"
+                      color="textSecondary"
                       noWrap
                       sx={{
                         fontWeight: 'bold',
@@ -232,8 +231,8 @@ function MyTaskItems({ tasks }) {
                   }}
                 >
                   <Typography
-                    variant='h6'
-                    fontWeight='bold'
+                    variant="h6"
+                    fontWeight="bold"
                     noWrap
                     style={{ fontSize: '14px', marginTop: '16px' }}
                   >
@@ -241,7 +240,7 @@ function MyTaskItems({ tasks }) {
                   </Typography>
                   <Grid item xs={12} sm={2} sx={{ marginBottom: '10px' }}>
                     <Typography
-                      variant='h6'
+                      variant="h6"
                       noWrap
                       style={{
                         fontSize: '12px',
@@ -273,7 +272,7 @@ function MyTaskItems({ tasks }) {
                           sx={{ mr: '5px', color: 'gray' }}
                         />
                         <Typography
-                          variant='body1'
+                          variant="body1"
                           noWrap
                           style={{
                             fontSize: '14px',
@@ -295,7 +294,7 @@ function MyTaskItems({ tasks }) {
                           onClick={handleClipIcon}
                         />
                         <Typography
-                          variant='body1'
+                          variant="body1"
                           noWrap
                           style={{
                             fontSize: '14px',
@@ -347,8 +346,8 @@ function MyTaskItems({ tasks }) {
                             }}
                           />
                           <Typography
-                            variant='body1'
-                            color='textSecondary'
+                            variant="body1"
+                            color="textSecondary"
                             noWrap
                             style={{ fontSize: '14px', fontWeight: 'bold' }}
                           >
@@ -373,8 +372,8 @@ function MyTaskItems({ tasks }) {
                       }}
                     >
                       <Typography
-                        variant='body1'
-                        color='textSecondary'
+                        variant="body1"
+                        color="textSecondary"
                         noWrap
                         sx={{
                           fontWeight: 'bold',
