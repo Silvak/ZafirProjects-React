@@ -85,19 +85,19 @@ function MyWorkGlance() {
       issuesTasks,
       title: 'Issues',
       total: issuesTasks.length,
-      color: '#E55D57',
+      color: '#EBA741',
     },
     review: {
       reviewTasks,
       title: 'Review',
       total: reviewTasks.length,
-      color: '#429482',
+      color: '#E55D57',
     },
     completed: {
       completedTasks,
       title: 'Completed',
       total: completedTasks.length,
-      color: '#EBA741',
+      color: '#429482',
     },
   };
 
