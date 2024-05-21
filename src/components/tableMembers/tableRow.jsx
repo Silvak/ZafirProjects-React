@@ -39,6 +39,8 @@ const TableRowComponent = ({
     ChangeStateModal(true);
   };
 
+  console.log(row);
+
   return (
     <React.Fragment key={row.member._id}>
       <TableRow
@@ -138,14 +140,24 @@ const TableRowComponent = ({
                     />
                   )}
                   {column.id === 'leadOwner' && (
-                    <img
-                      style={{
-                        width: 24,
-                        marginRight: '5px',
-                        borderRadius: '50%',
-                      }}
-                      src={avatar}
-                    />
+                    <>
+                      <img
+                        style={{
+                          width: 24,
+                          marginRight: '5px',
+                          borderRadius: '50%',
+                        }}
+                        src={avatar}
+                      />
+                      <span
+                        style={{
+                          display: 'flex',
+                          minWidth: !isMobile ? '5rem' : '10rem',
+                        }}
+                      >
+                        {row.leadOwner ? row.leadOwner : 'Leader'}
+                      </span>
+                    </>
                   )}
                   <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <div style={{ flex: 1 }}>

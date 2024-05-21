@@ -43,6 +43,10 @@ const SubTaskForm = ({ placeholderTaskName = 'Subtask 1', taskId }) => {
     fetchSubtasks,
     ChangeStateModal,
     selectedProject,
+    ChangeStateAlert,
+    ChangeTitleAlert,
+    ChangeStateAlertError,
+    ChangeTitleAlertError,
   } = useBoundStore();
 
   useEffect(() => {
@@ -76,13 +80,10 @@ const SubTaskForm = ({ placeholderTaskName = 'Subtask 1', taskId }) => {
     taskId: taskId,
   });
 
-  console.log(subtaskData);
   const [selectedUser, setSelectedUser] = useState('');
   const [teamMembers, setTeamMembers] = useState([]);
 
   const handleCreate = async () => {
-    console.log('Leader que vamos a mandar al back: ', selectedLeader);
-
     if (
       !taskName ||
       !selectedDate ||
@@ -92,11 +93,15 @@ const SubTaskForm = ({ placeholderTaskName = 'Subtask 1', taskId }) => {
       !selectedLeader
     ) {
       // Si algún campo obligatorio está vacío, muestra un mensaje de error y no crees la tarea
-      alert('Por favor, rellena todos los campos obligatorios.');
+      // alert('Por favor, rellena todos los campos obligatorios.');
+      ChangeTitleAlertError('Please complete all the data in the subtask');
+      ChangeStateAlertError(true);
       return;
     }
     try {
       await addSubtask(subtaskData);
+      ChangeTitleAlert('SubTask created');
+      ChangeStateAlert(true);
       handleClose();
     } catch (error) {
       alert('Error creating task', error);
@@ -105,26 +110,6 @@ const SubTaskForm = ({ placeholderTaskName = 'Subtask 1', taskId }) => {
 
   const handleClose = () => {
     ChangeStateModal(false);
-  };
-
-  const handleAssignToChange = (newLeader) => {
-    console.log(newLeader);
-    setSelectedUser(newLeader);
-    console.log('Leader que vamos a mandar al back: ', selectedUser);
-  };
-
-  const handleAddMember = () => {
-    if (selectedUser && !teamMembers.includes(selectedUser)) {
-      setTeamMembers([...teamMembers, selectedUser]);
-      setSelectedUser('');
-    }
-  };
-
-  const handleRemoveMember = (memberToRemove) => {
-    const updatedMembers = teamMembers.filter(
-      (member) => member !== memberToRemove
-    );
-    setTeamMembers(updatedMembers);
   };
 
   const handleDateChange = (event) => {
@@ -216,16 +201,7 @@ const SubTaskForm = ({ placeholderTaskName = 'Subtask 1', taskId }) => {
                 sx={{ fontSize: '2rem' }}
               />
             </Grid>
-            <Grid
-              item
-              xs={12}
-              sx={
-                {
-                  // width: "444px",
-                  // marginBottom: "20px",
-                }
-              }
-            >
+            <Grid item xs={12}>
               <Typography sx={{ fontSize: '0.85rem' }}>Assigne to</Typography>
 
               <TextField
@@ -240,7 +216,6 @@ const SubTaskForm = ({ placeholderTaskName = 'Subtask 1', taskId }) => {
               />
               <div
                 style={{
-                  // marginTop: 6,
                   marginLeft: 4,
                   cursor: 'pointer',
                   padding: 8,
@@ -249,62 +224,13 @@ const SubTaskForm = ({ placeholderTaskName = 'Subtask 1', taskId }) => {
                 {filteredLeaders.map((user) => (
                   <p
                     key={user.id}
-                    onClick={() => handleSuggestionClick(user, 'leader')}
+                    onClick={() => handleSuggestionClick(user.name, 'leader')}
                   >
                     {user.name}
                   </p>
                 ))}
               </div>
-
-              {/* <IconButton
-                title="Add Leader"
-                sx={{ bgcolor: "lightgray" }}
-                onClick={() => handleAssignToChange(selectedLeader)}
-              >
-                <AddIcon />
-              </IconButton> */}
             </Grid>
-            {/* 
-            <Grid item xs={12}>
-              <Box
-                sx={{
-                  display: "flex",
-                  gap: "8px",
-                  marginBottom: "4px",
-                  cursor: "pointer",
-                }}
-              >
-                {teamMembers.map((member, index) => (
-                  <Avatar
-                    title="Remove"
-                    key={index}
-                    alt={member}
-                    src={
-                      member === "user1"
-                        ? user1
-                        : member === "user2"
-                        ? user2
-                        : member === "user3"
-                        ? user3
-                        : ""
-                    }
-                    onClick={() => handleRemoveMember(member)}
-                    style={{ transition: "opacity 0.3s ease-in-out" }}
-                    onMouseOver={(e) => (e.currentTarget.style.opacity = "0.7")}
-                    onMouseOut={(e) => (e.currentTarget.style.opacity = "1")}
-                  />
-                ))}
-                {teamMembers.length < 4 && (
-                  <IconButton
-                    title="Add Leader"
-                    sx={{ bgcolor: "lightgray" }}
-                    onClick={handleAddMember}
-                  >
-                    <AddIcon />
-                  </IconButton>
-                )}
-              </Box>
-            </Grid> */}
 
             <Grid item xs={12}>
               <Typography sx={{ fontSize: '0.85rem' }}>Status</Typography>
@@ -325,10 +251,7 @@ const SubTaskForm = ({ placeholderTaskName = 'Subtask 1', taskId }) => {
                     In Progress
                   </CustomMenuItem>
                   <CustomMenuItem value="Pending">Pending</CustomMenuItem>
-                  {/* <CustomMenuItem value="Issues">Issues</CustomMenuItem> */}
-                  {/* <CustomMenuItem value="Review">Review</CustomMenuItem> */}
                   <CustomMenuItem value="Completed">Completed</CustomMenuItem>
-                  {/* <CustomMenuItem value="Backlog">Backlog</CustomMenuItem> */}
                 </Select>
               </FormControl>
             </Grid>
