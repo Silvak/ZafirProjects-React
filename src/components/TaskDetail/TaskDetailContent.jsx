@@ -12,11 +12,13 @@ import {
 import { EditOutlined as EditOutlinedIcon } from '@mui/icons-material';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useBoundStore } from '../../stores';
+import { shallow } from 'zustand/shallow';
+
 import './dataPicker.css';
 import { useProject } from '@/hooks/useProject';
 import { format } from 'date-fns';
 
-const TaskDetailContent = ({ task }) => {
+const TaskDetailContent = ({ task = {} }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [originalValues, setOriginalValues] = useState({
     taskName: '',
@@ -27,6 +29,7 @@ const TaskDetailContent = ({ task }) => {
     priority: '',
   });
 
+
   const {
     updateTask,
     selectedProject,
@@ -35,7 +38,7 @@ const TaskDetailContent = ({ task }) => {
     ChangeStateAlertError,
     ChangeTitleAlertError,
     ChangeStateModal,
-  } = useBoundStore();
+  } = useBoundStore((state) => state, shallow);
 
   const {
     selectedMember,
@@ -68,13 +71,16 @@ const TaskDetailContent = ({ task }) => {
   };
 
   const handleCancel = () => {
-    setOriginalValues({
-      taskName: task.taskName,
-      description: task.description,
-      end: task.end,
-      state: task.state,
-      priority: task.priority,
-    });
+    if (task) {
+      setOriginalValues({
+        taskName: task.taskName || '',
+        description: task.description || '',
+        start: task.start ? format(new Date(task.start), 'yyyy-MM-dd') : '',
+        end: task.end ? format(new Date(task.end), 'yyyy-MM-dd') : '',
+        state: task.state || '',
+        priority: task.priority || '',
+      });
+    }
     setIsEditing(false);
     // reset to original value from task
     setSelectedMember(task.members[0]);
@@ -82,8 +88,9 @@ const TaskDetailContent = ({ task }) => {
 
   const handleSave = async () => {
     const members = [selectedMember._id];
+
     const newValues = { ...originalValues, members };
-    const params = selectedProject._id;
+    const params = selectedProject?._id;
 
     console.log('newvalues', newValues);
     setIsEditing(false);
@@ -119,6 +126,7 @@ const TaskDetailContent = ({ task }) => {
             label='Member'
             value={selectedMember && selectedMember.name}
             placeholder={task.members[0].name}
+
             onChange={(e) => handleSuggestionChange(e, 'member')}
             fullWidth
             disabled={!isEditing}
@@ -131,9 +139,9 @@ const TaskDetailContent = ({ task }) => {
           />
         ) : (
           <TextField
-            size='small'
-            label='Member'
-            value={task.members[0].name}
+            size="small"
+            label="Member"
+            value={task.members?.[0]?.name || ''}
             onChange={(e) => handleSuggestionChange(e, 'member')}
             fullWidth
             disabled={!isEditing}
@@ -186,9 +194,9 @@ const TaskDetailContent = ({ task }) => {
       {/* DESCRIPTION */}
       <Grid item xs={12}>
         <TextField
-          size='small'
-          label='Task description'
-          name='description'
+          size="small"
+          label="Task description"
+          name="description"
           value={originalValues.description}
           onChange={handleChange}
           fullWidth
@@ -208,18 +216,18 @@ const TaskDetailContent = ({ task }) => {
           <Select
             required
             value={originalValues.priority}
-            variant='outlined'
-            size='small'
+            variant="outlined"
+            size="small"
             sx={{ fontSize: '2rem', bgcolor: 'white' }}
-            name='priority'
+            name="priority"
             onChange={handleChange}
             displayEmpty
             renderValue={(selected) => (selected ? selected : 'Type: All')}
             disabled={!isEditing}
           >
-            <CustomMenuItem value='High'>High</CustomMenuItem>
-            <CustomMenuItem value='Medium'>Medium</CustomMenuItem>
-            <CustomMenuItem value='Low'>Low</CustomMenuItem>
+            <CustomMenuItem value="High">High</CustomMenuItem>
+            <CustomMenuItem value="Medium">Medium</CustomMenuItem>
+            <CustomMenuItem value="Low">Low</CustomMenuItem>
           </Select>
         </FormControl>
       </Grid>
@@ -230,25 +238,25 @@ const TaskDetailContent = ({ task }) => {
           <Select
             required
             value={originalValues.state}
-            variant='outlined'
-            size='small'
+            variant="outlined"
+            size="small"
             sx={{ fontSize: '2rem', backgroundColor: 'white' }}
-            name='state'
+            name="state"
             onChange={handleChange}
             displayEmpty
             renderValue={(selected) => (selected ? selected : 'Type: All')}
             disabled={!isEditing}
           >
-            <CustomMenuItem value='In Progress'>In Progress</CustomMenuItem>
-            <CustomMenuItem value='Pending'>Pending</CustomMenuItem>
-            <CustomMenuItem value='Completed'>Completed</CustomMenuItem>
+            <CustomMenuItem value="In Progress">In Progress</CustomMenuItem>
+            <CustomMenuItem value="Pending">Pending</CustomMenuItem>
+            <CustomMenuItem value="Completed">Completed</CustomMenuItem>
           </Select>
         </FormControl>
       </Grid>
       {/* START */}
       <Grid item xs={12}>
         <Typography
-          variant='h6'
+          variant="h6"
           style={{
             fontSize: 14,
             fontWeight: 'normal',
@@ -258,8 +266,8 @@ const TaskDetailContent = ({ task }) => {
           Start date
         </Typography>
         <TextField
-          size='small'
-          name='start'
+          size="small"
+          name="start"
           type={isEditing ? 'date' : 'text'}
           onChange={handleChange}
           value={originalValues.start}
@@ -272,7 +280,7 @@ const TaskDetailContent = ({ task }) => {
       {/* END */}
       <Grid item xs={12}>
         <Typography
-          variant='h6'
+          variant="h6"
           style={{
             fontSize: 14,
             fontWeight: 'normal',
@@ -282,8 +290,8 @@ const TaskDetailContent = ({ task }) => {
           End date
         </Typography>
         <TextField
-          size='small'
-          name='end'
+          size="small"
+          name="end"
           type={isEditing ? 'date' : 'text'}
           value={originalValues.end}
           disabled={!isEditing}
@@ -305,8 +313,8 @@ const TaskDetailContent = ({ task }) => {
             }}
           >
             <Button
-              variant='outlined'
-              color='primary'
+              variant="outlined"
+              color="primary"
               onClick={handleCancel}
               disableRipple
               style={{
@@ -317,8 +325,8 @@ const TaskDetailContent = ({ task }) => {
               Cancel
             </Button>
             <Button
-              variant='contained'
-              color='primary'
+              variant="contained"
+              color="primary"
               onClick={handleSave}
               disableRipple
               style={{
@@ -341,8 +349,8 @@ const TaskDetailContent = ({ task }) => {
           >
             <IconButton
               disableRipple
-              color='primary'
-              size='small'
+              color="primary"
+              size="small"
               sx={{
                 '&:hover': {
                   color: 'blue',

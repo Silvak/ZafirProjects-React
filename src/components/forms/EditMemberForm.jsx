@@ -8,23 +8,24 @@ import {
   Select,
   MenuItem,
   InputLabel,
-} from "@mui/material";
-import { useState, useEffect } from "react";
-import { useBoundStore } from "@/stores";
-import { axiosInstance } from "@/config/apiConfig";
-import roles from "@/utils/roles";
-import useFormatText from "@/hooks/useFormatText";
+} from '@mui/material';
+import { useState, useEffect } from 'react';
+import { useBoundStore } from '@/stores';
+import { shallow } from 'zustand/shallow';
+import { axiosInstance } from '@/config/apiConfig';
+import roles from '@/utils/roles';
+import useFormatText from '@/hooks/useFormatText';
 
 function EditMember({ row, setAllMemberData, allMemberData }) {
   const [newName, setNewName] = useState(row.member.name);
-  const [newRol, setNewRol] = useState(row.rolToProject || "Select Role");
-  const [customRol, setCustomRol] = useState("");
+  const [newRol, setNewRol] = useState(row.rolToProject || 'Select Role');
+  const [customRol, setCustomRol] = useState('');
   const {
     ChangeStateModal,
     ChangeStateAlert,
     ChangeTitleAlert,
     updateProjects,
-  } = useBoundStore();
+  } = useBoundStore((state) => state, shallow);
 
   const theme = useTheme();
   const [customRolEnabled, setCustomRolEnabled] = useState(false);
@@ -68,11 +69,11 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
 
       setAllMemberData(updatedAllMember);
       await updateProjects();
-      ChangeTitleAlert("Data has been updated successfully");
+      ChangeTitleAlert('Data has been updated successfully');
       ChangeStateAlert(true);
       closeModal();
     } catch (error) {
-      console.error("Error saving data:", error);
+      console.error('Error saving data:', error);
     }
   };
 
@@ -81,11 +82,11 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
       <Paper
         elevation={3}
         style={{
-          padding: "20px",
-          backgroundColor: "#fff",
-          maxWidth: "35vw",
-          borderRadius: "16px",
-          paddingBottom: "25px",
+          padding: '20px',
+          backgroundColor: '#fff',
+          maxWidth: '35vw',
+          borderRadius: '16px',
+          paddingBottom: '25px',
           marginBottom: 150,
         }}
       >
@@ -98,13 +99,13 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
             disabled
             style={{ marginBottom: 8 }}
           />
-          <TextField
+          {/* <TextField
             label="Lead Owner"
             value={row.leadOwner}
             fullWidth
             disabled
             style={{ marginBottom: 8 }}
-          />
+          /> */}
           <TextField
             label="Nombre"
             value={newName}
@@ -114,7 +115,7 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
           />
           <InputLabel
             id="select-role-label"
-            sx={{ color: "black", ml: 1, mt: 1, mb: 0.5, fontWeight: 400 }}
+            sx={{ color: 'black', ml: 1, mt: 1, mb: 0.5, fontWeight: 400 }}
           >
             Select Role
           </InputLabel>
@@ -125,7 +126,7 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
                 onChange={(e) => {
                   const selectedRole = e.target.value;
                   setNewRol(selectedRole);
-                  setCustomRolEnabled(selectedRole === "Other");
+                  setCustomRolEnabled(selectedRole === 'Other');
                 }}
                 fullWidth
                 style={{
@@ -138,10 +139,10 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
                     style: {
                       borderTopLeftRadius: 0,
                       borderTopRightRadius: 0,
-                      backgroundColor: "#fff",
+                      backgroundColor: '#fff',
                       marginTop: 6,
                       padding: 0,
-                      boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
+                      boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.2)',
                     },
                   },
                 }}
@@ -150,7 +151,7 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
                   <MenuItem
                     key={role}
                     value={role}
-                    style={{ backgroundColor: "#fff", cursor: "pointer" }}
+                    style={{ backgroundColor: '#fff', cursor: 'pointer' }}
                   >
                     {role}
                   </MenuItem>
@@ -164,7 +165,7 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
                   value={customRol}
                   onChange={(e) => setCustomRol(useFormatText(e.target.value))}
                   fullWidth
-                  style={{ marginBottom: 8, width: "auto", borderRadius: 12 }}
+                  style={{ marginBottom: 8, width: 'auto', borderRadius: 12 }}
                 />
               )}
             </Grid>
@@ -175,11 +176,11 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
                 disableRipple
                 variant="outlined"
                 sx={{
-                  color: "black",
-                  bgcolor: "white",
-                  borderRadius: "0.5rem",
-                  border: "1px gray solid",
-                  minWidth: "6rem",
+                  color: 'black',
+                  bgcolor: 'white',
+                  borderRadius: '0.5rem',
+                  border: '1px gray solid',
+                  minWidth: '6rem',
                 }}
                 onClick={closeModal}
               >
@@ -192,10 +193,10 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
                 style={{ marginLeft: 8 }}
                 variant="contained"
                 sx={{
-                  color: "white",
-                  bgcolor: "#7662EA",
-                  borderRadius: "0.5rem",
-                  minWidth: "6rem",
+                  color: 'white',
+                  bgcolor: '#7662EA',
+                  borderRadius: '0.5rem',
+                  minWidth: '6rem',
                 }}
                 onClick={() =>
                   handleSaveData(row, { name: newName, rol: newRol })

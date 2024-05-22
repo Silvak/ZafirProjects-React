@@ -8,6 +8,8 @@ import {
   Tooltip,
 } from '@mui/material';
 import { useBoundStore } from '../../../stores/index';
+import { shallow } from 'zustand/shallow';
+
 import { isInThisWeek, isInThisMonth, isToday } from '../../../hooks/useDates';
 import { useEffect, useState } from 'react';
 
@@ -20,7 +22,7 @@ function ReportTasks({ customProject }) {
   ];
 
   const theme = createTheme();
-  const { customTasks, fetchTasksByIdCustom } = useBoundStore();
+  const { myTasks, fetchTasksById } = useBoundStore((state) => state, shallow);
   const [filterOption, setFilterOption] = useState('All');
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
@@ -32,7 +34,7 @@ function ReportTasks({ customProject }) {
     if (customProject) {
       const fetchData = async () => {
         try {
-          await fetchTasksByIdCustom(customProject._id);
+          await fetchTasksById(customProject._id);
         } catch (error) {
           console.error('Error fetching tasks', error);
         }
@@ -41,7 +43,7 @@ function ReportTasks({ customProject }) {
     }
   }, [customProject]);
 
-  const filteredTasks = customTasks.filter((task) => {
+  const filteredTasks = myTasks.filter((task) => {
     const taskDate = new Date(task.start);
     switch (filterOption) {
       case 'This Week':
@@ -92,13 +94,13 @@ function ReportTasks({ customProject }) {
       reviewTasks,
       title: 'Review',
       total: reviewTasks.length,
-      color: '#429482',
+      color: '#EBA741',
     },
     completed: {
       completedTasks,
       title: 'Completed',
       total: completedTasks.length,
-      color: '#EBA741',
+      color: '#429482',
     },
   };
 

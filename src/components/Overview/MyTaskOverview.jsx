@@ -9,6 +9,8 @@ import {
 } from '@mui/material';
 import { useEffect, useState, Suspense } from 'react';
 import { useBoundStore } from '../../stores/index';
+import { shallow } from 'zustand/shallow';
+
 import MyTaskList from './MyTaskList';
 import { isInThisWeek, isInThisMonth, isToday } from '../../hooks/useDates';
 
@@ -27,15 +29,12 @@ function MyTask() {
     addTask,
     fetchTasks,
     selectedProject,
-  } = useBoundStore();
+  } = useBoundStore((state) => state, shallow);
   const theme = createTheme();
   const [filterOption, setFilterOption] = useState('All');
 
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
-  // const workingTasks = tasks.filter(
-  //   (task) => task.state !== "Pending" && task.state !== "Backlog"
-  // );
   const handleFilter = (event) => {
     setFilterOption(event.target.value);
   };
@@ -51,23 +50,24 @@ function MyTask() {
       };
       fetchData();
     }
-  }, [selectedProject]);
-  // console.log("CANTIDAD DE TASK: ", myTasks.length);
+  }, [selectedProject, fetchTasksById]);
 
-  const filteredTasks = myTasks.filter((task) => {
-    const taskDate = new Date(task.start);
-    switch (filterOption) {
-      case 'This week':
-        return isInThisWeek(taskDate);
-      case 'This month':
-        return isInThisMonth(taskDate);
-      case 'Today':
-        return isToday(taskDate);
-      default:
-        'All';
-        return true; // Si la opción de filtro es "All", mostrar todas las tareas
-    }
-  });
+  const filteredTasks = Array.isArray(myTasks)
+    ? myTasks.filter((task) => {
+        const taskDate = new Date(task.start);
+        switch (filterOption) {
+          case 'This week':
+            return isInThisWeek(taskDate);
+          case 'This month':
+            return isInThisMonth(taskDate);
+          case 'Today':
+            return isToday(taskDate);
+          case 'All':
+          default:
+            return true;
+        }
+      })
+    : [];
 
   return (
     <ThemeProvider theme={theme}>
@@ -109,7 +109,7 @@ function MyTask() {
           </Grid>
           {/* Select Filter */}
           <Grid item>
-            <Tooltip title='Filter'>
+            <Tooltip title="Filter">
               <select
                 value={filterOption}
                 onChange={handleFilter}

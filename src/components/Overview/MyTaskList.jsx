@@ -1,7 +1,6 @@
 import MyTaskItems from './MyTaskItems';
 
 function MyTaskList({ tasks, handleAddTask }) {
-  console.log(tasks);
   return (
     <div style={{ margin: '20px' }}>
       {tasks.length > 0 ? (

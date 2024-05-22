@@ -3,7 +3,6 @@ import { axiosInstance } from '../../config/apiConfig';
 export const createTasksSlice = (set) => ({
   tasks: [],
   myTasks: [],
-  customTasks: [],
   singleTask: null,
 
   addTask: async (taskData, projectId) => {
@@ -51,29 +50,33 @@ export const createTasksSlice = (set) => ({
       console.error('Error fetching tasks', error);
     }
   },
-  fetchTaskDetailsById: async (taskId) => {
+
+  fetchTaskDetailsById: async (taskId, isSubtask) => {
     try {
-      const { data } = await axiosInstance.get(`/tasksList/${taskId}`);
-      set({ singleTask: data });
+      let result = null;
+      console.log(isSubtask);
+      if (!isSubtask) {
+        const { data } = await axiosInstance.get(`/tasksList/${taskId}`);
+        result = { ...data };
+      } else {
+        console.log(isSubtask);
+        const { data } = await axiosInstance.get(`/subtaks/${taskId}`);
+        console.log(data);
+        result = { ...data };
+      }
+      set({ singleTask: result });
+      console.log(singleTask);
     } catch (error) {
       console.error('Error fetching task detail', error);
     }
   },
+
   fetchTasksById: async (projectId) => {
     try {
       const { data } = await axiosInstance.get(
         `/tasksList/project/${projectId}`
       );
       set({ myTasks: data });
-    } catch (error) {
-      console.error('Error fetching tasks', error);
-    }
-  },
-  fetchTasksByIdCustom: async (projectId) => {
-    try {
-      const { data } = await axiosInstance.get(`/tasksList/${projectId}`);
-      set({ customTasks: data });
-      // console.log("desde el store:", data);
     } catch (error) {
       console.error('Error fetching tasks', error);
     }

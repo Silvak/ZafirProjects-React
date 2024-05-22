@@ -1,35 +1,34 @@
-import { Box, Button, useMediaQuery } from "@mui/material";
-import { RxEyeOpen } from "react-icons/rx";
-import { useBoundStore } from "../../stores";
-import { statusColors } from "../../utils/colors";
-import TaskDetail from "./TaskDetail";
-//mock
-import { subsTasksData } from "../../mockData/taskData";
-//styles
-import css from "./style.module.css";
-import SubTaskForm from "../forms/subtaskForm";
-import { useEffect } from "react";
+import { useEffect, useState } from 'react';
+import { Box, Button, useMediaQuery } from '@mui/material';
+import { RxEyeOpen } from 'react-icons/rx';
+import { useBoundStore } from '../../stores';
+import { shallow } from 'zustand/shallow';
+
+import { statusColors } from '../../utils/colors';
+import TaskDetail from './TaskDetail';
+import css from './style.module.css';
+import SubTaskForm from '../forms/subtaskForm';
 
 const tableHeadData = [
-  { id: 1, label: "Name" },
-  { id: 2, label: "Assignee" },
-  { id: 3, label: "Status" },
-  { id: 4, label: "Date" },
-  { id: 5, label: "Action" },
+  { id: 1, label: 'Name' },
+  { id: 2, label: 'Assignee' },
+  { id: 3, label: 'Status' },
+  { id: 4, label: 'Date' },
+  { id: 5, label: 'Action' },
 ];
 
 const TaskDetailSubstasks = ({ taskId }) => {
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+  const [filterSubtask, setFilterSubtask] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         await fetchSubtasks();
       } catch (error) {
-        console.error("Error fetching tasks", error);
+        console.error('Error fetching tasks', error);
       }
     };
-
     fetchData();
   }, []);
 
@@ -40,27 +39,36 @@ const TaskDetailSubstasks = ({ taskId }) => {
     ChangeTitleModal,
     ChangeContentModal,
     ChangeIsVisibleButton,
-  } = useBoundStore((state) => state);
+  } = useBoundStore((state) => state, shallow);
 
   const handleAddTask = () => {
     ChangeStateModal(true);
-    ChangeTitleModal("Add SubTask");
+    ChangeTitleModal('Add SubTask');
     ChangeContentModal(<SubTaskForm taskId={taskId} />);
   };
 
-  const handleViewSubstask = () => {
-    ChangeStateModal(true);
-    ChangeTitleModal("Substask Detail");
-    ChangeContentModal(<TaskDetail task={subtasks} />);
+  useEffect(() => {
+    if (subtasks) {
+      const subtasksToTask = subtasks.filter(
+        (subtask) => subtask.taskId === taskId
+      );
+      setFilterSubtask(subtasksToTask);
+    }
+  }, [taskId, subtasks]);
+
+  const handleViewSubstask = (subtask) => {
+    ChangeTitleModal('Substask Detail');
+    ChangeContentModal(<TaskDetail task={subtask} isSubtask={true} />);
     ChangeIsVisibleButton(true);
+    ChangeStateModal(true);
   };
 
   return (
-    <Box sx={{ padding: "50px 0" }}>
+    <Box sx={{ padding: '50px 0' }}>
       <p className={css.title}>Subtasks</p>
       <table
         className={css.table}
-        style={{ padding: isMobile ? "5px" : "20px" }}
+        style={{ padding: isMobile ? '5px' : '20px' }}
       >
         <tr>
           {tableHeadData.map((item) => (
@@ -70,8 +78,8 @@ const TaskDetailSubstasks = ({ taskId }) => {
           ))}
         </tr>
 
-        {subtasks &&
-          subtasks.map((item) => (
+        {filterSubtask &&
+          filterSubtask.map((item) => (
             <tr key={item.id}>
               <td>
                 <strong>{item.name}</strong>
@@ -89,9 +97,9 @@ const TaskDetailSubstasks = ({ taskId }) => {
                 <div
                   style={{
                     ...statusColors[item.status],
-                    padding: "5px 10px",
-                    borderRadius: "5px",
-                    textAlign: "center",
+                    padding: '5px 10px',
+                    borderRadius: '5px',
+                    textAlign: 'center',
                   }}
                 >
                   {item.status}
@@ -99,7 +107,10 @@ const TaskDetailSubstasks = ({ taskId }) => {
               </td>
               <td>{item.start}</td>
               <td className={css.icon}>
-                <Button color="inherit" onClick={handleViewSubstask}>
+                <Button
+                  color="inherit"
+                  onClick={() => handleViewSubstask(item)}
+                >
                   <RxEyeOpen size={25} />
                 </Button>
               </td>

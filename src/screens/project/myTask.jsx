@@ -6,6 +6,8 @@ import CreateTaskForm from '@/components/forms/createTaskForm';
 import TaskHeader from '@/components/taskAccordion/taskHeader';
 import TaskList from '@/components/taskAccordion/taskList';
 import { useBoundStore } from '@/stores/index';
+import { shallow } from 'zustand/shallow';
+
 import { useParams } from 'react-router-dom';
 
 const App = () => {
@@ -22,7 +24,7 @@ const App = () => {
     ChangeTitleModal,
     fetchTasksById,
     selectedProject,
-  } = useBoundStore();
+  } = useBoundStore((state) => state, shallow);
 
   useEffect(() => {
     if (params.id) {
@@ -37,16 +39,18 @@ const App = () => {
 
       fetchData();
     }
-  }, [params.id]);
+  }, [params.id, fetchTasksById]);
 
   const [pendingTasks, setPendingTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
   const [workingTasks, setWorkingTasks] = useState([]);
 
   useEffect(() => {
-    setPendingTasks(myTasks.filter((task) => task.state === 'Pending'));
-    setCompletedTasks(myTasks.filter((task) => task.state === 'Completed'));
-    setWorkingTasks(myTasks.filter((task) => task.state === 'In Progress'));
+    if (Array.isArray(myTasks)) {
+      setPendingTasks(myTasks.filter((task) => task.state === 'Pending'));
+      setCompletedTasks(myTasks.filter((task) => task.state === 'Completed'));
+      setWorkingTasks(myTasks.filter((task) => task.state === 'In Progress'));
+    }
   }, [myTasks]);
 
   const handleButton = (buttonName) => {
@@ -56,7 +60,7 @@ const App = () => {
   const handleAddTask = (title, description) => {
     ChangeTitleModal('Create Task');
     ChangeContentModal(
-      <CreateTaskForm placeholderTaskName='task 1' projectId={params.id} />
+      <CreateTaskForm placeholderTaskName="task 1" projectId={params.id} />
     );
     ChangeStateModal(true);
   };
@@ -64,6 +68,7 @@ const App = () => {
   const setColumnsStyle = () => {
     if (view === 'View Kanban' && !isMobile) return 'repeat(3,1fr)';
     if (view === 'View Kanban' && isMobile) return '1fr';
+    return '1fr'; // Default style
   };
 
   return (
@@ -84,28 +89,28 @@ const App = () => {
         >
           <div>
             <TaskList
-              title='In progress Tasks'
+              title="In progress Tasks"
               tasks={workingTasks}
               view={view}
-              state='In Progress'
+              state="In Progress"
               handleAddTask={() => handleAddTask()}
             />
           </div>
           <div>
             <TaskList
-              title='Pending Tasks'
+              title="Pending Tasks"
               tasks={pendingTasks}
               view={view}
-              state='Pending'
+              state="Pending"
               handleAddTask={() => handleAddTask()}
             />
           </div>
           <div>
             <TaskList
-              title='Completed Tasks'
+              title="Completed Tasks"
               tasks={completedTasks}
               view={view}
-              state='Completed'
+              state="Completed"
               handleAddTask={() => handleAddTask()}
             />
           </div>

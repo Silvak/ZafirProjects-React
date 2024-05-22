@@ -10,6 +10,8 @@ import Button from '@mui/material/Button';
 import usePagination from '@/hooks/usePagination';
 import { axiosInstance } from '../config/apiConfig';
 import { useBoundStore } from '../stores';
+import { shallow } from 'zustand/shallow';
+
 import CreateMember from '@/components/forms/CreateMemberForm';
 import ConfirmForm from '../components/forms/ConfirmForm';
 
@@ -35,7 +37,7 @@ const MembersTable = () => {
     ChangeContentModal,
     ChangeStateAlert,
     ChangeTitleAlert,
-  } = useBoundStore();
+  } = useBoundStore((state) => state, shallow);
 
   const [allMemberData, setAllMemberData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');

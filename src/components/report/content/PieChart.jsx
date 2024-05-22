@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { Grid, Box, Typography, useMediaQuery } from "@mui/material";
-import { PieChart } from "@mui/x-charts/PieChart";
-import { useDrawingArea } from "@mui/x-charts/hooks";
-import { styled } from "@mui/material/styles";
+import React, { useEffect, useState } from 'react';
+import { Grid, Box, Typography, useMediaQuery } from '@mui/material';
+import { PieChart } from '@mui/x-charts/PieChart';
+import { useDrawingArea } from '@mui/x-charts/hooks';
+import { styled } from '@mui/material/styles';
 // import { pieChartData } from "../../../mockData/pieData";
-import { reportData } from "../../../mockData/myWorkData";
-import { useBoundStore } from "../../../stores/index";
+import { useBoundStore } from '../../../stores/index';
+import { shallow } from 'zustand/shallow';
 
 const size = {
   width: 300,
   height: 250,
 };
 
-const StyledText = styled("text")(({ theme }) => ({
-  fill: "black",
+const StyledText = styled('text')(({ theme }) => ({
+  fill: 'black',
   fontWeight: 600,
-  fontFamily: "Poppins",
-  textAnchor: "middle",
-  dominantBaseline: "central",
+  fontFamily: 'Poppins',
+  textAnchor: 'middle',
+  dominantBaseline: 'central',
   fontSize: 24,
 }));
 
@@ -31,93 +31,91 @@ function PieCenterLabel({ children }) {
 }
 
 export default function CustomPieChart({ projectSelected }) {
-  const { customTasks, fetchTasksByIdCustom } = useBoundStore();
+  const { myTasks, fetchTasksById } = useBoundStore((state) => state, shallow);
   const [flag, setFlag] = useState(false);
 
   useEffect(() => {
     const FetchTasks = async () => {
       if (projectSelected) {
         const id = projectSelected._id;
-        await fetchTasksByIdCustom(id);
+        await fetchTasksById(id);
       }
     };
     FetchTasks();
   }, []);
 
-  const inProgressTasks = customTasks.filter(
-    (tasks) => tasks.state === "In Progress"
+  const inProgressTasks = myTasks.filter(
+    (tasks) => tasks.state === 'In Progress'
   );
-  const pendingTasks = customTasks.filter((tasks) => tasks.state === "Pending");
-  const issuesTasks = customTasks.filter((tasks) => tasks.state === "Issues");
-  const reviewTasks = customTasks.filter((tasks) => tasks.state === "Review");
-  const completedTasks = customTasks.filter(
-    (tasks) => tasks.state === "Completed"
-  );
+  const pendingTasks = myTasks.filter((tasks) => tasks.state === 'Pending');
+  const issuesTasks = myTasks.filter((tasks) => tasks.state === 'Issues');
+  const reviewTasks = myTasks.filter((tasks) => tasks.state === 'Review');
+  const completedTasks = myTasks.filter((tasks) => tasks.state === 'Completed');
 
   const renderData = {
     progress: {
       inProgressTasks,
-      title: "In Progress",
+      title: 'In Progress',
       total: inProgressTasks.length,
-      color: "#459CED",
+      color: '#459CED',
     },
     pending: {
       pendingTasks,
-      title: "Pending",
+      title: 'Pending',
       total: pendingTasks.length,
-      color: "#6B6E75",
+      color: '#6B6E75',
     },
     issues: {
       issuesTasks,
-      title: "Issues",
+      title: 'Issues',
       total: issuesTasks.length,
-      color: "#E55D57",
+      color: '#E55D57',
     },
     review: {
       reviewTasks,
-      title: "Review",
+      title: 'Review',
       total: reviewTasks.length,
-      color: "#EBA741",
+      color: '#EBA741',
     },
     completed: {
       completedTasks,
-      title: "Completed",
+      title: 'Completed',
       total: completedTasks.length,
-      color: "#429482",
+      color: '#429482',
     },
   };
 
   const pieChartData = [
     {
-      label: "Completed",
+      label: 'Completed',
       value: renderData.completed.total,
       color: renderData.completed.color,
     },
     {
-      label: "Pending",
+      label: 'Pending',
       value: renderData.pending.total,
       color: renderData.pending.color,
     },
     {
-      label: "Issues",
+      label: 'Issues',
       value: renderData.issues.total,
       color: renderData.issues.color,
     },
     {
-      label: "Reviews",
+      label: 'Reviews',
       value: renderData.review.total,
       color: renderData.review.color,
     },
     {
-      label: "In Progress",
+      label: 'In Progress',
       value: renderData.progress.total,
       color: renderData.progress.color,
     },
   ];
 
-  const total = customTasks.length;
+  const total = myTasks.length;
 
-  const isSmallScreen = useMediaQuery("(max-width:950px)");
+  const isSmallScreen = useMediaQuery('(max-width:950px)');
 
   const revertedPieChartData = [...pieChartData].reverse();
 
@@ -133,24 +131,24 @@ export default function CustomPieChart({ projectSelected }) {
       alignItems="center"
       justifyContent="center"
       sx={{
-        position: "relative",
-        border: "1px solid #E0E3E8",
+        position: 'relative',
+        border: '1px solid #E0E3E8',
         m: 2,
-        mt: "-2%",
-        width: "92%",
-        borderRadius: "12px",
+        mt: '-2%',
+        width: '92%',
+        borderRadius: '12px',
       }}
     >
       <Grid
         item
         style={{
-          marginLeft: isSmallScreen ? "20%" : 0,
-          marginRight: isSmallScreen ? 0 : "-4vw",
+          marginLeft: isSmallScreen ? '20%' : 0,
+          marginRight: isSmallScreen ? 0 : '-4vw',
         }}
       >
         <Box sx={{ marginBlock: 2 }}>
           <PieChart
-            series={[{ data: pieChartData, innerRadius: "75%" }]}
+            series={[{ data: pieChartData, innerRadius: '75%' }]}
             {...calculatedSize}
             slotProps={{
               legend: { hidden: true },
@@ -163,43 +161,43 @@ export default function CustomPieChart({ projectSelected }) {
       <Grid item>
         <ul
           style={{
-            listStyle: "none",
+            listStyle: 'none',
             padding: 0,
-            display: "flex",
-            flexDirection: isSmallScreen ? "row" : "column",
-            flexWrap: isSmallScreen ? "wrap" : "nowrap",
+            display: 'flex',
+            flexDirection: isSmallScreen ? 'row' : 'column',
+            flexWrap: isSmallScreen ? 'wrap' : 'nowrap',
           }}
         >
-          {" "}
+          {' '}
           {revertedPieChartData.map((item, index) => (
             <li
               key={index}
               style={{
-                display: "flex",
-                alignItems: "center",
-                marginBottom: "8px",
-                textAlign: "left",
+                display: 'flex',
+                alignItems: 'center',
+                marginBottom: '8px',
+                textAlign: 'left',
               }}
             >
               <div
                 style={{
-                  width: "10px",
-                  height: "10px",
+                  width: '10px',
+                  height: '10px',
                   backgroundColor: item.color,
-                  marginRight: isSmallScreen ? "2px" : "8px",
-                  marginLeft: isSmallScreen ? "8px" : "0px",
-                  borderRadius: "50%",
+                  marginRight: isSmallScreen ? '2px' : '8px',
+                  marginLeft: isSmallScreen ? '8px' : '0px',
+                  borderRadius: '50%',
                 }}
               ></div>
               <Typography
                 style={{
-                  color: "#1D1F24",
-                  fontFamily: "Poppins",
-                  fontSize: isSmallScreen ? "10px" : "14px",
+                  color: '#1D1F24',
+                  fontFamily: 'Poppins',
+                  fontSize: isSmallScreen ? '10px' : '14px',
                   fontWeight: 500,
-                  lineHeight: "21px",
-                  letterSpacing: "0.01em",
-                  marginBlock: "6px",
+                  lineHeight: '21px',
+                  letterSpacing: '0.01em',
+                  marginBlock: '6px',
                 }}
               >
                 {item.label}

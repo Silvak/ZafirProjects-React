@@ -6,6 +6,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import Typography from '@mui/material/Typography';
 import avatar from '@/assets/Img/png/defaultUser.png';
 import { useBoundStore } from '@/stores/index';
+import { shallow } from 'zustand/shallow';
+
 import EditMember from '@/components/forms/EditMemberForm';
 import './styles.css';
 
@@ -25,7 +27,7 @@ const TableRowComponent = ({
   const [editClicked, setEditClicked] = useState(false);
   const isExpanded = isMobile && isItemSelected;
   const { ChangeStateModal, ChangeTitleModal, ChangeContentModal } =
-    useBoundStore();
+    useBoundStore((state) => state, shallow);
 
   const openModal = (row) => {
     ChangeTitleModal('');
@@ -38,6 +40,8 @@ const TableRowComponent = ({
     );
     ChangeStateModal(true);
   };
+
+  console.log(row);
 
   return (
     <React.Fragment key={row.member._id}>
@@ -138,14 +142,24 @@ const TableRowComponent = ({
                     />
                   )}
                   {column.id === 'leadOwner' && (
-                    <img
-                      style={{
-                        width: 24,
-                        marginRight: '5px',
-                        borderRadius: '50%',
-                      }}
-                      src={avatar}
-                    />
+                    <>
+                      <img
+                        style={{
+                          width: 24,
+                          marginRight: '5px',
+                          borderRadius: '50%',
+                        }}
+                        src={avatar}
+                      />
+                      <span
+                        style={{
+                          display: 'flex',
+                          minWidth: !isMobile ? '5rem' : '10rem',
+                        }}
+                      >
+                        {row.leadOwner ? row.leadOwner : 'Leader'}
+                      </span>
+                    </>
                   )}
                   <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <div style={{ flex: 1 }}>

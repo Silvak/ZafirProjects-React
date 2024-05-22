@@ -5,10 +5,6 @@ import { shallow } from 'zustand/shallow';
 import CloseIcon from '@mui/icons-material/Close';
 
 const modalStyle = {
-  // display: 'flex',
-  // flexDirection: 'column',
-  // justifyContent: 'center',
-  // alignItems: 'center',
   padding: '10px',
   height: 'auto',
 };
@@ -44,14 +40,22 @@ const ModalGlobal = () => {
           ...modalStyle,
           minHeight: '100vh',
           padding: '20px',
+          marginBlock: 'auto',
+          display: 'flex',
         }}
       >
-        <Box sx={{ maxWidth: '99%' }}>
+        <Box
+          sx={{
+            maxWidth: '99%',
+            width: 'max-content',
+            margin: 'auto',
+          }}
+        >
           {' '}
           {/* width off */}
           {titleModal && (
             <Typography
-              variant='h4'
+              variant="h4"
               sx={{
                 bgcolor: '#FFFFFF',
                 color: 'black',
@@ -86,8 +90,8 @@ const ModalGlobal = () => {
                       mr: 2,
                     }}
                     disableRipple
-                    title='Close'
-                    variant='text'
+                    title="Close"
+                    variant="text"
                     onClick={handleClose}
                   >
                     <CloseIcon />

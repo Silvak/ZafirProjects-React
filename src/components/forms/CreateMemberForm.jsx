@@ -12,6 +12,7 @@ import {
   InputLabel,
 } from '@mui/material';
 import { useBoundStore } from '@/stores';
+import { shallow } from 'zustand/shallow';
 import { axiosInstance } from '@/config/apiConfig';
 import useFormatText from '@/hooks/useFormatText';
 import roles from '@/utils/roles';
@@ -26,7 +27,8 @@ function CreateMember() {
     updateProjects,
     selectedProject,
     setSelectedProject,
-  } = useBoundStore();
+  } = useBoundStore((state) => state, shallow);
+
   const [newRol, setNewRol] = useState('Select Role');
   const [customRol, setCustomRol] = useState('');
   const theme = createTheme();
