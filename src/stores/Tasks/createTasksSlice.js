@@ -31,7 +31,7 @@ export const createTasksSlice = (set) => ({
     })),
 
   updateTask: async ({ taskId, newData, projectId }) => {
-    console.log(taskId, newData, projectId);
+    console.log('FROM SLICE', newData);
     try {
       const res = await axiosInstance.put(`/tasksList/${taskId}`, newData);
       if (res.status === 200) {
