@@ -17,7 +17,6 @@ function useSuggestionUsers() {
   const [selectedMember, setSelectedMember] = useState(INITIAL_SELECTED_MEMBER);
   const [filteredLeaders, setFilteredLeaders] = useState([]);
   const [filteredMembers, setFilteredMembers] = useState([]);
-  console.log(selectedMember);
   //users
   async function fetchUsers() {
     try {

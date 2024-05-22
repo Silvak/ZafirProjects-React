@@ -29,18 +29,6 @@ const TaskDetailContent = ({ task = {} }) => {
     priority: '',
   });
 
-  useEffect(() => {
-    if (task && task._id) {
-      setOriginalValues({
-        taskName: task.taskName || '',
-        description: task.description || '',
-        start: task.start ? format(new Date(task.start), 'yyyy-MM-dd') : '',
-        end: task.end ? format(new Date(task.end), 'yyyy-MM-dd') : '',
-        state: task.state || '',
-        priority: task.priority || '',
-      });
-    }
-  }, [task]);
 
   const {
     updateTask,
@@ -54,10 +42,29 @@ const TaskDetailContent = ({ task = {} }) => {
 
   const {
     selectedMember,
+    setSelectedMember,
     filteredMembers,
     handleSuggestionChange,
     handleSuggestionClick,
+    INITIAL_SELECTED_MEMBER,
   } = useProject({ project: null, isCreated: true });
+
+  useEffect(() => {
+    setOriginalValues({
+      taskName: task.taskName,
+      description: task.description,
+      start: format(new Date(task.start), 'yyyy/MM/dd'),
+      end: format(new Date(task.end), 'yyyy/MM/dd'),
+      state: task.state,
+      priority: task.priority,
+    });
+    setSelectedMember(task.members[0]);
+    console.log('TASK', task);
+
+    return () => {
+      setOriginalValues(INITIAL_SELECTED_MEMBER);
+    };
+  }, [task._id]);
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -75,13 +82,17 @@ const TaskDetailContent = ({ task = {} }) => {
       });
     }
     setIsEditing(false);
+    // reset to original value from task
+    setSelectedMember(task.members[0]);
   };
 
   const handleSave = async () => {
-    const members = [task.members?.[0]?._id] || [selectedMember?._id];
+    const members = [selectedMember._id];
+
     const newValues = { ...originalValues, members };
     const params = selectedProject?._id;
 
+    console.log('newvalues', newValues);
     setIsEditing(false);
     try {
       await updateTask({
@@ -111,9 +122,11 @@ const TaskDetailContent = ({ task = {} }) => {
       <Grid item xs={12}>
         {isEditing ? (
           <TextField
-            size="small"
-            label="Member"
-            value={task.members?.[0]?.name || ''}
+            size='small'
+            label='Member'
+            value={selectedMember && selectedMember.name}
+            placeholder={task.members[0].name}
+
             onChange={(e) => handleSuggestionChange(e, 'member')}
             fullWidth
             disabled={!isEditing}
@@ -163,10 +176,10 @@ const TaskDetailContent = ({ task = {} }) => {
       {/* TASK NAME */}
       <Grid item xs={12}>
         <TextField
-          size="small"
-          label="Task Name"
+          size='small'
+          label='Task Name'
           value={originalValues.taskName}
-          name="taskName"
+          name='taskName'
           fullWidth
           autoFocus
           onChange={handleChange}
