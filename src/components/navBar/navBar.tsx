@@ -14,7 +14,7 @@ import Logo from '@/assets/Img/svg/NGM.svg';
 const Navbar = () => {
   let navigate = useNavigate();
   const { Authenticated, themeModeState } = useBoundStore(
-    (state) => state,
+    (state: any) => state,
     shallow
   );
 
