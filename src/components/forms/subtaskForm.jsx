@@ -14,6 +14,7 @@ import {
   ThemeProvider,
 } from '@mui/material';
 import { useBoundStore } from '../../stores/index';
+import { shallow } from 'zustand/shallow';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { useProject } from '@/hooks/useProject';
@@ -37,17 +38,12 @@ const SubTaskForm = ({ placeholderTaskName = 'Subtask 1', taskId }) => {
 
   const {
     addSubtask,
-    setSubtasks,
-    removeSubtask,
-    updateSubtask,
-    fetchSubtasks,
     ChangeStateModal,
-    selectedProject,
     ChangeStateAlert,
     ChangeTitleAlert,
     ChangeStateAlertError,
     ChangeTitleAlertError,
-  } = useBoundStore();
+  } = useBoundStore((state) => state, shallow);
 
   useEffect(() => {
     // Actualizamos el objeto taskData con los valores actuales de los estados

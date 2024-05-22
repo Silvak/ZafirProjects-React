@@ -8,6 +8,8 @@ import {
   Tooltip,
 } from '@mui/material';
 import { useBoundStore } from '../../../stores/index';
+import { shallow } from 'zustand/shallow';
+
 import { isInThisWeek, isInThisMonth, isToday } from '../../../hooks/useDates';
 import { useEffect, useState } from 'react';
 
@@ -20,7 +22,7 @@ function ReportTasks({ customProject }) {
   ];
 
   const theme = createTheme();
-  const { myTasks, fetchTasksById } = useBoundStore();
+  const { myTasks, fetchTasksById } = useBoundStore((state) => state, shallow);
   const [filterOption, setFilterOption] = useState('All');
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 

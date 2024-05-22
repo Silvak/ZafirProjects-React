@@ -5,11 +5,12 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import ItemNav from '@/components/navBar/itemNav';
 import { useBoundStore } from '../../../stores';
+import { shallow } from 'zustand/shallow';
 
 function ProjectSelect(props) {
   const [open, setOpen] = useState(false);
   const { fetchProjects, projectsData, selectedProject, setSelectedProject } =
-    useBoundStore();
+    useBoundStore((state) => state, shallow);
 
   useEffect(() => {
     fetchProjects();

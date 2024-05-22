@@ -1,54 +1,55 @@
-import { useState, useEffect } from "react";
-import { List, ListItemButton, Collapse } from "@mui/material";
-import ItemNav from "@/components/navBar/itemNav";
-import BrokenImageOutlinedIcon from "@mui/icons-material/BrokenImageOutlined";
-import FolderCopyOutlinedIcon from "@mui/icons-material/FolderCopyOutlined";
-import TaskOutlinedIcon from "@mui/icons-material/TaskOutlined";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import { BiGroup } from "react-icons/bi";
-import { useBoundStore } from "../../stores";
+import { useState, useEffect } from 'react';
+import { List, ListItemButton, Collapse } from '@mui/material';
+import ItemNav from '@/components/navBar/itemNav';
+import BrokenImageOutlinedIcon from '@mui/icons-material/BrokenImageOutlined';
+import FolderCopyOutlinedIcon from '@mui/icons-material/FolderCopyOutlined';
+import TaskOutlinedIcon from '@mui/icons-material/TaskOutlined';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import { BiGroup } from 'react-icons/bi';
+import { useBoundStore } from '../../stores';
+import { shallow } from 'zustand/shallow';
 
 function initializeItems(selectedProject) {
   return [
     {
-      title: "overview",
-      url: "/",
+      title: 'overview',
+      url: '/',
       icon: <BrokenImageOutlinedIcon />,
       submenu: [],
     },
     {
-      title: "My tasks",
+      title: 'My tasks',
       url: `/project/${selectedProject?._id}/tasks`,
       icon: <TaskOutlinedIcon />,
       submenu: [],
     },
     {
-      title: "project",
-      url: "/",
+      title: 'project',
+      url: '/',
       icon: <FolderCopyOutlinedIcon />,
       submenu: [
         {
-          title: "My project",
+          title: 'My project',
           url: `/project/${selectedProject?._id}`,
         },
         {
-          title: "Project Tasks",
+          title: 'Project Tasks',
           url: `/project/${selectedProject?._id}/tasks`,
         },
         {
-          title: "report",
+          title: 'report',
           url: `/project/${selectedProject?._id}/report`,
         },
         {
-          title: "gantt",
+          title: 'gantt',
           url: `/project/${selectedProject?._id}/gantt`,
         },
       ],
     },
     {
-      title: "members",
-      url: "/members",
+      title: 'members',
+      url: '/members',
       icon: <BiGroup />,
       submenu: [],
     },
@@ -56,8 +57,7 @@ function initializeItems(selectedProject) {
 }
 
 function ItemMenu(props) {
-  const { selectedProject } = useBoundStore();
-
+  const { selectedProject } = useBoundStore((state) => state, shallow);
   const [openIndex, setOpenIndex] = useState(null);
   const [itemsActual, setItemsActual] = useState(null);
 
@@ -74,13 +74,13 @@ function ItemMenu(props) {
   return (
     <List
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "8px",
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '8px',
         py: 0,
-        px: { xs: "8px", sm: "12px" },
-        width: "100%",
-        marginTop: "48px",
+        px: { xs: '8px', sm: '12px' },
+        width: '100%',
+        marginTop: '48px',
       }}
     >
       {itemsActual?.map((element, index) => (

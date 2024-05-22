@@ -1,10 +1,11 @@
-import { useState } from "react";
-import { createTheme, useMediaQuery, useTheme } from "@mui/material";
-import { useBoundStore } from "../stores";
+import { useState } from 'react';
+import { createTheme, useMediaQuery, useTheme } from '@mui/material';
+import { useBoundStore } from '../stores';
+import { shallow } from 'zustand/shallow';
 
 export function useCreateTask(task, id) {
   const theme = useTheme();
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   const {
     addTask,
@@ -13,16 +14,15 @@ export function useCreateTask(task, id) {
     updateTask,
     fetchTask,
     ChangeStateModal,
-  } = useBoundStore();
-
+  } = useBoundStore((state) => state, shallow);
   const [selectedDate, setSelectedDate] = useState(null);
 
   const [taskName, setTaskName] = useState(placeholderTaskName);
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [description, setDescription] = useState("");
-  const [priority, setPriority] = useState("");
-  const [tags, setTags] = useState("");
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [description, setDescription] = useState('');
+  const [priority, setPriority] = useState('');
+  const [tags, setTags] = useState('');
 
   const [taskData, setTaskData] = useState({
     data: {
@@ -37,14 +37,14 @@ export function useCreateTask(task, id) {
     projectId: id,
   });
 
-  const [selectedUser, setSelectedUser] = useState("");
+  const [selectedUser, setSelectedUser] = useState('');
   const [teamMembers, setTeamMembers] = useState([]);
 
   const handleCreate = async () => {
     try {
       await addTask(taskData);
     } catch (error) {
-      console.error("Error creating task", error);
+      console.error('Error creating task', error);
     }
     handleClose();
   };
@@ -60,7 +60,7 @@ export function useCreateTask(task, id) {
   const handleAddMember = () => {
     if (selectedUser && !teamMembers.includes(selectedUser)) {
       setTeamMembers([...teamMembers, selectedUser]);
-      setSelectedUser("");
+      setSelectedUser('');
     }
   };
 

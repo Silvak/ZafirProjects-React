@@ -12,6 +12,8 @@ import {
 import { EditOutlined as EditOutlinedIcon } from '@mui/icons-material';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useBoundStore } from '../../stores';
+import { shallow } from 'zustand/shallow';
+
 import './dataPicker.css';
 import { useProject } from '@/hooks/useProject';
 import { format } from 'date-fns';
@@ -48,7 +50,7 @@ const TaskDetailContent = ({ task = {} }) => {
     ChangeStateAlertError,
     ChangeTitleAlertError,
     ChangeStateModal,
-  } = useBoundStore();
+  } = useBoundStore((state) => state, shallow);
 
   const {
     selectedMember,

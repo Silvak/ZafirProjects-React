@@ -1,10 +1,11 @@
-import { createTheme, useMediaQuery } from "@mui/material";
-import { useBoundStore } from "../stores";
-import { useEffect } from "react";
+import { createTheme, useMediaQuery } from '@mui/material';
+import { useBoundStore } from '../stores';
+import { shallow } from 'zustand/shallow';
+import { useEffect } from 'react';
 
 export function useProjectsOverview() {
   const theme = createTheme();
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   const {
     projectsData,
@@ -14,10 +15,10 @@ export function useProjectsOverview() {
     ChangeStateModal,
     ChangeContentModal,
     ChangeTitleModal,
-  } = useBoundStore();
+  } = useBoundStore((state) => state, shallow);
 
   const handleEdit = (element) => {
-    ChangeTitleModal("Edit Project");
+    ChangeTitleModal('Edit Project');
     ChangeContentModal(element);
     ChangeStateModal(true);
   };

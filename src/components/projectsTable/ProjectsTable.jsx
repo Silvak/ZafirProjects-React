@@ -1,41 +1,42 @@
-import { Table, TableBody, TableRow } from "@mui/material";
+import { Table, TableBody, TableRow } from '@mui/material';
 
-import ProjectsTableHeader from "@/components/projectsTable/ProjectsTableHeader";
-import ProjectsTableItem from "@/components/projectsTable/ProjectsTableItem";
-import TablePagination from "@/components/tableMembers/tablePagination";
+import ProjectsTableHeader from '@/components/projectsTable/ProjectsTableHeader';
+import ProjectsTableItem from '@/components/projectsTable/ProjectsTableItem';
+import TablePagination from '@/components/tableMembers/tablePagination';
 
-import usePagination from "@/hooks/usePagination";
-import { projectsData } from "../../mockData/projectsData";
-import { useBoundStore } from "../../stores";
+import usePagination from '@/hooks/usePagination';
+import { projectsData } from '../../mockData/projectsData';
+import { useBoundStore } from '../../stores';
+import { shallow } from 'zustand/shallow';
 
-const username = "John Doe";
+const username = 'John Doe';
 
 const ProjectsTable = () => {
   const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } =
     usePagination({});
 
-  const { projectsData } = useBoundStore();
+  const { projectsData } = useBoundStore((state) => state, shallow);
   const totalProjects = projectsData?.length;
 
   return (
     <Table
       sx={{
-        mt: "30px",
-        background: "#FFFFFF",
-        borderRadius: "20px",
-        display: "block",
-        padding: "20px",
+        mt: '30px',
+        background: '#FFFFFF',
+        borderRadius: '20px',
+        display: 'block',
+        padding: '20px',
       }}
     >
       <ProjectsTableHeader totalProjects={totalProjects} />
 
-      <TableBody sx={{ display: "grid" }}>
+      <TableBody sx={{ display: 'grid' }}>
         <TableRow
           sx={{
-            overflowX: "auto",
-            "&>*": {
-              borderBottom: "none",
-              width: "max(900px, 100%)",
+            overflowX: 'auto',
+            '&>*': {
+              borderBottom: 'none',
+              width: 'max(900px, 100%)',
             },
           }}
         >
