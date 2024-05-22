@@ -152,5 +152,6 @@ export function useProject({ project, isCreated = false }) {
     filteredMembers,
     handleSuggestionChange,
     handleSuggestionClick,
+    INITIAL_SELECTED_MEMBER,
   };
 }

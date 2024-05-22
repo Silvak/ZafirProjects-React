@@ -27,17 +27,6 @@ const TaskDetailContent = ({ task }) => {
     priority: '',
   });
 
-  useEffect(() => {
-    setOriginalValues({
-      taskName: task.taskName,
-      description: task.description,
-      start: format(new Date(task.start), 'yyyy/MM/dd'),
-      end: format(new Date(task.end), 'yyyy/MM/dd'),
-      state: task.state,
-      priority: task.priority,
-    });
-  }, [task._id]);
-
   const {
     updateTask,
     selectedProject,
@@ -50,10 +39,29 @@ const TaskDetailContent = ({ task }) => {
 
   const {
     selectedMember,
+    setSelectedMember,
     filteredMembers,
     handleSuggestionChange,
     handleSuggestionClick,
+    INITIAL_SELECTED_MEMBER,
   } = useProject({ project: null, isCreated: true });
+
+  useEffect(() => {
+    setOriginalValues({
+      taskName: task.taskName,
+      description: task.description,
+      start: format(new Date(task.start), 'yyyy/MM/dd'),
+      end: format(new Date(task.end), 'yyyy/MM/dd'),
+      state: task.state,
+      priority: task.priority,
+    });
+    setSelectedMember(task.members[0]);
+    console.log('TASK', task);
+
+    return () => {
+      setOriginalValues(INITIAL_SELECTED_MEMBER);
+    };
+  }, [task._id]);
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -68,13 +76,16 @@ const TaskDetailContent = ({ task }) => {
       priority: task.priority,
     });
     setIsEditing(false);
+    // reset to original value from task
+    setSelectedMember(task.members[0]);
   };
 
   const handleSave = async () => {
-    const members = [task.members[0]._id] || [selectedMember._id];
+    const members = [selectedMember._id];
     const newValues = { ...originalValues, members };
     const params = selectedProject._id;
 
+    console.log('newvalues', newValues);
     setIsEditing(false);
     try {
       await updateTask({
@@ -106,7 +117,8 @@ const TaskDetailContent = ({ task }) => {
           <TextField
             size='small'
             label='Member'
-            value={selectedMember.name}
+            value={selectedMember && selectedMember.name}
+            placeholder={task.members[0].name}
             onChange={(e) => handleSuggestionChange(e, 'member')}
             fullWidth
             disabled={!isEditing}
@@ -158,7 +170,7 @@ const TaskDetailContent = ({ task }) => {
         <TextField
           size='small'
           label='Task Name'
-          defaultValue={originalValues.taskName}
+          value={originalValues.taskName}
           name='taskName'
           fullWidth
           autoFocus
