@@ -6,6 +6,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import Typography from '@mui/material/Typography';
 import avatar from '@/assets/Img/png/defaultUser.png';
 import { useBoundStore } from '@/stores/index';
+import { shallow } from 'zustand/shallow';
+
 import EditMember from '@/components/forms/EditMemberForm';
 import './styles.css';
 
@@ -25,7 +27,7 @@ const TableRowComponent = ({
   const [editClicked, setEditClicked] = useState(false);
   const isExpanded = isMobile && isItemSelected;
   const { ChangeStateModal, ChangeTitleModal, ChangeContentModal } =
-    useBoundStore();
+    useBoundStore((state) => state, shallow);
 
   const openModal = (row) => {
     ChangeTitleModal('');

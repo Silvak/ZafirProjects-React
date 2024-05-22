@@ -14,6 +14,8 @@ import CircleIcon from '@mui/icons-material/Circle';
 import { Avatar, Divider } from '@mui/material';
 import AvatarGroup from '@mui/material/AvatarGroup';
 import { useBoundStore } from '../../stores';
+import { shallow } from 'zustand/shallow';
+
 import TaskDetail from '../TaskDetail/TaskDetail';
 import { statusColors, priorityColors } from '../../utils/colors';
 
@@ -49,7 +51,7 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
     ChangeTitleModal,
     ChangeContentModal,
     ChangeIsVisibleButton,
-  } = useBoundStore((state) => state);
+  } = useBoundStore((state) => state, shallow);
 
   const handleMoreIcon = (task) => {
     ChangeStateModal(true);
@@ -117,8 +119,8 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
           </div>
         ))}
       <Typography
-        variant='h6'
-        fontWeight='bold'
+        variant="h6"
+        fontWeight="bold"
         noWrap
         style={{
           fontSize: '14px',
@@ -133,12 +135,12 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
         container
         spacing={0}
         columns={isMobile || isKanbanView ? 6 : 12}
-        alignItems='center'
+        alignItems="center"
         padding={0}
       >
         <Grid item xs={12} sm={!isKanbanView ? 2 : 1}>
           <Typography
-            variant='h6'
+            variant="h6"
             noWrap
             style={{
               fontSize: '12px',
@@ -168,8 +170,8 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
         {!isKanbanView && (
           <Grid item xs={12} sm={2}>
             <Typography
-              variant='body1'
-              color='textSecondary'
+              variant="body1"
+              color="textSecondary"
               noWrap
               style={{ fontSize: '14px', fontWeight: 'bold' }}
               sx={{ ml: '3rem' }}
@@ -204,7 +206,7 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
                 sx={{ mr: '5px', color: 'gray' }}
               />
               <Typography
-                variant='body1'
+                variant="body1"
                 noWrap
                 style={{
                   fontSize: '14px',
@@ -234,7 +236,7 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
                 onClick={handleClipIcon}
               />
               <Typography
-                variant='body1'
+                variant="body1"
                 noWrap
                 style={{
                   fontSize: '14px',
@@ -294,8 +296,8 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
               }}
             />
             <Typography
-              variant='body1'
-              color='textSecondary'
+              variant="body1"
+              color="textSecondary"
               noWrap
               style={{ fontSize: '14px', fontWeight: 'bold' }}
             >
@@ -314,8 +316,8 @@ const TaskItem = ({ task, isMobile, isKanbanView }) => {
           }}
         >
           <Typography
-            variant='body1'
-            color='textSecondary'
+            variant="body1"
+            color="textSecondary"
             noWrap
             sx={{
               fontWeight: 'bold',

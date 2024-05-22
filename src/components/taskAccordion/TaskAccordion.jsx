@@ -14,15 +14,16 @@ import TaskItem from './TaskItem';
 import CustomAccordion from './customAccordion';
 import { useDrop } from 'react-dnd';
 import { useBoundStore } from '../../stores';
+import { shallow } from 'zustand/shallow';
+
 import { useParams } from 'react-router-dom';
 
 const TaskAccordion = ({ title, state, tasks, handleAddTask, view }) => {
+  const { updateTask } = useBoundStore((state) => state, shallow);
   const theme = createTheme();
   const [expanded, setExpanded] = useState(false);
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const isKanbanView = view == 'View Kanban';
-
-  const { updateTask } = useBoundStore();
   const params = useParams();
 
   const addTaskToList = async (taskId) => {
@@ -81,7 +82,7 @@ const TaskAccordion = ({ title, state, tasks, handleAddTask, view }) => {
         <CustomAccordion
           expanded={expanded}
           elevation={4}
-          className='custom-accordion'
+          className="custom-accordion"
           style={{
             backgroundColor: '#F6F7FA',
             borderRadius: '12px',
@@ -91,8 +92,8 @@ const TaskAccordion = ({ title, state, tasks, handleAddTask, view }) => {
           }}
         >
           <AccordionSummary
-            aria-controls='panel1a-content'
-            id='panel1a-header'
+            aria-controls="panel1a-content"
+            id="panel1a-header"
             sx={{
               display: 'flex',
               alignItems: 'center',
@@ -106,7 +107,7 @@ const TaskAccordion = ({ title, state, tasks, handleAddTask, view }) => {
             >
               <ExpandIcon expanded={expanded} />
               <Typography
-                variant='h4'
+                variant="h4"
                 sx={{
                   fontSize: '18px',
                   fontWeight: 'bold',

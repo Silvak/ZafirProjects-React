@@ -9,6 +9,7 @@ import {
   Tooltip,
 } from '@mui/material';
 import { useBoundStore } from '../../stores/index';
+import { shallow } from 'zustand/shallow';
 import { isInThisWeek, isInThisMonth, isToday } from '../../hooks/useDates';
 
 const filtersData = [
@@ -20,7 +21,10 @@ const filtersData = [
 
 function MyWorkGlance() {
   const theme = createTheme();
-  const { myTasks, fetchTasksById, selectedProject } = useBoundStore();
+  const { myTasks, fetchTasksById, selectedProject } = useBoundStore(
+    (state) => state,
+    shallow
+  );
   const [filterOption, setFilterOption] = useState('All');
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 

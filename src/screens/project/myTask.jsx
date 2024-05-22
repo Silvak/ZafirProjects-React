@@ -6,6 +6,8 @@ import CreateTaskForm from '@/components/forms/createTaskForm';
 import TaskHeader from '@/components/taskAccordion/taskHeader';
 import TaskList from '@/components/taskAccordion/taskList';
 import { useBoundStore } from '@/stores/index';
+import { shallow } from 'zustand/shallow';
+
 import { useParams } from 'react-router-dom';
 
 const App = () => {
@@ -22,7 +24,7 @@ const App = () => {
     ChangeTitleModal,
     fetchTasksById,
     selectedProject,
-  } = useBoundStore();
+  } = useBoundStore((state) => state, shallow);
 
   useEffect(() => {
     if (params.id) {

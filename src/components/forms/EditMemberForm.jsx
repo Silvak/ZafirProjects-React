@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { useBoundStore } from '@/stores';
+import { shallow } from 'zustand/shallow';
 import { axiosInstance } from '@/config/apiConfig';
 import roles from '@/utils/roles';
 import useFormatText from '@/hooks/useFormatText';
@@ -24,7 +25,7 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
     ChangeStateAlert,
     ChangeTitleAlert,
     updateProjects,
-  } = useBoundStore();
+  } = useBoundStore((state) => state, shallow);
 
   const theme = useTheme();
   const [customRolEnabled, setCustomRolEnabled] = useState(false);

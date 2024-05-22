@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { Typography, useMediaQuery } from "@mui/material";
-import { mockTasks } from "../../../mockData/taskData";
-import { useBoundStore } from "../../../stores/index";
-import userImage from "../../../assets/Img/png/userImage.png";
+import React, { useState, useEffect } from 'react';
+import { Typography, useMediaQuery } from '@mui/material';
+import { mockTasks } from '../../../mockData/taskData';
+import { useBoundStore } from '../../../stores/index';
+import userImage from '../../../assets/Img/png/userImage.png';
+import { shallow } from 'zustand/shallow';
 
 const UpcomingTask = () => {
-  const { tasks, fetchTasks } = useBoundStore();
+  const { tasks, fetchTasks } = useBoundStore((state) => state, shallow);
   const [result, setResult] = useState([]);
-  const isLittleScreen = useMediaQuery("(max-width:800px)");
+  const isLittleScreen = useMediaQuery('(max-width:800px)');
 
   useEffect(() => {
     fetchTasks();
@@ -24,11 +25,11 @@ const UpcomingTask = () => {
             name: project.name,
             progress: project.progress,
             totalTasks: 1,
-            completed: task.state === "Completed" ? 1 : 0,
+            completed: task.state === 'Completed' ? 1 : 0,
           };
         } else {
           uniqueProjects[project._id].totalTasks++;
-          if (task.state === "Completed") {
+          if (task.state === 'Completed') {
             uniqueProjects[project._id].completed++;
           }
         }
@@ -51,46 +52,46 @@ const UpcomingTask = () => {
   return (
     <div
       style={{
-        display: "flex",
-        flexDirection: "column",
-        padding: "32px",
-        marginTop: "-2%",
-        marginBottom: "1.2vh",
-        borderRadius: "12px",
-        border: "1px solid #E0E3E8",
-        marginInline: "18px",
-        position: "relative",
-        minHeight: "330px",
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '32px',
+        marginTop: '-2%',
+        marginBottom: '1.2vh',
+        borderRadius: '12px',
+        border: '1px solid #E0E3E8',
+        marginInline: '18px',
+        position: 'relative',
+        minHeight: '330px',
       }}
     >
       <div
         style={{
-          display: "flex",
-          justifyContent: "space-around",
-          marginTop: "auto",
+          display: 'flex',
+          justifyContent: 'space-around',
+          marginTop: 'auto',
         }}
       >
         {tasksWithProfilePhotos.map((task, index) => (
           <div
             key={index}
             style={{
-              display: "flex",
-              flexDirection: "column-reverse",
-              alignItems: "center",
+              display: 'flex',
+              flexDirection: 'column-reverse',
+              alignItems: 'center',
             }}
           >
             <img
               src={userImage}
               alt={`User ${index + 1}`}
-              style={{ width: "32px", height: "32px", marginTop: "8px" }}
+              style={{ width: '32px', height: '32px', marginTop: '8px' }}
             />
             <div
               style={{
-                width: "24px",
+                width: '24px',
                 height: `${taskQuantities[index] * 15}px`,
-                backgroundColor: "#459CED",
-                borderTopLeftRadius: "12px",
-                borderTopRightRadius: "12px",
+                backgroundColor: '#459CED',
+                borderTopLeftRadius: '12px',
+                borderTopRightRadius: '12px',
               }}
             />
           </div>
@@ -99,126 +100,126 @@ const UpcomingTask = () => {
 
       <div
         style={{
-          position: "absolute",
-          bottom: "0",
-          left: "0",
-          width: "100%",
-          padding: "40px 0px",
+          position: 'absolute',
+          bottom: '0',
+          left: '0',
+          width: '100%',
+          padding: '40px 0px',
         }}
       >
         <div
           style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
           <Typography
             variant="body2"
             style={{
-              fontSize: "14px",
-              fontWeight: "normal",
-              color: "lightgray",
-              textAlign: "center",
-              marginBlock: "22px",
-              marginRight: "12px",
+              fontSize: '14px',
+              fontWeight: 'normal',
+              color: 'lightgray',
+              textAlign: 'center',
+              marginBlock: '22px',
+              marginRight: '12px',
             }}
           >
             15
           </Typography>
           <div
             style={{
-              borderBottom: "1px solid lightgray",
-              width: "85%",
-              marginRight: "14px",
+              borderBottom: '1px solid lightgray',
+              width: '85%',
+              marginRight: '14px',
             }}
           />
         </div>
         <div
           style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
           <Typography
             variant="body2"
             style={{
-              fontSize: "14px",
-              fontWeight: "normal",
-              color: "lightgray",
-              textAlign: "center",
-              marginBlock: "22px",
-              marginRight: "12px",
+              fontSize: '14px',
+              fontWeight: 'normal',
+              color: 'lightgray',
+              textAlign: 'center',
+              marginBlock: '22px',
+              marginRight: '12px',
             }}
           >
             10
           </Typography>
           <div
             style={{
-              borderBottom: "1px solid lightgray",
-              width: "85%",
-              marginRight: "14px",
+              borderBottom: '1px solid lightgray',
+              width: '85%',
+              marginRight: '14px',
             }}
           />
         </div>
         <div
           style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
           <Typography
             variant="body2"
             style={{
-              fontSize: "14px",
-              fontWeight: "normal",
-              color: "lightgray",
-              textAlign: "center",
-              marginBlock: "22px",
-              marginRight: "12px",
+              fontSize: '14px',
+              fontWeight: 'normal',
+              color: 'lightgray',
+              textAlign: 'center',
+              marginBlock: '22px',
+              marginRight: '12px',
             }}
           >
             5
           </Typography>
           <div
             style={{
-              borderBottom: "1px solid lightgray",
-              width: "85%",
-              marginRight: "14px",
+              borderBottom: '1px solid lightgray',
+              width: '85%',
+              marginRight: '14px',
             }}
           />
         </div>
         <div
           style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
           <Typography
             variant="body2"
             style={{
-              fontSize: "14px",
-              fontWeight: "normal",
-              color: "lightgray",
-              textAlign: "center",
-              marginBlock: "22px",
-              marginRight: "12px",
+              fontSize: '14px',
+              fontWeight: 'normal',
+              color: 'lightgray',
+              textAlign: 'center',
+              marginBlock: '22px',
+              marginRight: '12px',
             }}
           >
             0
           </Typography>
           <div
             style={{
-              borderBottom: "1px solid lightgray",
-              width: "85%",
-              marginRight: "14px",
+              borderBottom: '1px solid lightgray',
+              width: '85%',
+              marginRight: '14px',
             }}
           />
         </div>
