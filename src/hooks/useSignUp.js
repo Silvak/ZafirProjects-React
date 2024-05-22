@@ -1,4 +1,5 @@
 import { useBoundStore } from '@/stores/index';
+import { shallow } from 'zustand/shallow';
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/User/UserContext';
@@ -12,7 +13,7 @@ function useSignUp() {
     ChangeTitleAlertError,
     ChangeTitleAlert,
     ChangeStateAlertError,
-  } = useBoundStore((state) => state);
+  } = useBoundStore((state) => state, shallow);
 
   const navigate = useNavigate();
 

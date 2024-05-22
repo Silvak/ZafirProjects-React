@@ -1,7 +1,8 @@
-import React, { createContext } from "react";
-import { useMoralis } from "react-moralis";
+import React, { createContext } from 'react';
+import { useMoralis } from 'react-moralis';
 
-import { useBoundStore } from "@/stores/index";
+import { useBoundStore } from '@/stores/index';
+import { shallow } from 'zustand/shallow';
 
 type ContextType = {
   getDataContentLive: () => Promise<void>;
@@ -12,7 +13,6 @@ type ContextType = {
 export const RenderDataHome = createContext<ContextType>(null);
 
 const RenderNftState = (props: any) => {
-
   const { Moralis } = useMoralis();
 
   const {
@@ -21,43 +21,47 @@ const RenderNftState = (props: any) => {
     DataContentUsers,
     setDataContentLive,
     setDataContentExplore,
-    setDataContentUsers
-  } = useBoundStore()
+    setDataContentUsers,
+  } = useBoundStore((state: any) => state, shallow);
 
-  
   const getDataContentLive = async () => {
-    let resDataContentLive: any = await Moralis.Cloud.run("getDataContentLive");
+    let resDataContentLive: any = await Moralis.Cloud.run('getDataContentLive');
 
-    setDataContentLive(resDataContentLive)
+    setDataContentLive(resDataContentLive);
   };
 
   const getDataContentExplore = async (id: any) => {
     const idConvertType = id;
 
-    let resDataContentExplore: any = await Moralis.Cloud.run("getDataContentExplore", {
-      idConvertType
-    });
+    let resDataContentExplore: any = await Moralis.Cloud.run(
+      'getDataContentExplore',
+      {
+        idConvertType,
+      }
+    );
 
     setDataContentExplore(resDataContentExplore);
   };
 
   const getDataContentUsers = async (id: any) => {
-
     const idConvertType = id;
 
-    let resDataContentUsers: any = await Moralis.Cloud.run("getDataContentUsers", {
-      idConvertType,
-    });
+    let resDataContentUsers: any = await Moralis.Cloud.run(
+      'getDataContentUsers',
+      {
+        idConvertType,
+      }
+    );
 
     setDataContentUsers(resDataContentUsers);
   };
 
   const SubscriptionDataContentExplore = async () => {
-    const query = new Moralis.Query("ItemsMinted");
+    const query = new Moralis.Query('ItemsMinted');
     let subscription = await query.subscribe();
 
-    subscription.on("create", SubscriptionDataContentExplore);
-    subscription.on("update", getDataContentLive);
+    subscription.on('create', SubscriptionDataContentExplore);
+    subscription.on('update', getDataContentLive);
   };
 
   return (
@@ -65,7 +69,7 @@ const RenderNftState = (props: any) => {
       value={{
         getDataContentLive,
         getDataContentExplore,
-        getDataContentUsers
+        getDataContentUsers,
       }}
     >
       {props.children}

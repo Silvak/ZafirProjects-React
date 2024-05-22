@@ -4,13 +4,17 @@ import TaskDetailHeader from './TaskDetailHeader';
 import TaskDetailSubstasks from './TaskDetailSubstasks';
 import ChatMessage from '../chatSeccion/chat';
 import { useBoundStore } from '../../stores';
+import { shallow } from 'zustand/shallow';
 import { useEffect, useState } from 'react';
 import Loader from '../Loader/Loader';
 
 const TaskDetail = ({ task, isSubtask = false }) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
-  const { fetchTaskDetailsById, singleTask } = useBoundStore((state) => state);
+  const { fetchTaskDetailsById, singleTask } = useBoundStore(
+    (state) => state,
+    shallow
+  );
 
   console.log(isSubtask);
   console.log('subtask:', task);

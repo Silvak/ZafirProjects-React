@@ -1,19 +1,19 @@
-import React, { useState } from "react";
-import { Grid, Paper, Typography, useMediaQuery } from "@mui/material";
-import FirstRow from "./content/FirstRow";
-import AvatarsGroup from "./content/AvatarsGroup";
-import ReportTasks from "./content/ReportTasks";
-import PieChart from "./content/PieChart";
-import TaskByProject from "./content/TaskByProject";
-import TaskByProjectRow from "./content/TaskByProjectRow";
-import UpcomingTask from "./content/UpcomingTask";
-import { useBoundStore } from "../../stores/index";
+import React, { useState } from 'react';
+import { Grid, Paper, Typography, useMediaQuery } from '@mui/material';
+import FirstRow from './content/FirstRow';
+import AvatarsGroup from './content/AvatarsGroup';
+import ReportTasks from './content/ReportTasks';
+import PieChart from './content/PieChart';
+import TaskByProject from './content/TaskByProject';
+import TaskByProjectRow from './content/TaskByProjectRow';
+import UpcomingTask from './content/UpcomingTask';
+import { useBoundStore } from '../../stores/index';
+import { shallow } from 'zustand/shallow';
 
 function ComponentBody() {
-  const isMobile = useMediaQuery("(max-width:600px)");
+  const isMobile = useMediaQuery('(max-width:600px)');
   const [projectSelected, setProjectSelected] = useState(null);
-  const { projectsData } = useBoundStore();
-
+  const { projectsData } = useBoundStore((state) => state, shallow);
   return (
     <Grid container spacing={4} sx={{ mt: 2, paddingX: 2 }}>
       {/* Primera fila */}
@@ -23,10 +23,10 @@ function ComponentBody() {
           {/* Contenido para la primera fila */}
           <div
             style={{
-              display: "flex",
-              flexDirection: isMobile ? "column" : "row",
-              justifyContent: isMobile ? "center" : "space-between",
-              alignItems: "center",
+              display: 'flex',
+              flexDirection: isMobile ? 'column' : 'row',
+              justifyContent: isMobile ? 'center' : 'space-between',
+              alignItems: 'center',
             }}
           >
             <FirstRow
@@ -86,20 +86,20 @@ function ComponentBody() {
 }
 
 const paperStyle = {
-  borderRadius: "12px",
-  backgroundColor: "#ffffff",
-  border: "1px solid #E0E3E8",
+  borderRadius: '12px',
+  backgroundColor: '#ffffff',
+  border: '1px solid #E0E3E8',
 };
 
 const titleStyle = {
-  fontFamily: "Poppins",
-  fontSize: "20px",
+  fontFamily: 'Poppins',
+  fontSize: '20px',
   fontWeight: 600,
-  lineHeight: "30px",
-  letterSpacing: "0.01em",
-  textAlign: "left",
-  color: "#1D1F24",
-  padding: "22px",
+  lineHeight: '30px',
+  letterSpacing: '0.01em',
+  textAlign: 'left',
+  color: '#1D1F24',
+  padding: '22px',
 };
 
 export default ComponentBody;

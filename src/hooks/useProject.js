@@ -3,6 +3,7 @@ import useSuggestionUsers from '@/hooks/useSuggestionUsers';
 import { createTheme, useMediaQuery } from '@mui/material';
 import { useState } from 'react';
 import { useBoundStore } from '../stores';
+import { shallow } from 'zustand/shallow';
 
 export function useProject({ project, isCreated = false }) {
   const theme = createTheme();
@@ -16,7 +17,7 @@ export function useProject({ project, isCreated = false }) {
     ChangeStateModal,
     ChangeTitleAlertError,
     ChangeStateAlertError,
-  } = useBoundStore();
+  } = useBoundStore((state) => state, shallow);
 
   const {
     selectedLeader,

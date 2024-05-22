@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Box, Button, useMediaQuery } from '@mui/material';
 import { RxEyeOpen } from 'react-icons/rx';
 import { useBoundStore } from '../../stores';
+import { shallow } from 'zustand/shallow';
+
 import { statusColors } from '../../utils/colors';
 import TaskDetail from './TaskDetail';
 import css from './style.module.css';
@@ -37,7 +39,7 @@ const TaskDetailSubstasks = ({ taskId }) => {
     ChangeTitleModal,
     ChangeContentModal,
     ChangeIsVisibleButton,
-  } = useBoundStore((state) => state);
+  } = useBoundStore((state) => state, shallow);
 
   const handleAddTask = () => {
     ChangeStateModal(true);
@@ -55,14 +57,8 @@ const TaskDetailSubstasks = ({ taskId }) => {
   }, [taskId, subtasks]);
 
   const handleViewSubstask = (subtask) => {
-    ChangeStateModal(false);
     ChangeTitleModal('Substask Detail');
-    // ChangeContentModal(<TaskDetail task={subtask} isSubtask={true} />);
-    ChangeContentModal(
-      <div>
-        Aqui vamos a tener que crear un formulario de mostrar datos de subtasks
-      </div>
-    );
+    ChangeContentModal(<TaskDetail task={subtask} isSubtask={true} />);
     ChangeIsVisibleButton(true);
     ChangeStateModal(true);
   };

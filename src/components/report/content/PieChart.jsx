@@ -4,8 +4,8 @@ import { PieChart } from '@mui/x-charts/PieChart';
 import { useDrawingArea } from '@mui/x-charts/hooks';
 import { styled } from '@mui/material/styles';
 // import { pieChartData } from "../../../mockData/pieData";
-import { reportData } from '../../../mockData/myWorkData';
 import { useBoundStore } from '../../../stores/index';
+import { shallow } from 'zustand/shallow';
 
 const size = {
   width: 300,
@@ -31,7 +31,7 @@ function PieCenterLabel({ children }) {
 }
 
 export default function CustomPieChart({ projectSelected }) {
-  const { myTasks, fetchTasksById } = useBoundStore();
+  const { myTasks, fetchTasksById } = useBoundStore((state) => state, shallow);
   const [flag, setFlag] = useState(false);
 
   useEffect(() => {

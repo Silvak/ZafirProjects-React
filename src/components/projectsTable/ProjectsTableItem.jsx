@@ -8,8 +8,8 @@ import css from './styles.module.css';
 import { MdAttachFile, MdCalendarMonth } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 
-import { shallow } from 'zustand/shallow';
 import { useBoundStore } from '../../stores';
+import { shallow } from 'zustand/shallow';
 
 const BoxFlex = ({ children, sx }) => {
   return (
@@ -28,17 +28,7 @@ const BoxFlex = ({ children, sx }) => {
   );
 };
 
-const ProjectsTableItem = ({
-  _id,
-  name,
-  status,
-  start,
-  username,
-  // quantityTasks,
-  // date,
-  // attachments,
-  // category,
-}) => {
+const ProjectsTableItem = ({ _id, name, start, username }) => {
   const { fixStart } = fixDate(start);
   const { selectedProjectById } = useBoundStore((state) => state, shallow);
   const handleSelectProject = (id) => {
@@ -63,20 +53,8 @@ const ProjectsTableItem = ({
         }}
       >
         <BoxFlex sx={{ flex: 2 }}>
-          {/* <div
-          style={{
-            display: "grid",
-            placeContent: "center",
-            backgroundColor: "#ECE9FF",
-            borderRadius: "12px",
-            padding: "10px",
-          }}
-        >
-          <RenderIconByCategory category={category} />
-        </div> */}
           <Box sx={{ marginLeft: '20px' }}>
             <h2 className={css.projectName}>{name}</h2>
-            {/* <small className={css.quantityTasks}>{quantityTasks}</small> */}
           </Box>
         </BoxFlex>
         <BoxFlex>

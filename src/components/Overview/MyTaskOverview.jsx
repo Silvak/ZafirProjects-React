@@ -9,6 +9,8 @@ import {
 } from '@mui/material';
 import { useEffect, useState, Suspense } from 'react';
 import { useBoundStore } from '../../stores/index';
+import { shallow } from 'zustand/shallow';
+
 import MyTaskList from './MyTaskList';
 import { isInThisWeek, isInThisMonth, isToday } from '../../hooks/useDates';
 
@@ -27,7 +29,7 @@ function MyTask() {
     addTask,
     fetchTasks,
     selectedProject,
-  } = useBoundStore();
+  } = useBoundStore((state) => state, shallow);
   const theme = createTheme();
   const [filterOption, setFilterOption] = useState('All');
 

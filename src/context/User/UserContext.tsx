@@ -1,11 +1,12 @@
-import React, { createContext } from "react";
-import { useMoralis } from "react-moralis";
-import { Moralis } from "moralis-v1";
-import { useBoundStore } from "@/stores/index";
-import { initializeApp } from "firebase/app";
-import { firebaseConfig } from "../../../fbconfig"; // Asegúrate de importar la configuración correcta
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { axiosInstance } from "@/config/apiConfig";
+import React, { createContext } from 'react';
+import { useMoralis } from 'react-moralis';
+import { Moralis } from 'moralis-v1';
+import { useBoundStore } from '@/stores/index';
+import { shallow } from 'zustand/shallow';
+import { initializeApp } from 'firebase/app';
+import { firebaseConfig } from '../../../fbconfig'; // Asegúrate de importar la configuración correcta
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { axiosInstance } from '@/config/apiConfig';
 initializeApp(firebaseConfig);
 
 type UserContextType = {
@@ -20,21 +21,21 @@ export const UserContext = createContext<UserContextType>(null);
 async function assignRoleToUser(userId: string, roleName: string) {
   try {
     // Llamar a la función de nube en Moralis
-    const result = await Moralis.Cloud.run("assignRoleToUser", {
+    const result = await Moralis.Cloud.run('assignRoleToUser', {
       userId,
       roleName,
     });
 
     console.log(result);
   } catch (error) {
-    console.error("Error al asignar el rol:", error);
+    console.error('Error al asignar el rol:', error);
   }
 }
 
 async function checkUserRole(roleName: string, ethAddress: string) {
   try {
     // Llamar a la función de nube en Parse Server
-    const result = await Moralis.Cloud.run("checkUserRoleFront", {
+    const result = await Moralis.Cloud.run('checkUserRoleFront', {
       roleName,
       ethAddress,
     });
@@ -47,7 +48,7 @@ async function checkUserRole(roleName: string, ethAddress: string) {
       return result.hasRole;
     }
   } catch (error) {
-    console.error("Error al verificar el rol:", error);
+    console.error('Error al verificar el rol:', error);
   }
 }
 
@@ -64,11 +65,11 @@ const UserState = (props: { children: any }) => {
     setDataPerfilUser,
     setUser,
     setAuthenticated,
-  } = useBoundStore();
+  } = useBoundStore((state: any) => state, shallow);
 
   const Register = async (user: any): Promise<void> => {
     try {
-      const response = await axiosInstance.post("/user/register", user);
+      const response = await axiosInstance.post('/user/register', user);
       return response;
     } catch (error: any) {
       throw Error(error.response.data.message);
@@ -83,7 +84,7 @@ const UserState = (props: { children: any }) => {
     password: string;
   }): Promise<void> => {
     try {
-      const response = await axiosInstance.post("/user/login", {
+      const response = await axiosInstance.post('/user/login', {
         email,
         password,
       });
@@ -95,11 +96,11 @@ const UserState = (props: { children: any }) => {
 
   const SettingsUser = async (userAddress: string) => {
     try {
-      const SetSettingsUser = await Moralis.Cloud.run("SetSettingsUser", {
+      const SetSettingsUser = await Moralis.Cloud.run('SetSettingsUser', {
         owner: userAddress,
       });
     } catch (error: any) {
-      console.error("🚀 error de SettingsUser", error);
+      console.error('🚀 error de SettingsUser', error);
     }
   };
 
@@ -117,7 +118,7 @@ const UserState = (props: { children: any }) => {
       setAuthenticated(false);
       setUser({});
     } catch (error: any) {
-      console.error("🚀 error de logout", error);
+      console.error('🚀 error de logout', error);
     }
   };
 
