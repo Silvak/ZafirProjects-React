@@ -49,10 +49,9 @@ const MembersTable = () => {
       const projectMembers = selectedProject.members_id.map((member) => ({
         ...member,
         project: selectedProject.name,
-        leadOwner: selectedProject.responsible,
+        leadOwner: selectedProject.responsible || '',
         projectId: selectedProject.id,
       }));
-
       setAllMemberData(projectMembers);
     }
   }, [selectedProject]);
@@ -72,7 +71,6 @@ const MembersTable = () => {
         selectedRows.slice(selectedIndex + 1)
       );
     }
-
     setSelectedRows(newSelected);
   };
 
@@ -114,7 +112,7 @@ const MembersTable = () => {
       await updateProjects();
       setAllMemberData(updateAllMember);
       ChangeStateModal(false);
-      ChangeTitleAlert('Miembro eliminado exitosamente');
+      ChangeTitleAlert('Member successfully removed');
       ChangeStateAlert(true);
     } catch (error) {
       console.error(error.message);
@@ -129,8 +127,8 @@ const MembersTable = () => {
   const filteredSearchData = allMemberData.filter(
     (member) =>
       member &&
-      member.member &&
-      member.member.name.toLowerCase().includes(searchTerm.toLowerCase())
+      member._id &&
+      member._id.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const filteredData =
@@ -140,6 +138,7 @@ const MembersTable = () => {
           (member) => member.leadOwner === selectedOption
         );
 
+  console.log(filteredData);
   return (
     <div>
       <div>

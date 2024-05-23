@@ -24,6 +24,7 @@ const TableHeader = ({
 }) => {
   const [leadOwners, setLeadOwners] = useState([]);
 
+  console.log(columns);
   useEffect(() => {
     const uniqueLeadOwners = [
       ...new Set(filteredData.map((member) => member.leadOwner)),
@@ -149,7 +150,7 @@ const TableHeader = ({
                         />
                       </div>
                     </Grid>
-                    <Grid item>
+                    {/* <Grid item>
                       <Select
                         value={selectedOption}
                         onChange={(event) =>
@@ -177,12 +178,7 @@ const TableHeader = ({
                         <MenuItem
                           value="All"
                           style={{ fontSize: '12px', fontWeight: 600 }}
-                          sx={{
-                            '&:hover': {
-                              backgroundColor: 'lightgray',
-                              color: '#000',
-                            },
-                          }}
+                          className="menu-item"
                         >
                           All
                         </MenuItem>
@@ -202,7 +198,7 @@ const TableHeader = ({
                           </MenuItem>
                         ))}
                       </Select>
-                    </Grid>
+                    </Grid> */}
                     <Grid item>
                       <Button
                         variant="outlined"

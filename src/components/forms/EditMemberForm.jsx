@@ -17,8 +17,9 @@ import roles from '@/utils/roles';
 import useFormatText from '@/hooks/useFormatText';
 
 function EditMember({ row, setAllMemberData, allMemberData }) {
-  const [newName, setNewName] = useState(row.member.name);
-  const [newRol, setNewRol] = useState(row.rolToProject || 'Select Role');
+  console.log(row);
+  const [newName, setNewName] = useState(row._id.name);
+  const [newRol, setNewRol] = useState(row._id.rol || 'Select Role');
   const [customRol, setCustomRol] = useState('');
   const {
     ChangeStateModal,
@@ -90,11 +91,11 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
           marginBottom: 150,
         }}
       >
-        <h2 style={{ marginBlock: 8 }}>Edit {row.member.name}</h2>
+        <h2 style={{ marginBlock: 8 }}>Edit {row._id.name}</h2>
         <form>
           <TextField
             label="Email"
-            value={row.member.email}
+            value={row._id.email}
             fullWidth
             disabled
             style={{ marginBottom: 8 }}
@@ -199,7 +200,7 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
                   minWidth: '6rem',
                 }}
                 onClick={() =>
-                  handleSaveData(row, { name: newName, rol: newRol })
+                  handleSaveData(row._id, { name: newName, rol: newRol })
                 }
               >
                 Save
