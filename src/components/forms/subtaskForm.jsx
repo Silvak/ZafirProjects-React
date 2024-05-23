@@ -12,12 +12,14 @@ import {
   Grid,
   useMediaQuery,
   ThemeProvider,
+  Box,
 } from '@mui/material';
 import { useBoundStore } from '../../stores/index';
 import { shallow } from 'zustand/shallow';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { useProject } from '@/hooks/useProject';
+import SuggestionList from '../SuggestionList/SuggestionList';
 
 const SubTaskForm = ({ placeholderTaskName = 'Subtask 1', taskId }) => {
   const theme = useTheme();
@@ -30,8 +32,11 @@ const SubTaskForm = ({ placeholderTaskName = 'Subtask 1', taskId }) => {
   const [description, setDescription] = useState('');
   const [tags, setTags] = useState('');
   const {
-    selectedLeader,
-    filteredLeaders,
+    filteredMembers,
+    selectedMember,
+    teamMembers,
+    handleAddMembers,
+    handleRemoveMember,
     handleSuggestionChange,
     handleSuggestionClick,
   } = useProject({ project: null, isCreated: true });
@@ -53,7 +58,7 @@ const SubTaskForm = ({ placeholderTaskName = 'Subtask 1', taskId }) => {
       end: selectedEndDate,
       description: description,
       status: tags,
-      members: selectedLeader,
+      members: selectedMember,
       taskId: taskId,
     });
   }, [
@@ -62,7 +67,7 @@ const SubTaskForm = ({ placeholderTaskName = 'Subtask 1', taskId }) => {
     selectedEndDate,
     description,
     tags,
-    selectedLeader,
+    selectedMember,
     taskId,
   ]);
 
@@ -72,12 +77,14 @@ const SubTaskForm = ({ placeholderTaskName = 'Subtask 1', taskId }) => {
     end: selectedEndDate,
     description: description,
     status: tags,
-    members: selectedLeader,
+    members: selectedMember,
     taskId: taskId,
   });
 
   const [selectedUser, setSelectedUser] = useState('');
-  const [teamMembers, setTeamMembers] = useState([]);
+  // const [teamMembers, setTeamMembers] = useState([]);
+
+  console.log(filteredMembers, selectedMember, teamMembers);
 
   const handleCreate = async () => {
     if (
@@ -86,7 +93,7 @@ const SubTaskForm = ({ placeholderTaskName = 'Subtask 1', taskId }) => {
       !selectedEndDate ||
       !description ||
       !tags ||
-      !selectedLeader
+      !selectedMember
     ) {
       // Si algún campo obligatorio está vacío, muestra un mensaje de error y no crees la tarea
       // alert('Por favor, rellena todos los campos obligatorios.');
@@ -197,35 +204,34 @@ const SubTaskForm = ({ placeholderTaskName = 'Subtask 1', taskId }) => {
                 sx={{ fontSize: '2rem' }}
               />
             </Grid>
-            <Grid item xs={12}>
-              <Typography sx={{ fontSize: '0.85rem' }}>Assigne to</Typography>
 
-              <TextField
-                size="small"
-                name="leaders"
-                value={selectedLeader}
-                onChange={(e) => handleSuggestionChange(e, 'leader')}
-                placeholder="Search leader"
-                sx={{
-                  width: '100%',
-                }}
-              />
-              <div
-                style={{
-                  marginLeft: 4,
-                  cursor: 'pointer',
-                  padding: 8,
-                }}
-              >
-                {filteredLeaders.map((user) => (
-                  <p
-                    key={user.id}
-                    onClick={() => handleSuggestionClick(user.name, 'leader')}
-                  >
-                    {user.name}
-                  </p>
-                ))}
-              </div>
+            <Grid
+              item
+              xs={12}
+              sx={{
+                marginBottom: '12px',
+              }}
+            >
+              <Box sx={{ position: 'relative' }}>
+                <Typography fontFamily={'Poppins'} color={'#6B6E75'}>
+                  Assigne to
+                </Typography>
+                <TextField
+                  size="small"
+                  name="members"
+                  value={selectedMember.name}
+                  onChange={(e) => handleSuggestionChange(e, 'member')}
+                  placeholder="Search a member"
+                  sx={{
+                    width: '100%',
+                  }}
+                />
+                <SuggestionList
+                  usersList={filteredMembers}
+                  onClick={handleSuggestionClick}
+                  type="member"
+                />
+              </Box>
             </Grid>
 
             <Grid item xs={12}>

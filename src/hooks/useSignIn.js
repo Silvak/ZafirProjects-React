@@ -29,7 +29,7 @@ const useSignIn = () => {
     LoginMail({ email, password })
       .then((response) => {
         if (response.status === 200) {
-          ChangeTitleAlert('Sesión iniciada');
+          ChangeTitleAlert('Successful login');
           ChangeStateAlert(true);
           setTimeout(() => {
             const { data } = response;

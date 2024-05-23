@@ -22,7 +22,8 @@ const TableRowComponent = ({
   setAllMemberData,
   allMemberData,
 }) => {
-  const isItemSelected = isSelected(row?.member.name);
+  console.log(row);
+  const isItemSelected = isSelected(row?._id.name);
   const [deleteClicked, setDeleteClicked] = useState(false);
   const [editClicked, setEditClicked] = useState(false);
   const isExpanded = isMobile && isItemSelected;
@@ -44,7 +45,7 @@ const TableRowComponent = ({
   console.log(row);
 
   return (
-    <React.Fragment key={row.member._id}>
+    <React.Fragment key={row.member}>
       <TableRow
         hover={!isMobile}
         style={{
@@ -55,14 +56,14 @@ const TableRowComponent = ({
           <TableCell className="checkbox-contact">
             <Checkbox
               checked={isItemSelected}
-              onChange={() => handleCheckboxClick(row.member.name)}
+              onChange={() => handleCheckboxClick(row._id.name)}
               sx={{ color: 'lightgray' }}
             />
           </TableCell>
         )}
 
         {columns.map((column, index) => {
-          let cellContent = row.member[column.id];
+          let cellContent = row._id[column.id];
 
           return (
             <TableCell
@@ -167,7 +168,7 @@ const TableRowComponent = ({
                     </div>
                     {column.id === 'name' && (
                       <div style={{ flex: 1, color: 'gray' }}>
-                        {row.member['email']}
+                        {row._id.email}
                       </div>
                     )}
                   </div>
@@ -176,7 +177,7 @@ const TableRowComponent = ({
                 column.id !== 'photo' &&
                 column.id !== 'email' ? (
                 column.id === 'rol' ? (
-                  <span>{row.rolToProject}</span>
+                  <span style={{ marginLeft: 10 }}>{row._id.rol}</span>
                 ) : (
                   cellContent
                 )

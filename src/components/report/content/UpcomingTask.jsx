@@ -4,6 +4,7 @@ import { mockTasks } from '../../../mockData/taskData';
 import { useBoundStore } from '../../../stores/index';
 import userImage from '../../../assets/Img/png/userImage.png';
 import { shallow } from 'zustand/shallow';
+import avatar from '@/assets/Img/png/defaultUser.png';
 
 const UpcomingTask = () => {
   const { tasks, fetchTasks } = useBoundStore((state) => state, shallow);
@@ -81,7 +82,7 @@ const UpcomingTask = () => {
             }}
           >
             <img
-              src={userImage}
+              src={avatar}
               alt={`User ${index + 1}`}
               style={{ width: '32px', height: '32px', marginTop: '8px' }}
             />
