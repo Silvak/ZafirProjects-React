@@ -38,6 +38,11 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
     handleRemoveMember,
     handleSuggestionChange,
     handleSuggestionClick,
+    ChangeStateAlert,
+    ChangeTitleAlert,
+    ChangeStateAlertError,
+    ChangeTitleAlertError,
+    updateProjects,
   } = useProject({ project: null, isCreated: true });
 
   const { addTask, fetchTasksById, ChangeStateModal, selectedProject } =
@@ -57,7 +62,6 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
       ...taskData,
       members: teamMembers,
     };
-    console.log(data);
 
     if (
       !taskData.taskName ||
@@ -68,15 +72,19 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
       !taskData.state ||
       teamMembers.length === 0
     ) {
-      // Si algún campo obligatorio está vacío, muestra un mensaje de error y no crees la tarea
-      alert('Por favor, rellena todos los campos obligatorios.');
+      ChangeTitleAlertError('Please. Please complete all required fields');
+      ChangeStateAlertError(true);
       return;
     }
     try {
       await addTask(data, projectId);
       await fetchTasksById(projectId);
+      ChangeTitleAlert('Task created successfully');
+      ChangeStateAlert(true);
+      updateProjects();
     } catch (error) {
-      alert('Error creating task', error);
+      ChangeTitleAlertError(`Error creating task: ${error}`);
+      ChangeStateAlertError(true);
     }
     handleClose();
   };
