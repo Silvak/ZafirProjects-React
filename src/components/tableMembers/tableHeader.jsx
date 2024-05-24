@@ -22,15 +22,14 @@ const TableHeader = ({
   setSelectedOption,
   filteredData,
 }) => {
-  const [leadOwners, setLeadOwners] = useState([]);
+  // const [leadOwners, setLeadOwners] = useState([]);
 
-  console.log(columns);
-  useEffect(() => {
-    const uniqueLeadOwners = [
-      ...new Set(filteredData.map((member) => member.leadOwner)),
-    ];
-    setLeadOwners(uniqueLeadOwners.sort());
-  }, [filteredData]);
+  // useEffect(() => {
+  //   const uniqueLeadOwners = [
+  //     ...new Set(filteredData.map((member) => member.leadOwner)),
+  //   ];
+  //   setLeadOwners(uniqueLeadOwners.sort());
+  // }, [filteredData]);
 
   const headers = [
     {
@@ -150,55 +149,6 @@ const TableHeader = ({
                         />
                       </div>
                     </Grid>
-                    {/* <Grid item>
-                      <Select
-                        value={selectedOption}
-                        onChange={(event) =>
-                          setSelectedOption(event.target.value)
-                        }
-                        variant="outlined"
-                        style={{
-                          borderRadius: '12px',
-                          width: '180px',
-                          height: '44px',
-                          border: '1px solid lightgray',
-                        }}
-                        MenuProps={{
-                          PaperProps: {
-                            style: {
-                              borderTopLeftRadius: 0,
-                              borderTopRightRadius: 0,
-                              backgroundColor: '#fff',
-                              marginTop: 2,
-                              boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.2)',
-                            },
-                          },
-                        }}
-                      >
-                        <MenuItem
-                          value="All"
-                          style={{ fontSize: '12px', fontWeight: 600 }}
-                          className="menu-item"
-                        >
-                          All
-                        </MenuItem>
-                        {leadOwners.map((leadOwner, index) => (
-                          <MenuItem
-                            key={index}
-                            value={leadOwner}
-                            style={{ fontSize: '12px', fontWeight: 600 }}
-                            sx={{
-                              '&:hover': {
-                                backgroundColor: 'lightgray',
-                                color: '#000',
-                              },
-                            }}
-                          >
-                            {leadOwner}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </Grid> */}
                     <Grid item>
                       <Button
                         variant="outlined"
