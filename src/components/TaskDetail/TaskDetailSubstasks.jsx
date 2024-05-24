@@ -1,5 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Box, Button, useMediaQuery, CircularProgress } from '@mui/material';
+import {
+  Box,
+  Button,
+  useMediaQuery,
+  CircularProgress,
+  Tooltip,
+} from '@mui/material';
 import { RxEyeOpen } from 'react-icons/rx';
 import { useBoundStore } from '../../stores';
 import { shallow } from 'zustand/shallow';
@@ -103,16 +109,29 @@ const TaskDetailSubstasks = ({ taskId }) => {
             filterSubtask.map((item) => (
               <tr key={item.id}>
                 <td>
-                  <strong>{item.name}</strong>
+                  <strong style={{ fontSize: '14px' }}>{item.name}</strong>
                 </td>
                 <td>
                   <div>
                     {item.memberInfo ? (
-                      <>
-                        <strong>{item.memberInfo.name}</strong>
+                      <div
+                        style={{
+                          width: '7rem',
+                          overflow: 'hidden',
+                        }}
+                      >
+                        <strong style={{ fontSize: '14px' }}>
+                          {item.memberInfo.name}
+                        </strong>
                         <br />
-                        <small>{item.memberInfo.email}</small>
-                      </>
+                        <Tooltip title={item.memberInfo.email}>
+                          <small style={{ cursor: 'default' }}>
+                            {item.memberInfo.email.length > 12
+                              ? item.memberInfo.email.slice(0, 12) + '...'
+                              : item.memberInfo.email}
+                          </small>
+                        </Tooltip>
+                      </div>
                     ) : (
                       <CircularProgress />
                     )}

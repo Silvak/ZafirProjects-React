@@ -48,6 +48,7 @@ const SubTaskForm = ({ placeholderTaskName = 'Subtask 1', taskId }) => {
     ChangeTitleAlert,
     ChangeStateAlertError,
     ChangeTitleAlertError,
+    updateProjects,
   } = useBoundStore((state) => state, shallow);
 
   useEffect(() => {
@@ -103,8 +104,9 @@ const SubTaskForm = ({ placeholderTaskName = 'Subtask 1', taskId }) => {
     }
     try {
       await addSubtask(subtaskData);
-      ChangeTitleAlert('SubTask created');
+      ChangeTitleAlert('SubTask created successfully');
       ChangeStateAlert(true);
+      updateProjects();
       handleClose();
     } catch (error) {
       alert('Error creating task', error);
