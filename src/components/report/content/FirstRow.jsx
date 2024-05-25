@@ -19,6 +19,7 @@ function FirstRow({ setProjectSelected, projectsData, projectSelected }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const isMobile = useMediaQuery('(max-width:600px)');
   const theme = useTheme();
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleChange = (event) => {
     setSelectedOption(event.target.value);
@@ -29,6 +30,9 @@ function FirstRow({ setProjectSelected, projectsData, projectSelected }) {
     if (!projectSelected) {
       setProjectSelected(projectsData[0]);
     }
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
   }, []);
 
   const handleMenuToggle = () => {
@@ -64,7 +68,6 @@ function FirstRow({ setProjectSelected, projectsData, projectSelected }) {
                   }}
                   size="small"
                   value={selectedOption}
-                  name={selectedOption.name}
                   onChange={handleChange}
                   variant="outlined"
                   IconComponent={() => (
@@ -92,27 +95,25 @@ function FirstRow({ setProjectSelected, projectsData, projectSelected }) {
                         gap: 2,
                       }}
                     >
-                      {value.name}
+                      {value ? value.name : 'Select a project'}
                     </Box>
                   )}
                 >
-                  {projectsData?.map((project, index) => {
-                    return (
-                      <MenuItem
-                        key={index}
-                        style={{ backgroundColor: 'white' }}
-                        sx={{ fontWeight: 500 }}
-                        value={project}
-                        className="menu-item"
-                      >
-                        {project.name}
-                      </MenuItem>
-                    );
-                  })}
+                  {projectsData?.map((project, index) => (
+                    <MenuItem
+                      key={index}
+                      style={{ backgroundColor: 'white' }}
+                      sx={{ fontWeight: 500 }}
+                      value={project}
+                      className="menu-item"
+                    >
+                      {project.name}
+                    </MenuItem>
+                  ))}
                 </Select>
-              ) : (
+              ) : !isLoading ? (
                 <Typography
-                  variant={'p'}
+                  variant="body1"
                   sx={{
                     width: '100%',
                     textAlign: 'center',
@@ -120,7 +121,19 @@ function FirstRow({ setProjectSelected, projectsData, projectSelected }) {
                     fontSize: 14,
                   }}
                 >
-                  &quot;There are no projects to show&quot;
+                  "There are no projects to show"
+                </Typography>
+              ) : (
+                <Typography
+                  variant="body1"
+                  sx={{
+                    width: '100%',
+                    textAlign: 'center',
+                    fontWeight: 500,
+                    fontSize: 14,
+                  }}
+                >
+                  Loading...
                 </Typography>
               )}
             </Grid>

@@ -128,7 +128,7 @@ const MembersTable = () => {
     (member) =>
       member &&
       member._id &&
-      member._id.name.toLowerCase().includes(searchTerm.toLowerCase())
+      member._id.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const filteredData =
@@ -138,7 +138,6 @@ const MembersTable = () => {
           (member) => member.leadOwner === selectedOption
         );
 
-  console.log(filteredData);
   return (
     <div>
       <div>
