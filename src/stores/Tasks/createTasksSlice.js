@@ -7,11 +7,7 @@ export const createTasksSlice = (set) => ({
 
   addTask: async (taskData, projectId) => {
     try {
-      const data = await axiosInstance.post(
-        `/tasksList/project/${projectId}`,
-        taskData
-      );
-      console.log(taskData, projectId);
+      await axiosInstance.post(`/tasksList/project/${projectId}`, taskData);
     } catch (error) {
       console.error('Error creating task', error);
     }
@@ -53,22 +49,28 @@ export const createTasksSlice = (set) => ({
 
   fetchTaskDetailsById: async (taskId, isSubtask) => {
     try {
-      let result = null;
-      console.log(isSubtask);
-      if (!isSubtask) {
-        const { data } = await axiosInstance.get(`/tasksList/${taskId}`);
-        result = { ...data };
-      } else {
-        console.log(isSubtask);
-        const { data } = await axiosInstance.get(`/subtaks/${taskId}`);
-        console.log(data);
-        result = { ...data };
-      }
-      set({ singleTask: result });
-      console.log(singleTask);
+      const { data } = await axiosInstance.get(`/tasksList/${taskId}`);
+      set({ singleTask: data });
     } catch (error) {
       console.error('Error fetching task detail', error);
     }
+    // try {
+    //   let result = null;
+    //   console.log(isSubtask);
+    //   if (!isSubtask) {
+    //     const { data } = await axiosInstance.get(`/tasksList/${taskId}`);
+    //     result = { ...data };
+    //   } else {
+    //     console.log(isSubtask);
+    //     const { data } = await axiosInstance.get(`/subtaks/${taskId}`);
+    //     console.log(data);
+    //     result = { ...data };
+    //   }
+    //   set({ singleTask: result });
+    //   console.log(singleTask);
+    // } catch (error) {
+    //   console.error('Error fetching task detail', error);
+    // }
   },
 
   fetchTasksById: async (projectId) => {

@@ -1,43 +1,126 @@
+import CustomList from '@/components/CustomList/CustomList';
 import {
+  Avatar,
   Box,
   Button,
   Grid,
+  ListItem,
   Paper,
   TextField,
   ThemeProvider,
   Typography,
-  Avatar,
-  IconButton,
+  createTheme,
+  useMediaQuery,
 } from '@mui/material';
-
-import AddIcon from '@mui/icons-material/Add';
+import { useState } from 'react';
+import { shallow } from 'zustand/shallow';
 import user1 from '../../assets/Img/png/userImageMan.png';
-import user2 from '../../assets/Img/png/userImageWoman.png';
-import user3 from '../../assets/Img/png/userImage.png';
-import { useProject } from '@/hooks/useProject';
-import SuggestionList from '@/components/SuggestionList/SuggestionList';
+import useSuggestionUsers from '../../hooks/useSuggestionUsers';
+import { useBoundStore } from '../../stores';
 
 function CreateProjectForm() {
+  const theme = createTheme();
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const {
-    theme,
-    isMobile,
-    handleChange,
-    handleSubmit,
-    handleAddLeaders,
-    handleAddMembers,
-    handleRemoveLeader,
-    handleRemoveMember,
-    isLoading,
-    handleClose,
-    teamMembers,
-    teamLeaders,
-    selectedLeader,
-    selectedMember,
-    filteredLeaders,
-    filteredMembers,
-    handleSuggestionChange,
-    handleSuggestionClick,
-  } = useProject({ project: null, isCreated: true });
+    User,
+    addProject,
+    updateProject,
+    updateProjects,
+    ChangeStateModal,
+    ChangeTitleAlertError,
+    ChangeStateAlertError,
+  } = useBoundStore((state) => state, shallow);
+  const { users } = useSuggestionUsers();
+
+  const [isLoading, setIsLoading] = useState(false);
+  // total usuarios
+
+  //  filtro para mostrar en la lista
+  const [filteredLeaders, setFilteredLeaders] = useState([]);
+  const [filteredMembers, setFilteredMembers] = useState([]);
+  //  nombre del miembro
+  const [member, setMember] = useState('');
+  // miembros a renderizar
+  const [members, setMembers] = useState([]);
+
+  const [formData, setformData] = useState({
+    name: '',
+    start: '',
+    end: '',
+    description: '',
+    leaders: '',
+  });
+
+  const handleSuggestionChange = ({ inputValue, type }) => {
+    // for input leader
+    if (type === 'leader') {
+      if (inputValue === '') {
+        setFilteredLeaders([]);
+      } else {
+        const filter = users.filter((user) => {
+          return user.name.toUpperCase().startsWith(inputValue.toUpperCase());
+        });
+        setFilteredLeaders(filter);
+      }
+    } // for input member
+    else if (type === 'member') {
+      if (inputValue === '') {
+        setFilteredMembers([]);
+      } else {
+        const filter = users.filter((user) => {
+          return user.name.toUpperCase().startsWith(inputValue.toUpperCase());
+        });
+        setFilteredMembers(filter);
+      }
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    const data = {
+      ...formData,
+      leaders: formData.leaders._id,
+      members_id: members,
+    };
+
+    try {
+      await addProject(User.uid, data);
+      await updateProjects();
+    } catch (error) {
+      console.log(error);
+    }
+    setIsLoading(false);
+    ChangeStateModal(false);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setformData({ ...formData, [name]: value });
+  };
+
+  const handleClose = () => {
+    ChangeStateModal(false);
+  };
+
+  const handleSuggestionClick = (user, type) => {
+    if (type === 'leader') {
+      setformData({ ...formData, leaders: user });
+      setFilteredLeaders([]);
+    } else {
+      setMembers((prev) => [...prev, user]);
+      setFilteredMembers([]);
+      setMember(''); // Limpiar el campo de entrada después de seleccionar un miembro
+    }
+  };
+
+  const handleRemoveMember = (memberToRemove) => {
+    const updatedMembers = members.filter(
+      (member) => member._id.toString() !== memberToRemove._id.toString()
+    );
+    setMembers(updatedMembers);
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -69,6 +152,7 @@ function CreateProjectForm() {
           </Typography>
           <TextField
             size='small'
+            value={formData.name}
             placeholder='Project name...'
             name='name'
             onChange={handleChange}
@@ -97,6 +181,7 @@ function CreateProjectForm() {
               size='small'
               name='start'
               type='date'
+              value={formData.start}
               onChange={handleChange}
               sx={{
                 width: '100%',
@@ -111,6 +196,7 @@ function CreateProjectForm() {
               size='small'
               name='end'
               type='date'
+              value={formData.end}
               onChange={handleChange}
               sx={{
                 width: '100%',
@@ -122,7 +208,6 @@ function CreateProjectForm() {
         <Grid
           item
           sx={{
-            // width: "444px",
             marginBottom: '20px',
           }}
         >
@@ -133,123 +218,60 @@ function CreateProjectForm() {
             size='small'
             name='description'
             onChange={handleChange}
+            value={formData.description}
             placeholder='...'
             sx={{
               width: '100%',
             }}
           />
         </Grid>
-        <Grid
-          item
-          sx={{
-            // width: "444px",
-            marginBottom: '20px',
-          }}
-        >
-          <Typography fontFamily={'Poppins'} color={'#6B6E75'}>
-            Project link...
-          </Typography>
-          <TextField
-            size='small'
-            name='link'
-            onChange={handleChange}
-            sx={{
-              width: '100%',
-            }}
-          />
-        </Grid>
 
-        <Grid
-          item
-          sx={{
-            // width: "444px",
-            marginBottom: '20px',
-          }}
-        >
-          <Typography fontFamily={'Poppins'} color={'#6B6E75'}>
-            Github
-          </Typography>
-          <TextField
-            size='small'
-            name='github'
-            onChange={handleChange}
-            sx={{
-              width: '100%',
-            }}
-          />
-        </Grid>
         {/* leader */}
         <Box sx={{ position: 'relative' }}>
           <Grid
             item
             sx={{
-              // width: "444px",
               marginBottom: '20px',
             }}
           >
             <Typography fontFamily={'Poppins'} color={'#6B6E75'}>
-              Team leaders
+              Leader
             </Typography>
             <TextField
               size='small'
               name='leaders'
-              value={selectedLeader.name}
-              onChange={(e) => handleSuggestionChange(e, 'leader')}
-              placeholder='Search leader'
+              value={formData.leaders.name}
+              onChange={(e) => {
+                handleChange(e);
+                handleSuggestionChange({
+                  inputValue: e.target.value,
+                  type: 'leader',
+                });
+              }}
               sx={{
                 width: '100%',
               }}
             />
           </Grid>
-
-          <SuggestionList
-            usersList={filteredLeaders}
-            onClick={handleSuggestionClick}
-            type='leader'
-          />
-        </Box>
-
-        <Grid item xs={12}>
-          <Box
-            sx={{
-              display: 'flex',
-              gap: '8px',
-              marginBottom: '20px',
-              cursor: 'pointer',
-              width: 'fit-content',
-            }}
-          >
-            {teamLeaders.map((member, index) => (
-              <Avatar
-                title='Remove'
-                key={index}
-                alt={member}
-                src={
-                  member === 'user1'
-                    ? user1
-                    : member === 'user2'
-                    ? user2
-                    : member === 'user3'
-                    ? user3
-                    : ''
-                }
-                onClick={() => handleRemoveLeader(member)}
-                style={{ transition: 'opacity 0.3s ease-in-out' }}
-                onMouseOver={(e) => (e.currentTarget.style.opacity = '0.7')}
-                onMouseOut={(e) => (e.currentTarget.style.opacity = '1')}
-              />
-            ))}
-            {teamLeaders.length < 4 && (
-              <IconButton
-                title='Add Leader'
-                sx={{ bgcolor: 'lightgray' }}
-                onClick={handleAddLeaders}
+          <CustomList showme={filteredLeaders.length > 0}>
+            {filteredLeaders.map((user) => (
+              <ListItem
+                key={user._id}
+                sx={{
+                  cursor: 'pointer',
+                  '&:hover': {
+                    background: '#F6F7FA',
+                  },
+                }}
+                onClick={() => {
+                  handleSuggestionClick(user, 'leader');
+                }}
               >
-                <AddIcon />
-              </IconButton>
-            )}
-          </Box>
-        </Grid>
+                {user.name}
+              </ListItem>
+            ))}
+          </CustomList>
+        </Box>
 
         {/* members */}
         <Box sx={{ position: 'relative' }}>
@@ -265,22 +287,40 @@ function CreateProjectForm() {
             </Typography>
             <TextField
               size='small'
-              name='members'
-              value={selectedMember.name}
-              onChange={(e) => handleSuggestionChange(e, 'member')}
+              name='members_id'
+              value={member}
+              onChange={(e) => {
+                setMember(e.target.value);
+                handleSuggestionChange({
+                  inputValue: e.target.value,
+                  type: 'member',
+                });
+              }}
               placeholder='Search a member'
               sx={{
                 width: '100%',
               }}
             />
           </Grid>
-          <SuggestionList
-            usersList={filteredMembers}
-            onClick={handleSuggestionClick}
-            type='member'
-          />
+          <CustomList showme={filteredMembers.length > 0}>
+            {filteredMembers.map((user) => (
+              <ListItem
+                key={user._id}
+                sx={{
+                  cursor: 'pointer',
+                  '&:hover': {
+                    background: '#F6F7FA',
+                  },
+                }}
+                onClick={() => {
+                  handleSuggestionClick(user, 'member');
+                }}
+              >
+                {user.name}
+              </ListItem>
+            ))}
+          </CustomList>
         </Box>
-
         <Grid item xs={12}>
           <Box
             sx={{
@@ -291,38 +331,22 @@ function CreateProjectForm() {
               width: 'fit-content',
             }}
           >
-            {teamMembers.map((member, index) => (
+            {members.map((member) => (
               <Avatar
                 title='Remove'
-                key={index}
-                alt={member}
-                src={
-                  member === 'user1'
-                    ? user1
-                    : member === 'user2'
-                    ? user2
-                    : member === 'user3'
-                    ? user3
-                    : ''
-                }
-                onClick={() => handleRemoveMember(member)}
+                key={member._id}
+                src={user1}
+                onClick={() => {
+                  console.log('member', member);
+                  handleRemoveMember(member);
+                }}
                 style={{ transition: 'opacity 0.3s ease-in-out' }}
                 onMouseOver={(e) => (e.currentTarget.style.opacity = '0.7')}
                 onMouseOut={(e) => (e.currentTarget.style.opacity = '1')}
               />
             ))}
-            {teamMembers.length < 4 && (
-              <IconButton
-                title='Add Leader'
-                sx={{ bgcolor: 'lightgray' }}
-                onClick={handleAddMembers}
-              >
-                <AddIcon />
-              </IconButton>
-            )}
           </Box>
         </Grid>
-
         {/* buttons */}
         <Grid
           sx={{
@@ -365,7 +389,7 @@ function CreateProjectForm() {
               '&:hover': { backgroundColor: 'black' },
             }}
           >
-            {isLoading ? 'Creating...' : 'Save'}
+            {isLoading ? 'Updating...' : 'Save'}
           </Button>
         </Grid>
       </Paper>

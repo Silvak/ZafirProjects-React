@@ -51,6 +51,7 @@ declare module '@/components/ganttChart/TaskElement';
 declare module '@/components/ganttChart/GanttChart';
 declare module '@/components/SuggestionList/SuggestionList';
 declare module '@/components/Loader/Loader';
+declare module '@/components/CustomList/CustomList';
 
 declare module '@/context/AppContextProvider';
 declare module '@/stores/index';

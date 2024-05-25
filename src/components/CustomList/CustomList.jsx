@@ -1,6 +1,6 @@
-import { List, ListItem } from '@mui/material';
+import { List } from '@mui/material';
 
-const SuggestionList = ({ usersList, onClick, type }) => {
+const CustomList = ({ children, showme }) => {
   return (
     <List
       sx={{
@@ -16,31 +16,15 @@ const SuggestionList = ({ usersList, onClick, type }) => {
         borderBottomLeftRadius: '6px',
         borderBottomRightRadius: '6px',
         outline: 'thin solid #0002',
-        display: usersList.length > 0 ? 'block' : 'none',
+        display: showme ? 'block' : 'none',
         boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
         '& > *:not(:last-child)': {
           borderBottom: '1px solid #DDD',
         },
       }}
     >
-      {usersList.map((user) => (
-        <ListItem
-          key={user.id}
-          onClick={() => {
-            onClick(user, type);
-          }}
-          sx={{
-            cursor: 'pointer',
-            '&:hover': {
-              background: '#F6F7FA',
-            },
-          }}
-        >
-          {user.name}
-        </ListItem>
-      ))}
+      {children}
     </List>
   );
 };
-
-export default SuggestionList;
+export default CustomList;

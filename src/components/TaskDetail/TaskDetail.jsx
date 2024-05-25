@@ -16,10 +16,11 @@ const TaskDetail = ({ task, isSubtask = false }) => {
     shallow
   );
 
-  console.log(isSubtask);
-  console.log('subtask:', task);
+  console.log('singleTask', singleTask);
+  // console.log('subtask:', task);
+
   useEffect(() => {
-    fetchTaskDetailsById(task._id, isSubtask);
+    fetchTaskDetailsById(task._id, false);
   }, [task._id]);
 
   console.log(singleTask);
