@@ -120,15 +120,15 @@ function EditProjectForm({ project }) {
         leaders: formData.leaders._id,
         members_id: members,
       };
+
+      const isEqual = {
+        ...originalValues,
+        leaders: formData.leaders._id,
+        members_id: project['members_id'],
+      };
+      console.log(newValues, isEqual);
       // verificar si hay cambios
-      if (
-        JSON.stringify(newValues) ===
-        JSON.stringify({
-          ...originalValues,
-          leaders: formData.leaders._id,
-          members_id: members,
-        })
-      ) {
+      if (JSON.stringify(newValues) === JSON.stringify(isEqual)) {
         ChangeStateAlertError(true);
         ChangeTitleAlertError('No changes were made');
         setIsLoading(false);
@@ -161,7 +161,7 @@ function EditProjectForm({ project }) {
       setFormData({ ...formData, leaders: user });
       setFilteredLeaders([]);
     } else {
-      setMembers((prev) => [...prev, user]);
+      setMembers((prev) => [...prev, { _id: { ...user } }]);
       setFilteredMembers([]);
       setMember(''); // Limpiar el campo de entrada después de seleccionar un miembro
     }
@@ -169,7 +169,8 @@ function EditProjectForm({ project }) {
 
   const handleRemoveMember = (memberToRemove) => {
     const updatedMembers = members.filter(
-      (member) => member._id.toString() !== memberToRemove._id.toString()
+      (member) =>
+        member._id._id.toString() !== memberToRemove._id._id.toString()
     );
     setMembers(updatedMembers);
   };
@@ -385,8 +386,8 @@ function EditProjectForm({ project }) {
           >
             {members.map((member) => (
               <Avatar
-                title='Remove'
-                key={member._id}
+                title={`Remove ${member._id.name}`}
+                key={member._id._id}
                 src={user1}
                 onClick={() => {
                   console.log('member', member);

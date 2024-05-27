@@ -87,7 +87,7 @@ function CreateProjectForm() {
         leaders: formData.leaders._id,
         members_id: members,
       };
-      // validamos que no se envie vacio
+      //validamos que no se envie vacio
       if (Object.values(data).includes('')) {
         setIsLoading(false);
         ChangeStateAlertError(true);

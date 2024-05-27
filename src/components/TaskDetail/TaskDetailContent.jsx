@@ -106,6 +106,7 @@ const TaskDetailContent = ({ task = {}, projectId }) => {
 
   const handleCancel = () => {
     setIsEditing(false);
+    setMembers(task['members_id']);
     setFormData({
       taskName: task.taskName,
       description: task.description,
@@ -121,7 +122,7 @@ const TaskDetailContent = ({ task = {}, projectId }) => {
     const newValues = { ...formData, members_id: members };
 
     try {
-      if (JSON.stringify(formData) === JSON.stringify(originalValues)) {
+      if (JSON.stringify(newValues) === JSON.stringify(originalValues)) {
         ChangeStateAlertError(true);
         ChangeTitleAlertError('No changes were made');
       } else {
@@ -225,14 +226,16 @@ const TaskDetailContent = ({ task = {}, projectId }) => {
         >
           {members.map((member) => (
             <Avatar
-              title='Remove'
+              title={`Remove ${member.name}`}
               key={member._id}
               src={user1}
               onClick={() => {
-                console.log('member', member);
-                handleRemoveMember(member);
+                isEditing && handleRemoveMember(member);
               }}
-              style={{ transition: 'opacity 0.3s ease-in-out' }}
+              style={{
+                transition: 'opacity 0.3s ease-in-out',
+                opacity: `${!isEditing ? '0.7' : '1'}`,
+              }}
               onMouseOver={(e) => (e.currentTarget.style.opacity = '0.7')}
               onMouseOut={(e) => (e.currentTarget.style.opacity = '1')}
             />
