@@ -82,7 +82,7 @@ const TaskAccordion = ({ title, state, tasks, handleAddTask, view }) => {
         <CustomAccordion
           expanded={expanded}
           elevation={4}
-          className="custom-accordion"
+          className='custom-accordion'
           style={{
             backgroundColor: '#F6F7FA',
             borderRadius: '12px',
@@ -92,8 +92,8 @@ const TaskAccordion = ({ title, state, tasks, handleAddTask, view }) => {
           }}
         >
           <AccordionSummary
-            aria-controls="panel1a-content"
-            id="panel1a-header"
+            aria-controls='panel1a-content'
+            id='panel1a-header'
             sx={{
               display: 'flex',
               alignItems: 'center',
@@ -107,7 +107,7 @@ const TaskAccordion = ({ title, state, tasks, handleAddTask, view }) => {
             >
               <ExpandIcon expanded={expanded} />
               <Typography
-                variant="h4"
+                variant='h4'
                 sx={{
                   fontSize: '18px',
                   fontWeight: 'bold',
@@ -161,6 +161,7 @@ const TaskAccordion = ({ title, state, tasks, handleAddTask, view }) => {
                 isMobile={isMobile}
                 isKanbanView={isKanbanView}
                 onDragStart={addTaskToList}
+                projectId={params.id}
               />
             ))}
           </AccordionDetails>

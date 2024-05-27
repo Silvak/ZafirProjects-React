@@ -1,7 +1,7 @@
 import validateCreateProject from '@/utils/validateCreateProject';
 import useSuggestionUsers from '@/hooks/useSuggestionUsers';
 import { createTheme, useMediaQuery } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useBoundStore } from '../stores';
 import { shallow } from 'zustand/shallow';
 
@@ -29,16 +29,16 @@ export function useProject({ project, isCreated = false }) {
     handleSuggestionChange,
     handleSuggestionClick,
     resetSuggestions,
-    INITIAL_SELECTED_MEMBER,
+    INITIAL_SELECTED_USER,
   } = useSuggestionUsers();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [teamMembers, setTeamMembers] = useState(project?.['members_id'] || []);
-  const [teamLeaders, setLeaders] = useState(
-    typeof project?.responsible === 'string'
-      ? [project?.responsible]
-      : project?.responsible || []
+  // para renderizar los iconos
+  const [teamMembers, setTeamMembers] = useState(
+    project?.['members_id'].map((member) => member._id) || []
   );
+  const [teamLeaders, setLeaders] = useState(project.leaders);
+  
   const [formData, setFormData] = useState({
     name: project?.name || '',
     start: project?.start
@@ -48,10 +48,6 @@ export function useProject({ project, isCreated = false }) {
       ? new Date(project.end).toISOString().substring(0, 10) //format date
       : '',
     description: project?.description || '',
-    link: project?.link || '',
-    github: project?.github || '',
-    leaders: teamLeaders,
-    members: teamMembers,
   });
 
   const handleClose = () => {
@@ -60,28 +56,44 @@ export function useProject({ project, isCreated = false }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      if (isCreated) {
-        const isValid = validateCreateProject(formData);
+    // setIsLoading(true);
+    console.log({
+      ...formData,
+      members_id: teamMembers,
+      leaders: selectedLeader._id,
+    });
 
-        if (!isValid) {
-          ChangeTitleAlertError('Faltan ingresar datos');
-          ChangeStateAlertError(true);
-        } else {
-          await addProject(User.uid, formData);
-          await updateProjects();
-          setIsLoading(false);
-          handleClose();
-        }
-      } else {
-        setIsLoading(true);
+    // try {
+    //   if (isCreated) {
+    //     const isValid = validateCreateProject(formData);
 
-        await updateProject(project?._id, formData);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-    setIsLoading(false);
+    //     if (!isValid) {
+    //       ChangeTitleAlertError('Faltan ingresar datos');
+    //       ChangeStateAlertError(true);
+    //     } else {
+    //       const data = {
+    //         ...formData,
+    //         members_id: teamMembers,
+    //         leaders: selectedLeader._id,
+    //       };
+    //       await addProject(User.uid, data);
+    //       await updateProjects();
+    //     }
+    //   } else {
+    //     const data = {
+    //       ...formData,
+    //       members_id: teamMembers,
+    //       leaders: teamLeaders._id,
+    //     };
+    //     await updateProject(project?._id, data);
+    //     await updateProjects();
+    //   }
+    // } catch (error) {
+    //   console.error(error);
+    // } finally {
+    //   setIsLoading(false);
+    //   handleClose();
+    // }
   };
 
   const handleMemberToChange = (e) => {
@@ -89,17 +101,19 @@ export function useProject({ project, isCreated = false }) {
   };
 
   const handleAddLeaders = () => {
+    console.log('selectedLeader', selectedLeader);
     if (selectedLeader && !teamLeaders.includes(selectedLeader)) {
       setLeaders([...teamLeaders, selectedLeader]);
-      setSelectedLeader(INITIAL_SELECTED_MEMBER);
+      setSelectedLeader(INITIAL_SELECTED_USER);
       resetSuggestions('leader');
     }
   };
 
   const handleAddMembers = () => {
-    if (selectedMember && !teamMembers.includes(selectedMember)) {
+    console.log('selectedmember', selectedMember);
+    if (selectedMember && !teamMembers.includes(selectedMember._id)) {
       setTeamMembers([...teamMembers, selectedMember._id]);
-      setSelectedMember(INITIAL_SELECTED_MEMBER);
+      setSelectedMember(INITIAL_SELECTED_USER);
       resetSuggestions('member');
     }
   };
@@ -112,8 +126,15 @@ export function useProject({ project, isCreated = false }) {
   };
 
   const handleRemoveMember = (memberToRemove) => {
+    console.log(
+      'memberToRemove:',
+      memberToRemove,
+      'type:',
+      typeof memberToRemove
+    );
+
     const updatedMembers = teamMembers.filter(
-      (member) => member !== memberToRemove
+      (member) => member.toString() !== memberToRemove.toString()
     );
     setTeamMembers(updatedMembers);
   };
@@ -121,6 +142,7 @@ export function useProject({ project, isCreated = false }) {
   const handleChange = (event) => {
     const eventName = event.target.name;
     const eventValue = event.target.value;
+
     setFormData({
       ...formData,
       [eventName]: eventValue,
@@ -153,6 +175,6 @@ export function useProject({ project, isCreated = false }) {
     filteredMembers,
     handleSuggestionChange,
     handleSuggestionClick,
-    INITIAL_SELECTED_MEMBER,
+    INITIAL_SELECTED_USER,
   };
 }

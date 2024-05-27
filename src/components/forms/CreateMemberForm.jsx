@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import CustomList from '@/components/CustomList/CustomList';
+
 import {
   Button,
   Grid,
@@ -9,15 +11,20 @@ import {
   ThemeProvider,
   Select,
   MenuItem,
-  InputLabel,
+  ListItem,
+  Box,
+  Avatar,
 } from '@mui/material';
 import { useBoundStore } from '@/stores';
 import { shallow } from 'zustand/shallow';
 import { axiosInstance } from '@/config/apiConfig';
 import useFormatText from '@/hooks/useFormatText';
-import roles from '@/utils/roles';
+import rols from '../../utils/roles';
+import useSuggestionUsers from '../../hooks/useSuggestionUsers';
+import user1 from '../../assets/Img/png/userImageMan.png';
 
 function CreateMember() {
+  const { users } = useSuggestionUsers();
   const {
     ChangeStateModal,
     ChangeStateAlert,
@@ -29,70 +36,114 @@ function CreateMember() {
     setSelectedProject,
   } = useBoundStore((state) => state, shallow);
 
-  const [newRol, setNewRol] = useState('Select Role');
+  const [newRol, setNewRol] = useState('Select rol');
   const [customRol, setCustomRol] = useState('');
   const theme = createTheme();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    role: '',
+    rol: '',
   });
-  const [customRolEnabled, setCustomRolEnabled] = useState(false);
+
+  const [filteredMembers, setFilteredMembers] = useState([]);
+
+  const [customrolnabled, setCustomrolnabled] = useState(false);
+  const [member, setMember] = useState('');
+  const [members, setMembers] = useState([]);
 
   const handleClose = () => {
     ChangeStateModal(false);
   };
 
-  const addMemberToProject = async (memberId, rolToProject) => {
-    const projectId = selectedProject.id;
-    const project_Id = selectedProject._id;
-    await axiosInstance.post(`/projects/${projectId}/add-member`, {
-      memberId,
-      rolToProject,
-    });
-    const { data } = await axiosInstance.get(`/projects/${project_Id}`);
-    return data;
-  };
-
   const handleSubmit = async () => {
-    formData.role = customRol || newRol;
+    formData.rol = customRol || newRol;
+
+    const newMembers = members.map((member) => {
+      return {
+        name: member.name,
+        id: member._id,
+        rolToProject: formData.rol,
+        projectId: selectedProject._id,
+      };
+    });
+
     try {
-      if (!formData.name || !formData.email || !formData.role) {
+      if (
+        newMembers.length === 0 ||
+        !newMembers[0].rolToProject ||
+        !newMembers[0].name
+      ) {
         ChangeTitleAlertError('Missing data');
         ChangeStateAlertError(true);
         return;
       }
-      const { data } = await axiosInstance.post(`/members`, {
-        name: formData.name,
-        email: formData.email,
-        rol: customRol || newRol,
+
+      const promises = newMembers.map((member) => {
+        return axiosInstance.post(`projects/${member.projectId}/add-member`, {
+          memberId: member.id,
+          newRole: member.rolToProject,
+        });
       });
 
-      formData.role = customRol || newRol;
-      const projectUpdated = await addMemberToProject(data._id, formData.role);
+      await Promise.all(promises);
 
-      setSelectedProject(projectUpdated);
+      const { data } = await axiosInstance.get(
+        `projects/${selectedProject._id}`
+      );
+      setSelectedProject(data);
       await updateProjects();
-
-      ChangeTitleAlert('New member added');
+      ChangeStateModal(false);
+      ChangeTitleAlert('News members added');
       ChangeStateAlert(true);
       handleClose();
     } catch (error) {
-      console.error('Error saving data:', error.message);
+      if (error.response.status === 400) {
+        ChangeTitleAlertError('The member is already in the project.');
+        ChangeStateAlertError(true);
+      }
     }
   };
 
-  const handleChange = (event) => {
-    const eventName = event.target.name;
-    const eventValue = event.target.value;
-    if (eventName === 'name') {
-      setFormData({ ...formData, name: useFormatText(event.target.value) });
-    } else {
-      setFormData({
-        ...formData,
-        [eventName]: eventValue,
-      });
+  const handleSuggestionChange = ({ inputValue, type }) => {
+    // for input leader
+    if (type === 'leader') {
+      if (inputValue === '') {
+        setFilteredLeaders([]);
+      } else {
+        const filter = users.filter((user) => {
+          return user.name.toUpperCase().startsWith(inputValue.toUpperCase());
+        });
+        setFilteredLeaders(filter);
+      }
+    } // for input member
+    else if (type === 'member') {
+      if (inputValue === '') {
+        setFilteredMembers([]);
+      } else {
+        const filter = users.filter((user) => {
+          return user.name.toUpperCase().startsWith(inputValue.toUpperCase());
+        });
+        setFilteredMembers(filter);
+      }
     }
+  };
+
+  const handleSuggestionClick = (user, type) => {
+    if (type === 'leader') {
+      setformData({ ...formData, leaders: user });
+      setFilteredLeaders([]);
+    } else {
+      setMembers((prev) => [...prev, user]);
+      setFilteredMembers([]);
+      setMember('');
+    }
+  };
+
+  const handleRemoveMember = (memberToRemove) => {
+    const updatedMembers = members.filter(
+      (member) => member._id.toString() !== memberToRemove._id.toString()
+    );
+    setMembers(updatedMembers);
   };
 
   return (
@@ -111,23 +162,79 @@ function CreateMember() {
           marginBottom: 100,
         }}
       >
-        <Grid
-          item
-          sx={{
-            marginBottom: '20px',
-          }}
-        >
-          <Typography fontFamily={'Poppins'} color={'#6B6E75'}>
-            Email
-          </Typography>
-          <TextField
-            size="small"
-            fullWidth
-            placeholder="example@mail.com"
-            name="email"
-            onChange={handleChange}
-          />
+        <Box sx={{ position: 'relative' }}>
+          <Grid
+            item
+            sx={{
+              // width: "444px",
+              marginBottom: '20px',
+            }}
+          >
+            <Typography fontFamily={'Poppins'} color={'#6B6E75'}>
+              Add members
+            </Typography>
+            <TextField
+              size="small"
+              name="members_id"
+              value={member}
+              onChange={(e) => {
+                setMember(e.target.value);
+                handleSuggestionChange({
+                  inputValue: e.target.value,
+                  type: 'member',
+                });
+              }}
+              placeholder="Search a member"
+              sx={{
+                width: '100%',
+              }}
+            />
+          </Grid>
+          <CustomList showme={filteredMembers.length > 0}>
+            {filteredMembers.map((user) => (
+              <ListItem
+                key={user._id}
+                sx={{
+                  cursor: 'pointer',
+                  '&:hover': {
+                    background: '#F6F7FA',
+                  },
+                }}
+                onClick={() => {
+                  handleSuggestionClick(user, 'member');
+                }}
+              >
+                {user.name}
+              </ListItem>
+            ))}
+          </CustomList>
+        </Box>
+        <Grid item xs={12}>
+          <Box
+            sx={{
+              display: 'flex',
+              gap: '8px',
+              marginBottom: '20px',
+              cursor: 'pointer',
+              width: 'fit-content',
+            }}
+          >
+            {members.map((member) => (
+              <Avatar
+                title="Remove"
+                key={member._id}
+                src={user1}
+                onClick={() => {
+                  handleRemoveMember(member);
+                }}
+                style={{ transition: 'opacity 0.3s ease-in-out' }}
+                onMouseOver={(e) => (e.currentTarget.style.opacity = '0.7')}
+                onMouseOut={(e) => (e.currentTarget.style.opacity = '1')}
+              />
+            ))}
+          </Box>
         </Grid>
+
         <Grid
           item
           sx={{
@@ -135,33 +242,16 @@ function CreateMember() {
           }}
         >
           <Typography fontFamily={'Poppins'} color={'#6B6E75'}>
-            Name
-          </Typography>
-          <TextField
-            size="small"
-            fullWidth
-            placeholder="enter a member name..."
-            name="name"
-            onChange={handleChange}
-          />
-        </Grid>
-        <Grid
-          item
-          sx={{
-            marginBottom: '20px',
-          }}
-        >
-          <Typography fontFamily={'Poppins'} color={'#6B6E75'}>
-            Select Role
+            Select rol
           </Typography>
           <Grid item xs={6}>
             <Select
               size="small"
               value={newRol}
               onChange={(e) => {
-                const selectedRole = e.target.value;
-                setNewRol(selectedRole);
-                setCustomRolEnabled(selectedRole === 'Other');
+                const selectedrol = e.target.value;
+                setNewRol(selectedrol);
+                setCustomrolnabled(selectedrol === 'Other');
               }}
               fullWidth
               style={{
@@ -182,20 +272,20 @@ function CreateMember() {
                 },
               }}
             >
-              {roles.map((role) => (
+              {rols.map((rol) => (
                 <MenuItem
-                  key={role}
-                  value={role}
+                  key={rol}
+                  value={rol}
                   style={{ backgroundColor: '#fff', cursor: 'pointer' }}
                 >
-                  {role}
+                  {rol}
                 </MenuItem>
               ))}
             </Select>
           </Grid>
         </Grid>
 
-        {customRolEnabled && (
+        {customrolnabled && (
           <Grid
             item
             size="small"
@@ -204,12 +294,12 @@ function CreateMember() {
             }}
           >
             <Typography fontFamily={'Poppins'} color={'#6B6E75'}>
-              Custom Role
+              Custom rol
             </Typography>
             <TextField
               size="small"
               fullWidth
-              placeholder="enter a custom role"
+              placeholder="enter a custom rol"
               value={customRol}
               onChange={(e) => setCustomRol(useFormatText(e.target.value))}
             />
