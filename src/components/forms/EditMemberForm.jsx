@@ -9,7 +9,7 @@ import {
   MenuItem,
   InputLabel,
 } from '@mui/material';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useBoundStore } from '@/stores';
 import { shallow } from 'zustand/shallow';
 import { axiosInstance } from '@/config/apiConfig';
@@ -18,8 +18,8 @@ import useFormatText from '@/hooks/useFormatText';
 
 function EditMember({ row, setAllMemberData, allMemberData }) {
   console.log(row);
-  const [newName, setNewName] = useState(row._id.name);
-  const [newRol, setNewRol] = useState(row._id.rol || 'Select Role');
+  const [newName, setNewName] = useState(row.name);
+  const [newRol, setNewRol] = useState(useFormatText(row.rol) || 'Select Role');
   const [customRol, setCustomRol] = useState('');
   const {
     ChangeStateModal,
@@ -28,12 +28,10 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
     updateProjects,
   } = useBoundStore((state) => state, shallow);
 
+  console.log(row.projectId);
+
   const theme = useTheme();
   const [customRolEnabled, setCustomRolEnabled] = useState(false);
-
-  useEffect(() => {
-    setNewRol(row.rolToProject);
-  }, [row.rolToProject]);
 
   const closeModal = () => {
     ChangeStateModal(false);
@@ -41,32 +39,51 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
 
   const handleSaveData = async (rowData, newValues) => {
     try {
-      await axiosInstance.put(`/members/${rowData.member.id}`, {
-        name: newValues.name,
-      });
+      console.log(rowData);
+      console.log(newValues);
+      console.log(newRol);
+      console.log(customRol);
+      console.log(newValues.rol);
 
-      await axiosInstance.put(
-        `/projects/${rowData.projectId}/change-member-role`,
-        {
-          memberId: rowData.member._id,
-          newRole: customRolEnabled ? customRol : newValues.rol,
-        }
-      );
+      setCustomRol('');
+
+      if (!newValues.rol || !newValues.name) return;
+
+      console.log('entre');
+      try {
+        const algo = await axiosInstance.put(
+          `/projects/${row.projectId}/update-member`,
+          {
+            memberId: rowData,
+            newRol: customRolEnabled
+              ? customRol
+              : newValues.rol !== 'Other'
+              ? newValues.rol
+              : row.rol,
+            newName: newValues.name,
+          }
+        );
+        console.log(algo);
+      } catch (error) {
+        console.log(error);
+      }
 
       const updatedAllMember = allMemberData.map((member) => {
-        if (member.member._id === rowData.member._id) {
+        if (member._id === rowData) {
           return {
             ...member,
             member: {
-              ...member.member,
+              ...member,
               name: newValues.name,
             },
-            rolToProject: customRolEnabled ? customRol : newValues.rol,
+            rol: customRolEnabled ? customRol : newValues.rol,
           };
         } else {
           return member;
         }
       });
+
+      console.log(updatedAllMember);
 
       setAllMemberData(updatedAllMember);
       await updateProjects();
@@ -75,6 +92,25 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
       closeModal();
     } catch (error) {
       console.error('Error saving data:', error);
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    switch (name) {
+      case 'name':
+        setNewName(useFormatText(value));
+        break;
+      case 'rol':
+        setNewRol(value);
+        setCustomRolEnabled(value === 'Other');
+        break;
+      case 'customRol':
+        setCustomRol(useFormatText(value));
+        break;
+      default:
+        break;
     }
   };
 
@@ -91,26 +127,34 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
           marginBottom: 150,
         }}
       >
-        <h2 style={{ marginBlock: 8 }}>Edit {row._id.name}</h2>
+        <h2 style={{ marginBlock: 8 }}>Edit {row.name}</h2>
         <form>
           <TextField
             label="Email"
-            value={row._id.email}
+            value=""
             fullWidth
             disabled
-            style={{ marginBottom: 8 }}
+            style={{ marginBottom: 8, display: 'none' }}
           />
-          {/* <TextField
+          <TextField
+            label="Email"
+            value={row.email}
+            fullWidth
+            disabled
+            style={{ marginBottom: 8, marginTop: 4 }}
+          />
+          <TextField
             label="Lead Owner"
             value={row.leadOwner}
             fullWidth
             disabled
             style={{ marginBottom: 8 }}
-          /> */}
+          />
           <TextField
             label="Nombre"
+            name="name"
             value={newName}
-            onChange={(e) => setNewName(useFormatText(e.target.value))}
+            onChange={handleChange}
             fullWidth
             style={{ marginBottom: 8 }}
           />
@@ -123,12 +167,9 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
           <Grid container spacing={2} alignItems="center">
             <Grid item xs={6}>
               <Select
+                name="rol"
                 value={newRol}
-                onChange={(e) => {
-                  const selectedRole = e.target.value;
-                  setNewRol(selectedRole);
-                  setCustomRolEnabled(selectedRole === 'Other');
-                }}
+                onChange={handleChange}
                 fullWidth
                 style={{
                   marginBottom: 8,
@@ -163,8 +204,9 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
               {customRolEnabled && (
                 <TextField
                   label="Custom Role"
+                  name="customRol"
                   value={customRol}
-                  onChange={(e) => setCustomRol(useFormatText(e.target.value))}
+                  onChange={handleChange}
                   fullWidth
                   style={{ marginBottom: 8, width: 'auto', borderRadius: 12 }}
                 />

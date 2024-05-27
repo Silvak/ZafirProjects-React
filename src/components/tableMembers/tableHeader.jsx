@@ -22,15 +22,6 @@ const TableHeader = ({
   setSelectedOption,
   filteredData,
 }) => {
-  // const [leadOwners, setLeadOwners] = useState([]);
-
-  // useEffect(() => {
-  //   const uniqueLeadOwners = [
-  //     ...new Set(filteredData.map((member) => member.leadOwner)),
-  //   ];
-  //   setLeadOwners(uniqueLeadOwners.sort());
-  // }, [filteredData]);
-
   const headers = [
     {
       id: '',
@@ -78,7 +69,7 @@ const TableHeader = ({
                     marginBottom: isMobile ? '8px' : '0px',
                   }}
                 >
-                  {totalRows} Contacts
+                  Contacts: {totalRows}
                 </h2>
                 {isMobile && (
                   <Grid style={{ position: 'relative' }}>

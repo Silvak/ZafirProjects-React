@@ -41,6 +41,8 @@ const TableRowComponent = ({
     ChangeStateModal(true);
   };
 
+  console.log(row);
+
   return (
     <React.Fragment key={row}>
       <TableRow
@@ -73,18 +75,8 @@ const TableRowComponent = ({
                 padding: !isMobile ? '0px' : '12px',
                 backgroundColor:
                   column.id === 'lead_status' ? 'cyan' : 'inherit',
-                cursor: column.id === 'name' ? 'pointer' : 'inherit',
               }}
-              onClick={
-                column.id === 'name'
-                  ? () => handleRowClick(row.member.name)
-                  : null
-              }
             >
-              {column.id === 'project' && !isMobile && (
-                <span style={{ marginLeft: 10 }}>{row.project}</span>
-              )}
-
               {column.id === 'action' && !isMobile && (
                 <div>
                   <DeleteIcon
@@ -153,10 +145,12 @@ const TableRowComponent = ({
                   )}
                   <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <div style={{ flex: 1 }}>
-                      {column.id === 'name' ? cellContent : row['leadOwner']}
+                      {column.id === 'name' ? row._id.name : row['leadOwner']}
                     </div>
                     {column.id === 'name' && (
-                      <div style={{ flex: 1, color: 'gray' }}>{row.email}</div>
+                      <div style={{ flex: 1, color: 'gray' }}>
+                        {row._id.email}
+                      </div>
                     )}
                   </div>
                 </div>
@@ -164,7 +158,7 @@ const TableRowComponent = ({
                 column.id !== 'photo' &&
                 column.id !== 'email' ? (
                 column.id === 'rol' ? (
-                  <span style={{ marginLeft: 10 }}>{row.rol}</span>
+                  <span style={{ marginLeft: 10 }}>{row.rolToProject}</span>
                 ) : (
                   cellContent
                 )

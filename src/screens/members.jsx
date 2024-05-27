@@ -46,7 +46,6 @@ const MembersTable = () => {
 
   useEffect(() => {
     if (selectedProject) {
-      console.log(selectedProject);
       const projectMembers = selectedProject.members_id.map((member) => ({
         ...member,
         project: selectedProject.name,
@@ -127,7 +126,9 @@ const MembersTable = () => {
 
   const filteredSearchData = allMemberData.filter(
     (member) =>
-      member && member.name?.toLowerCase().includes(searchTerm.toLowerCase())
+      member &&
+      member._id &&
+      member._id.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
