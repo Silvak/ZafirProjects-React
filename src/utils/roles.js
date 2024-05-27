@@ -5,6 +5,7 @@ const roles = [
   'Designer',
   'Tester',
   'Editor',
+  'Member',
   'User',
   'Other',
 ];

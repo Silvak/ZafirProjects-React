@@ -55,26 +55,20 @@ const MembersTable = () => {
       setAllMemberData(projectMembers);
     }
   }, [selectedProject]);
-
   const handleRowClick = (rowName) => {
     const selectedIndex = selectedRows.indexOf(rowName);
-    let newSelected = [];
+    let newSelected = [...selectedRows];
+
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selectedRows, rowName);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selectedRows.slice(1));
-    } else if (selectedIndex === selectedRows.length - 1) {
-      newSelected = newSelected.concat(selectedRows.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selectedRows.slice(0, selectedIndex),
-        selectedRows.slice(selectedIndex + 1)
-      );
+      newSelected.push(rowName);
+    } else {
+      newSelected.splice(selectedIndex, 1);
     }
+
     setSelectedRows(newSelected);
   };
 
-  const isSelected = (rowName) => selectedRows.indexOf(rowName) !== -1;
+  const isSelected = (rowName) => selectedRows.includes(rowName);
 
   const handleButtonMore = (allMemberData) => {
     ChangeTitleModal('Create new member');

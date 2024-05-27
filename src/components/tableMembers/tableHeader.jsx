@@ -191,18 +191,8 @@ const TableHeader = ({
               key={header.id}
               align="left"
               style={{
-                // minWidth:
-                //   header.id === "name"
-                //     ? "10rem"
-                //     : header.id === "phone"
-                //     ? "8rem"
-                //     : header.id === "lead_status"
-                //     ? "15rem"
-                //     : "5rem",
-                // marginInline: "5rem",
                 fontWeight: 'bold',
                 color: 'gray',
-                // textAlign: header.id === "name" ? "left" : "center",
               }}
             >
               {header.label}

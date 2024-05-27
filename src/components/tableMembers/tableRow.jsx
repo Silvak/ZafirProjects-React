@@ -43,17 +43,12 @@ const TableRowComponent = ({
 
   return (
     <React.Fragment key={row}>
-      <TableRow
-        hover={!isMobile}
-        style={{
-          backgroundColor: isItemSelected ? 'lightblue' : 'inherit',
-        }}
-      >
+      <TableRow hover={!isMobile}>
         {!isMobile && (
           <TableCell className="checkbox-contact">
             <Checkbox
-              checked={isItemSelected}
-              onChange={() => handleCheckboxClick(row.name)}
+              // checked={isItemSelected}
+              // onChange={() => handleCheckboxClick(row.name)}
               sx={{ color: 'lightgray' }}
             />
           </TableCell>
