@@ -87,19 +87,20 @@ function CreateProjectForm() {
         leaders: formData.leaders._id,
         members_id: members,
       };
+      console.log('DATA', data);
       // validamos que no se envie vacio
-      if (Object.values(data).includes('')) {
-        setIsLoading(false);
-        ChangeStateAlertError(true);
-        ChangeTitleAlertError('All fields are required');
-        return;
-      } else {
-        await addProject(User._id, data);
-        await updateProjects();
-        ChangeStateAlert(true);
-        ChangeTitleAlert('Project created successfully');
-        setIsLoading(false);
-      }
+      // if (Object.values(data).includes('')) {
+      //   setIsLoading(false);
+      //   ChangeStateAlertError(true);
+      //   ChangeTitleAlertError('All fields are required');
+      //   return;
+      // } else {
+      //   await addProject(User._id, data);
+      //   await updateProjects();
+      //   ChangeStateAlert(true);
+      //   ChangeTitleAlert('Project created successfully');
+      //   setIsLoading(false);
+      // }
     } catch (error) {
       console.log(error);
     } finally {
