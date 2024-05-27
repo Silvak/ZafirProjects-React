@@ -1,11 +1,9 @@
 import { Box } from '@mui/material';
 
 const TaskDetailHeader = ({ taskId, taskTitle }) => {
-  console.log(taskTitle);
-
   return (
     <Box
-      component="header"
+      component='header'
       sx={{
         display: 'flex',
         justifyContent: 'space-between',

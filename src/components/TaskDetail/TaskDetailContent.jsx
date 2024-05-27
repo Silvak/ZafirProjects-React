@@ -23,7 +23,17 @@ import { format } from 'date-fns';
 import CustomList from '../CustomList/CustomList';
 import user1 from '../../assets/Img/png/userImageMan.png';
 
-const TaskDetailContent = ({ task = {} }) => {
+const INITIAL_FORM_DATA = {
+  taskName: '',
+  description: '',
+  start: '',
+  end: '',
+  state: '',
+  priority: '',
+  members_id: [],
+};
+
+const TaskDetailContent = ({ task = {}, projectId }) => {
   const [isEditing, setIsEditing] = useState(false);
   const { users } = useSuggestionUsers();
   //  filtro para mostrar en la lista
@@ -32,7 +42,8 @@ const TaskDetailContent = ({ task = {} }) => {
   const [member, setMember] = useState('');
   // miembros a renderizar
   const [members, setMembers] = useState(task['members_id']);
-  const [formData, setFormData] = useState(task);
+  const [originalValues, setOriginalValues] = useState(INITIAL_FORM_DATA);
+  const [formData, setFormData] = useState(INITIAL_FORM_DATA);
 
   const {
     updateTask,
@@ -45,19 +56,29 @@ const TaskDetailContent = ({ task = {} }) => {
   } = useBoundStore((state) => state, shallow);
 
   useEffect(() => {
-    // setOriginalValues({
-    //   taskName: task.taskName,
-    //   description: task.description,
-    //   start: format(new Date(task.start), 'yyyy/MM/dd'),
-    //   end: format(new Date(task.end), 'yyyy/MM/dd'),
-    //   state: task.state,
-    //   priority: task.priority,
-    // });
-    // setSelectedMember(task.members[0]);
-    // console.log('TASK', task);
-    // return () => {
-    //   setOriginalValues(INITIAL_SELECTED_MEMBER);
-    // };
+    setFormData({
+      taskName: task.taskName,
+      description: task.description,
+      start: format(new Date(task.start), 'yyyy/MM/dd'),
+      end: format(new Date(task.end), 'yyyy/MM/dd'),
+      state: task.state,
+      priority: task.priority,
+      members_id: task.members_id,
+    });
+    setOriginalValues({
+      taskName: task.taskName,
+      description: task.description,
+      start: format(new Date(task.start), 'yyyy/MM/dd'),
+      end: format(new Date(task.end), 'yyyy/MM/dd'),
+      state: task.state,
+      priority: task.priority,
+      members_id: task.members_id,
+    });
+    // reseteamos estados al desmontar componente
+    return () => {
+      setFormData(INITIAL_FORM_DATA);
+      setOriginalValues(INITIAL_FORM_DATA);
+    };
   }, [task._id]);
 
   const handleSuggestionChange = ({ inputValue }) => {
@@ -85,31 +106,40 @@ const TaskDetailContent = ({ task = {} }) => {
 
   const handleCancel = () => {
     setIsEditing(false);
-    setFormData(task);
+    setFormData({
+      taskName: task.taskName,
+      description: task.description,
+      start: format(new Date(task.start), 'yyyy/MM/dd'),
+      end: format(new Date(task.end), 'yyyy/MM/dd'),
+      state: task.state,
+      priority: task.priority,
+      members_id: task.members_id,
+    });
   };
 
   const handleSubmit = async () => {
-    console.log(formData);
-    // const members = [selectedMember._id];
-    // const newValues = { ...originalValues, members };
-    // const params = selectedProject?._id;
-    // console.log('newvalues', newValues);
-    // setIsEditing(false);
-    // try {
-    //   await updateTask({
-    //     taskId: task._id,
-    //     newData: newValues,
-    //     projectId: params,
-    //   });
-    //   setTimeout(() => {
-    //     ChangeTitleAlert('Data has been updated successfully');
-    //     ChangeStateAlert(true);
-    //     ChangeStateModal(false);
-    //   }, 1000);
-    // } catch (error) {
-    //   ChangeTitleAlertError('Error:', error.message);
-    //   ChangeStateAlertError(true);
-    // }
+    const newValues = { ...formData, members_id: members };
+
+    try {
+      if (JSON.stringify(formData) === JSON.stringify(originalValues)) {
+        ChangeStateAlertError(true);
+        ChangeTitleAlertError('No changes were made');
+      } else {
+        await updateTask({
+          taskId: task._id,
+          newData: newValues,
+          projectId: projectId,
+        });
+        setTimeout(() => {
+          ChangeTitleAlert('Data has been updated successfully');
+          ChangeStateAlert(true);
+          ChangeStateModal(false);
+        }, 1000);
+      }
+    } catch (error) {
+      ChangeTitleAlertError('Error:', error.message);
+      ChangeStateAlertError(true);
+    }
   };
 
   const handleChange = (e) => {

@@ -8,7 +8,7 @@ import { shallow } from 'zustand/shallow';
 import { useEffect, useState } from 'react';
 import Loader from '../Loader/Loader';
 
-const TaskDetail = ({ task, isSubtask = false }) => {
+const TaskDetail = ({ task, projectId }) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   const { fetchTaskDetailsById, singleTask } = useBoundStore(
@@ -16,14 +16,9 @@ const TaskDetail = ({ task, isSubtask = false }) => {
     shallow
   );
 
-  console.log('singleTask', singleTask);
-  // console.log('subtask:', task);
-
   useEffect(() => {
     fetchTaskDetailsById(task._id, false);
   }, [task._id]);
-
-  console.log(singleTask);
 
   return (
     <Grid
@@ -71,7 +66,7 @@ const TaskDetail = ({ task, isSubtask = false }) => {
               taskId={singleTask._id}
               taskTitle={task.name || singleTask.taskName}
             />
-            <TaskDetailContent task={singleTask} />
+            <TaskDetailContent task={singleTask} projectId={projectId} />
             <TaskDetailSubstasks taskId={singleTask._id} />
           </Grid>
           <Grid item xs={12} md={5}>

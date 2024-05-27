@@ -86,8 +86,6 @@ const TaskDetailSubstasks = ({ taskId }) => {
     ChangeStateModal(true);
   };
 
-  console.log(filterSubtask);
-
   return (
     <Box sx={{ padding: '50px 0' }}>
       <p className={css.title}>Subtasks</p>
@@ -152,7 +150,7 @@ const TaskDetailSubstasks = ({ taskId }) => {
                 <td>{item.start}</td>
                 <td className={css.icon}>
                   <Button
-                    color="inherit"
+                    color='inherit'
                     onClick={() => handleViewSubstask(item)}
                   >
                     <RxEyeOpen size={25} />
@@ -162,7 +160,7 @@ const TaskDetailSubstasks = ({ taskId }) => {
             ))}
           <tr>
             <td colSpan={5} className={css.icon}>
-              <Button disableRipple color="inherit" onClick={handleAddTask}>
+              <Button disableRipple color='inherit' onClick={handleAddTask}>
                 + Add substask
               </Button>
             </td>

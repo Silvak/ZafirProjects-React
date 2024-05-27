@@ -21,13 +21,26 @@ import user1 from '../../assets/Img/png/userImageMan.png';
 import useSuggestionUsers from '../../hooks/useSuggestionUsers';
 import { useBoundStore } from '../../stores';
 
+const INITIAL_FORM_DATA = {
+  taskName: '',
+  description: '',
+  start: '',
+  end: '',
+  leaders: '',
+  state: '',
+  priority: '',
+};
+
 const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
   const theme = createTheme();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const {
     User,
     addTask,
+    fetchTasksById,
     ChangeStateModal,
+    ChangeTitleAlert,
+    ChangeStateAlert,
     ChangeTitleAlertError,
     ChangeStateAlertError,
   } = useBoundStore((state) => state, shallow);
@@ -41,15 +54,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
   const [member, setMember] = useState('');
   // miembros a renderizar
   const [members, setMembers] = useState([]);
-  const [formData, setformData] = useState({
-    taskName: '',
-    description: '',
-    start: '',
-    end: '',
-    leaders: '',
-    state: '',
-    priority: '',
-  });
+  const [formData, setformData] = useState(INITIAL_FORM_DATA);
 
   // '/project/:projectId'
 
@@ -81,20 +86,30 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
     e.preventDefault();
     setIsLoading(true);
 
-    const data = {
-      ...formData,
-      leaders: formData.leaders._id,
-      members_id: members,
-    };
-
-    console.log(data);
     try {
-      await addTask(data, projectId);
+      const data = {
+        ...formData,
+        leaders: formData.leaders._id,
+        members_id: members,
+      };
+
+      // validamos que no se envie vacio
+      if (Object.values(data).includes('')) {
+        ChangeStateAlertError(true);
+        ChangeTitleAlertError('All fields are required');
+        return;
+      } else {
+        await addTask(data, projectId);
+        await fetchTasksById(projectId);
+        ChangeStateAlert(true);
+        ChangeTitleAlert('Task created successfully');
+        ChangeStateModal(false);
+      }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
-    ChangeStateModal(false);
   };
 
   const handleChange = (e) => {

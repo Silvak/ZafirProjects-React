@@ -12,11 +12,19 @@ import {
   createTheme,
   useMediaQuery,
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { shallow } from 'zustand/shallow';
 import user1 from '../../assets/Img/png/userImageMan.png';
 import useSuggestionUsers from '../../hooks/useSuggestionUsers';
 import { useBoundStore } from '../../stores';
+
+const INITIAL_FORM_DATA = {
+  name: '',
+  start: '',
+  end: '',
+  description: '',
+  leaders: '',
+};
 
 function EditProjectForm({ project }) {
   const theme = createTheme();
@@ -27,6 +35,8 @@ function EditProjectForm({ project }) {
     updateProject,
     updateProjects,
     ChangeStateModal,
+    ChangeTitleAlert,
+    ChangeStateAlert,
     ChangeTitleAlertError,
     ChangeStateAlertError,
   } = useBoundStore((state) => state, shallow);
@@ -43,17 +53,38 @@ function EditProjectForm({ project }) {
   // miembros a renderizar
   const [members, setMembers] = useState(project['members_id']);
 
-  const [formData, setformData] = useState({
-    name: project.name || '',
-    start: project.start
-      ? new Date(project.start).toISOString().substring(0, 10) //format date
-      : '',
-    end: project.end
-      ? new Date(project.end).toISOString().substring(0, 10) //format date
-      : '',
-    description: project.description || '',
-    leaders: project.leaders || '',
-  });
+  const [originalValues, setOriginalValues] = useState(INITIAL_FORM_DATA);
+  const [formData, setFormData] = useState(INITIAL_FORM_DATA);
+
+  useEffect(() => {
+    setFormData({
+      name: project.name,
+      start: project.start
+        ? new Date(project.start).toISOString().substring(0, 10) //format date
+        : '',
+      end: project.end
+        ? new Date(project.end).toISOString().substring(0, 10) //format date
+        : '',
+      description: project.description,
+      leaders: project.leaders,
+    });
+    setOriginalValues({
+      name: project.name,
+      start: project.start
+        ? new Date(project.start).toISOString().substring(0, 10) //format date
+        : '',
+      end: project.end
+        ? new Date(project.end).toISOString().substring(0, 10) //format date
+        : '',
+      description: project.description,
+      leaders: project.leaders,
+    });
+    // reseteamos estados al desmontar componente
+    return () => {
+      setFormData(INITIAL_FORM_DATA);
+      setOriginalValues(INITIAL_FORM_DATA);
+    };
+  }, [project._id]);
 
   const handleSuggestionChange = ({ inputValue, type }) => {
     // for input leader
@@ -83,24 +114,42 @@ function EditProjectForm({ project }) {
     e.preventDefault();
     setIsLoading(true);
 
-    const data = {
-      ...formData,
-      leaders: formData.leaders._id,
-      members_id: members,
-    };
     try {
-      await updateProject(project._id, data);
-      await updateProjects();
+      const newValues = {
+        ...formData,
+        leaders: formData.leaders._id,
+        members_id: members,
+      };
+      // verificar si hay cambios
+      if (
+        JSON.stringify(newValues) ===
+        JSON.stringify({
+          ...originalValues,
+          leaders: formData.leaders._id,
+          members_id: members,
+        })
+      ) {
+        ChangeStateAlertError(true);
+        ChangeTitleAlertError('No changes were made');
+        setIsLoading(false);
+        return;
+      } else {
+        await updateProject(project._id, newValues);
+        await updateProjects();
+        ChangeStateAlert(true);
+        ChangeTitleAlert('Data has been updated successfully');
+        ChangeStateModal(false);
+      }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
-    ChangeStateModal(false);
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setformData({ ...formData, [name]: value });
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleClose = () => {
@@ -109,7 +158,7 @@ function EditProjectForm({ project }) {
 
   const handleSuggestionClick = (user, type) => {
     if (type === 'leader') {
-      setformData({ ...formData, leaders: user });
+      setFormData({ ...formData, leaders: user });
       setFilteredLeaders([]);
     } else {
       setMembers((prev) => [...prev, user]);
