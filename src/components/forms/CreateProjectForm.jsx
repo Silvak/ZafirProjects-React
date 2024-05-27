@@ -27,6 +27,8 @@ function CreateProjectForm() {
     updateProject,
     updateProjects,
     ChangeStateModal,
+    ChangeTitleAlert,
+    ChangeStateAlert,
     ChangeTitleAlertError,
     ChangeStateAlertError,
   } = useBoundStore((state) => state, shallow);
@@ -79,20 +81,31 @@ function CreateProjectForm() {
     e.preventDefault();
     setIsLoading(true);
 
-    const data = {
-      ...formData,
-      leaders: formData.leaders._id,
-      members_id: members,
-    };
-
     try {
-      await addProject(User.uid, data);
-      await updateProjects();
+      const data = {
+        ...formData,
+        leaders: formData.leaders._id,
+        members_id: members,
+      };
+      // validamos que no se envie vacio
+      if (Object.values(data).includes('')) {
+        setIsLoading(false);
+        ChangeStateAlertError(true);
+        ChangeTitleAlertError('All fields are required');
+        return;
+      } else {
+        await addProject(User._id, data);
+        await updateProjects();
+        ChangeStateAlert(true);
+        ChangeTitleAlert('Project created successfully');
+        setIsLoading(false);
+      }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
+      ChangeStateModal(false);
     }
-    setIsLoading(false);
-    ChangeStateModal(false);
   };
 
   const handleChange = (e) => {
