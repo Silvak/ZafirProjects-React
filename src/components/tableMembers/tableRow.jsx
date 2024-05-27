@@ -41,8 +41,6 @@ const TableRowComponent = ({
     ChangeStateModal(true);
   };
 
-  console.log(row);
-
   return (
     <React.Fragment key={row}>
       <TableRow
