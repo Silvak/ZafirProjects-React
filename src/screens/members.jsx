@@ -46,10 +46,11 @@ const MembersTable = () => {
 
   useEffect(() => {
     if (selectedProject) {
+      console.log(selectedProject);
       const projectMembers = selectedProject.members_id.map((member) => ({
         ...member,
         project: selectedProject.name,
-        leadOwner: selectedProject.responsible || '',
+        leadOwner: selectedProject.leaders.name || '',
         projectId: selectedProject.id,
       }));
       setAllMemberData(projectMembers);
@@ -126,17 +127,8 @@ const MembersTable = () => {
 
   const filteredSearchData = allMemberData.filter(
     (member) =>
-      member &&
-      member._id &&
-      member._id.name?.toLowerCase().includes(searchTerm.toLowerCase())
+      member && member.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  const filteredData =
-    selectedOption === 'All'
-      ? filteredSearchData
-      : filteredSearchData.filter(
-          (member) => member.leadOwner === selectedOption
-        );
 
   return (
     <div>
@@ -163,7 +155,7 @@ const MembersTable = () => {
           <Button
             variant="contained"
             disableRipple
-            onClick={() => handleButtonMore(allMemberData)}
+            onClick={() => handleButtonMore(filteredSearchData)}
             sx={{
               padding: '0.6rem',
               height: 'min-content',
@@ -196,11 +188,11 @@ const MembersTable = () => {
                 filteredSearchData={filteredSearchData}
                 selectedOption={selectedOption}
                 setSelectedOption={setSelectedOption}
-                filteredData={filteredData}
+                filteredData={filteredSearchData}
               />
               <TableBody>
-                {filteredData.length > 0 ? (
-                  filteredData
+                {filteredSearchData.length > 0 ? (
+                  filteredSearchData
                     .slice(
                       (page - 1) * rowsPerPage,
                       (page - 1) * rowsPerPage + rowsPerPage
@@ -216,7 +208,7 @@ const MembersTable = () => {
                         isSelected={isSelected}
                         columns={columns}
                         setAllMemberData={setAllMemberData}
-                        allMemberData={allMemberData}
+                        allMemberData={filteredSearchData}
                       />
                     ))
                 ) : (
@@ -251,7 +243,7 @@ const MembersTable = () => {
           handleChangeRowsPerPage={handleChangeRowsPerPage}
           page={page}
           handleChangePage={handleChangePage}
-          data={filteredData}
+          data={filteredSearchData}
         />
       </div>
     </div>

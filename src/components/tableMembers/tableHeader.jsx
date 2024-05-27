@@ -188,7 +188,7 @@ const TableHeader = ({
                 setSelectedRows(
                   selectedRows.length === filteredSearchData.length
                     ? []
-                    : filteredSearchData.map((data) => data.member.name)
+                    : filteredSearchData.map((data) => data.name)
                 )
               }
             />

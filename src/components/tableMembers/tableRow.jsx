@@ -22,8 +22,7 @@ const TableRowComponent = ({
   setAllMemberData,
   allMemberData,
 }) => {
-  console.log(row);
-  const isItemSelected = isSelected(row?._id.name);
+  const isItemSelected = isSelected(row?.name);
   const [deleteClicked, setDeleteClicked] = useState(false);
   const [editClicked, setEditClicked] = useState(false);
   const isExpanded = isMobile && isItemSelected;
@@ -42,10 +41,8 @@ const TableRowComponent = ({
     ChangeStateModal(true);
   };
 
-  console.log(row);
-
   return (
-    <React.Fragment key={row.member}>
+    <React.Fragment key={row}>
       <TableRow
         hover={!isMobile}
         style={{
@@ -56,14 +53,14 @@ const TableRowComponent = ({
           <TableCell className="checkbox-contact">
             <Checkbox
               checked={isItemSelected}
-              onChange={() => handleCheckboxClick(row._id.name)}
+              onChange={() => handleCheckboxClick(row.name)}
               sx={{ color: 'lightgray' }}
             />
           </TableCell>
         )}
 
         {columns.map((column, index) => {
-          let cellContent = row._id[column.id];
+          let cellContent = row[column.id];
 
           return (
             <TableCell
@@ -152,14 +149,6 @@ const TableRowComponent = ({
                         }}
                         src={avatar}
                       />
-                      <span
-                        style={{
-                          display: 'flex',
-                          minWidth: !isMobile ? '5rem' : '10rem',
-                        }}
-                      >
-                        {row.leadOwner ? row.leadOwner : 'Leader'}
-                      </span>
                     </>
                   )}
                   <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -167,9 +156,7 @@ const TableRowComponent = ({
                       {column.id === 'name' ? cellContent : row['leadOwner']}
                     </div>
                     {column.id === 'name' && (
-                      <div style={{ flex: 1, color: 'gray' }}>
-                        {row._id.email}
-                      </div>
+                      <div style={{ flex: 1, color: 'gray' }}>{row.email}</div>
                     )}
                   </div>
                 </div>
@@ -177,7 +164,7 @@ const TableRowComponent = ({
                 column.id !== 'photo' &&
                 column.id !== 'email' ? (
                 column.id === 'rol' ? (
-                  <span style={{ marginLeft: 10 }}>{row._id.rol}</span>
+                  <span style={{ marginLeft: 10 }}>{row.rol}</span>
                 ) : (
                   cellContent
                 )
