@@ -34,9 +34,7 @@ const AvatarsGroup = ({ projectSelected }) => {
         />
         <p>Owned by</p>
         <p style={{ fontWeight: 'bold' }}>
-          {projectSelected?.responsible
-            ? projectSelected.responsible
-            : 'Leader'}
+          {projectSelected?.leaders ? projectSelected.leaders.name : 'Leader'}
         </p>
       </div>
     </div>

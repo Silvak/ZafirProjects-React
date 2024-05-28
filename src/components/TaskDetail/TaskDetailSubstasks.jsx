@@ -25,7 +25,6 @@ const tableHeadData = [
 
 const TaskDetailSubstasks = ({ taskId }) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-  const [users, setUsers] = useState([]);
   const [filterSubtask, setFilterSubtask] = useState([]);
 
   const {
@@ -41,42 +40,29 @@ const TaskDetailSubstasks = ({ taskId }) => {
     const fetchData = async () => {
       try {
         await fetchSubtasks();
+        if (subtasks.length > 0) {
+          let result = [];
+          subtasks.map((sub) => {
+            console.log(sub);
+            if (sub.taskId._id === taskId) {
+              result.push(sub);
+            }
+          });
+          console.log(result);
+          setFilterSubtask(result);
+        }
+        setFilterSubtask;
       } catch (error) {
         console.error('Error fetching tasks', error);
       }
     };
     fetchData();
-  }, []);
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const { data } = await axiosInstance.get('/user');
-        setUsers(data);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    fetchUsers();
-  }, []);
-
-  useEffect(() => {
-    if (subtasks && users.length > 0) {
-      const subtasksToTask = subtasks.filter(
-        (subtask) => subtask.taskId === taskId
-      );
-      const subtaskWithMember = subtasksToTask.map((subtask) => {
-        const memberInfo = users.find((user) => user._id === subtask.members);
-        return { ...subtask, memberInfo };
-      });
-      setFilterSubtask(subtaskWithMember);
-    }
-  }, [taskId, subtasks, users]);
+  }, [taskId]);
 
   const handleAddTask = () => {
     ChangeStateModal(true);
     ChangeTitleModal('Add SubTask');
-    ChangeContentModal(<SubTaskForm taskId={taskId} />);
+    ChangeContentModal(<SubTaskForm taskId={taskId} projectId={taskId} />);
   };
 
   const handleViewSubstask = (subtask) => {
@@ -103,33 +89,36 @@ const TaskDetailSubstasks = ({ taskId }) => {
           </tr>
         </thead>
         <tbody>
-          {filterSubtask &&
+          {filterSubtask ? (
             filterSubtask.map((item) => (
-              <tr key={item.id}>
+              <tr key={item._id}>
                 <td>
                   <strong style={{ fontSize: '14px' }}>{item.name}</strong>
                 </td>
                 <td>
                   <div>
-                    {item.memberInfo ? (
-                      <div
-                        style={{
-                          width: '7rem',
-                          overflow: 'hidden',
-                        }}
-                      >
-                        <strong style={{ fontSize: '14px' }}>
-                          {item.memberInfo.name}
-                        </strong>
-                        <br />
-                        <Tooltip title={item.memberInfo.email}>
-                          <small style={{ cursor: 'default' }}>
-                            {item.memberInfo.email.length > 12
-                              ? item.memberInfo.email.slice(0, 12) + '...'
-                              : item.memberInfo.email}
-                          </small>
-                        </Tooltip>
-                      </div>
+                    {item.members_id ? (
+                      item.members_id.map((member) => (
+                        <div
+                          key={member._id}
+                          style={{
+                            width: '7rem',
+                            overflow: 'hidden',
+                          }}
+                        >
+                          <strong style={{ fontSize: '14px' }}>
+                            {member.name}
+                          </strong>
+                          <br />
+                          <Tooltip title={member.email}>
+                            <small style={{ cursor: 'default' }}>
+                              {member?.email?.length > 12
+                                ? member.email.slice(0, 12) + '...'
+                                : member.email}
+                            </small>
+                          </Tooltip>
+                        </div>
+                      ))
                     ) : (
                       <CircularProgress />
                     )}
@@ -144,23 +133,26 @@ const TaskDetailSubstasks = ({ taskId }) => {
                       textAlign: 'center',
                     }}
                   >
-                    {item.status}
+                    {item.state}
                   </div>
                 </td>
                 <td>{item.start}</td>
                 <td className={css.icon}>
                   <Button
-                    color='inherit'
+                    color="inherit"
                     onClick={() => handleViewSubstask(item)}
                   >
                     <RxEyeOpen size={25} />
                   </Button>
                 </td>
               </tr>
-            ))}
+            ))
+          ) : (
+            <p>Loading...</p>
+          )}
           <tr>
             <td colSpan={5} className={css.icon}>
-              <Button disableRipple color='inherit' onClick={handleAddTask}>
+              <Button disableRipple color="inherit" onClick={handleAddTask}>
                 + Add substask
               </Button>
             </td>

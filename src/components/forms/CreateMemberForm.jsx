@@ -85,22 +85,23 @@ function CreateMember() {
         });
       });
 
+      // Utilizamos promise.all porque es un array de miembros
       await Promise.all(promises);
 
+      // Actualizamos el estado del proyecto
       const { data } = await axiosInstance.get(
         `projects/${selectedProject._id}`
       );
       setSelectedProject(data);
       await updateProjects();
+
+      // Mostramos mensaje satisfactorio
       ChangeStateModal(false);
       ChangeTitleAlert('News members added');
       ChangeStateAlert(true);
       handleClose();
     } catch (error) {
-      if (error.response.status === 400) {
-        ChangeTitleAlertError('The member is already in the project.');
-        ChangeStateAlertError(true);
-      }
+      console.error(error.message);
     }
   };
 

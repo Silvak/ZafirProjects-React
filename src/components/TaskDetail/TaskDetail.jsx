@@ -20,6 +20,9 @@ const TaskDetail = ({ task, projectId }) => {
     fetchTaskDetailsById(task._id, false);
   }, [task._id]);
 
+  console.log(task);
+  console.log(projectId);
+
   return (
     <Grid
       container
@@ -40,16 +43,39 @@ const TaskDetail = ({ task, projectId }) => {
       spacing={4}
     >
       {!singleTask ? (
-        <Box
-          sx={{
-            width: '50vw',
-            // width: `${isMobile ? '100%' : '1880px'}`,
-            display: 'grid',
-            placeContent: 'center',
-          }}
-        >
-          <Loader />
-        </Box>
+        // <Box
+        //   sx={{
+        //     width: '50vw',
+        //     // width: `${isMobile ? '100%' : '1880px'}`,
+        //     display: 'grid',
+        //     placeContent: 'center',
+        //   }}
+        // >
+        //   <Loader />
+        // </Box>
+        <>
+          <Grid
+            item
+            xs={12}
+            md={7}
+            sx={{
+              color: '#1D1F24',
+              height: '100%',
+              overflowY: isMobile ? 'none' : 'scroll',
+            }}
+          >
+            <TaskDetailHeader taskId={task._id} taskTitle={task.name} />
+            <TaskDetailContent
+              task={task}
+              projectId={projectId}
+              isSubtask={true}
+            />
+            <TaskDetailSubstasks taskId={task._id} />
+          </Grid>
+          <Grid item xs={12} md={5}>
+            <ChatMessage />
+          </Grid>
+        </>
       ) : (
         <>
           <Grid

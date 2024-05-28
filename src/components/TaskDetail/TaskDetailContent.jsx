@@ -31,9 +31,10 @@ const INITIAL_FORM_DATA = {
   state: '',
   priority: '',
   members_id: [],
+  subtaskName: '',
 };
 
-const TaskDetailContent = ({ task = {}, projectId }) => {
+const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
   const [isEditing, setIsEditing] = useState(false);
   const { users } = useSuggestionUsers();
   //  filtro para mostrar en la lista
@@ -47,6 +48,7 @@ const TaskDetailContent = ({ task = {}, projectId }) => {
 
   const {
     updateTask,
+    updateSubtask,
     selectedProject,
     ChangeStateAlert,
     ChangeTitleAlert,
@@ -58,6 +60,7 @@ const TaskDetailContent = ({ task = {}, projectId }) => {
   useEffect(() => {
     setFormData({
       taskName: task.taskName,
+      subtaskName: task.name,
       description: task.description,
       start: format(new Date(task.start), 'yyyy/MM/dd'),
       end: format(new Date(task.end), 'yyyy/MM/dd'),
@@ -67,6 +70,7 @@ const TaskDetailContent = ({ task = {}, projectId }) => {
     });
     setOriginalValues({
       taskName: task.taskName,
+      subtaskName: task.name,
       description: task.description,
       start: format(new Date(task.start), 'yyyy/MM/dd'),
       end: format(new Date(task.end), 'yyyy/MM/dd'),
@@ -126,11 +130,15 @@ const TaskDetailContent = ({ task = {}, projectId }) => {
         ChangeStateAlertError(true);
         ChangeTitleAlertError('No changes were made');
       } else {
-        await updateTask({
-          taskId: task._id,
-          newData: newValues,
-          projectId: projectId,
-        });
+        if (!isSubtask) {
+          await updateTask({
+            taskId: task._id,
+            newData: newValues,
+            projectId: projectId,
+          });
+        } else {
+          await updateSubtask(formData);
+        }
         setTimeout(() => {
           ChangeTitleAlert('Data has been updated successfully');
           ChangeStateAlert(true);
@@ -145,6 +153,7 @@ const TaskDetailContent = ({ task = {}, projectId }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    console.log(name, value);
     setFormData({ ...formData, [name]: value });
   };
 
@@ -155,6 +164,8 @@ const TaskDetailContent = ({ task = {}, projectId }) => {
     setMembers(updatedMembers);
   };
 
+  console.log(formData);
+
   return (
     <Grid container spacing={3}>
       {/* MEMBER */}
@@ -162,8 +173,8 @@ const TaskDetailContent = ({ task = {}, projectId }) => {
         <Box sx={{ position: 'relative' }}>
           {isEditing ? (
             <TextField
-              size='small'
-              label='Search Member'
+              size="small"
+              label="Search Member"
               fullWidth
               disabled={!isEditing}
               value={member}
@@ -182,8 +193,8 @@ const TaskDetailContent = ({ task = {}, projectId }) => {
             />
           ) : (
             <TextField
-              size='small'
-              label='Search Member'
+              size="small"
+              label="Search Member"
               fullWidth
               disabled={!isEditing}
               sx={{ mt: 4 }}
@@ -244,14 +255,13 @@ const TaskDetailContent = ({ task = {}, projectId }) => {
       </Grid>
       {/* TASK NAME */}
       <Grid item xs={12}>
+        <span>Name</span>
         <TextField
-          size='small'
-          label='Task Name'
-          name='taskName'
-          value={formData.taskName}
-          fullWidth
-          autoFocus
+          size="small"
+          name="taskName"
           onChange={handleChange}
+          value={formData.taskName || formData.subtaskName}
+          fullWidth
           disabled={!isEditing}
           InputLabelProps={{
             sx: {
@@ -262,14 +272,13 @@ const TaskDetailContent = ({ task = {}, projectId }) => {
       </Grid>
       {/* DESCRIPTION */}
       <Grid item xs={12}>
+        <span>Description</span>
         <TextField
-          size='small'
-          label='Task description'
-          name='description'
+          size="small"
+          name="description"
           onChange={handleChange}
           value={formData.description}
           fullWidth
-          autoFocus
           disabled={!isEditing}
           InputLabelProps={{
             sx: {
@@ -284,19 +293,19 @@ const TaskDetailContent = ({ task = {}, projectId }) => {
         <FormControl fullWidth sx={{ bgcolor: 'white' }}>
           <Select
             required
-            variant='outlined'
-            size='small'
+            variant="outlined"
+            size="small"
             sx={{ fontSize: '2rem', bgcolor: 'white' }}
-            name='priority'
+            name="priority"
             value={formData.priority}
             onChange={handleChange}
             displayEmpty
             renderValue={(selected) => (selected ? selected : 'Type: All')}
             disabled={!isEditing}
           >
-            <CustomMenuItem value='High'>High</CustomMenuItem>
-            <CustomMenuItem value='Medium'>Medium</CustomMenuItem>
-            <CustomMenuItem value='Low'>Low</CustomMenuItem>
+            <CustomMenuItem value="High">High</CustomMenuItem>
+            <CustomMenuItem value="Medium">Medium</CustomMenuItem>
+            <CustomMenuItem value="Low">Low</CustomMenuItem>
           </Select>
         </FormControl>
       </Grid>
@@ -306,26 +315,26 @@ const TaskDetailContent = ({ task = {}, projectId }) => {
         <FormControl fullWidth>
           <Select
             required
-            variant='outlined'
-            size='small'
+            variant="outlined"
+            size="small"
             sx={{ fontSize: '2rem', backgroundColor: 'white' }}
-            name='state'
+            name="state"
             value={formData.state}
             onChange={handleChange}
             displayEmpty
             renderValue={(selected) => (selected ? selected : 'Type: All')}
             disabled={!isEditing}
           >
-            <CustomMenuItem value='In Progress'>In Progress</CustomMenuItem>
-            <CustomMenuItem value='Pending'>Pending</CustomMenuItem>
-            <CustomMenuItem value='Completed'>Completed</CustomMenuItem>
+            <CustomMenuItem value="In Progress">In Progress</CustomMenuItem>
+            <CustomMenuItem value="Pending">Pending</CustomMenuItem>
+            <CustomMenuItem value="Completed">Completed</CustomMenuItem>
           </Select>
         </FormControl>
       </Grid>
       {/* START */}
       <Grid item xs={12}>
         <Typography
-          variant='h6'
+          variant="h6"
           style={{
             fontSize: 14,
             fontWeight: 'normal',
@@ -335,8 +344,8 @@ const TaskDetailContent = ({ task = {}, projectId }) => {
           Start date
         </Typography>
         <TextField
-          size='small'
-          name='start'
+          size="small"
+          name="start"
           type={isEditing ? 'date' : 'text'}
           value={formData.start}
           onChange={handleChange}
@@ -349,7 +358,7 @@ const TaskDetailContent = ({ task = {}, projectId }) => {
       {/* END */}
       <Grid item xs={12}>
         <Typography
-          variant='h6'
+          variant="h6"
           style={{
             fontSize: 14,
             fontWeight: 'normal',
@@ -359,8 +368,8 @@ const TaskDetailContent = ({ task = {}, projectId }) => {
           End date
         </Typography>
         <TextField
-          size='small'
-          name='end'
+          size="small"
+          name="end"
           type={isEditing ? 'date' : 'text'}
           disabled={!isEditing}
           value={formData.end}
@@ -382,8 +391,8 @@ const TaskDetailContent = ({ task = {}, projectId }) => {
             }}
           >
             <Button
-              variant='outlined'
-              color='primary'
+              variant="outlined"
+              color="primary"
               onClick={handleCancel}
               disableRipple
               style={{
@@ -394,8 +403,8 @@ const TaskDetailContent = ({ task = {}, projectId }) => {
               Cancel
             </Button>
             <Button
-              variant='contained'
-              color='primary'
+              variant="contained"
+              color="primary"
               onClick={handleSubmit}
               disableRipple
               style={{
@@ -418,8 +427,8 @@ const TaskDetailContent = ({ task = {}, projectId }) => {
           >
             <IconButton
               disableRipple
-              color='primary'
-              size='small'
+              color="primary"
+              size="small"
               sx={{
                 '&:hover': {
                   color: 'blue',

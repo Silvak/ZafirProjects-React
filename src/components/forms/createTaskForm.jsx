@@ -20,6 +20,7 @@ import { shallow } from 'zustand/shallow';
 import user1 from '../../assets/Img/png/userImageMan.png';
 import useSuggestionUsers from '../../hooks/useSuggestionUsers';
 import { useBoundStore } from '../../stores';
+import { axiosInstance } from '@/config/apiConfig';
 
 const INITIAL_FORM_DATA = {
   taskName: '',
@@ -43,6 +44,8 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
     ChangeStateAlert,
     ChangeTitleAlertError,
     ChangeStateAlertError,
+    setSelectedProject,
+    updateProjects,
   } = useBoundStore((state) => state, shallow);
   const { users } = useSuggestionUsers();
 
@@ -101,6 +104,23 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
       } else {
         await addTask(data, projectId);
         await fetchTasksById(projectId);
+
+        const promises = data.members_id.map((member) => {
+          return axiosInstance.post(`projects/${projectId}/add-member`, {
+            memberId: member._id,
+            newRole: member.rol,
+          });
+        });
+
+        // Utilizamos promise.all porque es un array de miembros
+        await Promise.all(promises);
+
+        // Actualizamos el estado del proyecto
+        const response = await axiosInstance.get(`projects/${projectId}`);
+        await updateProjects();
+        setSelectedProject(response.data);
+
+        // Mostramos mensaje
         ChangeStateAlert(true);
         ChangeTitleAlert('Task created successfully');
         ChangeStateModal(false);
@@ -144,7 +164,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
       {/* row - colum */}
       <Paper
         elevation={1}
-        component='form'
+        component="form"
         onSubmit={handleSubmit}
         sx={{
           maxWidth: isMobile ? '90vw' : 'fit-content',
@@ -168,10 +188,10 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
             Enter a task name
           </Typography>
           <TextField
-            size='small'
+            size="small"
             value={formData.taskName}
-            placeholder='Task name...'
-            name='taskName'
+            placeholder="Task name..."
+            name="taskName"
             onChange={handleChange}
             sx={{
               width: '100%',
@@ -195,9 +215,9 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
               Start date
             </Typography>
             <TextField
-              size='small'
-              name='start'
-              type='date'
+              size="small"
+              name="start"
+              type="date"
               value={formData.start}
               onChange={handleChange}
               sx={{
@@ -210,9 +230,9 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
               End date
             </Typography>
             <TextField
-              size='small'
-              name='end'
-              type='date'
+              size="small"
+              name="end"
+              type="date"
               value={formData.end}
               onChange={handleChange}
               sx={{
@@ -232,11 +252,11 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
             Add a description...
           </Typography>
           <TextField
-            size='small'
-            name='description'
+            size="small"
+            name="description"
             onChange={handleChange}
             value={formData.description}
-            placeholder='...'
+            placeholder="..."
             sx={{
               width: '100%',
             }}
@@ -255,8 +275,8 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
               Leader
             </Typography>
             <TextField
-              size='small'
-              name='leaders'
+              size="small"
+              name="leaders"
               value={formData.leaders.name}
               onChange={(e) => {
                 handleChange(e);
@@ -303,8 +323,8 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
               Add members
             </Typography>
             <TextField
-              size='small'
-              name='members_id'
+              size="small"
+              name="members_id"
               value={member}
               onChange={(e) => {
                 setMember(e.target.value);
@@ -313,7 +333,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
                   type: 'member',
                 });
               }}
-              placeholder='Search a member'
+              placeholder="Search a member"
               sx={{
                 width: '100%',
               }}
@@ -350,7 +370,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
           >
             {members.map((member) => (
               <Avatar
-                title='Remove'
+                title="Remove"
                 key={member._id}
                 src={user1}
                 onClick={() => {
@@ -371,17 +391,17 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
             <Select
               required
               value={formData.priority}
-              variant='outlined'
-              size='small'
+              variant="outlined"
+              size="small"
               sx={{ fontSize: '14px', bgcolor: 'white' }}
-              name='priority'
+              name="priority"
               onChange={handleChange}
               displayEmpty
               renderValue={(selected) => (selected ? selected : 'Type: All')}
             >
-              <CustomMenuItem value='High'>High</CustomMenuItem>
-              <CustomMenuItem value='Medium'>Medium</CustomMenuItem>
-              <CustomMenuItem value='Low'>Low</CustomMenuItem>
+              <CustomMenuItem value="High">High</CustomMenuItem>
+              <CustomMenuItem value="Medium">Medium</CustomMenuItem>
+              <CustomMenuItem value="Low">Low</CustomMenuItem>
             </Select>
           </FormControl>
         </Grid>
@@ -392,17 +412,17 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
             <Select
               required
               value={formData.state}
-              variant='outlined'
-              size='small'
+              variant="outlined"
+              size="small"
               sx={{ fontSize: '14px', bgcolor: 'white' }}
-              name='state'
+              name="state"
               onChange={handleChange}
               displayEmpty
               renderValue={(selected) => (selected ? selected : 'Type: All')}
             >
-              <CustomMenuItem value='In Progress'>In Progress</CustomMenuItem>
-              <CustomMenuItem value='Pending'>Pending</CustomMenuItem>
-              <CustomMenuItem value='Completed'>Completed</CustomMenuItem>
+              <CustomMenuItem value="In Progress">In Progress</CustomMenuItem>
+              <CustomMenuItem value="Pending">Pending</CustomMenuItem>
+              <CustomMenuItem value="Completed">Completed</CustomMenuItem>
             </Select>
           </FormControl>
         </Grid>
@@ -416,7 +436,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
           }}
         >
           <Button
-            title='Cancel'
+            title="Cancel"
             onClick={handleClose}
             sx={{
               textTransform: 'none',
@@ -434,7 +454,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
             Cancel
           </Button>
           <Button
-            title='Save'
+            title="Save"
             onClick={handleSubmit}
             sx={{
               textTransform: 'none',
