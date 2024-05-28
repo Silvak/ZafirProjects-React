@@ -135,14 +135,19 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
             newData: newValues,
             projectId: projectId,
           });
+          setIsEditing(false);
         } else {
-          await updateSubtask(formData);
+          await updateSubtask({
+            ...newValues,
+            _id: task._id,
+          });
+          setIsEditing(false);
         }
         setTimeout(() => {
           ChangeTitleAlert('Data has been updated successfully');
           ChangeStateAlert(true);
           ChangeStateModal(false);
-        }, 1000);
+        }, 500);
       }
     } catch (error) {
       ChangeTitleAlertError('Error:', error.message);
@@ -152,7 +157,6 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
     setFormData({ ...formData, [name]: value });
   };
 

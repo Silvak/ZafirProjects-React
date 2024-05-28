@@ -39,24 +39,18 @@ const TaskDetailSubstasks = ({ taskId }) => {
   } = useBoundStore((state) => state, shallow);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await fetchSubtasks();
-        if (subtasks.length > 0) {
-          let result = [];
-          subtasks.map((sub) => {
-            if (sub.taskId._id === taskId) {
-              result.push(sub);
-            }
-          });
-          setFilterSubtask(result);
-        }
-      } catch (error) {
-        console.error('Error fetching tasks', error);
-      }
-    };
     fetchData();
-  }, [taskId]);
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      await fetchSubtasks();
+      const result = subtasks.filter((sub) => sub.taskId._id === taskId);
+      setFilterSubtask(result);
+    } catch (error) {
+      console.error('Error fetching tasks', error);
+    }
+  };
 
   const handleAddTask = () => {
     ChangeStateModal(true);
@@ -177,8 +171,7 @@ const TaskDetailSubstasks = ({ taskId }) => {
             cursor: 'pointer',
             display: 'flex',
             gap: 4,
-            marginTop: 8,
-            paddingBottom: 16,
+            paddingBlock: 16,
           }}
           onClick={() => handleBack()}
         >

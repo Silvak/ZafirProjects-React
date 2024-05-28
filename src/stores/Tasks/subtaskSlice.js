@@ -25,17 +25,22 @@ export const createSubtasksSlice = (set) => ({
 
   updateSubtask: async (updateTask) => {
     try {
-      console.log(updateTask);
-      await axiosInstance.put(`/subtasks/${updateTask._id}`, updateTask);
+      const newSubTasks = await axiosInstance.put(
+        `/subtaks/${updateTask._id}`,
+        updateTask
+      );
       set((state) => ({
         subtasks: state.subtasks.map((task) =>
-          task._id === updateTask._id ? updateTask : task
+          task._id === newSubTasks._id ? newSubTasks : task
         ),
       }));
+      fetchSubtasks();
+      return newSubTasks;
     } catch (error) {
       console.error('Error updating subTask', error);
     }
   },
+
   fetchSubtasks: async () => {
     try {
       const { data } = await axiosInstance.get('/subtaks');
