@@ -148,7 +148,7 @@ const TaskDetailSubstasks = ({ taskId }) => {
               </tr>
             ))
           ) : (
-            <p>Loading...</p>
+            <CircularProgress />
           )}
           <tr>
             <td colSpan={5} className={css.icon}>
