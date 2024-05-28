@@ -6,7 +6,7 @@ function ConfirmForm({
   memberToDelete,
 }) {
   return (
-    <div style={{ maxWidth: '32vw' }}>
+    <div style={{ maxWidth: '32vw', minWidth: 'max-content' }}>
       <Paper
         elevation={5}
         style={{ padding: 20, backgroundColor: '#fff', borderRadius: 12 }}

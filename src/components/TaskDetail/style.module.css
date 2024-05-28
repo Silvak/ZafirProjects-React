@@ -76,3 +76,12 @@ td {
   width: 200px;
   margin-top: 30px;
 }
+
+.backText {
+  color: #8a8c91;
+  font-weight: 600;
+}
+
+.backText:hover {
+  color: #7661ea;
+}
