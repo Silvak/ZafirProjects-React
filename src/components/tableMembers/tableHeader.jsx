@@ -69,7 +69,7 @@ const TableHeader = ({
                     marginBottom: isMobile ? '8px' : '0px',
                   }}
                 >
-                  Contacts: {totalRows}
+                  Members: {totalRows}
                 </h2>
                 {isMobile && (
                   <Grid style={{ position: 'relative' }}>
