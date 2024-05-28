@@ -36,7 +36,9 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const {
     User,
+    selectedProject,
     addSubtask,
+    subtasks,
     fetchSubTasksById,
     ChangeStateModal,
     ChangeTitleAlert,
@@ -100,22 +102,13 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
         ChangeTitleAlertError('All fields are required');
         return;
       } else {
-        console.log(data, taskId);
         await addSubtask(data, taskId);
         await fetchSubTasksById(taskId);
 
-        const promises = data.members_id.map((member) => {
-          return axiosInstance.post(`projects/${taskId}/add-member`, {
-            memberId: member._id,
-            newRole: member.rol,
-          });
-        });
-
-        // Utilizamos promise.all porque es un array de miembros
-        await Promise.all(promises);
-
         // Actualizamos el estado del proyecto
-        const response = await axiosInstance.get(`projects/${taskId}`);
+        const response = await axiosInstance.get(
+          `projects/${selectedProject._id}`
+        );
         await updateProjects();
         setSelectedProject(response.data);
 
@@ -147,7 +140,7 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
     } else {
       setMembers((prev) => [...prev, user]);
       setFilteredMembers([]);
-      setMember(''); // Limpiar el campo de entrada después de seleccionar un miembro
+      setMember('');
     }
   };
 
@@ -157,6 +150,8 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
     );
     setMembers(updatedMembers);
   };
+
+  console.log('subtasks', subtasks);
 
   return (
     <ThemeProvider theme={theme}>

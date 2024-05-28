@@ -20,7 +20,7 @@ const TaskDetail = ({ task, projectId }) => {
     fetchTaskDetailsById(task._id, false);
     setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 1000);
   }, [task._id]);
 
   return (

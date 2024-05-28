@@ -2,7 +2,6 @@ import { axiosInstance } from '../../config/apiConfig';
 
 export const createSubtasksSlice = (set) => ({
   subtasks: [],
-  myTask: [],
   addSubtask: async (subTaskData, taskId) => {
     try {
       await axiosInstance.post(`/subtaks/${taskId}`, subTaskData);
@@ -48,10 +47,8 @@ export const createSubtasksSlice = (set) => ({
 
   fetchSubTasksById: async (taskId) => {
     try {
-      console.log(taskId);
-
-      const { data } = await axiosInstance.get(`/subtaks/${taskId}`);
-      set({ myTask: data });
+      const { data } = await axiosInstance.get(`/subtaks/task/${taskId}`);
+      set({ subtasks: data });
     } catch (error) {
       console.error('Error fetching subtasks', error);
     }
