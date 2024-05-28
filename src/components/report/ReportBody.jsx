@@ -15,8 +15,6 @@ function ComponentBody() {
   const [projectSelected, setProjectSelected] = useState(null);
   const { projectsData } = useBoundStore((state) => state, shallow);
 
-  console.log(projectSelected);
-
   return (
     <Grid container spacing={4} sx={{ mt: 2, paddingX: 2 }}>
       {/* Primera fila */}
