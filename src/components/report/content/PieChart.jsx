@@ -48,8 +48,8 @@ export default function CustomPieChart({ projectSelected }) {
     (tasks) => tasks.state === 'In Progress'
   );
   const pendingTasks = myTasks.filter((tasks) => tasks.state === 'Pending');
-  const issuesTasks = myTasks.filter((tasks) => tasks.state === 'Issues');
-  const reviewTasks = myTasks.filter((tasks) => tasks.state === 'Review');
+  // const issuesTasks = myTasks.filter((tasks) => tasks.state === 'Issues');
+  // const reviewTasks = myTasks.filter((tasks) => tasks.state === 'Review');
   const completedTasks = myTasks.filter((tasks) => tasks.state === 'Completed');
 
   const renderData = {
@@ -65,18 +65,18 @@ export default function CustomPieChart({ projectSelected }) {
       total: pendingTasks.length,
       color: '#6B6E75',
     },
-    issues: {
-      issuesTasks,
-      title: 'Issues',
-      total: issuesTasks.length,
-      color: '#E55D57',
-    },
-    review: {
-      reviewTasks,
-      title: 'Review',
-      total: reviewTasks.length,
-      color: '#EBA741',
-    },
+    // issues: {
+    //   issuesTasks,
+    //   title: 'Issues',
+    //   total: issuesTasks.length,
+    //   color: '#E55D57',
+    // },
+    // review: {
+    //   reviewTasks,
+    //   title: 'Review',
+    //   total: reviewTasks.length,
+    //   color: '#EBA741',
+    // },
     completed: {
       completedTasks,
       title: 'Completed',
@@ -96,16 +96,16 @@ export default function CustomPieChart({ projectSelected }) {
       value: renderData.pending.total,
       color: renderData.pending.color,
     },
-    {
-      label: 'Issues',
-      value: renderData.issues.total,
-      color: renderData.issues.color,
-    },
-    {
-      label: 'Reviews',
-      value: renderData.review.total,
-      color: renderData.review.color,
-    },
+    // {
+    //   label: 'Issues',
+    //   value: renderData.issues.total,
+    //   color: renderData.issues.color,
+    // },
+    // {
+    //   label: 'Reviews',
+    //   value: renderData.review.total,
+    //   color: renderData.review.color,
+    // },
     {
       label: 'In Progress',
       value: renderData.progress.total,
@@ -154,7 +154,7 @@ export default function CustomPieChart({ projectSelected }) {
               legend: { hidden: true },
             }}
           >
-            {total && <PieCenterLabel>{total}</PieCenterLabel>}
+            <PieCenterLabel>{total || 0}</PieCenterLabel>
           </PieChart>
         </Box>
       </Grid>

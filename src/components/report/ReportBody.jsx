@@ -14,6 +14,7 @@ function ComponentBody() {
   const isMobile = useMediaQuery('(max-width:600px)');
   const [projectSelected, setProjectSelected] = useState(null);
   const { projectsData } = useBoundStore((state) => state, shallow);
+
   return (
     <Grid container spacing={4} sx={{ mt: 2, paddingX: 2 }}>
       {/* Primera fila */}

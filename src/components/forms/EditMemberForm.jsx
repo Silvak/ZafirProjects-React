@@ -9,7 +9,7 @@ import {
   MenuItem,
   InputLabel,
 } from '@mui/material';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useBoundStore } from '@/stores';
 import { shallow } from 'zustand/shallow';
 import { axiosInstance } from '@/config/apiConfig';
@@ -17,22 +17,24 @@ import roles from '@/utils/roles';
 import useFormatText from '@/hooks/useFormatText';
 
 function EditMember({ row, setAllMemberData, allMemberData }) {
-  const [newName, setNewName] = useState(row.member.name);
-  const [newRol, setNewRol] = useState(row.rolToProject || 'Select Role');
+  const [newName, setNewName] = useState(row._id.name);
+  const [newRol, setNewRol] = useState(
+    useFormatText(row.rolToProject) || 'Select Role'
+  );
   const [customRol, setCustomRol] = useState('');
   const {
     ChangeStateModal,
     ChangeStateAlert,
     ChangeTitleAlert,
+    ChangeStateAlertError,
+    ChangeTitleAlertError,
     updateProjects,
+    selectedProject,
+    setSelectedProject,
   } = useBoundStore((state) => state, shallow);
 
   const theme = useTheme();
   const [customRolEnabled, setCustomRolEnabled] = useState(false);
-
-  useEffect(() => {
-    setNewRol(row.rolToProject);
-  }, [row.rolToProject]);
 
   const closeModal = () => {
     ChangeStateModal(false);
@@ -40,42 +42,51 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
 
   const handleSaveData = async (rowData, newValues) => {
     try {
-      await axiosInstance.put(`/members/${rowData.member.id}`, {
-        name: newValues.name,
+      if (!newValues.rol || !newValues.name) return;
+
+      await axiosInstance.put(`/projects/${row.projectId}/update-member`, {
+        memberId: rowData,
+        newRol: customRolEnabled
+          ? customRol
+          : newValues.rol !== 'Other'
+          ? newValues.rol
+          : row.rol,
+        newName: newValues.name,
       });
 
-      await axiosInstance.put(
-        `/projects/${rowData.projectId}/change-member-role`,
-        {
-          memberId: rowData.member._id,
-          newRole: customRolEnabled ? customRol : newValues.rol,
-        }
+      const { data } = await axiosInstance.get(
+        `projects/${selectedProject._id}`
       );
-
-      const updatedAllMember = allMemberData.map((member) => {
-        if (member.member._id === rowData.member._id) {
-          return {
-            ...member,
-            member: {
-              ...member.member,
-              name: newValues.name,
-            },
-            rolToProject: customRolEnabled ? customRol : newValues.rol,
-          };
-        } else {
-          return member;
-        }
-      });
-
-      setAllMemberData(updatedAllMember);
+      setSelectedProject(data);
       await updateProjects();
-      ChangeTitleAlert('Data has been updated successfully');
+      ChangeStateModal(false);
+      ChangeTitleAlert('Member updated');
       ChangeStateAlert(true);
       closeModal();
     } catch (error) {
+      ChangeStateAlertError(true);
+      ChangeTitleAlertError(error.message);
       console.error('Error saving data:', error);
     }
   };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    switch (name) {
+      case 'rol':
+        setNewRol(value);
+        setCustomRolEnabled(value === 'Other');
+        break;
+      case 'customRol':
+        setCustomRol(useFormatText(value));
+        break;
+      default:
+        break;
+    }
+  };
+
+  const upperName = row._id.name;
 
   return (
     <ThemeProvider theme={theme}>
@@ -90,26 +101,41 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
           marginBottom: 150,
         }}
       >
-        <h2 style={{ marginBlock: 8 }}>Edit {row.member.name}</h2>
+        <h2 style={{ marginBlock: 8 }}>
+          Edit{' '}
+          <span style={{ fontWeight: 800 }}>{upperName.toUpperCase()}</span>
+        </h2>
         <form>
           <TextField
             label="Email"
-            value={row.member.email}
+            size="small"
+            value={row._id.email}
             fullWidth
             disabled
-            style={{ marginBottom: 8 }}
+            style={{ marginBottom: 8, marginTop: 4 }}
           />
-          {/* <TextField
+          <TextField
+            label="Email"
+            size="small"
+            value={row._id.email}
+            fullWidth
+            disabled
+            style={{ display: 'none' }}
+          />
+          <TextField
+            size="small"
             label="Lead Owner"
             value={row.leadOwner}
             fullWidth
             disabled
             style={{ marginBottom: 8 }}
-          /> */}
+          />
           <TextField
             label="Nombre"
+            name="name"
+            disabled
             value={newName}
-            onChange={(e) => setNewName(useFormatText(e.target.value))}
+            onChange={handleChange}
             fullWidth
             style={{ marginBottom: 8 }}
           />
@@ -122,12 +148,9 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
           <Grid container spacing={2} alignItems="center">
             <Grid item xs={6}>
               <Select
+                name="rol"
                 value={newRol}
-                onChange={(e) => {
-                  const selectedRole = e.target.value;
-                  setNewRol(selectedRole);
-                  setCustomRolEnabled(selectedRole === 'Other');
-                }}
+                onChange={handleChange}
                 fullWidth
                 style={{
                   marginBottom: 8,
@@ -162,8 +185,9 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
               {customRolEnabled && (
                 <TextField
                   label="Custom Role"
+                  name="customRol"
                   value={customRol}
-                  onChange={(e) => setCustomRol(useFormatText(e.target.value))}
+                  onChange={handleChange}
                   fullWidth
                   style={{ marginBottom: 8, width: 'auto', borderRadius: 12 }}
                 />
@@ -199,7 +223,7 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
                   minWidth: '6rem',
                 }}
                 onClick={() =>
-                  handleSaveData(row, { name: newName, rol: newRol })
+                  handleSaveData(row._id._id, { name: newName, rol: newRol })
                 }
               >
                 Save

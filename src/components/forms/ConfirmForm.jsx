@@ -1,4 +1,4 @@
-import { Paper, Button, Typography } from "@mui/material";
+import { Paper, Button, Typography } from '@mui/material';
 
 function ConfirmForm({
   handleCancelDelete,
@@ -6,25 +6,25 @@ function ConfirmForm({
   memberToDelete,
 }) {
   return (
-    <div style={{ maxWidth: "32vw" }}>
+    <div style={{ maxWidth: '32vw', minWidth: 'max-content' }}>
       <Paper
         elevation={5}
-        style={{ padding: 20, backgroundColor: "#fff", borderRadius: 12 }}
+        style={{ padding: 20, backgroundColor: '#fff', borderRadius: 12 }}
       >
         <Typography
           variant="h6"
           sx={{ mb: 4, mt: 2 }}
           style={{ fontSize: 18, letterSpacing: -1 }}
         >
-          Are you sure you want to delete to{" "}
-          <strong style={{ color: "black" }}>
-            {memberToDelete.member.name}?
+          Are you sure you want to delete to{' '}
+          <strong style={{ color: 'black', width: 'max-content' }}>
+            {memberToDelete._id.name}?
           </strong>
         </Typography>
         <div
           style={{
-            display: "flex",
-            justifyContent: "space-between",
+            display: 'flex',
+            justifyContent: 'space-between',
             marginTop: 12,
           }}
         >
@@ -32,11 +32,11 @@ function ConfirmForm({
             disableRipple
             variant="outlined"
             sx={{
-              color: "black",
-              bgcolor: "white",
-              borderRadius: "0.5rem",
-              border: "1px gray solid",
-              minWidth: "6rem",
+              color: 'black',
+              bgcolor: 'white',
+              borderRadius: '0.5rem',
+              border: '1px gray solid',
+              minWidth: '6rem',
             }}
             onClick={handleCancelDelete}
           >
@@ -47,10 +47,10 @@ function ConfirmForm({
             style={{ marginLeft: 8 }}
             variant="contained"
             sx={{
-              color: "white",
-              bgcolor: "#7662EA",
-              borderRadius: "0.5rem",
-              minWidth: "6rem",
+              color: 'white',
+              bgcolor: '#7662EA',
+              borderRadius: '0.5rem',
+              minWidth: '6rem',
             }}
             onClick={() => handleConfirmDelete(memberToDelete)}
           >

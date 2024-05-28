@@ -49,34 +49,26 @@ const MembersTable = () => {
       const projectMembers = selectedProject.members_id.map((member) => ({
         ...member,
         project: selectedProject.name,
-        leadOwner: selectedProject.responsible,
+        leadOwner: selectedProject.leaders.name || '',
         projectId: selectedProject.id,
       }));
-
       setAllMemberData(projectMembers);
     }
   }, [selectedProject]);
-
   const handleRowClick = (rowName) => {
     const selectedIndex = selectedRows.indexOf(rowName);
-    let newSelected = [];
+    let newSelected = [...selectedRows];
+
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selectedRows, rowName);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selectedRows.slice(1));
-    } else if (selectedIndex === selectedRows.length - 1) {
-      newSelected = newSelected.concat(selectedRows.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selectedRows.slice(0, selectedIndex),
-        selectedRows.slice(selectedIndex + 1)
-      );
+      newSelected.push(rowName);
+    } else {
+      newSelected.splice(selectedIndex, 1);
     }
 
     setSelectedRows(newSelected);
   };
 
-  const isSelected = (rowName) => selectedRows.indexOf(rowName) !== -1;
+  const isSelected = (rowName) => selectedRows.includes(rowName);
 
   const handleButtonMore = (allMemberData) => {
     ChangeTitleModal('Create new member');
@@ -114,7 +106,7 @@ const MembersTable = () => {
       await updateProjects();
       setAllMemberData(updateAllMember);
       ChangeStateModal(false);
-      ChangeTitleAlert('Miembro eliminado exitosamente');
+      ChangeTitleAlert('Member successfully removed');
       ChangeStateAlert(true);
     } catch (error) {
       console.error(error.message);
@@ -129,16 +121,9 @@ const MembersTable = () => {
   const filteredSearchData = allMemberData.filter(
     (member) =>
       member &&
-      member.member &&
-      member.member.name.toLowerCase().includes(searchTerm.toLowerCase())
+      member._id &&
+      member._id.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  const filteredData =
-    selectedOption === 'All'
-      ? filteredSearchData
-      : filteredSearchData.filter(
-          (member) => member.leadOwner === selectedOption
-        );
 
   return (
     <div>
@@ -165,7 +150,7 @@ const MembersTable = () => {
           <Button
             variant="contained"
             disableRipple
-            onClick={() => handleButtonMore(allMemberData)}
+            onClick={() => handleButtonMore(filteredSearchData)}
             sx={{
               padding: '0.6rem',
               height: 'min-content',
@@ -198,11 +183,11 @@ const MembersTable = () => {
                 filteredSearchData={filteredSearchData}
                 selectedOption={selectedOption}
                 setSelectedOption={setSelectedOption}
-                filteredData={filteredData}
+                filteredData={filteredSearchData}
               />
               <TableBody>
-                {filteredData.length > 0 ? (
-                  filteredData
+                {filteredSearchData.length > 0 ? (
+                  filteredSearchData
                     .slice(
                       (page - 1) * rowsPerPage,
                       (page - 1) * rowsPerPage + rowsPerPage
@@ -218,7 +203,7 @@ const MembersTable = () => {
                         isSelected={isSelected}
                         columns={columns}
                         setAllMemberData={setAllMemberData}
-                        allMemberData={allMemberData}
+                        allMemberData={filteredSearchData}
                       />
                     ))
                 ) : (
@@ -253,7 +238,7 @@ const MembersTable = () => {
           handleChangeRowsPerPage={handleChangeRowsPerPage}
           page={page}
           handleChangePage={handleChangePage}
-          data={filteredData}
+          data={filteredSearchData}
         />
       </div>
     </div>

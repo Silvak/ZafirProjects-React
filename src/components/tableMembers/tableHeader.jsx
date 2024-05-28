@@ -22,15 +22,6 @@ const TableHeader = ({
   setSelectedOption,
   filteredData,
 }) => {
-  const [leadOwners, setLeadOwners] = useState([]);
-
-  useEffect(() => {
-    const uniqueLeadOwners = [
-      ...new Set(filteredData.map((member) => member.leadOwner)),
-    ];
-    setLeadOwners(uniqueLeadOwners.sort());
-  }, [filteredData]);
-
   const headers = [
     {
       id: '',
@@ -78,7 +69,7 @@ const TableHeader = ({
                     marginBottom: isMobile ? '8px' : '0px',
                   }}
                 >
-                  {totalRows} Contacts
+                  Members: {totalRows}
                 </h2>
                 {isMobile && (
                   <Grid style={{ position: 'relative' }}>
@@ -150,60 +141,6 @@ const TableHeader = ({
                       </div>
                     </Grid>
                     <Grid item>
-                      <Select
-                        value={selectedOption}
-                        onChange={(event) =>
-                          setSelectedOption(event.target.value)
-                        }
-                        variant="outlined"
-                        style={{
-                          borderRadius: '12px',
-                          width: '180px',
-                          height: '44px',
-                          border: '1px solid lightgray',
-                        }}
-                        MenuProps={{
-                          PaperProps: {
-                            style: {
-                              borderTopLeftRadius: 0,
-                              borderTopRightRadius: 0,
-                              backgroundColor: '#fff',
-                              marginTop: 2,
-                              boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.2)',
-                            },
-                          },
-                        }}
-                      >
-                        <MenuItem
-                          value="All"
-                          style={{ fontSize: '12px', fontWeight: 600 }}
-                          sx={{
-                            '&:hover': {
-                              backgroundColor: 'lightgray',
-                              color: '#000',
-                            },
-                          }}
-                        >
-                          All
-                        </MenuItem>
-                        {leadOwners.map((leadOwner, index) => (
-                          <MenuItem
-                            key={index}
-                            value={leadOwner}
-                            style={{ fontSize: '12px', fontWeight: 600 }}
-                            sx={{
-                              '&:hover': {
-                                backgroundColor: 'lightgray',
-                                color: '#000',
-                              },
-                            }}
-                          >
-                            {leadOwner}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </Grid>
-                    <Grid item>
                       <Button
                         variant="outlined"
                         startIcon={<FilterListIcon />}
@@ -242,7 +179,7 @@ const TableHeader = ({
                 setSelectedRows(
                   selectedRows.length === filteredSearchData.length
                     ? []
-                    : filteredSearchData.map((data) => data.member.name)
+                    : filteredSearchData.map((data) => data.name)
                 )
               }
             />
@@ -254,18 +191,8 @@ const TableHeader = ({
               key={header.id}
               align="left"
               style={{
-                // minWidth:
-                //   header.id === "name"
-                //     ? "10rem"
-                //     : header.id === "phone"
-                //     ? "8rem"
-                //     : header.id === "lead_status"
-                //     ? "15rem"
-                //     : "5rem",
-                // marginInline: "5rem",
                 fontWeight: 'bold',
                 color: 'gray',
-                // textAlign: header.id === "name" ? "left" : "center",
               }}
             >
               {header.label}

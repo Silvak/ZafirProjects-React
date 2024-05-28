@@ -50,38 +50,37 @@ const TaskHeader = ({ title, handleButton, handleAddTask }) => {
           sx={{
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
+            justifyContent: 'space-around',
             fontWeight: 'normal',
             borderRadius: '8px',
             border: '1px solid gray',
-            cursor: 'pointer',
             backgroundColor: 'white',
           }}
         >
           <FormatListBulletedRoundedIcon
             sx={{
-              marginRight: '10px',
               backgroundColor:
                 selectedIcon === 'Format List' ? 'rgb(118, 98, 234)' : '',
               color: selectedIcon === 'Format List' ? 'white' : 'gray',
               borderRadius: '8px',
               padding: '2px',
+              cursor: 'pointer',
             }}
             onClick={() => handleIconButtonClick('Format List')}
           />
           <ViewKanbanOutlinedIcon
             sx={{
-              marginRight: '10px',
               backgroundColor:
                 selectedIcon === 'View Kanban' ? 'rgb(118, 98, 234)' : '',
               color: selectedIcon === 'View Kanban' ? 'white' : 'gray',
               borderRadius: '8px',
               padding: '2px',
               display: isMobile ? 'none' : '',
+              cursor: 'pointer',
             }}
             onClick={() => handleIconButtonClick('View Kanban')}
           />
-          <CalendarTodayIcon
+          {/* <CalendarTodayIcon
             sx={{
               backgroundColor:
                 selectedIcon === 'Calendar' ? 'rgb(118, 98, 234)' : '',
@@ -90,38 +89,9 @@ const TaskHeader = ({ title, handleButton, handleAddTask }) => {
               padding: '2px',
             }}
             onClick={() => handleIconButtonClick('Calendar')}
-          />
+          /> */}
         </ButtonGroup>
-        {/* <Select
-          value={selectedValue}
-          onChange={handleSelectChange}
-          sx={{
-            color: "black",
-            backgroundColor: "white",
-            border: "1px solid gray",
-            fontSize: "16px",
-          }}
-        >
-          <MenuItem
-            value="All Tasks"
-            sx={{
-              backgroundColor: "white",
-              fontSize: "12px",
-            }}
-          >
-            All Tasks
-          </MenuItem>
-          <MenuItem
-            value="Item1"
-            sx={{
-              backgroundColor: "white",
-              fontSize: "12px",
-            }}
-          >
-            Item1
-          </MenuItem>
-        </Select> */}
-        <FilterSelect data={filtersData} padding="10px" />
+        {/* <FilterSelect data={filtersData} padding="10px" /> */}
         <Button
           variant="contained"
           sx={{

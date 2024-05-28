@@ -1,13 +1,19 @@
 import { useEffect, useState } from 'react';
-import { Box, Button, useMediaQuery } from '@mui/material';
+import {
+  Box,
+  Button,
+  useMediaQuery,
+  CircularProgress,
+  Tooltip,
+} from '@mui/material';
 import { RxEyeOpen } from 'react-icons/rx';
 import { useBoundStore } from '../../stores';
 import { shallow } from 'zustand/shallow';
-
 import { statusColors } from '../../utils/colors';
 import TaskDetail from './TaskDetail';
 import css from './style.module.css';
 import SubTaskForm from '../forms/subtaskForm';
+import SubdirectoryArrowLeftIcon from '@mui/icons-material/SubdirectoryArrowLeft';
 
 const tableHeadData = [
   { id: 1, label: 'Name' },
@@ -20,17 +26,8 @@ const tableHeadData = [
 const TaskDetailSubstasks = ({ taskId }) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const [filterSubtask, setFilterSubtask] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await fetchSubtasks();
-      } catch (error) {
-        console.error('Error fetching tasks', error);
-      }
-    };
-    fetchData();
-  }, []);
+  const [cleanForm, setCleanForm] = useState(false);
+  const [customTask, setCustomTask] = useState(null);
 
   const {
     subtasks,
@@ -41,89 +38,149 @@ const TaskDetailSubstasks = ({ taskId }) => {
     ChangeIsVisibleButton,
   } = useBoundStore((state) => state, shallow);
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      await fetchSubtasks();
+      const result = subtasks.filter((sub) => sub.taskId._id === taskId);
+      setFilterSubtask(result);
+    } catch (error) {
+      console.error('Error fetching tasks', error);
+    }
+  };
+
   const handleAddTask = () => {
     ChangeStateModal(true);
     ChangeTitleModal('Add SubTask');
-    ChangeContentModal(<SubTaskForm taskId={taskId} />);
+    ChangeContentModal(<SubTaskForm taskId={taskId} projectId={taskId} />);
   };
 
-  useEffect(() => {
-    if (subtasks) {
-      const subtasksToTask = subtasks.filter(
-        (subtask) => subtask.taskId === taskId
-      );
-      setFilterSubtask(subtasksToTask);
-    }
-  }, [taskId, subtasks]);
-
   const handleViewSubstask = (subtask) => {
+    setCustomTask(subtask.taskId);
+    setCleanForm(true);
     ChangeTitleModal('Substask Detail');
     ChangeContentModal(<TaskDetail task={subtask} isSubtask={true} />);
     ChangeIsVisibleButton(true);
     ChangeStateModal(true);
   };
 
+  const handleBack = () => {
+    ChangeTitleModal('Task Detail');
+    ChangeContentModal(<TaskDetail task={customTask} isSubtask={false} />);
+    ChangeIsVisibleButton(true);
+    ChangeStateModal(true);
+    setCleanForm(false);
+  };
+
   return (
-    <Box sx={{ padding: '50px 0' }}>
-      <p className={css.title}>Subtasks</p>
-      <table
-        className={css.table}
-        style={{ padding: isMobile ? '5px' : '20px' }}
-      >
-        <tr>
-          {tableHeadData.map((item) => (
-            <th key={item.id} className={css.headText}>
-              {item.label}
-            </th>
-          ))}
-        </tr>
-
-        {filterSubtask &&
-          filterSubtask.map((item) => (
-            <tr key={item.id}>
-              <td>
-                <strong>{item.name}</strong>
-              </td>
-              <td>
-                <div>
-                  {/* <img
-                    src={item.assignees.profilePhoto}
-                    alt={`Photo of ${item.assignees.name}`}
-                  /> */}
-                  <strong>{item.members}</strong>
-                </div>
-              </td>
-              <td>
-                <div
-                  style={{
-                    ...statusColors[item.status],
-                    padding: '5px 10px',
-                    borderRadius: '5px',
-                    textAlign: 'center',
-                  }}
-                >
-                  {item.status}
-                </div>
-              </td>
-              <td>{item.start}</td>
-              <td className={css.icon}>
-                <Button
-                  color="inherit"
-                  onClick={() => handleViewSubstask(item)}
-                >
-                  <RxEyeOpen size={25} />
-                </Button>
-              </td>
-            </tr>
-          ))}
-
-        <tr>
-          <Button color="inherit" onClick={handleAddTask}>
-            + Add substask
-          </Button>
-        </tr>
-      </table>
-    </Box>
+    <>
+      {!cleanForm ? (
+        <Box sx={{ padding: '50px 0' }}>
+          <p className={css.title}>Subtasks</p>
+          <table
+            className={css.table}
+            style={{ padding: isMobile ? '5px' : '20px' }}
+          >
+            <thead>
+              <tr>
+                {tableHeadData.map((item) => (
+                  <th key={item.id} className={css.headText}>
+                    {item.label}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {filterSubtask ? (
+                filterSubtask.map((item) => (
+                  <tr key={item._id}>
+                    <td>
+                      <strong style={{ fontSize: '14px' }}>{item.name}</strong>
+                    </td>
+                    <td>
+                      <div>
+                        {item.members_id ? (
+                          item.members_id.map((member) => (
+                            <div
+                              key={member._id}
+                              style={{
+                                width: '7rem',
+                                overflow: 'hidden',
+                              }}
+                            >
+                              <strong style={{ fontSize: '14px' }}>
+                                {member.name}
+                              </strong>
+                              <br />
+                              <Tooltip title={member.email}>
+                                <small style={{ cursor: 'default' }}>
+                                  {member?.email?.length > 12
+                                    ? member.email.slice(0, 12) + '...'
+                                    : member.email}
+                                </small>
+                              </Tooltip>
+                            </div>
+                          ))
+                        ) : (
+                          <CircularProgress />
+                        )}
+                      </div>
+                    </td>
+                    <td>
+                      <div
+                        style={{
+                          ...statusColors[item.status],
+                          padding: '5px 10px',
+                          borderRadius: '5px',
+                          textAlign: 'center',
+                        }}
+                      >
+                        {item.state}
+                      </div>
+                    </td>
+                    <td>{item.start}</td>
+                    <td className={css.icon}>
+                      <Button
+                        color="inherit"
+                        onClick={() => handleViewSubstask(item)}
+                      >
+                        <RxEyeOpen size={25} />
+                      </Button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <CircularProgress />
+              )}
+              <tr>
+                <td colSpan={5} className={css.icon}>
+                  <Button disableRipple color="inherit" onClick={handleAddTask}>
+                    + Add substask
+                  </Button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </Box>
+      ) : (
+        <div
+          style={{
+            cursor: 'pointer',
+            display: 'flex',
+            gap: 4,
+            paddingBlock: 16,
+          }}
+          onClick={() => handleBack()}
+        >
+          <SubdirectoryArrowLeftIcon color="primary" className={css.icon} />
+          <span className={css.backText}>Back to Task</span>
+        </div>
+      )}
+    </>
   );
 };
+
 export default TaskDetailSubstasks;

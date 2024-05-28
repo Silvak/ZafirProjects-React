@@ -2,10 +2,9 @@ import { axiosInstance } from '../../config/apiConfig';
 
 export const createSubtasksSlice = (set) => ({
   subtasks: [],
-  //   myTasks: [],
-  addSubtask: async (taskData) => {
+  addSubtask: async (subTaskData, taskId) => {
     try {
-      await axiosInstance.post(`/subtaks/${taskData.taskId}`, taskData);
+      await axiosInstance.post(`/subtaks/${taskId}`, subTaskData);
     } catch (error) {
       console.error('Error creating subTask', error);
     }
@@ -23,12 +22,25 @@ export const createSubtasksSlice = (set) => ({
     set((state) => ({
       subtasks: state.subtasks.filter((task) => task.id !== taskIdToDelete),
     })),
-  updateSubtask: (updateTask) =>
-    set((state) => ({
-      subtasks: state.subtasks.map((task) =>
-        task.id === updateTask.id ? updateTask : task
-      ),
-    })),
+
+  updateSubtask: async (updateTask) => {
+    try {
+      const newSubTasks = await axiosInstance.put(
+        `/subtaks/${updateTask._id}`,
+        updateTask
+      );
+      set((state) => ({
+        subtasks: state.subtasks.map((task) =>
+          task._id === newSubTasks._id ? newSubTasks : task
+        ),
+      }));
+      fetchSubtasks();
+      return newSubTasks;
+    } catch (error) {
+      console.error('Error updating subTask', error);
+    }
+  },
+
   fetchSubtasks: async () => {
     try {
       const { data } = await axiosInstance.get('/subtaks');
@@ -37,12 +49,13 @@ export const createSubtasksSlice = (set) => ({
       console.error('Error fetching subtasks', error);
     }
   },
-  //   fetchTasksById: async (projectId) => {
-  //     try {
-  //       const { data } = await axiosInstance.get(`/subtaks/${projectId}`);
-  //       set({ subtasks: data });
-  //     } catch (error) {
-  //       console.error("Error fetching subtasks", error);
-  //     }
-  //   },
+
+  fetchSubTasksById: async (taskId) => {
+    try {
+      const { data } = await axiosInstance.get(`/subtaks/task/${taskId}`);
+      set({ subtasks: data });
+    } catch (error) {
+      console.error('Error fetching subtasks', error);
+    }
+  },
 });

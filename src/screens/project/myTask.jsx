@@ -75,7 +75,7 @@ const App = () => {
     <DndProvider backend={HTML5Backend}>
       <div sx={{ minWidth: '250px' }}>
         <TaskHeader
-          title={selectedProject.name}
+          title={selectedProject?.name ? selectedProject.name : 'No projects'}
           handleAddTask={handleAddTask}
           handleButton={handleButton}
         />

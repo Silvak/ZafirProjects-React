@@ -22,7 +22,7 @@ const TableRowComponent = ({
   setAllMemberData,
   allMemberData,
 }) => {
-  const isItemSelected = isSelected(row?.member.name);
+  const isItemSelected = isSelected(row?.name);
   const [deleteClicked, setDeleteClicked] = useState(false);
   const [editClicked, setEditClicked] = useState(false);
   const isExpanded = isMobile && isItemSelected;
@@ -41,28 +41,21 @@ const TableRowComponent = ({
     ChangeStateModal(true);
   };
 
-  console.log(row);
-
   return (
-    <React.Fragment key={row.member._id}>
-      <TableRow
-        hover={!isMobile}
-        style={{
-          backgroundColor: isItemSelected ? 'lightblue' : 'inherit',
-        }}
-      >
+    <React.Fragment key={row}>
+      <TableRow hover={!isMobile}>
         {!isMobile && (
           <TableCell className="checkbox-contact">
             <Checkbox
-              checked={isItemSelected}
-              onChange={() => handleCheckboxClick(row.member.name)}
+              // checked={isItemSelected}
+              // onChange={() => handleCheckboxClick(row.name)}
               sx={{ color: 'lightgray' }}
             />
           </TableCell>
         )}
 
         {columns.map((column, index) => {
-          let cellContent = row.member[column.id];
+          let cellContent = row[column.id];
 
           return (
             <TableCell
@@ -75,18 +68,8 @@ const TableRowComponent = ({
                 padding: !isMobile ? '0px' : '12px',
                 backgroundColor:
                   column.id === 'lead_status' ? 'cyan' : 'inherit',
-                cursor: column.id === 'name' ? 'pointer' : 'inherit',
               }}
-              onClick={
-                column.id === 'name'
-                  ? () => handleRowClick(row.member.name)
-                  : null
-              }
             >
-              {column.id === 'project' && !isMobile && (
-                <span style={{ marginLeft: 10 }}>{row.project}</span>
-              )}
-
               {column.id === 'action' && !isMobile && (
                 <div>
                   <DeleteIcon
@@ -151,23 +134,15 @@ const TableRowComponent = ({
                         }}
                         src={avatar}
                       />
-                      <span
-                        style={{
-                          display: 'flex',
-                          minWidth: !isMobile ? '5rem' : '10rem',
-                        }}
-                      >
-                        {row.leadOwner ? row.leadOwner : 'Leader'}
-                      </span>
                     </>
                   )}
                   <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <div style={{ flex: 1 }}>
-                      {column.id === 'name' ? cellContent : row['leadOwner']}
+                      {column.id === 'name' ? row._id.name : row['leadOwner']}
                     </div>
                     {column.id === 'name' && (
                       <div style={{ flex: 1, color: 'gray' }}>
-                        {row.member['email']}
+                        {row._id.email}
                       </div>
                     )}
                   </div>
@@ -176,7 +151,7 @@ const TableRowComponent = ({
                 column.id !== 'photo' &&
                 column.id !== 'email' ? (
                 column.id === 'rol' ? (
-                  <span>{row.rolToProject}</span>
+                  <span style={{ marginLeft: 10 }}>{row.rolToProject}</span>
                 ) : (
                   cellContent
                 )
