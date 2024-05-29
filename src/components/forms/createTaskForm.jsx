@@ -363,7 +363,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
             sx={{
               display: 'flex',
               gap: '8px',
-              marginBottom: '20px',
+              marginBottom: '0px',
               cursor: 'pointer',
               width: 'fit-content',
             }}
@@ -374,10 +374,12 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
                 key={member._id}
                 src={user1}
                 onClick={() => {
-                  console.log('member', member);
                   handleRemoveMember(member);
                 }}
-                style={{ transition: 'opacity 0.3s ease-in-out' }}
+                style={{
+                  transition: 'opacity 0.3s ease-in-out',
+                  marginBottom: 12,
+                }}
                 onMouseOver={(e) => (e.currentTarget.style.opacity = '0.7')}
                 onMouseOut={(e) => (e.currentTarget.style.opacity = '1')}
               />
@@ -393,7 +395,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
               value={formData.priority}
               variant="outlined"
               size="small"
-              sx={{ fontSize: '14px', bgcolor: 'white' }}
+              sx={{ fontSize: '14px' }}
               name="priority"
               onChange={handleChange}
               displayEmpty
@@ -407,14 +409,16 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
         </Grid>
 
         <Grid item xs={12}>
-          <Typography sx={{ fontSize: '0.85rem' }}>State</Typography>
+          <Typography sx={{ fontSize: '0.85rem', marginTop: 2 }}>
+            State
+          </Typography>
           <FormControl fullWidth>
             <Select
               required
               value={formData.state}
               variant="outlined"
               size="small"
-              sx={{ fontSize: '14px', bgcolor: 'white' }}
+              sx={{ fontSize: '14px' }}
               name="state"
               onChange={handleChange}
               displayEmpty
@@ -481,18 +485,7 @@ export default CreateTaskForm;
 
 const CustomMenuItem = ({ children, selected, ...props }) => {
   return (
-    <MenuItem
-      sx={{
-        height: 'min-content',
-        bgcolor: selected ? 'white' : '#B5B5B5',
-        color: selected ? 'black' : 'white',
-        '&:focus, &:hover': {
-          bgcolor: 'cyan',
-          color: 'blue',
-        },
-      }}
-      {...props}
-    >
+    <MenuItem className="menu-item " sx={{ height: 'min-content' }} {...props}>
       {children}
     </MenuItem>
   );

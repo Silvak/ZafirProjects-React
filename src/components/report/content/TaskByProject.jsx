@@ -39,13 +39,13 @@ const TaskByProject = () => {
     if (tasks) {
       tasks.forEach((task) => {
         const project = task.projectId;
-        if (!uniqueProjects[project._id]) {
+        if (project && project._id && !uniqueProjects[project._id]) {
           uniqueProjects[project._id] = {
             name: project.name,
             progress: project.progress,
             totalTasks: 1,
           };
-        } else {
+        } else if (project && project._id) {
           uniqueProjects[project._id].totalTasks++;
         }
       });
@@ -105,7 +105,7 @@ const TaskByProject = () => {
         {result &&
           result.map((project, index) => (
             <div
-              key={project.id}
+              key={index}
               style={{
                 display: 'flex',
                 alignItems: 'flex-end',

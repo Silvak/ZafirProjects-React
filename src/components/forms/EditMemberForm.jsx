@@ -172,9 +172,14 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
               >
                 {roles.map((role) => (
                   <MenuItem
+                    className="menu-item"
                     key={role}
                     value={role}
-                    style={{ backgroundColor: '#fff', cursor: 'pointer' }}
+                    style={{
+                      backgroundColor: '#fff',
+                      cursor: 'pointer',
+                      fontWeight: 600,
+                    }}
                   >
                     {role}
                   </MenuItem>
