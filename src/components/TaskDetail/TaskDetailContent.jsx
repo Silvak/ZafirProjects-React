@@ -456,18 +456,7 @@ export default TaskDetailContent;
 
 const CustomMenuItem = ({ children, selected, ...props }) => {
   return (
-    <MenuItem
-      sx={{
-        height: 'min-content',
-        bgcolor: 'white',
-        color: selected ? 'black' : 'gray',
-        '&:focus, &:hover': {
-          bgcolor: 'cyan',
-          color: 'blue',
-        },
-      }}
-      {...props}
-    >
+    <MenuItem className="menu-item " sx={{ height: 'min-content' }}>
       {children}
     </MenuItem>
   );

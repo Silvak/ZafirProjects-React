@@ -70,5 +70,6 @@ main {
   background: white !important;
 }
 .menu-item:hover {
+  color: blue;
   background: rgb(233, 233, 233) !important;
 }

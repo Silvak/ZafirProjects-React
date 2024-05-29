@@ -21,14 +21,14 @@ const UpcomingTask = () => {
     if (tasks) {
       tasks.forEach((task) => {
         const project = task.projectId;
-        if (!uniqueProjects[project._id]) {
+        if (project && project._id && !uniqueProjects[project._id]) {
           uniqueProjects[project._id] = {
             name: project.name,
             progress: project.progress,
             totalTasks: 1,
             completed: task.state === 'Completed' ? 1 : 0,
           };
-        } else {
+        } else if (project && project._id) {
           uniqueProjects[project._id].totalTasks++;
           if (task.state === 'Completed') {
             uniqueProjects[project._id].completed++;

@@ -151,8 +151,6 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
     setMembers(updatedMembers);
   };
 
-  console.log('subtasks', subtasks);
-
   return (
     <ThemeProvider theme={theme}>
       {/* row - colum */}
@@ -475,18 +473,7 @@ export default SubTaskForm;
 
 const CustomMenuItem = ({ children, selected, ...props }) => {
   return (
-    <MenuItem
-      sx={{
-        height: 'min-content',
-        bgcolor: selected ? 'white' : '#B5B5B5',
-        color: selected ? 'black' : 'white',
-        '&:focus, &:hover': {
-          bgcolor: 'cyan',
-          color: 'blue',
-        },
-      }}
-      {...props}
-    >
+    <MenuItem className="menu-item " sx={{ height: 'min-content' }} {...props}>
       {children}
     </MenuItem>
   );
