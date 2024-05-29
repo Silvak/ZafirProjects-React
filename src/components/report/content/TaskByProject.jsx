@@ -146,10 +146,7 @@ const TaskByProject = () => {
         }}
       >
         {result.map((project, index) => (
-          <div
-            key={project.id}
-            style={{ display: 'flex', alignItems: 'center' }}
-          >
+          <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
             <Typography
               variant="body1"
               style={{
