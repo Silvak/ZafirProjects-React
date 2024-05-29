@@ -277,6 +277,7 @@ function CreateMember() {
                 <MenuItem
                   key={rol}
                   value={rol}
+                  className="menu-item"
                   style={{ backgroundColor: '#fff', cursor: 'pointer' }}
                 >
                   {rol}
