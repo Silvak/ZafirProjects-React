@@ -385,7 +385,7 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
               value={formData.priority}
               variant="outlined"
               size="small"
-              sx={{ fontSize: '14px', bgcolor: 'white' }}
+              sx={{ fontSize: '14px', marginBottom: 2 }}
               name="priority"
               onChange={handleChange}
               displayEmpty
@@ -406,7 +406,7 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
               value={formData.state}
               variant="outlined"
               size="small"
-              sx={{ fontSize: '14px', bgcolor: 'white' }}
+              sx={{ fontSize: '14px' }}
               name="state"
               onChange={handleChange}
               displayEmpty
