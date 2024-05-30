@@ -20,7 +20,7 @@ import useSuggestionUsers from '../../hooks/useSuggestionUsers';
 import './dataPicker.css';
 import { format } from 'date-fns';
 import CustomList from '../CustomList/CustomList';
-import user1 from '../../assets/Img/png/userImageMan.png';
+import CustomAvatar from '@/components/CustomAvatar/CustomAvatar';
 
 // const INITIAL_FORM_DATA = {
 //   taskName: '',
@@ -62,6 +62,7 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
     priority: task.priority,
     members_id: task.members_id,
   });
+  console.log('members', members);
 
   const {
     updateTask,
@@ -155,35 +156,35 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
 
   const handleSubmit = async () => {
     const newValues = { ...formData, members_id: members };
-
-    try {
-      if (JSON.stringify(newValues) === JSON.stringify(originalValues)) {
-        ChangeStateAlertError(true);
-        ChangeTitleAlertError('No changes were made');
-      } else {
-        if (!isSubtask) {
-          await updateTask({
-            taskId: task._id,
-            newData: newValues,
-            projectId: projectId,
-          });
-          setIsEditing(false);
-        } else {
-          await updateSubtask({
-            ...newValues,
-            _id: task._id,
-          });
-          setIsEditing(false);
-        }
-        setTimeout(() => {
-          ChangeTitleAlert('Data has been updated successfully');
-          ChangeStateAlert(true);
-        }, 500);
-      }
-    } catch (error) {
-      ChangeTitleAlertError('Error:', error.message);
-      ChangeStateAlertError(true);
-    }
+    console.log('newValues', newValues);
+    // try {
+    //   if (JSON.stringify(newValues) === JSON.stringify(originalValues)) {
+    //     ChangeStateAlertError(true);
+    //     ChangeTitleAlertError('No changes were made');
+    //   } else {
+    //     if (!isSubtask) {
+    //       await updateTask({
+    //         taskId: task._id,
+    //         newData: newValues,
+    //         projectId: projectId,
+    //       });
+    //       setIsEditing(false);
+    //     } else {
+    //       await updateSubtask({
+    //         ...newValues,
+    //         _id: task._id,
+    //       });
+    //       setIsEditing(false);
+    //     }
+    //     setTimeout(() => {
+    //       ChangeTitleAlert('Data has been updated successfully');
+    //       ChangeStateAlert(true);
+    //     }, 500);
+    //   }
+    // } catch (error) {
+    //   ChangeTitleAlertError('Error:', error.message);
+    //   ChangeStateAlertError(true);
+    // }
   };
 
   const handleChange = (e) => {
@@ -268,19 +269,13 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
           }}
         >
           {members.map((member) => (
-            <Avatar
+            <CustomAvatar
               title={`Remove ${member.name}`}
               key={member._id}
-              src={user1}
+              letter={member.name.charAt(0)}
               onClick={() => {
-                isEditing && handleRemoveMember(member);
+                handleRemoveMember(member);
               }}
-              style={{
-                transition: 'opacity 0.3s ease-in-out',
-                opacity: `${!isEditing ? '0.7' : '1'}`,
-              }}
-              onMouseOver={(e) => (e.currentTarget.style.opacity = '0.7')}
-              onMouseOut={(e) => (e.currentTarget.style.opacity = '1')}
             />
           ))}
         </Box>

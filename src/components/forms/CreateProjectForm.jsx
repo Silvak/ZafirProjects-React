@@ -14,9 +14,9 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { shallow } from 'zustand/shallow';
-import user1 from '../../assets/Img/png/userImageMan.png';
 import useSuggestionUsers from '../../hooks/useSuggestionUsers';
 import { useBoundStore } from '../../stores';
+import CustomAvatar from '@/components/CustomAvatar/CustomAvatar';
 
 function CreateProjectForm() {
   const theme = createTheme();
@@ -80,7 +80,11 @@ function CreateProjectForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-
+    console.log({
+      ...formData,
+      leaders: formData.leaders._id,
+      members_id: members,
+    });
     try {
       const data = {
         ...formData,
@@ -89,9 +93,9 @@ function CreateProjectForm() {
       };
       //validamos que no se envie vacio
       if (Object.values(data).includes('')) {
-        setIsLoading(false);
         ChangeStateAlertError(true);
         ChangeTitleAlertError('All fields are required');
+        setIsLoading(false);
         return;
       } else {
         await addProject(User._id, data);
@@ -99,12 +103,10 @@ function CreateProjectForm() {
         ChangeStateAlert(true);
         ChangeTitleAlert('Project created successfully');
         setIsLoading(false);
+        ChangeStateModal(false);
       }
     } catch (error) {
       console.log(error);
-    } finally {
-      setIsLoading(false);
-      ChangeStateModal(false);
     }
   };
 
@@ -345,17 +347,14 @@ function CreateProjectForm() {
             }}
           >
             {members.map((member) => (
-              <Avatar
-                title='Remove'
+              <CustomAvatar
+                title={`Remove ${member.name}`}
                 key={member._id}
-                src={user1}
+                letter={member.name.charAt(0)}
                 onClick={() => {
-                  console.log('member', member);
+                  console.log(member);
                   handleRemoveMember(member);
                 }}
-                style={{ transition: 'opacity 0.3s ease-in-out' }}
-                onMouseOver={(e) => (e.currentTarget.style.opacity = '0.7')}
-                onMouseOut={(e) => (e.currentTarget.style.opacity = '1')}
               />
             ))}
           </Box>
