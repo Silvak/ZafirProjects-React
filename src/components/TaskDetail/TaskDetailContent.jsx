@@ -156,35 +156,35 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
 
   const handleSubmit = async () => {
     const newValues = { ...formData, members_id: members };
-    console.log('newValues', newValues);
-    // try {
-    //   if (JSON.stringify(newValues) === JSON.stringify(originalValues)) {
-    //     ChangeStateAlertError(true);
-    //     ChangeTitleAlertError('No changes were made');
-    //   } else {
-    //     if (!isSubtask) {
-    //       await updateTask({
-    //         taskId: task._id,
-    //         newData: newValues,
-    //         projectId: projectId,
-    //       });
-    //       setIsEditing(false);
-    //     } else {
-    //       await updateSubtask({
-    //         ...newValues,
-    //         _id: task._id,
-    //       });
-    //       setIsEditing(false);
-    //     }
-    //     setTimeout(() => {
-    //       ChangeTitleAlert('Data has been updated successfully');
-    //       ChangeStateAlert(true);
-    //     }, 500);
-    //   }
-    // } catch (error) {
-    //   ChangeTitleAlertError('Error:', error.message);
-    //   ChangeStateAlertError(true);
-    // }
+
+    try {
+      if (JSON.stringify(newValues) === JSON.stringify(originalValues)) {
+        ChangeStateAlertError(true);
+        ChangeTitleAlertError('No changes were made');
+      } else {
+        if (!isSubtask) {
+          await updateTask({
+            taskId: task._id,
+            newData: newValues,
+            projectId: projectId,
+          });
+          setIsEditing(false);
+        } else {
+          await updateSubtask({
+            ...newValues,
+            _id: task._id,
+          });
+          setIsEditing(false);
+        }
+        setTimeout(() => {
+          ChangeTitleAlert('Data has been updated successfully');
+          ChangeStateAlert(true);
+        }, 500);
+      }
+    } catch (error) {
+      ChangeTitleAlertError('Error:', error.message);
+      ChangeStateAlertError(true);
+    }
   };
 
   const handleChange = (e) => {
@@ -264,17 +264,16 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
             display: 'flex',
             gap: '8px',
             marginBottom: '20px',
-            cursor: 'pointer',
+            cursor: `${isEditing ? 'pointer' : 'not-allowed'}`,
             width: 'fit-content',
           }}
         >
           {members.map((member) => (
             <CustomAvatar
-              title={`Remove ${member.name}`}
+              name={member.name}
               key={member._id}
-              letter={member.name.charAt(0)}
               onClick={() => {
-                handleRemoveMember(member);
+                isEditing && handleRemoveMember(member);
               }}
             />
           ))}

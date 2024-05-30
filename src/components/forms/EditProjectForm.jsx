@@ -243,10 +243,10 @@ function EditProjectForm({ project }) {
           >
             {members.map((member) => (
               <CustomAvatar
-                title={`Remove ${member._id.name}`}
+                name={member._id.name}
                 key={member._id._id}
-                letter={member._id.name.charAt(0)}
                 onClick={() => {
+                  console.log(member);
                   handleRemoveMember(member);
                 }}
               />

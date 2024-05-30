@@ -372,9 +372,8 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
             {members.map((member) => {
               return (
                 <CustomAvatar
-                  title={`Remove ${member.name}`}
+                  name={member.name}
                   key={member._id}
-                  letter={member.name.charAt(0)}
                   onClick={() => {
                     console.log(member);
                     handleRemoveMember(member);

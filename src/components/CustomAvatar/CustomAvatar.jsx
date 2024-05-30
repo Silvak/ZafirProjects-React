@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from 'react';
+import Tooltip from '@mui/material/Tooltip';
 
 const size = '45px';
 
@@ -18,7 +19,7 @@ const getRandomColor = () => {
   return bgColors[randomKey];
 };
 
-const CustomAvatar = ({ letter, ...props }) => {
+const CustomAvatar = ({ name, disabled, ...props }) => {
   const backgroundColor = useMemo(() => getRandomColor(), []);
 
   const handleMouseOver = useCallback((e) => {
@@ -28,31 +29,34 @@ const CustomAvatar = ({ letter, ...props }) => {
   const handleMouseOut = useCallback((e) => {
     e.currentTarget.style.opacity = '1';
   }, []);
+
   return (
-    <div
-      style={{
-        transition: 'opacity 0.3s ease-in-out',
-        width: `${size}`,
-        height: `${size}`,
-        borderRadius: '50%',
-        display: 'grid',
-        placeContent: 'center',
-        backgroundColor: `${backgroundColor}`,
-      }}
-      onMouseOver={handleMouseOver}
-      onMouseOut={handleMouseOut}
-      {...props}
-    >
-      <span
+    <Tooltip title={`Delete ${name}`}>
+      <div
         style={{
-          fontSize: '1rem',
-          fontWeight: 'bold',
-          textTransform: 'uppercase',
+          transition: 'opacity 0.3s ease-in-out',
+          width: `${size}`,
+          height: `${size}`,
+          borderRadius: '50%',
+          display: 'grid',
+          placeContent: 'center',
+          backgroundColor: `${backgroundColor}`,
         }}
+        onMouseOver={handleMouseOver}
+        onMouseOut={handleMouseOut}
+        {...props}
       >
-        {letter}
-      </span>
-    </div>
+        <span
+          style={{
+            fontSize: '1rem',
+            fontWeight: 'bold',
+            textTransform: 'uppercase',
+          }}
+        >
+          {name.charAt(0)}
+        </span>
+      </div>
+    </Tooltip>
   );
 };
 export default CustomAvatar;
