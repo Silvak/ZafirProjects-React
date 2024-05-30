@@ -22,16 +22,16 @@ import { format } from 'date-fns';
 import CustomList from '../CustomList/CustomList';
 import user1 from '../../assets/Img/png/userImageMan.png';
 
-const INITIAL_FORM_DATA = {
-  taskName: '',
-  description: '',
-  start: '',
-  end: '',
-  state: '',
-  priority: '',
-  members_id: [],
-  subtaskName: '',
-};
+// const INITIAL_FORM_DATA = {
+//   taskName: '',
+//   subtaskName: '',
+//   description: '',
+//   start: '',
+//   end: '',
+//   state: '',
+//   priority: '',
+//   members_id: [],
+// };
 
 const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -42,8 +42,26 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
   const [member, setMember] = useState('');
   // miembros a renderizar
   const [members, setMembers] = useState(task['members_id']);
-  const [originalValues, setOriginalValues] = useState(INITIAL_FORM_DATA);
-  const [formData, setFormData] = useState(INITIAL_FORM_DATA);
+  const [originalValues, setOriginalValues] = useState({
+    taskName: task.taskName,
+    subtaskName: task.name || '',
+    description: task.description,
+    start: format(new Date(task.start), 'yyyy/MM/dd'),
+    end: format(new Date(task.end), 'yyyy/MM/dd'),
+    state: task.state,
+    priority: task.priority,
+    members_id: task.members_id,
+  });
+  const [formData, setFormData] = useState({
+    taskName: task.taskName,
+    subtaskName: task.name || '',
+    description: task.description,
+    start: format(new Date(task.start), 'yyyy/MM/dd'),
+    end: format(new Date(task.end), 'yyyy/MM/dd'),
+    state: task.state,
+    priority: task.priority,
+    members_id: task.members_id,
+  });
 
   const {
     updateTask,
@@ -57,36 +75,50 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
   } = useBoundStore((state) => state, shallow);
 
   useEffect(() => {
-    setFormData({
-      taskName: task.taskName,
-      subtaskName: task.name,
-      description: task.description,
-      start: format(new Date(task.start), 'yyyy/MM/dd'),
-      end: format(new Date(task.end), 'yyyy/MM/dd'),
-      state: task.state,
-      priority: task.priority,
-      members_id: task.members_id,
-    });
-    setOriginalValues({
-      taskName: task.taskName,
-      subtaskName: task.name,
-      description: task.description,
-      start: format(new Date(task.start), 'yyyy/MM/dd'),
-      end: format(new Date(task.end), 'yyyy/MM/dd'),
-      state: task.state,
-      priority: task.priority,
-      members_id: task.members_id,
-    });
-    // reseteamos estados al desmontar componente
-    return () => {
-      setFormData(INITIAL_FORM_DATA);
-      setOriginalValues(INITIAL_FORM_DATA);
-    };
-  }, [task._id]);
+    if (!isEditing) {
+      setFormData({
+        ...formData,
+        start: format(new Date(task.start), 'yyyy-MM-dd'),
+        end: format(new Date(task.end), 'yyyy-MM-dd'),
+      });
+      setOriginalValues({
+        ...formData,
+        start: format(new Date(task.start), 'yyyy-MM-dd'),
+        end: format(new Date(task.end), 'yyyy-MM-dd'),
+      });
+    }
+  }, [isEditing]);
+
+  // useEffect(() => {
+  //   setFormData({
+  //     taskName: task.taskName,
+  //     subtaskName: task.name,
+  //     description: task.description,
+  //     start: format(new Date(task.start), 'yyyy/MM/dd'),
+  //     end: format(new Date(task.end), 'yyyy/MM/dd'),
+  //     state: task.state,
+  //     priority: task.priority,
+  //     members_id: task.members_id,
+  //   });
+  //   setOriginalValues({
+  //     taskName: task.taskName,
+  //     subtaskName: task.name,
+  //     description: task.description,
+  //     start: format(new Date(task.start), 'yyyy/MM/dd'),
+  //     end: format(new Date(task.end), 'yyyy/MM/dd'),
+  //     state: task.state,
+  //     priority: task.priority,
+  //     members_id: task.members_id,
+  //   });
+  //   // reseteamos estados al desmontar componente
+  //   return () => {
+  //     setFormData(INITIAL_FORM_DATA);
+  //     setOriginalValues(INITIAL_FORM_DATA);
+  //   };
+  // }, [task._id]);
 
   const handleSuggestionChange = ({ inputValue }) => {
-    // for input member
-
+    // para input miembro
     if (inputValue === '') {
       setFilteredMembers([]);
     } else {
@@ -146,7 +178,6 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
         setTimeout(() => {
           ChangeTitleAlert('Data has been updated successfully');
           ChangeStateAlert(true);
-          ChangeStateModal(false);
         }, 500);
       }
     } catch (error) {
@@ -174,8 +205,8 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
         <Box sx={{ position: 'relative' }}>
           {isEditing ? (
             <TextField
-              size="small"
-              label="Search Member"
+              size='small'
+              label='Search Member'
               fullWidth
               disabled={!isEditing}
               value={member}
@@ -194,8 +225,8 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
             />
           ) : (
             <TextField
-              size="small"
-              label="Search Member"
+              size='small'
+              label='Search Member'
               fullWidth
               disabled={!isEditing}
               sx={{ mt: 4 }}
@@ -258,8 +289,8 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
       <Grid item xs={12}>
         <span>Name</span>
         <TextField
-          size="small"
-          name="taskName"
+          size='small'
+          name='taskName'
           onChange={handleChange}
           value={formData.taskName || formData.subtaskName}
           fullWidth
@@ -275,8 +306,8 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
       <Grid item xs={12}>
         <span>Description</span>
         <TextField
-          size="small"
-          name="description"
+          size='small'
+          name='description'
           onChange={handleChange}
           value={formData.description}
           fullWidth
@@ -294,19 +325,19 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
         <FormControl fullWidth sx={{ bgcolor: 'white' }}>
           <Select
             required
-            variant="outlined"
-            size="small"
+            variant='outlined'
+            size='small'
             sx={{ fontSize: '2rem', bgcolor: 'white' }}
-            name="priority"
+            name='priority'
             value={formData.priority}
             onChange={handleChange}
             displayEmpty
             renderValue={(selected) => (selected ? selected : 'Type: All')}
             disabled={!isEditing}
           >
-            <CustomMenuItem value="High">High</CustomMenuItem>
-            <CustomMenuItem value="Medium">Medium</CustomMenuItem>
-            <CustomMenuItem value="Low">Low</CustomMenuItem>
+            <CustomMenuItem value='High'>High</CustomMenuItem>
+            <CustomMenuItem value='Medium'>Medium</CustomMenuItem>
+            <CustomMenuItem value='Low'>Low</CustomMenuItem>
           </Select>
         </FormControl>
       </Grid>
@@ -316,26 +347,26 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
         <FormControl fullWidth>
           <Select
             required
-            variant="outlined"
-            size="small"
+            variant='outlined'
+            size='small'
             sx={{ fontSize: '2rem', backgroundColor: 'white' }}
-            name="state"
+            name='state'
             value={formData.state}
             onChange={handleChange}
             displayEmpty
             renderValue={(selected) => (selected ? selected : 'Type: All')}
             disabled={!isEditing}
           >
-            <CustomMenuItem value="In Progress">In Progress</CustomMenuItem>
-            <CustomMenuItem value="Pending">Pending</CustomMenuItem>
-            <CustomMenuItem value="Completed">Completed</CustomMenuItem>
+            <CustomMenuItem value='In Progress'>In Progress</CustomMenuItem>
+            <CustomMenuItem value='Pending'>Pending</CustomMenuItem>
+            <CustomMenuItem value='Completed'>Completed</CustomMenuItem>
           </Select>
         </FormControl>
       </Grid>
       {/* START */}
       <Grid item xs={12}>
         <Typography
-          variant="h6"
+          variant='h6'
           style={{
             fontSize: 14,
             fontWeight: 'normal',
@@ -345,9 +376,9 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
           Start date
         </Typography>
         <TextField
-          size="small"
-          name="start"
-          type={isEditing ? 'date' : 'text'}
+          size='small'
+          name='start'
+          type='date'
           value={formData.start}
           onChange={handleChange}
           disabled={!isEditing}
@@ -359,7 +390,7 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
       {/* END */}
       <Grid item xs={12}>
         <Typography
-          variant="h6"
+          variant='h6'
           style={{
             fontSize: 14,
             fontWeight: 'normal',
@@ -369,9 +400,9 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
           End date
         </Typography>
         <TextField
-          size="small"
-          name="end"
-          type={isEditing ? 'date' : 'text'}
+          size='small'
+          name='end'
+          type='date'
           disabled={!isEditing}
           value={formData.end}
           onChange={handleChange}
@@ -392,8 +423,8 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
             }}
           >
             <Button
-              variant="outlined"
-              color="primary"
+              variant='outlined'
+              color='primary'
               onClick={handleCancel}
               disableRipple
               style={{
@@ -404,8 +435,8 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
               Cancel
             </Button>
             <Button
-              variant="contained"
-              color="primary"
+              variant='contained'
+              color='primary'
               onClick={handleSubmit}
               disableRipple
               style={{
@@ -428,8 +459,8 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
           >
             <IconButton
               disableRipple
-              color="primary"
-              size="small"
+              color='primary'
+              size='small'
               sx={{
                 '&:hover': {
                   color: 'blue',
@@ -456,7 +487,7 @@ export default TaskDetailContent;
 
 const CustomMenuItem = ({ children, selected, ...props }) => {
   return (
-    <MenuItem className="menu-item " sx={{ height: 'min-content' }} {...props}>
+    <MenuItem className='menu-item ' sx={{ height: 'min-content' }} {...props}>
       {children}
     </MenuItem>
   );
