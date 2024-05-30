@@ -55,7 +55,7 @@ function ProjectsOverview() {
             }}
           >
             <NavLink
-              to="/projects"
+              to='/projects'
               style={{
                 textDecoration: 'none',
                 display: 'flex',
@@ -110,7 +110,7 @@ function ProjectsOverview() {
                         handleEdit(<EditProjectForm project={project} />)
                       }
                       {...project}
-                      key={project.id}
+                      key={project._id}
                     />
                   ))
               )}

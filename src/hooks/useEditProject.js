@@ -70,7 +70,7 @@ export function useEditProject(project) {
       setFormData(INITIAL_FORM_DATA);
       setOriginalValues(INITIAL_FORM_DATA);
     };
-  }, [project._id]);
+  }, []);
 
   const handleSuggestionChange = ({ inputValue, type }) => {
     // for input leader
@@ -174,6 +174,7 @@ export function useEditProject(project) {
     isMobile,
     isLoading,
     member,
+    setMember,
     members,
     filteredLeaders,
     filteredMembers,
@@ -183,6 +184,6 @@ export function useEditProject(project) {
     handleChange,
     handleSuggestionClick,
     handleRemoveMember,
-    handleClose
+    handleClose,
   };
 }
