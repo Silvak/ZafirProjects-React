@@ -38,23 +38,71 @@ function initializeItems(selectedProject) {
           url: `/project/${selectedProject?._id}/tasks`,
         },
         {
-          title: 'report',
-          url: `/project/${selectedProject?._id}/report`,
+          title: 'members',
+          url: '/members',
+          icon: <BiGroup />,
+          submenu: [],
         },
         {
           title: 'gantt',
           url: `/project/${selectedProject?._id}/gantt`,
+          submenu: [],
         },
       ],
     },
     {
-      title: 'members',
-      url: '/members',
-      icon: <BiGroup />,
+      title: 'report',
+      url: `/project/${selectedProject?._id}/report`,
       submenu: [],
     },
   ];
 }
+
+// function initializeItems(selectedProject) {
+//   return [
+//     {
+//       title: 'overview',
+//       url: '/',
+//       icon: <BrokenImageOutlinedIcon />,
+//       submenu: [],
+//     },
+//     {
+//       title: 'My tasks',
+//       url: `/project/${selectedProject?._id}/tasks`,
+//       icon: <TaskOutlinedIcon />,
+//       submenu: [],
+//     },
+//     {
+//       title: 'project',
+//       url: '/',
+//       icon: <FolderCopyOutlinedIcon />,
+//       submenu: [
+//         {
+//           title: 'My project',
+//           url: `/project/${selectedProject?._id}`,
+//         },
+//         {
+//           title: 'Project Tasks',
+//           url: `/project/${selectedProject?._id}/tasks`,
+//         },
+//         {
+//           title: 'report',
+//           url: `/project/${selectedProject?._id}/report`,
+//         },
+//         {
+//           title: 'gantt',
+//           url: `/project/${selectedProject?._id}/gantt`,
+//         },
+//       ],
+//     },
+//     {
+//       title: 'members',
+//       url: '/members',
+//       icon: <BiGroup />,
+//       submenu: [],
+//     },
+//   ];
+// }
 
 function ItemMenu(props) {
   const { selectedProject } = useBoundStore((state) => state, shallow);
@@ -111,7 +159,7 @@ function ItemMenu(props) {
               <Collapse
                 key={`collapse-${index}`}
                 in={openIndex === index && props.open}
-                timeout="auto"
+                timeout='auto'
                 unmountOnExit
               >
                 {element.submenu.map((link) => (
