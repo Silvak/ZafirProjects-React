@@ -1,6 +1,5 @@
 import CustomList from '@/components/CustomList/CustomList';
 import {
-  Avatar,
   Box,
   Button,
   Grid,
@@ -10,8 +9,8 @@ import {
   ThemeProvider,
   Typography,
 } from '@mui/material';
-import user1 from '../../assets/Img/png/userImageMan.png';
 import { useEditProject } from '../../hooks/useEditProject';
+import CustomAvatar from '@/components/CustomAvatar/CustomAvatar';
 
 function EditProjectForm({ project }) {
   const {
@@ -19,6 +18,7 @@ function EditProjectForm({ project }) {
     isMobile,
     isLoading,
     member,
+    setMember,
     members,
     filteredLeaders,
     filteredMembers,
@@ -230,6 +230,7 @@ function EditProjectForm({ project }) {
             ))}
           </CustomList>
         </Box>
+        {/* avatars */}
         <Grid item xs={12}>
           <Box
             sx={{
@@ -241,17 +242,13 @@ function EditProjectForm({ project }) {
             }}
           >
             {members.map((member) => (
-              <Avatar
-                title={`Remove ${member._id.name}`}
+              <CustomAvatar
+                name={member._id.name}
                 key={member._id._id}
-                src={user1}
                 onClick={() => {
-                  console.log('member', member);
+                  console.log(member);
                   handleRemoveMember(member);
                 }}
-                style={{ transition: 'opacity 0.3s ease-in-out' }}
-                onMouseOver={(e) => (e.currentTarget.style.opacity = '0.7')}
-                onMouseOut={(e) => (e.currentTarget.style.opacity = '1')}
               />
             ))}
           </Box>
