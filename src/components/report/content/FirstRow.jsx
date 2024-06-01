@@ -9,10 +9,12 @@ import {
   useTheme,
   ThemeProvider,
   Typography,
+  Tooltip,
 } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import './styles.css';
+import useFormatText from '@/hooks/useFormatText';
 
 function FirstRow({ setProjectSelected, projectsData, projectSelected }) {
   const [selectedOption, setSelectedOption] = useState(projectsData[0] || '');
@@ -83,20 +85,36 @@ function FirstRow({ setProjectSelected, projectsData, projectSelected }) {
                       )}
                     </IconButton>
                   )}
+                  MenuProps={{
+                    PaperProps: {
+                      style: {
+                        maxHeight: 300,
+                        marginTop: 2,
+                        border: '1px solid lightgray',
+                        borderTop: 'none',
+                        boxShadow: '1px 1px rgba(0,0,0,0.1)',
+                      },
+                    },
+                  }}
                   displayEmpty
                   open={menuOpen}
                   onClose={() => setMenuOpen(false)}
                   onOpen={() => setMenuOpen(true)}
                   renderValue={(value) => (
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 2,
-                      }}
-                    >
-                      {value ? value.name : 'Select a project'}
-                    </Box>
+                    <Tooltip title={value.name} placement="bottom-start">
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 2,
+                        }}
+                      >
+                        {value
+                          ? useFormatText(value.name).slice(0, 24)
+                          : 'Select a project'}
+                        {value.name.length > 24 ? '...' : ''}
+                      </Box>
+                    </Tooltip>
                   )}
                 >
                   {projectsData?.map((project, index) => (
@@ -107,7 +125,8 @@ function FirstRow({ setProjectSelected, projectsData, projectSelected }) {
                       value={project}
                       className="menu-item"
                     >
-                      {project.name}
+                      {useFormatText(project.name).slice(0, 24)}
+                      {project.name.length > 24 ? '...' : ''}
                     </MenuItem>
                   ))}
                 </Select>

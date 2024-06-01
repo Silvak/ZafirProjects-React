@@ -48,13 +48,14 @@ const MembersTable = () => {
     if (selectedProject) {
       const projectMembers = selectedProject.members_id.map((member) => ({
         ...member,
-        project: selectedProject.name,
-        leadOwner: selectedProject.leaders.name || '',
-        projectId: selectedProject.id,
+        project: selectedProject?.name,
+        leadOwner: selectedProject?.leaders?.name || '',
+        projectId: selectedProject?.id,
       }));
       setAllMemberData(projectMembers);
     }
   }, [selectedProject]);
+
   const handleRowClick = (rowName) => {
     const selectedIndex = selectedRows.indexOf(rowName);
     let newSelected = [...selectedRows];
