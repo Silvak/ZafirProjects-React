@@ -92,6 +92,7 @@ function OverviewHeader() {
               fontFamily: 'Poppins',
               lineHeight: '36px',
               width: '200px',
+              minWidth: 'max-content',
             }}
           >
             Hi, {User?.name}

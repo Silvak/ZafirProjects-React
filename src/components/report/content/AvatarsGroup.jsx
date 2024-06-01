@@ -2,6 +2,7 @@ import React from 'react';
 import { Avatar, AvatarGroup, useMediaQuery } from '@mui/material';
 import user1 from '../../../assets/Img/png/userImage.png';
 import avatar from '@/assets/Img/png/defaultUser.png';
+import useFormatText from '@/hooks/useFormatText';
 
 const AvatarsGroup = ({ projectSelected }) => {
   const userAvatar = avatar;
@@ -34,7 +35,9 @@ const AvatarsGroup = ({ projectSelected }) => {
         />
         <p>Owned by</p>
         <p style={{ fontWeight: 'bold' }}>
-          {projectSelected?.leaders ? projectSelected.leaders.name : 'Leader'}
+          {projectSelected?.leaders
+            ? useFormatText(projectSelected.leaders.name)
+            : 'Leader'}
         </p>
       </div>
     </div>
