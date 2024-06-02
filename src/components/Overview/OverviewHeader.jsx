@@ -11,7 +11,7 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import { useBoundStore } from '../../stores';
 import { shallow } from 'zustand/shallow';
-
+import useFormatText from '@/hooks/useFormatText';
 import CreateProjectForm from '../forms/CreateProjectForm';
 
 function OverviewHeader() {
@@ -95,7 +95,7 @@ function OverviewHeader() {
               minWidth: 'max-content',
             }}
           >
-            Hi, {User?.name}
+            Hi, {useFormatText(User?.name)}
           </Typography>
           <Typography
             sx={{

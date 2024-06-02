@@ -21,7 +21,6 @@ import { axiosInstance } from '@/config/apiConfig';
 import useFormatText from '@/hooks/useFormatText';
 import rols from '../../utils/roles';
 import useSuggestionUsers from '../../hooks/useSuggestionUsers';
-import user1 from '../../assets/Img/png/userImageMan.png';
 
 function CreateMember() {
   const { users } = useSuggestionUsers();
@@ -147,6 +146,7 @@ function CreateMember() {
     setMembers(updatedMembers);
   };
 
+  console.log(members);
   return (
     <ThemeProvider theme={theme}>
       <Paper
@@ -222,16 +222,38 @@ function CreateMember() {
           >
             {members.map((member) => (
               <Avatar
-                title="Remove"
+                title={`Remove ${member.name}`}
                 key={member._id}
-                src={user1}
                 onClick={() => {
                   handleRemoveMember(member);
                 }}
                 style={{ transition: 'opacity 0.3s ease-in-out' }}
                 onMouseOver={(e) => (e.currentTarget.style.opacity = '0.7')}
                 onMouseOut={(e) => (e.currentTarget.style.opacity = '1')}
-              />
+                sx={{
+                  borderRadius: '50%',
+                  bgcolor: `${member.colorbg}`,
+                  color: `${member.colorText}`,
+                  marginRight: 1,
+                }}
+              >
+                {member?.name?.split(' ')[0][0].toUpperCase()}
+                {member.name?.split(' ').length > 1
+                  ? member.name?.split(' ')[1][0].toUpperCase()
+                  : ''}
+              </Avatar>
+
+              // <Avatar
+              //   title="Remove"
+              //   key={member._id}
+              //   src={user1}
+              //   onClick={() => {
+              //     handleRemoveMember(member);
+              //   }}
+              //   style={{ transition: 'opacity 0.3s ease-in-out' }}
+              //   onMouseOver={(e) => (e.currentTarget.style.opacity = '0.7')}
+              //   onMouseOut={(e) => (e.currentTarget.style.opacity = '1')}
+              // />
             ))}
           </Box>
         </Grid>

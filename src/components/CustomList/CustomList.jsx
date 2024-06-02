@@ -5,7 +5,7 @@ const CustomList = ({ children, showme }) => {
     <List
       sx={{
         background: '#FFF',
-        padding: ' 0',
+        padding: '0',
         color: '#000',
         position: 'absolute',
         bottom: '0',
@@ -13,6 +13,8 @@ const CustomList = ({ children, showme }) => {
         zIndex: '9999',
         width: '100%',
         height: 'fit-content',
+        maxHeight: 300,
+        overflowY: 'auto',
         borderBottomLeftRadius: '6px',
         borderBottomRightRadius: '6px',
         outline: 'thin solid #0002',
@@ -27,4 +29,5 @@ const CustomList = ({ children, showme }) => {
     </List>
   );
 };
+
 export default CustomList;

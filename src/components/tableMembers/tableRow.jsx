@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { TableRow, TableCell, Grid } from '@mui/material';
+import {
+  TableRow,
+  TableCell,
+  Grid,
+  Avatar,
+  Tooltip,
+  CircularProgress,
+} from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -7,7 +14,7 @@ import Typography from '@mui/material/Typography';
 import avatar from '@/assets/Img/png/defaultUser.png';
 import { useBoundStore } from '@/stores/index';
 import { shallow } from 'zustand/shallow';
-
+import useFormatText from '@/hooks/useFormatText';
 import EditMember from '@/components/forms/EditMemberForm';
 import './styles.css';
 
@@ -40,6 +47,8 @@ const TableRowComponent = ({
     );
     ChangeStateModal(true);
   };
+
+  console.log(row.project);
 
   return (
     <React.Fragment key={row}>
@@ -114,31 +123,42 @@ const TableRowComponent = ({
                     alignItems: 'center',
                   }}
                 >
-                  {column.id === 'name' && (
-                    <img
-                      style={{
-                        width: 32,
-                        marginRight: '10px',
-                        borderRadius: '50%',
-                      }}
-                      src={avatar}
-                    />
-                  )}
-                  {column.id === 'leadOwner' && (
-                    <>
-                      <img
-                        style={{
-                          width: 24,
-                          marginRight: '5px',
+                  {column.id === 'name' &&
+                    // <img
+                    //   style={{
+                    //     width: 32,
+                    //     marginRight: '10px',
+                    //     borderRadius: '50%',
+                    //   }}
+                    //   src={avatar}
+                    // />
+
+                    (row._id ? (
+                      <Avatar
+                        sx={{
                           borderRadius: '50%',
+                          bgcolor: `${row._id.colorbg}`,
+                          color: `${row._id.colorText}`,
+                          marginRight: 1,
                         }}
-                        src={avatar}
-                      />
-                    </>
-                  )}
+                      >
+                        {row._id?.name?.split(' ')[0][0].toUpperCase()}
+                        {row._id.name?.split(' ').length > 1
+                          ? row._id.name?.split(' ')[1][0].toUpperCase()
+                          : ''}
+                      </Avatar>
+                    ) : (
+                      <CircularProgress />
+                    ))}
                   <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <div style={{ flex: 1 }}>
-                      {column.id === 'name' ? row._id.name : row['leadOwner']}
+                      {column.id === 'name' ? (
+                        useFormatText(row._id.name)
+                      ) : (
+                        <span style={{ marginLeft: 12 }}>
+                          {useFormatText(row['leadOwner'])}
+                        </span>
+                      )}
                     </div>
                     {column.id === 'name' && (
                       <div style={{ flex: 1, color: 'gray' }}>
@@ -151,21 +171,22 @@ const TableRowComponent = ({
                 column.id !== 'photo' &&
                 column.id !== 'email' ? (
                 column.id === 'rol' ? (
-                  <span style={{ marginLeft: 10 }}>{row.rolToProject}</span>
+                  <span style={{ marginLeft: 5 }}>{row.rolToProject}</span>
                 ) : (
-                  cellContent
+                  <span style={{ marginLeft: 10 }}>
+                    {useFormatText(cellContent)}
+                  </span>
                 )
-              ) : column.id === 'name' ? (
-                <span
-                  style={{
-                    display: 'flex',
-                    minWidth: !isMobile ? '5rem' : '10rem',
-                  }}
-                >
-                  {cellContent}
-                </span>
               ) : (
-                ''
+                column.id === 'name' && ''
+                // <span
+                //   style={{
+                //     display: 'flex',
+                //     minWidth: !isMobile ? '5rem' : '10rem',
+                //   }}
+                // >
+                //   {cellContent}
+                // </span>
               )}
             </TableCell>
           );
