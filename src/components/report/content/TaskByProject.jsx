@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Divider, useMediaQuery } from '@mui/material';
+import { Typography, Divider, useMediaQuery, Tooltip } from '@mui/material';
 import { useBoundStore } from '../../../stores/index';
 import { shallow } from 'zustand/shallow';
 
@@ -146,19 +146,26 @@ const TaskByProject = () => {
         }}
       >
         {result.map((project, index) => (
-          <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
-            <Typography
-              variant="body1"
-              style={{
-                fontSize: isLittleScreen ? '12px' : '14px',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: isLittleScreen ? 'wrap' : 'nowrap',
-                textAlign: 'center',
-              }}
-            >
-              {project.name}
-            </Typography>
+          <div
+            key={index}
+            style={{ display: 'flex', alignItems: 'center', cursor: 'default' }}
+          >
+            <Tooltip title={project.name}>
+              <Typography
+                variant="body1"
+                style={{
+                  fontSize: isLittleScreen ? '12px' : '14px',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: isLittleScreen ? 'wrap' : 'nowrap',
+                  textAlign: 'center',
+                  minWidth: 70,
+                }}
+              >
+                {project.name.slice(0, 12)}
+                {project.name.slice(0, 12).length >= 12 ? '...' : ''}
+              </Typography>
+            </Tooltip>
           </div>
         ))}
       </div>

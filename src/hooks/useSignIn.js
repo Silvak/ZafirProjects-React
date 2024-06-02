@@ -40,6 +40,8 @@ const useSignIn = () => {
               name: data.user.name,
               email: data.user.email,
               rol: data.user.rol,
+              colorbg: data.user.colorbg,
+              colorText: data.user.colorText,
             });
             setAuthenticated(true);
           }, 1500);

@@ -70,10 +70,20 @@ export default function UserProfileButton() {
           onClick={handleOpenUserMenu}
         >
           <Avatar
+            sx={{
+              borderRadius: '50%',
+              bgcolor: `${User?.colorbg}`,
+              color: `${User?.colorText}`,
+            }}
+          >
+            {User?.name.split(' ')[0][0]}
+            {User.name.split(' ').length > 1 ? User?.name.split(' ')[1][0] : ''}
+          </Avatar>
+          {/* <Avatar
             src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
             srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
             sx={{ borderRadius: '50%' }}
-          />
+          /> */}
 
           <Box sx={{ ml: 1.5 }}>
             <Typography
