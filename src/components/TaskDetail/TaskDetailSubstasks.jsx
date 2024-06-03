@@ -14,6 +14,7 @@ import TaskDetail from './TaskDetail';
 import css from './style.module.css';
 import SubTaskForm from '../forms/subtaskForm';
 import SubdirectoryArrowLeftIcon from '@mui/icons-material/SubdirectoryArrowLeft';
+import moment from 'moment';
 
 const tableHeadData = [
   { id: 1, label: 'Name' },
@@ -31,7 +32,7 @@ const TaskDetailSubstasks = ({ taskId }) => {
 
   const {
     subtasks,
-    fetchSubtasks,
+    fetchSubtasksById,
     ChangeStateModal,
     ChangeTitleModal,
     ChangeContentModal,
@@ -44,7 +45,9 @@ const TaskDetailSubstasks = ({ taskId }) => {
 
   const fetchData = async () => {
     try {
-      await fetchSubtasks();
+      if (taskId) {
+        await fetchSubtasksById(taskId);
+      }
       const result = subtasks.filter((sub) => sub.taskId._id === taskId);
       setFilterSubtask(result);
     } catch (error) {
@@ -97,7 +100,7 @@ const TaskDetailSubstasks = ({ taskId }) => {
               {filterSubtask ? (
                 filterSubtask.map((item) => (
                   <tr key={item._id}>
-                    <td>
+                    <td style={{ maxWidth: '10rem', paddingInline: 4 }}>
                       <strong style={{ fontSize: '14px' }}>{item.name}</strong>
                     </td>
                     <td>
@@ -141,7 +144,7 @@ const TaskDetailSubstasks = ({ taskId }) => {
                         {item.state}
                       </div>
                     </td>
-                    <td>{item.start}</td>
+                    <td>{moment(item.start).format('DD/MM/YYYY')}</td>
                     <td className={css.icon}>
                       <Button
                         color="inherit"

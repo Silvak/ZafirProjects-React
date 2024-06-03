@@ -41,16 +41,17 @@ export const createSubtasksSlice = (set) => ({
     }
   },
 
-  fetchSubtasks: async () => {
-    try {
-      const { data } = await axiosInstance.get('/subtaks');
-      set({ subtasks: data });
-    } catch (error) {
-      console.error('Error fetching subtasks', error);
-    }
-  },
+  // fetchSubtasks: async () => {
+  //   try {
+  //     const { data } = await axiosInstance.get('/subtaks');
+  //     console.log('data de subtasks:', data);
+  //     set({ subtasks: data });
+  //   } catch (error) {
+  //     console.error('Error fetching subtasks', error);
+  //   }
+  // },
 
-  fetchSubTasksById: async (taskId) => {
+  fetchSubtasksById: async (taskId) => {
     try {
       const { data } = await axiosInstance.get(`/subtaks/task/${taskId}`);
       set({ subtasks: data });
