@@ -1,10 +1,26 @@
-import React from 'react';
-import { Avatar, AvatarGroup, useMediaQuery } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import {
+  Avatar,
+  AvatarGroup,
+  useMediaQuery,
+  CircularProgress,
+} from '@mui/material';
 import user1 from '../../../assets/Img/png/userImage.png';
 import avatar from '@/assets/Img/png/defaultUser.png';
+import useFormatText from '@/hooks/useFormatText';
 
 const AvatarsGroup = ({ projectSelected }) => {
-  const userAvatar = avatar;
+  const [leader, setLeader] = useState('');
+
+  useEffect(() => {
+    if (projectSelected && projectSelected.leaders) {
+      setLeader(projectSelected.leaders);
+    }
+    return () => {
+      setLeader('');
+    };
+  }, [projectSelected]);
+
   return (
     <div
       style={{
@@ -24,17 +40,35 @@ const AvatarsGroup = ({ projectSelected }) => {
           marginRight: '2rem',
         }}
       >
-        <Avatar
+        {/* <Avatar
           alt="Me"
           src={userAvatar}
           sx={{
             border: '1px solid #ffffff',
             marginRight: 1,
           }}
-        />
-        <p>Owned by</p>
+        /> */}
+        <p style={{ marginRight: 4 }}>Owned by: </p>
+        {leader ? (
+          <Avatar
+            sx={{
+              borderRadius: '50%',
+              bgcolor: `${leader?.colorbg}`,
+              color: `${leader?.colorText}`,
+            }}
+          >
+            {leader?.name.split(' ')[0][0].toUpperCase()}
+            {leader.name.split(' ').length > 1
+              ? leader?.name.split(' ')[1][0].toUpperCase()
+              : ''}
+          </Avatar>
+        ) : (
+          <CircularProgress />
+        )}
         <p style={{ fontWeight: 'bold' }}>
-          {projectSelected?.leaders ? projectSelected.leaders.name : 'Leader'}
+          {projectSelected?.leaders
+            ? useFormatText(projectSelected.leaders.name)
+            : 'Leader'}
         </p>
       </div>
     </div>

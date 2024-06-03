@@ -86,7 +86,9 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
     }
   };
 
-  const upperName = row._id.name;
+  const getName = () => {
+    return useFormatText(row._id.name);
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -102,8 +104,8 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
         }}
       >
         <h2 style={{ marginBlock: 8 }}>
-          Edit{' '}
-          <span style={{ fontWeight: 800 }}>{upperName.toUpperCase()}</span>
+          Edit
+          <span style={{ fontWeight: 800, marginLeft: 6 }}>{getName()}</span>
         </h2>
         <form>
           <TextField
@@ -122,19 +124,19 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
             disabled
             style={{ display: 'none' }}
           />
-          <TextField
+          {/* <TextField
             size="small"
             label="Lead Owner"
             value={row.leadOwner}
             fullWidth
             disabled
             style={{ marginBottom: 8 }}
-          />
+          /> */}
           <TextField
-            label="Nombre"
+            label="Name"
             name="name"
             disabled
-            value={newName}
+            value={useFormatText(newName)}
             onChange={handleChange}
             fullWidth
             style={{ marginBottom: 8 }}

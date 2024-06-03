@@ -11,7 +11,7 @@ import usePagination from '@/hooks/usePagination';
 import { axiosInstance } from '../config/apiConfig';
 import { useBoundStore } from '../stores';
 import { shallow } from 'zustand/shallow';
-
+import useFormatText from '@/hooks/useFormatText';
 import CreateMember from '@/components/forms/CreateMemberForm';
 import ConfirmForm from '../components/forms/ConfirmForm';
 
@@ -48,13 +48,14 @@ const MembersTable = () => {
     if (selectedProject) {
       const projectMembers = selectedProject.members_id.map((member) => ({
         ...member,
-        project: selectedProject.name,
-        leadOwner: selectedProject.leaders.name || '',
-        projectId: selectedProject.id,
+        project: selectedProject?.name,
+        leadOwner: selectedProject?.leaders?.name || '',
+        projectId: selectedProject?.id,
       }));
       setAllMemberData(projectMembers);
     }
   }, [selectedProject]);
+
   const handleRowClick = (rowName) => {
     const selectedIndex = selectedRows.indexOf(rowName);
     let newSelected = [...selectedRows];
@@ -139,13 +140,16 @@ const MembersTable = () => {
         >
           <h6
             style={{
-              fontWeight: 'bold',
+              fontWeight: 500,
               fontSize: '24px',
               marginBottom: '2rem',
               marginTop: '2rem',
             }}
           >
-            Team
+            Team of{' '}
+            <span style={{ fontWeight: 'bold' }}>
+              {useFormatText(selectedProject.name)}
+            </span>
           </h6>
           <Button
             variant="contained"

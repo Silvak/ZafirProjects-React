@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, useMediaQuery } from '@mui/material';
+import {
+  Typography,
+  useMediaQuery,
+  Avatar,
+  CircularProgress,
+} from '@mui/material';
+import Tooltip from '@mui/material/Tooltip';
 import { mockTasks } from '../../../mockData/taskData';
 import { useBoundStore } from '../../../stores/index';
 import userImage from '../../../assets/Img/png/userImage.png';
@@ -42,7 +48,7 @@ const UpcomingTask = () => {
     setResult(uniqueProjectsArray.slice(0, 3));
   }, [tasks]);
 
-  const tasksWithProfilePhotos = result.slice(0, 4);
+  const tasksWithProfilePhotos = result.slice(0, 3);
 
   const total1 = result[0]?.totalTasks || 0;
   const total2 = result[1]?.totalTasks || 0;
@@ -81,11 +87,40 @@ const UpcomingTask = () => {
               alignItems: 'center',
             }}
           >
-            <img
+            {/* <img
               src={avatar}
               alt={`User ${index + 1}`}
               style={{ width: '32px', height: '32px', marginTop: '8px' }}
-            />
+            /> */}
+            {/* <Avatar
+              sx={{
+                borderRadius: '50%',
+                bgcolor: `${leader?.colorbg}`,
+                color: `${leader?.colorText}`,
+              }}
+            >
+              {leader?.name.split(' ')[0][0].toUpperCase()}
+              {leader.name.split(' ').length > 1
+                ? leader?.name.split(' ')[1][0].toUpperCase()
+                : ''}
+            </Avatar> */}
+            {task.name ? (
+              <Avatar
+                sx={{
+                  borderRadius: '50%',
+                }}
+              >
+                <Tooltip
+                  title={task.name}
+                  placement="top"
+                  style={{ zIndex: 9 }}
+                >
+                  {task.name.charAt(0).toUpperCase()}
+                </Tooltip>
+              </Avatar>
+            ) : (
+              <CircularProgress />
+            )}
             <div
               style={{
                 width: '24px',
