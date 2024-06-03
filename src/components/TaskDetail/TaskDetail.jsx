@@ -11,14 +11,12 @@ import Loader from '../Loader/Loader';
 const TaskDetail = ({ task, projectId }) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const [loading, setLoading] = useState(true);
-  const { fetchTaskDetailsById, singleTask, fetchSubtasks } = useBoundStore(
-    (state) => state,
-    shallow
-  );
+  const { fetchTaskDetailsById, singleTask, fetchSubtasks, fetchSubtasksById } =
+    useBoundStore((state) => state, shallow);
 
   useEffect(() => {
     fetchTaskDetailsById(task._id, false);
-    fetchSubtasks();
+    fetchSubtasksById(task._id);
     setTimeout(() => {
       setLoading(false);
     }, 1500);
