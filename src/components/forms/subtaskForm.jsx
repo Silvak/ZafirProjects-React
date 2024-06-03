@@ -39,7 +39,7 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
     selectedProject,
     addSubtask,
     subtasks,
-    fetchSubTasksById,
+    fetchSubtasksById,
     ChangeStateModal,
     ChangeTitleAlert,
     ChangeStateAlert,
@@ -103,7 +103,7 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
         return;
       } else {
         await addSubtask(data, taskId);
-        await fetchSubTasksById(taskId);
+        await fetchSubtasksById(taskId);
 
         // Actualizamos el estado del proyecto
         const response = await axiosInstance.get(
@@ -112,10 +112,10 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
         await updateProjects();
         setSelectedProject(response.data);
 
-        // Mostramos mensaje
         ChangeStateAlert(true);
         ChangeTitleAlert('SubTask created successfully');
         ChangeStateModal(false);
+        // Mostramos mensaje
       }
     } catch (error) {
       console.log(error);

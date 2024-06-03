@@ -235,6 +235,9 @@ function CreateMember() {
                   bgcolor: `${member.colorbg}`,
                   color: `${member.colorText}`,
                   marginRight: 1,
+                  padding: 3,
+                  width: 16,
+                  height: 16,
                 }}
               >
                 {member?.name?.split(' ')[0][0].toUpperCase()}
