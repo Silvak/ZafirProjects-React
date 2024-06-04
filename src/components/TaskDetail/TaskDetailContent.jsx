@@ -21,17 +21,8 @@ import './dataPicker.css';
 import { format } from 'date-fns';
 import CustomList from '../CustomList/CustomList';
 import CustomAvatar from '@/components/CustomAvatar/CustomAvatar';
-
-// const INITIAL_FORM_DATA = {
-//   taskName: '',
-//   subtaskName: '',
-//   description: '',
-//   start: '',
-//   end: '',
-//   state: '',
-//   priority: '',
-//   members_id: [],
-// };
+import SuggestionList from '../SuggestionList/SuggestionList';
+import getUniqueUsers from '../../utils/getUniqueUsers';
 
 const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -89,40 +80,13 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
     }
   }, [isEditing]);
 
-  // useEffect(() => {
-  //   setFormData({
-  //     taskName: task.taskName,
-  //     subtaskName: task.name,
-  //     description: task.description,
-  //     start: format(new Date(task.start), 'yyyy/MM/dd'),
-  //     end: format(new Date(task.end), 'yyyy/MM/dd'),
-  //     state: task.state,
-  //     priority: task.priority,
-  //     members_id: task.members_id,
-  //   });
-  //   setOriginalValues({
-  //     taskName: task.taskName,
-  //     subtaskName: task.name,
-  //     description: task.description,
-  //     start: format(new Date(task.start), 'yyyy/MM/dd'),
-  //     end: format(new Date(task.end), 'yyyy/MM/dd'),
-  //     state: task.state,
-  //     priority: task.priority,
-  //     members_id: task.members_id,
-  //   });
-  //   // reseteamos estados al desmontar componente
-  //   return () => {
-  //     setFormData(INITIAL_FORM_DATA);
-  //     setOriginalValues(INITIAL_FORM_DATA);
-  //   };
-  // }, [task._id]);
-
   const handleSuggestionChange = ({ inputValue }) => {
     // para input miembro
     if (inputValue === '') {
       setFilteredMembers([]);
     } else {
-      const filter = users.filter((user) => {
+      const result = getUniqueUsers(users);
+      const filter = result.filter((user) => {
         return user.name.toUpperCase().startsWith(inputValue.toUpperCase());
       });
       setFilteredMembers(filter);
@@ -130,9 +94,16 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
   };
 
   const handleSuggestionClick = (user) => {
-    setMembers((prev) => [...prev, user]);
-    setFilteredMembers([]);
-    setMember(''); // Limpiar el campo de entrada después de seleccionar un miembro
+    const alreadyExist = members.find(
+      (member) => member._id.toString() === user._id.toString()
+    );
+    if (alreadyExist === undefined) {
+      setMembers((prev) => [...prev, user]);
+      setFilteredMembers([]);
+      setMember('');
+    } else {
+      return;
+    }
   };
 
   const handleEdit = () => {
@@ -205,8 +176,8 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
         <Box sx={{ position: 'relative' }}>
           {isEditing ? (
             <TextField
-              size="small"
-              label="Search Member"
+              size='small'
+              label='Search Member'
               fullWidth
               disabled={!isEditing}
               value={member}
@@ -225,8 +196,8 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
             />
           ) : (
             <TextField
-              size="small"
-              label="Search Member"
+              size='small'
+              label='Search Member'
               fullWidth
               disabled={!isEditing}
               sx={{ mt: 4 }}
@@ -237,24 +208,12 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
               }}
             />
           )}
-          <CustomList showme={filteredMembers.length > 0}>
-            {filteredMembers.map((user) => (
-              <ListItem
-                key={user._id}
-                sx={{
-                  cursor: 'pointer',
-                  '&:hover': {
-                    background: '#F6F7FA',
-                  },
-                }}
-                onClick={() => {
-                  handleSuggestionClick(user);
-                }}
-              >
-                {user.name}
-              </ListItem>
-            ))}
-          </CustomList>
+          <SuggestionList
+            type='member'
+            usersList={filteredMembers}
+            onClick={handleSuggestionClick}
+            top='80px'
+          />
         </Box>
       </Grid>
       <Grid item xs={12}>
@@ -282,8 +241,8 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
       <Grid item xs={12}>
         <span>Name</span>
         <TextField
-          size="small"
-          name="taskName"
+          size='small'
+          name='taskName'
           onChange={handleChange}
           value={formData.taskName || formData.subtaskName}
           fullWidth
@@ -299,8 +258,8 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
       <Grid item xs={12}>
         <span>Description</span>
         <TextField
-          size="small"
-          name="description"
+          size='small'
+          name='description'
           onChange={handleChange}
           value={formData.description}
           fullWidth
@@ -318,19 +277,19 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
         <FormControl fullWidth sx={{ bgcolor: 'white' }}>
           <Select
             required
-            variant="outlined"
-            size="small"
+            variant='outlined'
+            size='small'
             sx={{ fontSize: '2rem', bgcolor: 'white' }}
-            name="priority"
+            name='priority'
             value={formData.priority}
             onChange={handleChange}
             displayEmpty
             renderValue={(selected) => (selected ? selected : 'Type: All')}
             disabled={!isEditing}
           >
-            <CustomMenuItem value="High">High</CustomMenuItem>
-            <CustomMenuItem value="Medium">Medium</CustomMenuItem>
-            <CustomMenuItem value="Low">Low</CustomMenuItem>
+            <CustomMenuItem value='High'>High</CustomMenuItem>
+            <CustomMenuItem value='Medium'>Medium</CustomMenuItem>
+            <CustomMenuItem value='Low'>Low</CustomMenuItem>
           </Select>
         </FormControl>
       </Grid>
@@ -340,26 +299,26 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
         <FormControl fullWidth>
           <Select
             required
-            variant="outlined"
-            size="small"
+            variant='outlined'
+            size='small'
             sx={{ fontSize: '2rem', backgroundColor: 'white' }}
-            name="state"
+            name='state'
             value={formData.state}
             onChange={handleChange}
             displayEmpty
             renderValue={(selected) => (selected ? selected : 'Type: All')}
             disabled={!isEditing}
           >
-            <CustomMenuItem value="In Progress">In Progress</CustomMenuItem>
-            <CustomMenuItem value="Pending">Pending</CustomMenuItem>
-            <CustomMenuItem value="Completed">Completed</CustomMenuItem>
+            <CustomMenuItem value='In Progress'>In Progress</CustomMenuItem>
+            <CustomMenuItem value='Pending'>Pending</CustomMenuItem>
+            <CustomMenuItem value='Completed'>Completed</CustomMenuItem>
           </Select>
         </FormControl>
       </Grid>
       {/* START */}
       <Grid item xs={12}>
         <Typography
-          variant="h6"
+          variant='h6'
           style={{
             fontSize: 14,
             fontWeight: 'normal',
@@ -369,9 +328,9 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
           Start date
         </Typography>
         <TextField
-          size="small"
-          name="start"
-          type="date"
+          size='small'
+          name='start'
+          type='date'
           value={formData.start}
           onChange={handleChange}
           disabled={!isEditing}
@@ -383,7 +342,7 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
       {/* END */}
       <Grid item xs={12}>
         <Typography
-          variant="h6"
+          variant='h6'
           style={{
             fontSize: 14,
             fontWeight: 'normal',
@@ -393,9 +352,9 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
           End date
         </Typography>
         <TextField
-          size="small"
-          name="end"
-          type="date"
+          size='small'
+          name='end'
+          type='date'
           disabled={!isEditing}
           value={formData.end}
           onChange={handleChange}
@@ -416,8 +375,8 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
             }}
           >
             <Button
-              variant="outlined"
-              color="primary"
+              variant='outlined'
+              color='primary'
               onClick={handleCancel}
               disableRipple
               style={{
@@ -428,8 +387,8 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
               Cancel
             </Button>
             <Button
-              variant="contained"
-              color="primary"
+              variant='contained'
+              color='primary'
               onClick={handleSubmit}
               disableRipple
               style={{
@@ -452,8 +411,8 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
           >
             <IconButton
               disableRipple
-              color="primary"
-              size="small"
+              color='primary'
+              size='small'
               sx={{
                 '&:hover': {
                   color: 'blue',
@@ -480,7 +439,7 @@ export default TaskDetailContent;
 
 const CustomMenuItem = ({ children, selected, ...props }) => {
   return (
-    <MenuItem className="menu-item " sx={{ height: 'min-content' }} {...props}>
+    <MenuItem className='menu-item ' sx={{ height: 'min-content' }} {...props}>
       {children}
     </MenuItem>
   );

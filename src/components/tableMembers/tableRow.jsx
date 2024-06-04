@@ -17,6 +17,7 @@ import { shallow } from 'zustand/shallow';
 import useFormatText from '@/hooks/useFormatText';
 import EditMember from '@/components/forms/EditMemberForm';
 import './styles.css';
+import CustomAvatar from '../CustomAvatar/CustomAvatar';
 
 const TableRowComponent = ({
   isMobile,
@@ -54,7 +55,7 @@ const TableRowComponent = ({
     <React.Fragment key={row}>
       <TableRow hover={!isMobile}>
         {!isMobile && (
-          <TableCell className="checkbox-contact">
+          <TableCell className='checkbox-contact'>
             <Checkbox
               // checked={isItemSelected}
               // onChange={() => handleCheckboxClick(row.name)}
@@ -69,7 +70,7 @@ const TableRowComponent = ({
           return (
             <TableCell
               key={index}
-              align="left"
+              align='left'
               style={{
                 fontWeight: 'bold',
                 width: 'auto',
@@ -134,23 +135,21 @@ const TableRowComponent = ({
                     // />
 
                     (row._id ? (
-                      <Avatar
-                        sx={{
-                          borderRadius: '50%',
-                          bgcolor: `${row._id.colorbg}`,
-                          color: `${row._id.colorText}`,
-                          marginRight: 1,
-                        }}
-                      >
-                        {row._id?.name?.split(' ')[0][0].toUpperCase()}
-                        {row._id.name?.split(' ').length > 1
-                          ? row._id.name?.split(' ')[1][0].toUpperCase()
-                          : ''}
-                      </Avatar>
+                      <CustomAvatar
+                        bgColor={row.colorBg}
+                        textColor={row.colorText}
+                        member={row._id}
+                      />
                     ) : (
                       <CircularProgress />
                     ))}
-                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      marginLeft: '10px',
+                    }}
+                  >
                     <div style={{ flex: 1 }}>
                       {column.id === 'name' ? (
                         useFormatText(row._id.name)
@@ -199,8 +198,8 @@ const TableRowComponent = ({
               {columns.map((column, index) => (
                 <Grid item xs={12} sm={6} key={index}>
                   <Typography
-                    variant="body2"
-                    component="div"
+                    variant='body2'
+                    component='div'
                     style={{
                       textAlign: 'center',
                       marginRight: '20%',
@@ -211,7 +210,7 @@ const TableRowComponent = ({
                     {column.label !== 'Name' && column.id !== 'action' ? (
                       <React.Fragment>
                         {column.id === 'photo' ? (
-                          <img src={avatar} width="56px" alt="Photo" />
+                          <img src={avatar} width='56px' alt='Photo' />
                         ) : column.label !== 'Rol' ? (
                           <span style={{ fontWeight: 'normal' }}>
                             {': ' + row[column.id]}

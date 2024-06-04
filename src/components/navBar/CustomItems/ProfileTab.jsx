@@ -18,6 +18,7 @@ import { shallow } from 'zustand/shallow';
 
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../../context/User/UserContext';
+import CustomAvatar from '../../CustomAvatar/CustomAvatar';
 
 export default function UserProfileButton() {
   const { LogoutFunc } = useContext(UserContext);
@@ -48,8 +49,8 @@ export default function UserProfileButton() {
   };
 
   return (
-    <span className="PROFILE">
-      <Tooltip title="Account settings">
+    <span className='PROFILE'>
+      <Tooltip title='Account settings'>
         <Box
           sx={{
             display: 'flex',
@@ -63,13 +64,19 @@ export default function UserProfileButton() {
             maxHeight: '52px',
             cursor: 'pointer',
           }}
-          id="fade-button"
+          id='fade-button'
           aria-controls={open ? 'fade-menu' : undefined}
-          aria-haspopup="true"
+          aria-haspopup='true'
           aria-expanded={open ? 'true' : undefined}
           onClick={handleOpenUserMenu}
         >
-          <Avatar
+          <CustomAvatar
+            key={User?._id}
+            bgColor={User?.colorBg}
+            textColor={User?.colorText}
+            member={User}
+          />
+          {/* <Avatar
             sx={{
               borderRadius: '50%',
               bgcolor: `${User?.colorbg}`,
@@ -78,7 +85,7 @@ export default function UserProfileButton() {
           >
             {User?.name.split(' ')[0][0]}
             {User.name.split(' ').length > 1 ? User?.name.split(' ')[1][0] : ''}
-          </Avatar>
+          </Avatar> */}
           {/* <Avatar
             src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
             srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
@@ -87,13 +94,13 @@ export default function UserProfileButton() {
 
           <Box sx={{ ml: 1.5 }}>
             <Typography
-              level="title-sm"
-              variant="h7"
+              level='title-sm'
+              variant='h7'
               color={theme.palette.text.fourth}
             >
               {User?.name}
             </Typography>
-            <Typography level="body-xs">{User?.rol}</Typography>
+            <Typography level='body-xs'>{User?.rol}</Typography>
           </Box>
           {open ? (
             <KeyboardArrowUpIcon sx={{ marginLeft: 2 }} />
@@ -105,7 +112,7 @@ export default function UserProfileButton() {
 
       <Menu
         anchorEl={anchorEl}
-        id="account-menu"
+        id='account-menu'
         open={open}
         onClose={handleClose}
         onClick={handleClose}
@@ -139,22 +146,22 @@ export default function UserProfileButton() {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem key="profile" onClick={handleClose}>
+        <MenuItem key='profile' onClick={handleClose}>
           <Avatar /> Profile
         </MenuItem>
-        <MenuItem key="account" onClick={handleClose}>
+        <MenuItem key='account' onClick={handleClose}>
           <Avatar /> My account
         </MenuItem>
         <Divider />
-        <MenuItem key="settings" onClick={handleClose}>
+        <MenuItem key='settings' onClick={handleClose}>
           <ListItemIcon>
-            <Settings fontSize="small" />
+            <Settings fontSize='small' />
           </ListItemIcon>
           Settings
         </MenuItem>
-        <MenuItem key="logout" onClick={handleLogout}>
+        <MenuItem key='logout' onClick={handleLogout}>
           <ListItemIcon>
-            <Logout fontSize="small" />
+            <Logout fontSize='small' />
           </ListItemIcon>
           Logout
         </MenuItem>

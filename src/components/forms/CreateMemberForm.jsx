@@ -21,6 +21,8 @@ import { axiosInstance } from '@/config/apiConfig';
 import useFormatText from '@/hooks/useFormatText';
 import rols from '../../utils/roles';
 import useSuggestionUsers from '../../hooks/useSuggestionUsers';
+import CustomAvatar from '../CustomAvatar/CustomAvatar';
+import getUniqueUsers from '../../utils/getUniqueUsers';
 
 function CreateMember() {
   const { users } = useSuggestionUsers();
@@ -104,38 +106,28 @@ function CreateMember() {
     }
   };
 
-  const handleSuggestionChange = ({ inputValue, type }) => {
-    // for input leader
-    if (type === 'leader') {
-      if (inputValue === '') {
-        setFilteredLeaders([]);
-      } else {
-        const filter = users.filter((user) => {
-          return user.name.toUpperCase().startsWith(inputValue.toUpperCase());
-        });
-        setFilteredLeaders(filter);
-      }
-    } // for input member
-    else if (type === 'member') {
-      if (inputValue === '') {
-        setFilteredMembers([]);
-      } else {
-        const filter = users.filter((user) => {
-          return user.name.toUpperCase().startsWith(inputValue.toUpperCase());
-        });
-        setFilteredMembers(filter);
-      }
+  const handleSuggestionChange = ({ inputValue }) => {
+    if (inputValue === '') {
+      setFilteredMembers([]);
+    } else {
+      const result = getUniqueUsers(users);
+      const filter = result.filter((user) => {
+        return user.name.toUpperCase().startsWith(inputValue.toUpperCase());
+      });
+      setFilteredMembers(filter);
     }
   };
 
-  const handleSuggestionClick = (user, type) => {
-    if (type === 'leader') {
-      setformData({ ...formData, leaders: user });
-      setFilteredLeaders([]);
-    } else {
+  const handleSuggestionClick = (user) => {
+    const alreadyExist = members.find(
+      (member) => member._id.toString() === user._id.toString()
+    );
+    if (alreadyExist === undefined) {
       setMembers((prev) => [...prev, user]);
       setFilteredMembers([]);
       setMember('');
+    } else {
+      return;
     }
   };
 
@@ -146,7 +138,6 @@ function CreateMember() {
     setMembers(updatedMembers);
   };
 
-  console.log(members);
   return (
     <ThemeProvider theme={theme}>
       <Paper
@@ -175,17 +166,16 @@ function CreateMember() {
               Add members
             </Typography>
             <TextField
-              size="small"
-              name="members_id"
+              size='small'
+              name='members_id'
               value={member}
               onChange={(e) => {
                 setMember(e.target.value);
                 handleSuggestionChange({
                   inputValue: e.target.value,
-                  type: 'member',
                 });
               }}
-              placeholder="Search a member"
+              placeholder='Search a member'
               sx={{
                 width: '100%',
               }}
@@ -202,7 +192,7 @@ function CreateMember() {
                   },
                 }}
                 onClick={() => {
-                  handleSuggestionClick(user, 'member');
+                  handleSuggestionClick(user);
                 }}
               >
                 {user.name}
@@ -221,39 +211,14 @@ function CreateMember() {
             }}
           >
             {members.map((member) => (
-              <Avatar
-                title={`Remove ${member.name}`}
-                key={member._id}
+              <CustomAvatar
+                bgColor={member.colorBg}
+                textColor={member.colorText}
+                member={member}
                 onClick={() => {
                   handleRemoveMember(member);
                 }}
-                style={{ transition: 'opacity 0.3s ease-in-out' }}
-                onMouseOver={(e) => (e.currentTarget.style.opacity = '0.7')}
-                onMouseOut={(e) => (e.currentTarget.style.opacity = '1')}
-                sx={{
-                  borderRadius: '50%',
-                  bgcolor: `${member.colorbg}`,
-                  color: `${member.colorText}`,
-                  marginRight: 1,
-                }}
-              >
-                {member?.name?.split(' ')[0][0].toUpperCase()}
-                {member.name?.split(' ').length > 1
-                  ? member.name?.split(' ')[1][0].toUpperCase()
-                  : ''}
-              </Avatar>
-
-              // <Avatar
-              //   title="Remove"
-              //   key={member._id}
-              //   src={user1}
-              //   onClick={() => {
-              //     handleRemoveMember(member);
-              //   }}
-              //   style={{ transition: 'opacity 0.3s ease-in-out' }}
-              //   onMouseOver={(e) => (e.currentTarget.style.opacity = '0.7')}
-              //   onMouseOut={(e) => (e.currentTarget.style.opacity = '1')}
-              // />
+              />
             ))}
           </Box>
         </Grid>
@@ -269,7 +234,7 @@ function CreateMember() {
           </Typography>
           <Grid item xs={6}>
             <Select
-              size="small"
+              size='small'
               value={newRol}
               onChange={(e) => {
                 const selectedrol = e.target.value;
@@ -299,7 +264,7 @@ function CreateMember() {
                 <MenuItem
                   key={rol}
                   value={rol}
-                  className="menu-item"
+                  className='menu-item'
                   style={{ backgroundColor: '#fff', cursor: 'pointer' }}
                 >
                   {rol}
@@ -312,7 +277,7 @@ function CreateMember() {
         {customrolnabled && (
           <Grid
             item
-            size="small"
+            size='small'
             sx={{
               marginBottom: '20px',
             }}
@@ -321,20 +286,20 @@ function CreateMember() {
               Custom rol
             </Typography>
             <TextField
-              size="small"
+              size='small'
               fullWidth
-              placeholder="enter a custom rol"
+              placeholder='enter a custom rol'
               value={customRol}
               onChange={(e) => setCustomRol(useFormatText(e.target.value))}
             />
           </Grid>
         )}
 
-        <Grid container justifyContent="space-between" sx={{ mt: 2 }}>
+        <Grid container justifyContent='space-between' sx={{ mt: 2 }}>
           <Grid item>
             <Button
               disableRipple
-              variant="outlined"
+              variant='outlined'
               sx={{
                 color: 'black',
                 bgcolor: 'white',
@@ -352,7 +317,7 @@ function CreateMember() {
             <Button
               disableRipple
               style={{ marginLeft: 8 }}
-              variant="contained"
+              variant='contained'
               sx={{
                 color: 'white',
                 bgcolor: '#7662EA',
