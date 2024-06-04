@@ -3,6 +3,7 @@ import { shallow } from 'zustand/shallow';
 import { createTheme, useMediaQuery } from '@mui/material';
 import useSuggestionUsers from './useSuggestionUsers';
 import { useBoundStore } from '../stores';
+import getUniqueUsers from '../utils/getUniqueUsers';
 
 const INITIAL_FORM_DATA = {
   name: '',
@@ -78,7 +79,8 @@ export function useEditProject(project) {
       if (inputValue === '') {
         setFilteredLeaders([]);
       } else {
-        const filter = users.filter((user) => {
+        const result = getUniqueUsers(users);
+        const filter = result.filter((user) => {
           return user.name.toUpperCase().startsWith(inputValue.toUpperCase());
         });
         setFilteredLeaders(filter);
@@ -88,7 +90,8 @@ export function useEditProject(project) {
       if (inputValue === '') {
         setFilteredMembers([]);
       } else {
-        const filter = users.filter((user) => {
+        const result = getUniqueUsers(users);
+        const filter = result.filter((user) => {
           return user.name.toUpperCase().startsWith(inputValue.toUpperCase());
         });
         setFilteredMembers(filter);
@@ -155,9 +158,16 @@ export function useEditProject(project) {
       setFormData({ ...formData, leaders: user });
       setFilteredLeaders([]);
     } else {
-      setMembers((prev) => [...prev, { _id: { ...user } }]);
-      setFilteredMembers([]);
-      setMember(''); // Limpiar el campo de entrada después de seleccionar un miembro
+      const alreadyExist = members.find(
+        (member) => member._id._id.toString() === user._id.toString()
+      );
+      if (alreadyExist === undefined) {
+        setMembers((prev) => [...prev, { _id: { ...user } }]);
+        setFilteredMembers([]);
+        setMember('');
+      } else {
+        return;
+      }
     }
   };
 

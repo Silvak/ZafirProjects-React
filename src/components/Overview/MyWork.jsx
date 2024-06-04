@@ -32,18 +32,18 @@ function MyWorkGlance() {
     setFilterOption(event.target.value);
   };
 
-  useEffect(() => {
-    if (selectedProject) {
-      const fetchData = async () => {
-        try {
-          await fetchTasksById(selectedProject._id);
-        } catch (error) {
-          console.error('Error fetching tasks', error);
-        }
-      };
-      fetchData();
-    }
-  }, [selectedProject, fetchTasksById]);
+  // useEffect(() => {
+  //   if (selectedProject) {
+  //     const fetchData = async () => {
+  //       try {
+  //         await fetchTasksById(selectedProject._id);
+  //       } catch (error) {
+  //         console.error('Error fetching tasks', error);
+  //       }
+  //     };
+  //     fetchData();
+  //   }
+  // }, [selectedProject, fetchTasksById]);
 
   const filteredTasks = Array.isArray(myTasks)
     ? myTasks.filter((task) => {

@@ -17,6 +17,8 @@ import { shallow } from 'zustand/shallow';
 import useSuggestionUsers from '../../hooks/useSuggestionUsers';
 import { useBoundStore } from '../../stores';
 import CustomAvatar from '@/components/CustomAvatar/CustomAvatar';
+import SuggestionList from '../SuggestionList/SuggestionList';
+import getUniqueUsers from '../../utils/getUniqueUsers';
 
 function CreateProjectForm() {
   const theme = createTheme();
@@ -59,7 +61,8 @@ function CreateProjectForm() {
       if (inputValue === '') {
         setFilteredLeaders([]);
       } else {
-        const filter = users.filter((user) => {
+        const result = getUniqueUsers(users);
+        const filter = result.filter((user) => {
           return user.name.toUpperCase().startsWith(inputValue.toUpperCase());
         });
         setFilteredLeaders(filter);
@@ -69,7 +72,8 @@ function CreateProjectForm() {
       if (inputValue === '') {
         setFilteredMembers([]);
       } else {
-        const filter = users.filter((user) => {
+        const result = getUniqueUsers(users);
+        const filter = result.filter((user) => {
           return user.name.toUpperCase().startsWith(inputValue.toUpperCase());
         });
         setFilteredMembers(filter);
@@ -124,9 +128,16 @@ function CreateProjectForm() {
       setformData({ ...formData, leaders: user });
       setFilteredLeaders([]);
     } else {
-      setMembers((prev) => [...prev, user]);
-      setFilteredMembers([]);
-      setMember(''); // Limpiar el campo de entrada después de seleccionar un miembro
+      const alreadyExist = members.find(
+        (member) => member._id.toString() === user._id.toString()
+      );
+      if (alreadyExist === undefined) {
+        setMembers((prev) => [...prev, user]);
+        setFilteredMembers([]);
+        setMember('');
+      } else {
+        return;
+      }
     }
   };
 
@@ -268,24 +279,12 @@ function CreateProjectForm() {
               }}
             />
           </Grid>
-          <CustomList showme={filteredLeaders.length > 0}>
-            {filteredLeaders.map((user) => (
-              <ListItem
-                key={user._id}
-                sx={{
-                  cursor: 'pointer',
-                  '&:hover': {
-                    background: '#F6F7FA',
-                  },
-                }}
-                onClick={() => {
-                  handleSuggestionClick(user, 'leader');
-                }}
-              >
-                {user.name}
-              </ListItem>
-            ))}
-          </CustomList>
+
+          <SuggestionList
+            type='leader'
+            usersList={filteredLeaders}
+            onClick={handleSuggestionClick}
+          />
         </Box>
 
         {/* members */}
@@ -317,24 +316,11 @@ function CreateProjectForm() {
               }}
             />
           </Grid>
-          <CustomList showme={filteredMembers.length > 0}>
-            {filteredMembers.map((user) => (
-              <ListItem
-                key={user._id}
-                sx={{
-                  cursor: 'pointer',
-                  '&:hover': {
-                    background: '#F6F7FA',
-                  },
-                }}
-                onClick={() => {
-                  handleSuggestionClick(user, 'member');
-                }}
-              >
-                {user.name}
-              </ListItem>
-            ))}
-          </CustomList>
+          <SuggestionList
+            type='member'
+            usersList={filteredMembers}
+            onClick={handleSuggestionClick}
+          />
         </Box>
         <Grid item xs={12}>
           <Box
@@ -348,10 +334,11 @@ function CreateProjectForm() {
           >
             {members.map((member) => (
               <CustomAvatar
-                name={member.name}
                 key={member._id}
+                bgColor={member.colorBg}
+                textColor={member.colorText}
+                member={member}
                 onClick={() => {
-                  console.log(member);
                   handleRemoveMember(member);
                 }}
               />

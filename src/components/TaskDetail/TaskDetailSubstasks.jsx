@@ -128,7 +128,11 @@ const TaskDetailSubstasks = ({ taskId }) => {
                             </div>
                           ))
                         ) : (
-                          <CircularProgress />
+                          <CircularProgress
+                            style={{ color: '#C02327' }}
+                            sx={{ m: 2 }}
+                            size="32px"
+                          />
                         )}
                       </div>
                     </td>
@@ -156,7 +160,11 @@ const TaskDetailSubstasks = ({ taskId }) => {
                   </tr>
                 ))
               ) : (
-                <CircularProgress />
+                <CircularProgress
+                  style={{ color: '#C02327' }}
+                  sx={{ m: 2 }}
+                  size="32px"
+                />
               )}
               <tr>
                 <td colSpan={5} className={css.icon}>

@@ -17,6 +17,7 @@ import { shallow } from 'zustand/shallow';
 import useFormatText from '@/hooks/useFormatText';
 import EditMember from '@/components/forms/EditMemberForm';
 import './styles.css';
+import CustomAvatar from '../CustomAvatar/CustomAvatar';
 
 const TableRowComponent = ({
   isMobile,
@@ -47,8 +48,6 @@ const TableRowComponent = ({
     );
     ChangeStateModal(true);
   };
-
-  console.log(row.project);
 
   return (
     <React.Fragment key={row}>
@@ -134,23 +133,28 @@ const TableRowComponent = ({
                     // />
 
                     (row._id ? (
-                      <Avatar
-                        sx={{
-                          borderRadius: '50%',
-                          bgcolor: `${row._id.colorbg}`,
-                          color: `${row._id.colorText}`,
-                          marginRight: 1,
-                        }}
-                      >
-                        {row._id?.name?.split(' ')[0][0].toUpperCase()}
-                        {row._id.name?.split(' ').length > 1
-                          ? row._id.name?.split(' ')[1][0].toUpperCase()
-                          : ''}
-                      </Avatar>
+                      <CustomAvatar
+                        bgColor={row.colorBg}
+                        textColor={row.colorText}
+                        size="40px"
+                        fontSize="14px"
+                        member={row._id}
+                        deleteMode={false}
+                      />
                     ) : (
-                      <CircularProgress />
+                      <CircularProgress
+                        style={{ color: '#C02327' }}
+                        sx={{ m: 2 }}
+                        size="32px"
+                      />
                     ))}
-                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      marginLeft: '10px',
+                    }}
+                  >
                     <div style={{ flex: 1 }}>
                       {column.id === 'name' ? (
                         useFormatText(row._id.name)

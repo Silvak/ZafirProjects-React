@@ -21,17 +21,8 @@ import './dataPicker.css';
 import { format } from 'date-fns';
 import CustomList from '../CustomList/CustomList';
 import CustomAvatar from '@/components/CustomAvatar/CustomAvatar';
-
-// const INITIAL_FORM_DATA = {
-//   taskName: '',
-//   subtaskName: '',
-//   description: '',
-//   start: '',
-//   end: '',
-//   state: '',
-//   priority: '',
-//   members_id: [],
-// };
+import SuggestionList from '../SuggestionList/SuggestionList';
+import getUniqueUsers from '../../utils/getUniqueUsers';
 
 const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -89,40 +80,13 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
     }
   }, [isEditing]);
 
-  // useEffect(() => {
-  //   setFormData({
-  //     taskName: task.taskName,
-  //     subtaskName: task.name,
-  //     description: task.description,
-  //     start: format(new Date(task.start), 'yyyy/MM/dd'),
-  //     end: format(new Date(task.end), 'yyyy/MM/dd'),
-  //     state: task.state,
-  //     priority: task.priority,
-  //     members_id: task.members_id,
-  //   });
-  //   setOriginalValues({
-  //     taskName: task.taskName,
-  //     subtaskName: task.name,
-  //     description: task.description,
-  //     start: format(new Date(task.start), 'yyyy/MM/dd'),
-  //     end: format(new Date(task.end), 'yyyy/MM/dd'),
-  //     state: task.state,
-  //     priority: task.priority,
-  //     members_id: task.members_id,
-  //   });
-  //   // reseteamos estados al desmontar componente
-  //   return () => {
-  //     setFormData(INITIAL_FORM_DATA);
-  //     setOriginalValues(INITIAL_FORM_DATA);
-  //   };
-  // }, [task._id]);
-
   const handleSuggestionChange = ({ inputValue }) => {
     // para input miembro
     if (inputValue === '') {
       setFilteredMembers([]);
     } else {
-      const filter = users.filter((user) => {
+      const result = getUniqueUsers(users);
+      const filter = result.filter((user) => {
         return user.name.toUpperCase().startsWith(inputValue.toUpperCase());
       });
       setFilteredMembers(filter);
@@ -130,14 +94,23 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
   };
 
   const handleSuggestionClick = (user) => {
-    setMembers((prev) => [...prev, user]);
-    setFilteredMembers([]);
-    setMember(''); // Limpiar el campo de entrada después de seleccionar un miembro
+    const alreadyExist = members.find(
+      (member) => member._id.toString() === user._id.toString()
+    );
+    if (alreadyExist === undefined) {
+      setMembers((prev) => [...prev, user]);
+      setFilteredMembers([]);
+      setMember('');
+    } else {
+      return;
+    }
   };
 
   const handleEdit = () => {
     setIsEditing(true);
   };
+
+  console.log(members);
 
   const handleCancel = () => {
     setIsEditing(false);
@@ -237,24 +210,12 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
               }}
             />
           )}
-          <CustomList showme={filteredMembers.length > 0}>
-            {filteredMembers.map((user) => (
-              <ListItem
-                key={user._id}
-                sx={{
-                  cursor: 'pointer',
-                  '&:hover': {
-                    background: '#F6F7FA',
-                  },
-                }}
-                onClick={() => {
-                  handleSuggestionClick(user);
-                }}
-              >
-                {user.name}
-              </ListItem>
-            ))}
-          </CustomList>
+          <SuggestionList
+            type="member"
+            usersList={filteredMembers}
+            onClick={handleSuggestionClick}
+            top="80px"
+          />
         </Box>
       </Grid>
       <Grid item xs={12}>
@@ -269,6 +230,10 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
         >
           {members.map((member) => (
             <CustomAvatar
+              member={member}
+              size="40px"
+              fontSize="14px"
+              deleteMode={false}
               name={member.name}
               key={member._id}
               onClick={() => {

@@ -65,6 +65,8 @@ const UserState = (props: { children: any }) => {
     setDataPerfilUser,
     setUser,
     setAuthenticated,
+    clearTasks,
+    clearProjects,
   } = useBoundStore((state: any) => state, shallow);
 
   const Register = async (user: any): Promise<void> => {
@@ -115,10 +117,13 @@ const UserState = (props: { children: any }) => {
       // setUser([])
       // location.reload();
       // setDataPerfilUser([]);
+      clearTasks();
+      clearProjects();
       setAuthenticated(false);
       setUser({});
+      localStorage.clear();
     } catch (error: any) {
-      console.error('🚀 error de logout', error);
+      console.error('🚀 error de logout', error.message);
     }
   };
 

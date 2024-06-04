@@ -22,6 +22,8 @@ import useSuggestionUsers from '../../hooks/useSuggestionUsers';
 import { useBoundStore } from '../../stores';
 import { axiosInstance } from '@/config/apiConfig';
 import CustomAvatar from '@/components/CustomAvatar/CustomAvatar';
+import SuggestionList from '../SuggestionList/SuggestionList';
+import getUniqueUsers from '../../utils/getUniqueUsers';
 
 const INITIAL_FORM_DATA = {
   taskName: '',
@@ -68,7 +70,9 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
       if (inputValue === '') {
         setFilteredLeaders([]);
       } else {
-        const filter = users.filter((user) => {
+        const result = getUniqueUsers(users);
+
+        const filter = result.filter((user) => {
           return user.name.toUpperCase().startsWith(inputValue.toUpperCase());
         });
         setFilteredLeaders(filter);
@@ -78,7 +82,8 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
       if (inputValue === '') {
         setFilteredMembers([]);
       } else {
-        const filter = users.filter((user) => {
+        const result = getUniqueUsers(users);
+        const filter = result.filter((user) => {
           return user.name.toUpperCase().startsWith(inputValue.toUpperCase());
         });
         setFilteredMembers(filter);
@@ -147,9 +152,16 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
       setformData({ ...formData, leaders: user });
       setFilteredLeaders([]);
     } else {
-      setMembers((prev) => [...prev, user]);
-      setFilteredMembers([]);
-      setMember(''); // Limpiar el campo de entrada después de seleccionar un miembro
+      const alreadyExist = members.find(
+        (member) => member._id.toString() === user._id.toString()
+      );
+      if (alreadyExist === undefined) {
+        setMembers((prev) => [...prev, user]);
+        setFilteredMembers([]);
+        setMember('');
+      } else {
+        return;
+      }
     }
   };
 
@@ -290,7 +302,13 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
                 width: '100%',
               }}
             />
+            <SuggestionList
+              type='leader'
+              usersList={filteredLeaders}
+              onClick={handleSuggestionClick}
+            />
           </Grid>
+          {/* </Grid>
           <CustomList showme={filteredLeaders.length > 0}>
             {filteredLeaders.map((user) => (
               <ListItem
@@ -308,7 +326,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
                 {user.name}
               </ListItem>
             ))}
-          </CustomList>
+          </CustomList> */}
         </Box>
 
         {/* members */}
@@ -340,7 +358,12 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
               }}
             />
           </Grid>
-          <CustomList showme={filteredMembers.length > 0}>
+          <SuggestionList
+            type='member'
+            usersList={filteredMembers}
+            onClick={handleSuggestionClick}
+          />
+          {/* <CustomList showme={filteredMembers.length > 0}>
             {filteredMembers.map((user) => (
               <ListItem
                 key={user._id}
@@ -357,7 +380,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
                 {user.name}
               </ListItem>
             ))}
-          </CustomList>
+          </CustomList> */}
         </Box>
         <Grid item xs={12}>
           <Box
