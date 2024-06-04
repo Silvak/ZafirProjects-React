@@ -8,16 +8,16 @@ import {
   ListItemIcon,
   Menu,
   MenuItem,
-} from '@mui/material';
-import { useState, useContext } from 'react';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { Logout, Settings } from '@mui/icons-material';
-import { useBoundStore } from '@/stores/index';
-import { shallow } from 'zustand/shallow';
+} from "@mui/material";
+import { useState, useContext } from "react";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { Logout, Settings } from "@mui/icons-material";
+import { useBoundStore } from "@/stores/index";
+import { shallow } from "zustand/shallow";
 
-import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../../../context/User/UserContext';
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../../context/User/UserContext";
 
 export default function UserProfileButton() {
   const { LogoutFunc } = useContext(UserContext);
@@ -52,32 +52,32 @@ export default function UserProfileButton() {
       <Tooltip title="Account settings">
         <Box
           sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            backgroundColor: '#ffffff',
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            backgroundColor: "#ffffff",
             padding: 1,
             borderRadius: 3.5,
             paddingLeft: 2,
             paddingRight: 2,
-            maxHeight: '52px',
-            cursor: 'pointer',
+            maxHeight: "52px",
+            cursor: "pointer",
           }}
           id="fade-button"
-          aria-controls={open ? 'fade-menu' : undefined}
+          aria-controls={open ? "fade-menu" : undefined}
           aria-haspopup="true"
-          aria-expanded={open ? 'true' : undefined}
+          aria-expanded={open ? "true" : undefined}
           onClick={handleOpenUserMenu}
         >
           <Avatar
             sx={{
-              borderRadius: '50%',
+              borderRadius: "50%",
               bgcolor: `${User?.colorbg}`,
               color: `${User?.colorText}`,
             }}
           >
-            {User?.name.split(' ')[0][0]}
-            {User.name.split(' ').length > 1 ? User?.name.split(' ')[1][0] : ''}
+            {User?.name.split(" ")[0][0]}
+            {User.name.split(" ").length > 1 ? User?.name.split(" ")[1][0] : ""}
           </Avatar>
           {/* <Avatar
             src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
@@ -85,7 +85,7 @@ export default function UserProfileButton() {
             sx={{ borderRadius: '50%' }}
           /> */}
 
-          <Box sx={{ ml: 1.5 }}>
+          <Box sx={{ px: 2, display: "flex", flexDirection: "column" }}>
             <Typography
               level="title-sm"
               variant="h7"
@@ -93,7 +93,7 @@ export default function UserProfileButton() {
             >
               {User?.name}
             </Typography>
-            <Typography level="body-xs">{User?.rol}</Typography>
+            {User?.rol}
           </Box>
           {open ? (
             <KeyboardArrowUpIcon sx={{ marginLeft: 2 }} />
@@ -112,32 +112,32 @@ export default function UserProfileButton() {
         PaperProps={{
           elevation: 0,
           sx: {
-            background: 'white',
-            overflow: 'visible',
-            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+            background: "white",
+            overflow: "visible",
+            filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
             mt: 1.5,
-            '& .MuiAvatar-root': {
+            "& .MuiAvatar-root": {
               width: 32,
               height: 32,
               ml: -0.5,
               mr: 1,
             },
-            '&::before': {
+            "&::before": {
               content: '""',
-              display: 'block',
-              position: 'absolute',
+              display: "block",
+              position: "absolute",
               top: 0,
               right: 14,
               width: 10,
               height: 10,
-              background: 'white',
-              transform: 'translateY(-50%) rotate(45deg)',
+              background: "white",
+              transform: "translateY(-50%) rotate(45deg)",
               zIndex: 0,
             },
           },
         }}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         <MenuItem key="profile" onClick={handleClose}>
           <Avatar /> Profile
