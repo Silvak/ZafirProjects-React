@@ -9,11 +9,16 @@ import { shallow } from 'zustand/shallow';
 
 function ProjectSelect(props) {
   const [open, setOpen] = useState(false);
-  const { fetchProjects, projectsData, selectedProject, setSelectedProject } =
-    useBoundStore((state) => state, shallow);
+  const {
+    fetchProjects,
+    projectsData,
+    selectedProject,
+    setSelectedProject,
+    User,
+  } = useBoundStore((state) => state, shallow);
 
   useEffect(() => {
-    fetchProjects();
+    fetchProjects(User.uid);
   }, []);
 
   const handleClick = () => {
@@ -22,8 +27,8 @@ function ProjectSelect(props) {
     }
   };
 
-  const handleSelectProject = (project) => {
-    setSelectedProject(project);
+  const handleSelectProject = async (project) => {
+    await setSelectedProject(project);
     setOpen(false);
   };
 

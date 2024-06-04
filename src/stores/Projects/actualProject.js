@@ -1,19 +1,45 @@
 import { axiosInstance } from '@/config/apiConfig';
 
-export const actualProject = (set) => ({
+export const actualProject = (set, get) => ({
   projectsData: [],
   selectedProject: undefined,
-  fetchProjects: async () => {
+  myTasks: [],
+
+  clearTasks: () => {
+    set({ myTasks: [] });
+  },
+
+  fetchTasksById: async (projectId) => {
     try {
-      const { data } = await axiosInstance.get('/projects');
-      set({ projectsData: data, selectedProject: data[0] });
+      const { data } = await axiosInstance.get(
+        `/tasksList/project/${projectId}`
+      );
+      set({ myTasks: data });
+    } catch (error) {
+      console.error('Error fetching tasks', error);
+    }
+  },
+
+  fetchProjects: async (idUser) => {
+    try {
+      const { data } = await axiosInstance.get(`/projects/user/${idUser}`);
+      if (data) {
+        set({ projectsData: data, selectedProject: data[0] });
+        if (data[0]) {
+          console.log(data[0]);
+          await get().fetchTasksById(data[0]._id);
+        }
+      }
     } catch (error) {
       console.error('Error fetching projects:', error);
     }
   },
-  setSelectedProject: (project) => {
+
+  setSelectedProject: async (project) => {
     set({ selectedProject: project });
+    await get().fetchTasksById(project._id);
   },
+
   updateProjects: async () => {
     try {
       const { data } = await axiosInstance.get('/projects');
@@ -52,5 +78,8 @@ export const actualProject = (set) => ({
     } catch (error) {
       console.error('Error eliminando proyecto:', error);
     }
+  },
+  clearProjects: () => {
+    set({ projectsData: [], selectedProject: undefined });
   },
 });

@@ -148,7 +148,11 @@ const TableRowComponent = ({
                           : ''}
                       </Avatar>
                     ) : (
-                      <CircularProgress />
+                      <CircularProgress
+                        style={{ color: '#C02327' }}
+                        sx={{ m: 2 }}
+                        size="32px"
+                      />
                     ))}
                   <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <div style={{ flex: 1 }}>

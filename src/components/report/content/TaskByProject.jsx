@@ -25,13 +25,13 @@ const CustomTaskCounter = ({ quantityTasks }) => {
 };
 
 const TaskByProject = () => {
-  const { tasks, fetchTasks } = useBoundStore((state) => state, shallow);
+  const { tasks } = useBoundStore((state) => state, shallow);
   const isLittleScreen = useMediaQuery('(max-width:800px)');
   const [result, setResult] = useState([]);
 
-  useEffect(() => {
-    fetchTasks();
-  }, []);
+  // useEffect(() => {
+  //   fetchTasks();
+  // }, []);
 
   useEffect(() => {
     let uniqueProjects = {};

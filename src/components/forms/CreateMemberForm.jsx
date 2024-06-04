@@ -32,6 +32,7 @@ function CreateMember() {
     ChangeTitleAlertError,
     updateProjects,
     selectedProject,
+    fetchProjects,
     setSelectedProject,
   } = useBoundStore((state) => state, shallow);
 
@@ -88,11 +89,12 @@ function CreateMember() {
       await Promise.all(promises);
 
       // Actualizamos el estado del proyecto
-      const { data } = await axiosInstance.get(
-        `projects/${selectedProject._id}`
-      );
-      setSelectedProject(data);
-      await updateProjects();
+      await fetchProjects(selectedProject._id);
+      // const { data } = await axiosInstance.get(
+      //   `projects/${selectedProject._id}`
+      // );
+      // setSelectedProject(data);
+      // await updateProjects();
 
       // Mostramos mensaje satisfactorio
       ChangeStateModal(false);

@@ -47,6 +47,7 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
     ChangeStateAlertError,
     setSelectedProject,
     updateProjects,
+    fetchProjects,
   } = useBoundStore((state) => state, shallow);
   const { users } = useSuggestionUsers();
 
@@ -109,7 +110,8 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
         const response = await axiosInstance.get(
           `projects/${selectedProject._id}`
         );
-        await updateProjects();
+        // await updateProjects();
+        await fetchProjects(selectedProject._id);
         setSelectedProject(response.data);
 
         ChangeStateAlert(true);

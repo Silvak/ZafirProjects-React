@@ -31,12 +31,13 @@ const MembersTable = () => {
     usePagination({});
   const {
     selectedProject,
-    updateProjects,
     ChangeStateModal,
     ChangeTitleModal,
     ChangeContentModal,
     ChangeStateAlert,
     ChangeTitleAlert,
+    fetchProjects,
+    selectedProject
   } = useBoundStore((state) => state, shallow);
 
   const [allMemberData, setAllMemberData] = useState([]);
@@ -104,7 +105,7 @@ const MembersTable = () => {
       const updateAllMember = allMemberData.filter(
         (member) => member._id !== memberToDelete._id
       );
-      await updateProjects();
+      
       setAllMemberData(updateAllMember);
       ChangeStateModal(false);
       ChangeTitleAlert('Member successfully removed');
@@ -146,9 +147,11 @@ const MembersTable = () => {
               marginTop: '2rem',
             }}
           >
-            Team of{' '}
+            Team
             <span style={{ fontWeight: 'bold' }}>
-              {useFormatText(selectedProject.name)}
+              {selectedProject
+                ? ` of ${useFormatText(selectedProject.name)}`
+                : ''}
             </span>
           </h6>
           <Button

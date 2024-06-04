@@ -10,6 +10,7 @@ import {
   ThemeProvider,
   Typography,
   Tooltip,
+  CircularProgress,
 } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
@@ -138,22 +139,36 @@ function FirstRow({ setProjectSelected, projectsData, projectSelected }) {
                     textAlign: 'center',
                     fontWeight: 500,
                     fontSize: 14,
+                    minWidth: 'max-content',
                   }}
                 >
                   "There are no projects to show"
                 </Typography>
               ) : (
-                <Typography
-                  variant="body1"
-                  sx={{
+                <div
+                  style={{
                     width: '100%',
-                    textAlign: 'center',
-                    fontWeight: 500,
-                    fontSize: 14,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                   }}
                 >
-                  Loading...
-                </Typography>
+                  <CircularProgress
+                    style={{ color: '#C02327' }}
+                    sx={{ m: 2 }}
+                    size="32px"
+                  />
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      textAlign: 'center',
+                      fontWeight: 500,
+                      fontSize: 14,
+                    }}
+                  >
+                    Loading...
+                  </Typography>
+                </div>
               )}
             </Grid>
           </Grid>

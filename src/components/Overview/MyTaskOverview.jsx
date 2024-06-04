@@ -1,4 +1,4 @@
-import FilterSelect from "@/components/Selects/FilterSelect";
+import FilterSelect from '@/components/Selects/FilterSelect';
 import {
   Grid,
   ThemeProvider,
@@ -6,63 +6,56 @@ import {
   createTheme,
   useMediaQuery,
   Tooltip,
-} from "@mui/material";
-import { useEffect, useState, Suspense } from "react";
-import { useBoundStore } from "../../stores/index";
-import { shallow } from "zustand/shallow";
+} from '@mui/material';
+import { useEffect, useState, Suspense } from 'react';
+import { useBoundStore } from '../../stores/index';
+import { shallow } from 'zustand/shallow';
 
-import MyTaskList from "./MyTaskList";
-import { isInThisWeek, isInThisMonth, isToday } from "../../hooks/useDates";
+import MyTaskList from './MyTaskList';
+import { isInThisWeek, isInThisMonth, isToday } from '../../hooks/useDates';
 
 const filtersData = [
-  { id: 1, label: "All", value: "All" },
-  { id: 4, label: "This week", value: "This week" },
-  { id: 2, label: "This month", value: "This month" },
-  { id: 3, label: "Today", value: "Today" },
+  { id: 1, label: 'All', value: 'All' },
+  { id: 4, label: 'This week', value: 'This week' },
+  { id: 2, label: 'This month', value: 'This month' },
+  { id: 3, label: 'Today', value: 'Today' },
 ];
 
 function MyTask() {
-  const {
-    tasks,
-    myTasks,
-    fetchTasksById,
-    addTask,
-    fetchTasks,
-    selectedProject,
-  } = useBoundStore((state) => state, shallow);
+  const { myTasks, selectedProject } = useBoundStore((state) => state, shallow);
   const theme = createTheme();
-  const [filterOption, setFilterOption] = useState("All");
+  const [filterOption, setFilterOption] = useState('All');
 
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   const handleFilter = (event) => {
     setFilterOption(event.target.value);
   };
 
-  useEffect(() => {
-    if (selectedProject) {
-      const fetchData = async () => {
-        try {
-          await fetchTasksById(selectedProject._id);
-        } catch (error) {
-          console.error("Error fetching tasks", error);
-        }
-      };
-      fetchData();
-    }
-  }, [selectedProject, fetchTasksById]);
+  // useEffect(() => {
+  //   if (selectedProject) {
+  //     const fetchData = async () => {
+  //       try {
+  //         await fetchTasksById(selectedProject._id);
+  //       } catch (error) {
+  //         console.error('Error fetching tasks', error);
+  //       }
+  //     };
+  //     fetchData();
+  //   }
+  // }, [selectedProject, fetchTasksById]);
 
   const filteredTasks = Array.isArray(myTasks)
     ? myTasks.filter((task) => {
         const taskDate = new Date(task.start);
         switch (filterOption) {
-          case "This week":
+          case 'This week':
             return isInThisWeek(taskDate);
-          case "This month":
+          case 'This month':
             return isInThisMonth(taskDate);
-          case "Today":
+          case 'Today':
             return isToday(taskDate);
-          case "All":
+          case 'All':
           default:
             return true;
         }
@@ -73,36 +66,37 @@ function MyTask() {
     <ThemeProvider theme={theme}>
       <Grid
         sx={{
-          backgroundColor: "#ffffff",
-          height: "572px",
-          borderRadius: "20px",
-          display: "flex",
-          flexDirection: "column",
+          backgroundColor: '#ffffff',
+          height: '572px',
+          borderRadius: '20px',
+          display: 'flex',
+          flexDirection: 'column',
           flex: 1,
-          overflow: "-moz-hidden-unscrollable",
-          overflowX: "hidden",
+          overflow: '-moz-hidden-unscrollable',
+          overflowX: 'hidden',
         }}
       >
         {/* My Task Header */}
         <Grid
           item
           sx={{
-            display: isMobile ? "inline-table" : "flex",
-            justifyContent: "space-between",
-            padding: "10px 30px",
-            alignItems: "center",
+            display: isMobile ? 'inline-table' : 'flex',
+            justifyContent: 'space-between',
+            padding: '10px 30px',
+            alignItems: 'center',
           }}
         >
           <Grid
             item
             sx={{
-              marginTop: "30px",
+              marginTop: '30px',
             }}
           >
             <Typography
-              sx={{ fontSize: "20px", fontWeight: 500, fontFamily: "Poppins" }}
+              sx={{ fontSize: '20px', fontWeight: 500, fontFamily: 'Poppins' }}
             >
               My Tasks
+              {selectedProject ? ` of ${selectedProject.name}` : ''}
             </Typography>
           </Grid>
           {/* Select Filter */}
@@ -112,14 +106,14 @@ function MyTask() {
                 value={filterOption}
                 onChange={handleFilter}
                 style={{
-                  border: "none",
-                  outline: " 1px solid #808080",
-                  background: "white",
-                  borderRadius: "8px",
-                  cursor: "pointer",
-                  marginTop: "30px",
+                  border: 'none',
+                  outline: ' 1px solid #808080',
+                  background: 'white',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  marginTop: '30px',
 
-                  padding: "10px",
+                  padding: '10px',
                 }}
               >
                 {filtersData.map((filter) => (
@@ -135,7 +129,7 @@ function MyTask() {
         <Suspense fallback={<div>Loading...</div>}>
           <MyTaskList
             tasks={filteredTasks}
-            handleAddTask={() => handleAddTask("", "")}
+            handleAddTask={() => handleAddTask('', '')}
           />
         </Suspense>
       </Grid>
