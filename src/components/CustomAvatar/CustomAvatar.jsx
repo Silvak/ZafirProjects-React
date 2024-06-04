@@ -1,27 +1,18 @@
 import { useCallback, useMemo } from 'react';
 import Tooltip from '@mui/material/Tooltip';
 
-const size = '45px';
+// const size = '45px';
 
-const bgColors = {
-  0: '#e0f7fa', // Azul Cielo
-  1: '#c5dbe2', // Azul Cerúleo Claro
-  2: '#8aadcf', // Azul Turquesa Claro
-  3: '#5680ae', // Azul Cerúleo
-  4: '#c6a67e', // Azul Marino
-  5: '#f5f5f5', // Gris Muy Claro (para contraste)
-  6: '#d7e2ee', // Azul Pálido (para resaltar)
-};
-
-const getRandomColor = () => {
-  const keys = Object.keys(bgColors);
-  const randomKey = keys[Math.floor(Math.random() * keys.length)];
-  return bgColors[randomKey];
-};
-
-const CustomAvatar = ({ name, disabled, ...props }) => {
-  const backgroundColor = useMemo(() => getRandomColor(), []);
-
+const CustomAvatar = ({
+  member,
+  bgColor,
+  textColor,
+  disabled,
+  fontSize = '1rem',
+  size = '45px',
+  deleteMode = true,
+  ...props
+}) => {
   const handleMouseOver = useCallback((e) => {
     e.currentTarget.style.opacity = '0.7';
   }, []);
@@ -31,30 +22,38 @@ const CustomAvatar = ({ name, disabled, ...props }) => {
   }, []);
 
   return (
-    <Tooltip title={`Delete ${name}`}>
+    <Tooltip title={member ? `Delete ${member.name}` : ''}>
       <div
         style={{
           transition: 'opacity 0.3s ease-in-out',
           width: `${size}`,
           height: `${size}`,
           borderRadius: '50%',
-          display: 'grid',
-          placeContent: 'center',
-          backgroundColor: `${backgroundColor}`,
+          // display: 'grid',
+          // placeContent: 'center',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor:
+            member && member.colorbg ? `${member.colorbg}` : 'gray',
         }}
         onMouseOver={handleMouseOver}
         onMouseOut={handleMouseOut}
         {...props}
       >
-        <span
+        <p
           style={{
-            fontSize: '1rem',
+            fontSize,
             fontWeight: 'bold',
             textTransform: 'uppercase',
+            color: 'white',
           }}
         >
-          {name.charAt(0)}
-        </span>
+          {member ? member.name?.split(' ')[0][0].toUpperCase() : '?'}
+          {member && member.name?.split(' ').length > 1
+            ? member.name?.split(' ')[1][0].toUpperCase()
+            : ''}
+        </p>
       </div>
     </Tooltip>
   );

@@ -26,20 +26,20 @@ const App = () => {
     selectedProject,
   } = useBoundStore((state) => state, shallow);
 
-  useEffect(() => {
-    if (params.id) {
-      const fetchData = async () => {
-        try {
-          // Only fetch tasks if idProject has changed
-          await fetchTasksById(params.id);
-        } catch (error) {
-          console.error('Error fetching tasks', error);
-        }
-      };
+  // useEffect(() => {
+  //   if (params.id) {
+  //     const fetchData = async () => {
+  //       try {
+  //         // Only fetch tasks if idProject has changed
+  //         await fetchTasksById(params.id);
+  //       } catch (error) {
+  //         console.error('Error fetching tasks', error);
+  //       }
+  //     };
 
-      fetchData();
-    }
-  }, [params.id, fetchTasksById]);
+  //     fetchData();
+  //   }
+  // }, [params.id, fetchTasksById]);
 
   const [pendingTasks, setPendingTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);

@@ -17,6 +17,7 @@ import { shallow } from 'zustand/shallow';
 import useFormatText from '@/hooks/useFormatText';
 import EditMember from '@/components/forms/EditMemberForm';
 import './styles.css';
+import CustomAvatar from '../CustomAvatar/CustomAvatar';
 
 const TableRowComponent = ({
   isMobile,
@@ -48,8 +49,6 @@ const TableRowComponent = ({
     ChangeStateModal(true);
   };
 
-  console.log(row.project);
-
   return (
     <React.Fragment key={row}>
       <TableRow hover={!isMobile}>
@@ -80,39 +79,43 @@ const TableRowComponent = ({
               }}
             >
               {column.id === 'action' && !isMobile && (
-                <div>
-                  <DeleteIcon
-                    style={{
-                      marginLeft: '24px',
-                      cursor: 'pointer',
-                      color: deleteClicked ? 'blue' : 'inherit',
-                      transition: 'color 0.2s ease-in-out',
-                    }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setDeleteClicked(true);
-                      setTimeout(() => {
-                        setDeleteClicked(false);
-                        handleDeleteClick(row);
-                      }, 200);
-                    }}
-                  />
-                  <EditIcon
-                    style={{
-                      cursor: 'pointer',
-                      marginLeft: '10px',
-                      color: editClicked ? 'blue' : 'inherit',
-                      transition: 'color 0.2s ease-in-out',
-                    }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setEditClicked(true);
-                      setTimeout(() => {
-                        setEditClicked(false);
-                        openModal(row);
-                      }, 200);
-                    }}
-                  />
+                <div style={{ marginTop: '20%' }}>
+                  <Tooltip title="Delete member">
+                    <DeleteIcon
+                      style={{
+                        marginLeft: '24px',
+                        cursor: 'pointer',
+                        color: deleteClicked ? 'blue' : 'inherit',
+                        transition: 'color 0.2s ease-in-out',
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setDeleteClicked(true);
+                        setTimeout(() => {
+                          setDeleteClicked(false);
+                          handleDeleteClick(row);
+                        }, 200);
+                      }}
+                    />
+                  </Tooltip>
+                  <Tooltip title="Edit member">
+                    <EditIcon
+                      style={{
+                        cursor: 'pointer',
+                        marginLeft: '10px',
+                        color: editClicked ? 'blue' : 'inherit',
+                        transition: 'color 0.2s ease-in-out',
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setEditClicked(true);
+                        setTimeout(() => {
+                          setEditClicked(false);
+                          openModal(row);
+                        }, 200);
+                      }}
+                    />
+                  </Tooltip>
                 </div>
               )}
               {!isMobile &&
@@ -124,33 +127,41 @@ const TableRowComponent = ({
                   }}
                 >
                   {column.id === 'name' &&
-                    // <img
-                    //   style={{
-                    //     width: 32,
-                    //     marginRight: '10px',
-                    //     borderRadius: '50%',
-                    //   }}
-                    //   src={avatar}
-                    // />
-
                     (row._id ? (
                       <Avatar
                         sx={{
                           borderRadius: '50%',
-                          bgcolor: `${row._id.colorbg}`,
-                          color: `${row._id.colorText}`,
-                          marginRight: 1,
+                          bgcolor: `${row && row._id?.colorbg}`,
+                          color: `${row && row._id?.colorText}`,
                         }}
                       >
-                        {row._id?.name?.split(' ')[0][0].toUpperCase()}
-                        {row._id.name?.split(' ').length > 1
-                          ? row._id.name?.split(' ')[1][0].toUpperCase()
+                        {row && row._id && row._id?.name.split(' ')[0][0]}
+                        {row && row._id && row._id.name.split(' ').length > 1
+                          ? row._id?.name.split(' ')[1][0]
                           : ''}
                       </Avatar>
                     ) : (
-                      <CircularProgress />
+                      // <CustomAvatar
+                      //   bgColor={row.colorBg}
+                      //   textColor={row.colorText}
+                      //   size="40px"
+                      //   fontSize="14px"
+                      //   member={row._id}
+                      //   deleteMode={false}
+                      // />
+                      <CircularProgress
+                        style={{ color: '#C02327' }}
+                        sx={{ m: 2 }}
+                        size="32px"
+                      />
                     ))}
-                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      marginLeft: '10px',
+                    }}
+                  >
                     <div style={{ flex: 1 }}>
                       {column.id === 'name' ? (
                         useFormatText(row._id.name)

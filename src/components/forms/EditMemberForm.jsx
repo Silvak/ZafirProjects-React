@@ -28,9 +28,10 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
     ChangeTitleAlert,
     ChangeStateAlertError,
     ChangeTitleAlertError,
-    updateProjects,
+    // updateProjects,
     selectedProject,
     setSelectedProject,
+    fetchProjects,
   } = useBoundStore((state) => state, shallow);
 
   const theme = useTheme();
@@ -57,8 +58,8 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
       const { data } = await axiosInstance.get(
         `projects/${selectedProject._id}`
       );
-      setSelectedProject(data);
-      await updateProjects();
+      await setSelectedProject(data);
+      await fetchProjects(selectedProject._id);
       ChangeStateModal(false);
       ChangeTitleAlert('Member updated');
       ChangeStateAlert(true);

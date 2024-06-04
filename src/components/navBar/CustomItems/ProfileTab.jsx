@@ -18,6 +18,7 @@ import { shallow } from 'zustand/shallow';
 
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../../context/User/UserContext';
+import CustomAvatar from '../../CustomAvatar/CustomAvatar';
 
 export default function UserProfileButton() {
   const { LogoutFunc } = useContext(UserContext);
@@ -61,6 +62,7 @@ export default function UserProfileButton() {
             paddingLeft: 2,
             paddingRight: 2,
             maxHeight: '52px',
+            minWidth: 'max-content',
             cursor: 'pointer',
           }}
           id="fade-button"
@@ -69,6 +71,13 @@ export default function UserProfileButton() {
           aria-expanded={open ? 'true' : undefined}
           onClick={handleOpenUserMenu}
         >
+          {/* <CustomAvatar
+            key={User?._id}
+            bgColor={User?.colorBg}
+            textColor={User?.colorText}
+            member={User}
+            deleteMode={false}
+          /> */}
           <Avatar
             sx={{
               borderRadius: '50%',
@@ -76,8 +85,10 @@ export default function UserProfileButton() {
               color: `${User?.colorText}`,
             }}
           >
-            {User?.name.split(' ')[0][0]}
-            {User.name.split(' ').length > 1 ? User?.name.split(' ')[1][0] : ''}
+            {User && User.name && User?.name.split(' ')[0][0]}
+            {User && User.name && User.name.split(' ').length > 1
+              ? User?.name.split(' ')[1][0]
+              : ''}
           </Avatar>
           {/* <Avatar
             src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
@@ -85,7 +96,7 @@ export default function UserProfileButton() {
             sx={{ borderRadius: '50%' }}
           /> */}
 
-          <Box sx={{ ml: 1.5 }}>
+          <Box sx={{ px: 2, display: 'flex', flexDirection: 'column' }}>
             <Typography
               level="title-sm"
               variant="h7"

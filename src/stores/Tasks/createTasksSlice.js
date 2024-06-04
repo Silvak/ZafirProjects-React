@@ -2,7 +2,6 @@ import { axiosInstance } from '../../config/apiConfig';
 
 export const createTasksSlice = (set) => ({
   tasks: [],
-  myTasks: [],
   singleTask: null,
 
   addTask: async (taskData, projectId) => {
@@ -73,14 +72,5 @@ export const createTasksSlice = (set) => ({
     // }
   },
 
-  fetchTasksById: async (projectId) => {
-    try {
-      const { data } = await axiosInstance.get(
-        `/tasksList/project/${projectId}`
-      );
-      set({ myTasks: data });
-    } catch (error) {
-      console.error('Error fetching tasks', error);
-    }
-  },
+
 });

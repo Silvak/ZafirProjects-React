@@ -22,14 +22,7 @@ const filtersData = [
 ];
 
 function MyTask() {
-  const {
-    tasks,
-    myTasks,
-    fetchTasksById,
-    addTask,
-    fetchTasks,
-    selectedProject,
-  } = useBoundStore((state) => state, shallow);
+  const { myTasks, selectedProject } = useBoundStore((state) => state, shallow);
   const theme = createTheme();
   const [filterOption, setFilterOption] = useState('All');
 
@@ -39,18 +32,18 @@ function MyTask() {
     setFilterOption(event.target.value);
   };
 
-  useEffect(() => {
-    if (selectedProject) {
-      const fetchData = async () => {
-        try {
-          await fetchTasksById(selectedProject._id);
-        } catch (error) {
-          console.error('Error fetching tasks', error);
-        }
-      };
-      fetchData();
-    }
-  }, [selectedProject, fetchTasksById]);
+  // useEffect(() => {
+  //   if (selectedProject) {
+  //     const fetchData = async () => {
+  //       try {
+  //         await fetchTasksById(selectedProject._id);
+  //       } catch (error) {
+  //         console.error('Error fetching tasks', error);
+  //       }
+  //     };
+  //     fetchData();
+  //   }
+  // }, [selectedProject, fetchTasksById]);
 
   const filteredTasks = Array.isArray(myTasks)
     ? myTasks.filter((task) => {
@@ -96,15 +89,14 @@ function MyTask() {
           <Grid
             item
             sx={{
-              marginLeft: '20px',
-              marginBottom: '17px',
-              marginTop: '22px',
+              marginTop: '30px',
             }}
           >
             <Typography
               sx={{ fontSize: '20px', fontWeight: 500, fontFamily: 'Poppins' }}
             >
               My Tasks
+              {selectedProject ? ` of ${selectedProject.name}` : ''}
             </Typography>
           </Grid>
           {/* Select Filter */}
@@ -119,6 +111,8 @@ function MyTask() {
                   background: 'white',
                   borderRadius: '8px',
                   cursor: 'pointer',
+                  marginTop: '30px',
+
                   padding: '10px',
                 }}
               >
