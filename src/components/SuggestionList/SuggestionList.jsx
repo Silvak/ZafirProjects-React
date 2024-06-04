@@ -1,6 +1,6 @@
 import { List, ListItem } from '@mui/material';
 
-const SuggestionList = ({ usersList, onClick, type }) => {
+const SuggestionList = ({ usersList, onClick, type, top }) => {
   return (
     <List
       sx={{
@@ -9,7 +9,7 @@ const SuggestionList = ({ usersList, onClick, type }) => {
         color: '#000',
         position: 'absolute',
         bottom: '0',
-        top: '64px',
+        top: `${top ? top : '64px'}`,
         zIndex: '9999',
         width: '100%',
         height: 'fit-content',
@@ -36,7 +36,7 @@ const SuggestionList = ({ usersList, onClick, type }) => {
             },
           }}
         >
-          {user.name}
+          {user?.name}
         </ListItem>
       ))}
     </List>

@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import { useEditProject } from '../../hooks/useEditProject';
 import CustomAvatar from '@/components/CustomAvatar/CustomAvatar';
+import SuggestionList from '../SuggestionList/SuggestionList';
 
 function EditProjectForm({ project }) {
   const {
@@ -162,24 +163,11 @@ function EditProjectForm({ project }) {
               }}
             />
           </Grid>
-          <CustomList showme={filteredLeaders.length > 0}>
-            {filteredLeaders.map((user) => (
-              <ListItem
-                key={user._id}
-                sx={{
-                  cursor: 'pointer',
-                  '&:hover': {
-                    background: '#F6F7FA',
-                  },
-                }}
-                onClick={() => {
-                  handleSuggestionClick(user, 'leader');
-                }}
-              >
-                {user.name}
-              </ListItem>
-            ))}
-          </CustomList>
+          <SuggestionList
+            type='leader'
+            usersList={filteredLeaders}
+            onClick={handleSuggestionClick}
+          />
         </Box>
 
         {/* members */}
@@ -211,24 +199,11 @@ function EditProjectForm({ project }) {
               }}
             />
           </Grid>
-          <CustomList showme={filteredMembers.length > 0}>
-            {filteredMembers.map((user) => (
-              <ListItem
-                key={user._id}
-                sx={{
-                  cursor: 'pointer',
-                  '&:hover': {
-                    background: '#F6F7FA',
-                  },
-                }}
-                onClick={() => {
-                  handleSuggestionClick(user, 'member');
-                }}
-              >
-                {user.name}
-              </ListItem>
-            ))}
-          </CustomList>
+          <SuggestionList
+            type='member'
+            usersList={filteredMembers}
+            onClick={handleSuggestionClick}
+          />
         </Box>
         {/* avatars */}
         <Grid item xs={12}>
@@ -243,10 +218,11 @@ function EditProjectForm({ project }) {
           >
             {members.map((member) => (
               <CustomAvatar
-                name={member._id.name}
                 key={member._id._id}
+                bgColor={member.colorBg}
+                textColor={member.colorText}
+                member={member._id}
                 onClick={() => {
-                  console.log(member);
                   handleRemoveMember(member);
                 }}
               />
