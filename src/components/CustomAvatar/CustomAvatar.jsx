@@ -1,9 +1,18 @@
 import { useCallback, useMemo } from 'react';
 import Tooltip from '@mui/material/Tooltip';
 
-const size = '45px';
+// const size = '45px';
 
-const CustomAvatar = ({ member, bgColor, textColor, disabled, ...props }) => {
+const CustomAvatar = ({
+  member,
+  bgColor,
+  textColor,
+  disabled,
+  fontSize = '1rem',
+  size = '45px',
+  deleteMode = true,
+  ...props
+}) => {
   const handleMouseOver = useCallback((e) => {
     e.currentTarget.style.opacity = '0.7';
   }, []);
@@ -13,34 +22,38 @@ const CustomAvatar = ({ member, bgColor, textColor, disabled, ...props }) => {
   }, []);
 
   return (
-    <Tooltip title={`Delete ${member.name}`}>
+    <Tooltip title={deleteMode && member ? `Delete ${member.name}` : ''}>
       <div
         style={{
           transition: 'opacity 0.3s ease-in-out',
           width: `${size}`,
           height: `${size}`,
           borderRadius: '50%',
-          display: 'grid',
-          placeContent: 'center',
-          backgroundColor: `${member.colorbg}`,
+          // display: 'grid',
+          // placeContent: 'center',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor:
+            member && member.colorbg ? `${member.colorbg}` : 'gray',
         }}
         onMouseOver={handleMouseOver}
         onMouseOut={handleMouseOut}
         {...props}
       >
-        <span
+        <p
           style={{
-            fontSize: '1rem',
+            fontSize,
             fontWeight: 'bold',
             textTransform: 'uppercase',
-            textColor: `${member.colorText}`,
+            color: 'white',
           }}
         >
-          {member.name?.split(' ')[0][0].toUpperCase()}
-          {member.name?.split(' ').length > 1
+          {member ? member.name?.split(' ')[0][0].toUpperCase() : '?'}
+          {member && member.name?.split(' ').length > 1
             ? member.name?.split(' ')[1][0].toUpperCase()
             : ''}
-        </span>
+        </p>
       </div>
     </Tooltip>
   );

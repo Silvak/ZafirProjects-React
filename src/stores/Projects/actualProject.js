@@ -26,7 +26,6 @@ export const actualProject = (set, get) => ({
       if (data) {
         set({ projectsData: data, selectedProject: data[0] });
         if (data[0]) {
-          console.log(data[0]);
           await get().fetchTasksById(data[0]._id);
         }
       }

@@ -49,13 +49,11 @@ const TableRowComponent = ({
     ChangeStateModal(true);
   };
 
-  console.log(row.project);
-
   return (
     <React.Fragment key={row}>
       <TableRow hover={!isMobile}>
         {!isMobile && (
-          <TableCell className='checkbox-contact'>
+          <TableCell className="checkbox-contact">
             <Checkbox
               // checked={isItemSelected}
               // onChange={() => handleCheckboxClick(row.name)}
@@ -70,7 +68,7 @@ const TableRowComponent = ({
           return (
             <TableCell
               key={index}
-              align='left'
+              align="left"
               style={{
                 fontWeight: 'bold',
                 width: 'auto',
@@ -138,7 +136,10 @@ const TableRowComponent = ({
                       <CustomAvatar
                         bgColor={row.colorBg}
                         textColor={row.colorText}
+                        size="40px"
+                        fontSize="14px"
                         member={row._id}
+                        deleteMode={false}
                       />
                     ) : (
                       <CircularProgress
@@ -202,8 +203,8 @@ const TableRowComponent = ({
               {columns.map((column, index) => (
                 <Grid item xs={12} sm={6} key={index}>
                   <Typography
-                    variant='body2'
-                    component='div'
+                    variant="body2"
+                    component="div"
                     style={{
                       textAlign: 'center',
                       marginRight: '20%',
@@ -214,7 +215,7 @@ const TableRowComponent = ({
                     {column.label !== 'Name' && column.id !== 'action' ? (
                       <React.Fragment>
                         {column.id === 'photo' ? (
-                          <img src={avatar} width='56px' alt='Photo' />
+                          <img src={avatar} width="56px" alt="Photo" />
                         ) : column.label !== 'Rol' ? (
                           <span style={{ fontWeight: 'normal' }}>
                             {': ' + row[column.id]}
