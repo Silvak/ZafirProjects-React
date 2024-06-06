@@ -6,7 +6,7 @@ import {
   CircularProgress,
   Tooltip,
 } from '@mui/material';
-import { RxEyeOpen } from 'react-icons/rx';
+import { RxEyeOpen, RxTrash } from 'react-icons/rx';
 import { useBoundStore } from '../../stores';
 import { shallow } from 'zustand/shallow';
 import { statusColors } from '../../utils/colors';
@@ -37,6 +37,9 @@ const TaskDetailSubstasks = ({ taskId }) => {
     ChangeTitleModal,
     ChangeContentModal,
     ChangeIsVisibleButton,
+    removeSubtask,
+    ChangeTitleAlert,
+    ChangeStateAlert,
   } = useBoundStore((state) => state, shallow);
 
   useEffect(() => {
@@ -59,6 +62,13 @@ const TaskDetailSubstasks = ({ taskId }) => {
     ChangeStateModal(true);
     ChangeTitleModal('Add SubTask');
     ChangeContentModal(<SubTaskForm taskId={taskId} projectId={taskId} />);
+  };
+  const handleRemoveSubTask = async (idSubtasks) => {
+    console.log('Subtask Eliminada', idSubtasks);
+    await removeSubtask(idSubtasks);
+    ChangeStateAlert(true);
+    ChangeTitleAlert('Subtask deleted');
+    ChangeStateModal(false);
   };
 
   const handleViewSubstask = (subtask) => {
@@ -149,12 +159,21 @@ const TaskDetailSubstasks = ({ taskId }) => {
                       </div>
                     </td>
                     <td>{moment(item.start).format('DD/MM/YYYY')}</td>
-                    <td className={css.icon}>
+                    <td
+                      className={css.icon}
+                      style={{ display: 'flex', alignItems: 'center' }}
+                    >
                       <Button
                         color="inherit"
                         onClick={() => handleViewSubstask(item)}
                       >
                         <RxEyeOpen size={25} />
+                      </Button>
+                      <Button
+                        color="inherit"
+                        onClick={() => handleRemoveSubTask(item._id)}
+                      >
+                        <RxTrash size={25} />
                       </Button>
                     </td>
                   </tr>

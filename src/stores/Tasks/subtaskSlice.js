@@ -18,11 +18,20 @@ export const createSubtasksSlice = (set) => ({
         return task;
       }),
     })),
-  removeSubtask: (taskIdToDelete) =>
-    set((state) => ({
-      subtasks: state.subtasks.filter((task) => task.id !== taskIdToDelete),
-    })),
-
+  // removeSubtask: (taskIdToDelete) =>
+  //   set((state) => ({
+  //     subtasks: state.subtasks.filter((task) => task.id !== taskIdToDelete),
+  //   })),
+  removeSubtask: async (subTaskId) => {
+    try {
+      await axiosInstance.delete(`/subtaks/${subTaskId}`);
+    } catch (error) {
+      console.error('Error deleting task', error);
+    }
+    // set((state) => ({
+    //   tasks: state.tasks.filter((task) => task.id !== taskIdToDelete),
+    // }))
+  },
   updateSubtask: async (updateTask) => {
     try {
       const newSubTasks = await axiosInstance.put(
