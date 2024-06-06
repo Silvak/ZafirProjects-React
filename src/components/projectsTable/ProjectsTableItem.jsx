@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 
 import { useBoundStore } from '../../stores';
 import { shallow } from 'zustand/shallow';
+import CustomAvatar from '../CustomAvatar/CustomAvatar';
 
 const BoxFlex = ({ children, sx }) => {
   return (
@@ -28,18 +29,20 @@ const BoxFlex = ({ children, sx }) => {
   );
 };
 
-const ProjectsTableItem = ({ _id, name, start, username }) => {
-  const { fixStart } = fixDate(start);
+const ProjectsTableItem = ({ project }) => {
+  const { fixStart } = fixDate(project?.start);
   const { selectedProjectById } = useBoundStore((state) => state, shallow);
   const handleSelectProject = (id) => {
     selectedProjectById(id);
   };
 
+  const leader = project?.leaders;
+
   return (
     <Link
-      to={`/project/${_id}`}
+      to={`/project/${project?._id}`}
       style={{ color: 'inherit', textDecoration: 'none' }}
-      onClick={() => handleSelectProject(_id)}
+      onClick={() => handleSelectProject(project?._id)}
     >
       <TableCell
         sx={{
@@ -54,19 +57,24 @@ const ProjectsTableItem = ({ _id, name, start, username }) => {
       >
         <BoxFlex sx={{ flex: 2 }}>
           <Box sx={{ marginLeft: '20px' }}>
-            <h2 className={css.projectName}>{name}</h2>
+            <h2 className={css.projectName}>{project?.name}</h2>
           </Box>
         </BoxFlex>
         <BoxFlex>
-          <img src={UserAvatar} alt="user avatar" width={40} height={40} />
-          <p className={css.username}>{username}</p>
+          <CustomAvatar
+            member={leader}
+            bgColor={leader.colorBg}
+            textColor={leader.colorText}
+            deleteMode={false}
+          />
+          <p className={css.username}>{leader.name}</p>
         </BoxFlex>
         <BoxFlex>
-          <MdCalendarMonth color="#6B6E75" size="20px" />
-          <p className="date">{fixStart}</p>
+          <MdCalendarMonth color='#6B6E75' size='20px' />
+          <p className='date'>{fixStart}</p>
         </BoxFlex>
         <BoxFlex>
-          <MdAttachFile color="#6B6E75" size="20px" />
+          <MdAttachFile color='#6B6E75' size='20px' />
           {/* <p> {attachments.length} files</p> */}1 files
         </BoxFlex>
         {/* <BoxFlex>
