@@ -18,7 +18,6 @@ export function useEditProject(project) {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const {
     User,
-    addProject,
     updateProject,
     updateProjects,
     ChangeStateModal,
@@ -115,7 +114,6 @@ export function useEditProject(project) {
         leaders: formData.leaders._id,
         members_id: project['members_id'],
       };
-      console.log(newValues, isEqual);
       // verificar si hay cambios
       if (JSON.stringify(newValues) === JSON.stringify(isEqual)) {
         ChangeStateAlertError(true);
@@ -128,7 +126,7 @@ export function useEditProject(project) {
         return;
       } else {
         await updateProject(project._id, newValues);
-        await updateProjects();
+        await updateProjects(User?.uid);
         ChangeStateAlert(true);
         ChangeTitleAlert('Data has been updated successfully');
         ChangeStateModal(false);
