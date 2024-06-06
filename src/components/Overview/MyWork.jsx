@@ -85,23 +85,23 @@ function MyWorkGlance() {
       total: pendingTasks.length,
       color: '#6B6E75',
     },
-    issues: {
-      issuesTasks,
-      title: 'Issues',
-      total: issuesTasks.length,
-      color: '#EBA741',
-    },
-    review: {
-      reviewTasks,
-      title: 'Review',
-      total: reviewTasks.length,
-      color: '#E55D57',
-    },
+    // issues: {
+    //   issuesTasks,
+    //   title: 'Issues',
+    //   total: issuesTasks.length,
+    //   color: '#EBA741',
+    // },
+    // review: {
+    //   reviewTasks,
+    //   title: 'Review',
+    //   total: reviewTasks.length,
+    //   color: '#E55D57',
+    // },
     completed: {
       completedTasks,
       title: 'Completed',
       total: completedTasks.length,
-      color: '#429482',
+      color: '#00913f',
     },
   };
 

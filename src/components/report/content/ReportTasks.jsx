@@ -100,7 +100,7 @@ function ReportTasks({ customProject }) {
       completedTasks,
       title: 'Completed',
       total: completedTasks.length,
-      color: '#429482',
+      color: '#00913f',
     },
   };
 
