@@ -42,7 +42,10 @@ export const actualProject = (set, get) => ({
   updateProjects: async (idUser) => {
     try {
       const { data } = await axiosInstance.get(`/projects/user/${idUser}`);
-      set({ projectsData: data });
+      set({ projectsData: data, selectedProject: data[0] });
+      if (data[0]) {
+        await get().fetchTasksById(data[0]._id);
+      }
     } catch (error) {
       console.error('Error actualizando proyectos:', error);
     }

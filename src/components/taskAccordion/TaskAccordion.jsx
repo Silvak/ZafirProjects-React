@@ -19,7 +19,10 @@ import { shallow } from 'zustand/shallow';
 import { useParams } from 'react-router-dom';
 
 const TaskAccordion = ({ title, state, tasks, handleAddTask, view }) => {
-  const { updateTask } = useBoundStore((state) => state, shallow);
+  const { updateTask, updateProjects, User } = useBoundStore(
+    (state) => state,
+    shallow
+  );
   const theme = createTheme();
   const [expanded, setExpanded] = useState(false);
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
@@ -32,6 +35,7 @@ const TaskAccordion = ({ title, state, tasks, handleAddTask, view }) => {
       newData: { state },
       projectId: params.id,
     });
+    await updateProjects(User?.uid);
   };
 
   const [{ opacity, dropTarget, isOver }, drop] = useDrop({
