@@ -1,60 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Typography,
-  useMediaQuery,
-  Avatar,
-  CircularProgress,
-} from '@mui/material';
+import React from 'react';
+import { Typography, Avatar, CircularProgress } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
-import { mockTasks } from '../../../mockData/taskData';
-import { useBoundStore } from '../../../stores/index';
-import userImage from '../../../assets/Img/png/userImage.png';
-import { shallow } from 'zustand/shallow';
-import avatar from '@/assets/Img/png/defaultUser.png';
 
-const UpcomingTask = () => {
-  const { tasks, fetchTasks } = useBoundStore((state) => state, shallow);
-  const [result, setResult] = useState([]);
-  const isLittleScreen = useMediaQuery('(max-width:800px)');
+const getColor = (taskCount, maxTasks) => {
+  const intensity = Math.min(1, taskCount / maxTasks);
+  return `rgba(69, 156, 237, ${intensity})`;
+};
 
-  useEffect(() => {
-    fetchTasks();
-  }, []);
-
-  useEffect(() => {
-    let uniqueProjects = {};
-
-    if (tasks) {
-      tasks.forEach((task) => {
-        const project = task.projectId;
-        if (project && project._id && !uniqueProjects[project._id]) {
-          uniqueProjects[project._id] = {
-            name: project.name,
-            progress: project.progress,
-            totalTasks: 1,
-            completed: task.state === 'Completed' ? 1 : 0,
-          };
-        } else if (project && project._id) {
-          uniqueProjects[project._id].totalTasks++;
-          if (task.state === 'Completed') {
-            uniqueProjects[project._id].completed++;
-          }
-        }
-      });
-    }
-
-    const uniqueProjectsArray = Object.values(uniqueProjects);
-
-    setResult(uniqueProjectsArray.slice(0, 3));
-  }, [tasks]);
-
-  const tasksWithProfilePhotos = result.slice(0, 3);
-
-  const total1 = result[0]?.totalTasks || 0;
-  const total2 = result[1]?.totalTasks || 0;
-  const total3 = result[2]?.totalTasks || 0;
-  const total4 = result[3]?.totalTasks || 0;
-  const taskQuantities = [total1, total2, total3, total4];
+const UpcomingTask = ({ usersWithData }) => {
+  const maxTasks = Math.max(...usersWithData.map((user) => user.taskCount), 0);
 
   return (
     <div
@@ -78,7 +32,7 @@ const UpcomingTask = () => {
           marginTop: 'auto',
         }}
       >
-        {tasksWithProfilePhotos.map((task, index) => (
+        {usersWithData?.map((user, index) => (
           <div
             key={index}
             style={{
@@ -87,35 +41,22 @@ const UpcomingTask = () => {
               alignItems: 'center',
             }}
           >
-            {/* <img
-              src={avatar}
-              alt={`User ${index + 1}`}
-              style={{ width: '32px', height: '32px', marginTop: '8px' }}
-            /> */}
-            {/* <Avatar
-              sx={{
-                borderRadius: '50%',
-                bgcolor: `${leader?.colorbg}`,
-                color: `${leader?.colorText}`,
-              }}
-            >
-              {leader?.name.split(' ')[0][0].toUpperCase()}
-              {leader.name.split(' ').length > 1
-                ? leader?.name.split(' ')[1][0].toUpperCase()
-                : ''}
-            </Avatar> */}
-            {task.name ? (
+            {user.name ? (
               <Avatar
                 sx={{
+                  bgcolor: user.colorbg ? user.colorbg : 'gray',
                   borderRadius: '50%',
                 }}
               >
                 <Tooltip
-                  title={task.name}
+                  title={`${user.name} / Tasks: ${user.taskCount}`}
                   placement="top"
                   style={{ zIndex: 9 }}
                 >
-                  {task.name.charAt(0).toUpperCase()}
+                  {user.name ? user.name.split(' ')[0][0] : '?'}
+                  {user.name.split(' ').length > 0
+                    ? user.name.split(' ')[1][0]
+                    : ''}
                 </Tooltip>
               </Avatar>
             ) : (
@@ -124,8 +65,8 @@ const UpcomingTask = () => {
             <div
               style={{
                 width: '24px',
-                height: `${taskQuantities[index] * 15}px`,
-                backgroundColor: '#459CED',
+                height: `${user.taskCount}px`,
+                backgroundColor: getColor(user.taskCount, maxTasks),
                 borderTopLeftRadius: '12px',
                 borderTopRightRadius: '12px',
               }}
@@ -162,7 +103,7 @@ const UpcomingTask = () => {
               marginRight: '12px',
             }}
           >
-            15
+            150
           </Typography>
           <div
             style={{
@@ -191,7 +132,7 @@ const UpcomingTask = () => {
               marginRight: '12px',
             }}
           >
-            10
+            100
           </Typography>
           <div
             style={{
@@ -220,7 +161,7 @@ const UpcomingTask = () => {
               marginRight: '12px',
             }}
           >
-            5
+            50
           </Typography>
           <div
             style={{

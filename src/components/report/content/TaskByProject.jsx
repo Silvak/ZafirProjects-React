@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Typography, Divider, useMediaQuery, Tooltip } from '@mui/material';
-import { useBoundStore } from '../../../stores/index';
-import { shallow } from 'zustand/shallow';
 
 const CustomTaskCounter = ({ quantityTasks }) => {
   return (
     <div
       style={{
         position: 'absolute',
-        bottom: `${quantityTasks * 5}px`,
+        bottom: `${quantityTasks * 1.5}px`,
         left: '150%',
         transform: 'translateX(-50%)',
         backgroundColor: '#000',
@@ -24,40 +22,10 @@ const CustomTaskCounter = ({ quantityTasks }) => {
   );
 };
 
-const TaskByProject = () => {
-  const { tasks } = useBoundStore((state) => state, shallow);
+const TaskByProject = ({ reduceProjects, totalTasks }) => {
   const isLittleScreen = useMediaQuery('(max-width:800px)');
-  const [result, setResult] = useState([]);
-
-  // useEffect(() => {
-  //   fetchTasks();
-  // }, []);
-
-  useEffect(() => {
-    let uniqueProjects = {};
-
-    if (tasks) {
-      tasks.forEach((task) => {
-        const project = task.projectId;
-        if (project && project._id && !uniqueProjects[project._id]) {
-          uniqueProjects[project._id] = {
-            name: project.name,
-            progress: project.progress,
-            totalTasks: 1,
-          };
-        } else if (project && project._id) {
-          uniqueProjects[project._id].totalTasks++;
-        }
-      });
-    }
-    const uniqueProjectsArray = Object.values(uniqueProjects);
-
-    setResult(uniqueProjectsArray.slice(0, 3));
-  }, [tasks]);
 
   const colors = ['#459CED', '#D377F3', '#5D923D'];
-
-  const sumOfTasks = tasks?.length;
 
   return (
     <div
@@ -84,14 +52,14 @@ const TaskByProject = () => {
       >
         <Typography
           variant="h3"
-          sx={{
-            color: '#1D1F24',
+          style={{
+            color: '#6B6E75',
             fontFamily: 'Poppins',
-            fontSize: '18px',
-            fontWeight: 'bold',
+            fontSize: '14px',
+            fontWeight: 400,
           }}
         >
-          {sumOfTasks}
+          Total tasks: <span style={{ fontWeight: 800 }}>{totalTasks}</span>
         </Typography>
       </div>
       {/* Segunda fila */}
@@ -102,8 +70,8 @@ const TaskByProject = () => {
           marginTop: 'auto',
         }}
       >
-        {result &&
-          result.map((project, index) => (
+        {reduceProjects &&
+          reduceProjects.map((project, index) => (
             <div
               key={index}
               style={{
@@ -114,7 +82,7 @@ const TaskByProject = () => {
             >
               <div
                 style={{
-                  height: `${project.totalTasks * 5}px`,
+                  height: `${project.total * 1.5}px`,
                   width: '44px',
                   backgroundColor: colors[index],
                   borderTopLeftRadius: '12px',
@@ -123,7 +91,7 @@ const TaskByProject = () => {
               >
                 {/* Elemento sobre la barra */}
                 {!isLittleScreen && (
-                  <CustomTaskCounter quantityTasks={project.totalTasks} />
+                  <CustomTaskCounter quantityTasks={project.total} />
                 )}
               </div>
             </div>
@@ -145,12 +113,12 @@ const TaskByProject = () => {
           marginTop: '8px',
         }}
       >
-        {result.map((project, index) => (
+        {reduceProjects?.map((project, index) => (
           <div
             key={index}
             style={{ display: 'flex', alignItems: 'center', cursor: 'default' }}
           >
-            <Tooltip title={project.name}>
+            <Tooltip title={project.project}>
               <Typography
                 variant="body1"
                 style={{
@@ -162,8 +130,8 @@ const TaskByProject = () => {
                   minWidth: 70,
                 }}
               >
-                {project.name.slice(0, 12)}
-                {project.name.slice(0, 12).length >= 12 ? '...' : ''}
+                {project.project.slice(0, 12)}
+                {project.project.length > 12 ? '...' : ''}
               </Typography>
             </Tooltip>
           </div>
