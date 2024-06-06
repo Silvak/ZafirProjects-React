@@ -20,10 +20,16 @@ export const createTasksSlice = (set) => ({
         return task;
       }),
     })),
-  removeTask: (taskIdToDelete) =>
-    set((state) => ({
-      tasks: state.tasks.filter((task) => task.id !== taskIdToDelete),
-    })),
+  removeTask: async (taskId) => {
+    try {
+      await axiosInstance.delete(`/tasksList/${taskId}`);
+    } catch (error) {
+      console.error('Error deleting task', error);
+    }
+    // set((state) => ({
+    //   tasks: state.tasks.filter((task) => task.id !== taskIdToDelete),
+    // }))
+  },
 
   updateTask: async ({ taskId, newData, projectId }) => {
     console.log('FROM SLICE', newData);
@@ -71,6 +77,4 @@ export const createTasksSlice = (set) => ({
     //   console.error('Error fetching task detail', error);
     // }
   },
-
-
 });
