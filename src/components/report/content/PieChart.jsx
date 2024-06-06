@@ -81,7 +81,7 @@ export default function CustomPieChart({ projectSelected }) {
       completedTasks,
       title: 'Completed',
       total: completedTasks.length,
-      color: '#429482',
+      color: '#00913f',
     },
   };
 

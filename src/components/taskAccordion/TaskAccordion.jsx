@@ -70,6 +70,7 @@ const TaskAccordion = ({ title, state, tasks, handleAddTask, view }) => {
       </div>
     );
   };
+
   return (
     <ThemeProvider theme={theme}>
       <div
@@ -82,9 +83,16 @@ const TaskAccordion = ({ title, state, tasks, handleAddTask, view }) => {
         <CustomAccordion
           expanded={expanded}
           elevation={4}
-          className='custom-accordion'
+          className="custom-accordion"
           style={{
             backgroundColor: '#F6F7FA',
+            // backgroundColor:
+            //   title === 'Completed Tasks'
+            //     ? 'rgba(0, 145, 63, 0.3)'
+            //     : title === 'Pending Tasks'
+            //     ? 'rgba(107, 110, 117, 0.3)'
+            //     : 'rgba(69, 156, 237, 0.3)',
+
             borderRadius: '12px',
             padding: '20px',
             boxShadow:
@@ -92,8 +100,8 @@ const TaskAccordion = ({ title, state, tasks, handleAddTask, view }) => {
           }}
         >
           <AccordionSummary
-            aria-controls='panel1a-content'
-            id='panel1a-header'
+            aria-controls="panel1a-content"
+            id="panel1a-header"
             sx={{
               display: 'flex',
               alignItems: 'center',
@@ -107,7 +115,7 @@ const TaskAccordion = ({ title, state, tasks, handleAddTask, view }) => {
             >
               <ExpandIcon expanded={expanded} />
               <Typography
-                variant='h4'
+                variant="h4"
                 sx={{
                   fontSize: '18px',
                   fontWeight: 'bold',

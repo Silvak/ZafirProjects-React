@@ -13,7 +13,9 @@ const useSignIn = () => {
     Authenticated,
     setUser,
     ChangeStateAlert,
+    ChangeStateAlertError,
     ChangeTitleAlert,
+    ChangeTitleAlertError,
   } = useBoundStore((state) => state, shallow);
 
   const handlePasswordVisibility = () => {
@@ -48,9 +50,8 @@ const useSignIn = () => {
         }
       })
       .catch((error) => {
-        ChangeTitleAlert(error.message);
-        ChangeStateAlert(true);
-        console.log(error.message);
+        ChangeTitleAlertError(error.message);
+        ChangeStateAlertError(true);
       });
   };
 

@@ -173,11 +173,11 @@ const getColor = (percentage) => {
   } else if (percentage <= 50) {
     return '#EBA741';
   } else if (percentage <= 75) {
-    return '#429482';
+    return '#00913f';
   } else if (percentage <= 99) {
     return '#F71b82';
   } else {
-    return '#429482';
+    return '#00913f';
   }
 };
 

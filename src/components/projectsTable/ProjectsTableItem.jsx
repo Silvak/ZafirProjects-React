@@ -104,7 +104,7 @@ const ProjectsTableItem = ({ project }) => {
               style={{
                 width: `${status.percentage}%`,
                 height: "100%",
-                backgroundColor: "#429482",
+                backgroundColor: "#00913f",
                 borderRadius: "inherit",
               }}
             />
