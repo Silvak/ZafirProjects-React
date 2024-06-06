@@ -38,7 +38,7 @@ export default function CustomPieChart({ projectSelected }) {
     const FetchTasks = async () => {
       if (projectSelected) {
         const id = projectSelected._id;
-        await fetchTasksById(id);
+        const result = await fetchTasksById(id);
       }
     };
     FetchTasks();

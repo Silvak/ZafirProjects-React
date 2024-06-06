@@ -32,50 +32,58 @@ const UpcomingTask = ({ usersWithData }) => {
           marginTop: 'auto',
         }}
       >
-        {usersWithData?.map((user, index) => (
-          <div
-            key={index}
-            style={{
-              display: 'flex',
-              flexDirection: 'column-reverse',
-              alignItems: 'center',
-            }}
-          >
-            {user.name ? (
-              <Tooltip
-                title={user ? `${user?.name} / Tasks: ${user?.taskCount}` : ''}
-                placement="top"
-                style={{ zIndex: 9999 }}
-              >
-                <Avatar
-                  sx={{
-                    bgcolor: user.colorbg ? user.colorbg : 'gray',
-                    borderRadius: '50%',
-                    fontWeight: 700,
-                    boxShadow: '1px 1px lightgray',
-                    textShadow: '1px 1px gray',
-                  }}
-                >
-                  {user.name ? user.name.split(' ')[0][0] : '?'}
-                  {user.name.split(' ').length > 0
-                    ? user.name.split(' ')[1][0]
-                    : ''}
-                </Avatar>
-              </Tooltip>
-            ) : (
-              <CircularProgress />
-            )}
+        {usersWithData?.length > 0 ? (
+          usersWithData?.map((user, index) => (
             <div
+              key={index}
               style={{
-                width: '24px',
-                height: `${user.taskCount}px`,
-                backgroundColor: getColor(user.taskCount, maxTasks),
-                borderTopLeftRadius: '12px',
-                borderTopRightRadius: '12px',
+                display: 'flex',
+                flexDirection: 'column-reverse',
+                alignItems: 'center',
               }}
-            />
-          </div>
-        ))}
+            >
+              {user.name ? (
+                <Tooltip
+                  title={
+                    user && user.name
+                      ? `${user?.name} / Tasks: ${user?.taskCount}`
+                      : ''
+                  }
+                  placement="top"
+                  style={{ zIndex: 9999 }}
+                >
+                  <Avatar
+                    sx={{
+                      bgcolor: user?.colorbg ? user.colorbg : 'gray',
+                      borderRadius: '50%',
+                      fontWeight: 700,
+                      boxShadow: '1px 1px lightgray',
+                      textShadow: '1px 1px gray',
+                    }}
+                  >
+                    {user.name ? user.name.split(' ')[0].charAt(0) : '?'}
+                    {user?.name?.split(' ').length > 0
+                      ? user?.name?.split(' ')[1]?.charAt(0)
+                      : ''}
+                  </Avatar>
+                </Tooltip>
+              ) : (
+                <CircularProgress />
+              )}
+              <div
+                style={{
+                  width: '24px',
+                  height: `${user.taskCount}px`,
+                  backgroundColor: getColor(user.taskCount, maxTasks),
+                  borderTopLeftRadius: '12px',
+                  borderTopRightRadius: '12px',
+                }}
+              />
+            </div>
+          ))
+        ) : (
+          <p>No task with users</p>
+        )}
       </div>
 
       <div
