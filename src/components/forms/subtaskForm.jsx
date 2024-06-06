@@ -156,7 +156,7 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
       {/* row - colum */}
       <Paper
         elevation={1}
-        component='form'
+        component="form"
         onSubmit={handleSubmit}
         sx={{
           maxWidth: isMobile ? '90vw' : 'fit-content',
@@ -180,10 +180,10 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
             Enter a SubTask name
           </Typography>
           <TextField
-            size='small'
+            size="small"
             value={formData.subTaskName}
-            placeholder='SubTask name...'
-            name='subTaskName'
+            placeholder="SubTask name..."
+            name="subTaskName"
             onChange={handleChange}
             sx={{
               width: '100%',
@@ -207,9 +207,9 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
               Start date
             </Typography>
             <TextField
-              size='small'
-              name='start'
-              type='date'
+              size="small"
+              name="start"
+              type="date"
               value={formData.start}
               onChange={handleChange}
               sx={{
@@ -222,9 +222,9 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
               End date
             </Typography>
             <TextField
-              size='small'
-              name='end'
-              type='date'
+              size="small"
+              name="end"
+              type="date"
               value={formData.end}
               onChange={handleChange}
               sx={{
@@ -244,11 +244,11 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
             Add a description...
           </Typography>
           <TextField
-            size='small'
-            name='description'
+            size="small"
+            name="description"
             onChange={handleChange}
             value={formData.description}
-            placeholder='...'
+            placeholder="..."
             sx={{
               width: '100%',
             }}
@@ -268,8 +268,8 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
               Add members
             </Typography>
             <TextField
-              size='small'
-              name='members_id'
+              size="small"
+              name="members_id"
               value={member}
               onChange={(e) => {
                 setMember(e.target.value);
@@ -277,14 +277,14 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
                   inputValue: e.target.value,
                 });
               }}
-              placeholder='Search a member'
+              placeholder="Search a member"
               sx={{
                 width: '100%',
               }}
             />
           </Grid>
           <SuggestionList
-            type='member'
+            type="member"
             usersList={filteredMembers}
             onClick={handleSuggestionClick}
           />
@@ -318,17 +318,17 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
             <Select
               required
               value={formData.priority}
-              variant='outlined'
-              size='small'
+              variant="outlined"
+              size="small"
               sx={{ fontSize: '14px', marginBottom: 2 }}
-              name='priority'
+              name="priority"
               onChange={handleChange}
               displayEmpty
               renderValue={(selected) => (selected ? selected : 'Type: All')}
             >
-              <CustomMenuItem value='High'>High</CustomMenuItem>
-              <CustomMenuItem value='Medium'>Medium</CustomMenuItem>
-              <CustomMenuItem value='Low'>Low</CustomMenuItem>
+              <CustomMenuItem value="High">High</CustomMenuItem>
+              <CustomMenuItem value="Medium">Medium</CustomMenuItem>
+              <CustomMenuItem value="Low">Low</CustomMenuItem>
             </Select>
           </FormControl>
         </Grid>
@@ -339,17 +339,19 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
             <Select
               required
               value={formData.state}
-              variant='outlined'
-              size='small'
+              variant="outlined"
+              size="small"
               sx={{ fontSize: '14px' }}
-              name='state'
+              name="state"
               onChange={handleChange}
               displayEmpty
               renderValue={(selected) => (selected ? selected : 'Type: All')}
             >
-              <CustomMenuItem value='In Progress'>In Progress</CustomMenuItem>
-              <CustomMenuItem value='Pending'>Pending</CustomMenuItem>
-              <CustomMenuItem value='Completed'>Completed</CustomMenuItem>
+              <CustomMenuItem value="In Progress">In Progress</CustomMenuItem>
+              <CustomMenuItem value="Pending">Pending</CustomMenuItem>
+              <CustomMenuItem disabled value="Completed">
+                Completed
+              </CustomMenuItem>
             </Select>
           </FormControl>
         </Grid>
@@ -363,7 +365,7 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
           }}
         >
           <Button
-            title='Cancel'
+            title="Cancel"
             onClick={handleClose}
             sx={{
               textTransform: 'none',
@@ -381,7 +383,7 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
             Cancel
           </Button>
           <Button
-            title='Save'
+            title="Save"
             onClick={handleSubmit}
             sx={{
               textTransform: 'none',
@@ -408,7 +410,7 @@ export default SubTaskForm;
 
 const CustomMenuItem = ({ children, selected, ...props }) => {
   return (
-    <MenuItem className='menu-item ' sx={{ height: 'min-content' }} {...props}>
+    <MenuItem className="menu-item " sx={{ height: 'min-content' }} {...props}>
       {children}
     </MenuItem>
   );
