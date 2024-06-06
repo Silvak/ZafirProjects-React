@@ -42,23 +42,26 @@ const UpcomingTask = ({ usersWithData }) => {
             }}
           >
             {user.name ? (
-              <Avatar
-                sx={{
-                  bgcolor: user.colorbg ? user.colorbg : 'gray',
-                  borderRadius: '50%',
-                }}
+              <Tooltip
+                title={user ? `${user?.name} / Tasks: ${user?.taskCount}` : ''}
+                placement="top"
+                style={{ zIndex: 9999 }}
               >
-                <Tooltip
-                  title={`${user.name} / Tasks: ${user.taskCount}`}
-                  placement="top"
-                  style={{ zIndex: 9 }}
+                <Avatar
+                  sx={{
+                    bgcolor: user.colorbg ? user.colorbg : 'gray',
+                    borderRadius: '50%',
+                    fontWeight: 700,
+                    boxShadow: '1px 1px lightgray',
+                    textShadow: '1px 1px gray',
+                  }}
                 >
                   {user.name ? user.name.split(' ')[0][0] : '?'}
                   {user.name.split(' ').length > 0
                     ? user.name.split(' ')[1][0]
                     : ''}
-                </Tooltip>
-              </Avatar>
+                </Avatar>
+              </Tooltip>
             ) : (
               <CircularProgress />
             )}
