@@ -2,6 +2,7 @@ import { Grid, Paper, Typography } from '@mui/material';
 import { useDrag, useDrop } from 'react-dnd';
 
 //icons
+import { BsTrash3 } from 'react-icons/bs';
 import {
   AttachFile as AttachFileIcon,
   Circle,
@@ -51,6 +52,8 @@ const TaskItem = ({ task, isMobile, isKanbanView, projectId }) => {
     ChangeTitleModal,
     ChangeContentModal,
     ChangeIsVisibleButton,
+    removeTask,
+    fetchTasksById,
   } = useBoundStore((state) => state, shallow);
 
   const handleMoreIcon = (task) => {
@@ -61,6 +64,11 @@ const TaskItem = ({ task, isMobile, isKanbanView, projectId }) => {
   };
   const handleClipIcon = () => {
     alert('toqueé el icono del clip');
+  };
+
+  const handleDeleteTask = async (id) => {
+    await removeTask(id);
+    await fetchTasksById(projectId);
   };
 
   return (
@@ -344,6 +352,14 @@ const TaskItem = ({ task, isMobile, isKanbanView, projectId }) => {
               sx={{ ml: '2rem' }}
             />
           )}
+        </Grid>
+        <Grid item xs={12} sm={1}>
+          <BsTrash3
+            style={{ cursor: 'pointer' }}
+            onClick={() => {
+              handleDeleteTask(task._id);
+            }}
+          />
         </Grid>
       </Grid>
     </Paper>

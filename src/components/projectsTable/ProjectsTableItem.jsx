@@ -77,15 +77,19 @@ const ProjectsTableItem = ({ project }) => {
         <p className={css.username}>{leader.name}</p>
       </BoxFlex>
       <BoxFlex>
-        <MdCalendarMonth color="#6B6E75" size="20px" />
-        <p className="date">{fixStart}</p>
+        <MdCalendarMonth color='#6B6E75' size='20px' />
+        <p className='date'>{fixStart}</p>
       </BoxFlex>
 
       <BoxFlex sx={{ gap: '20px' }}>
         <BsPen
+          style={{ cursor: 'pointer' }}
           onClick={() => handleEdit(<EditProjectForm project={project} />)}
         />
-        <BsTrash3 onClick={() => handleDelete(project?._id)} />
+        <BsTrash3
+          style={{ cursor: 'pointer' }}
+          onClick={() => handleDelete(project?._id)}
+        />
       </BoxFlex>
 
       {/* <BoxFlex>
