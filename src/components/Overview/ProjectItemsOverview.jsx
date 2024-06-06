@@ -10,15 +10,18 @@ const ProjectItemsOverview = ({
   description,
   handleEdit,
   handleDelete,
+  project,
   // quantityTasks,
   // category,
 }) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
-  const { selectedProjectById } = useBoundStore((state) => state, shallow);
+  const { selectedProjectById, updateProjects, User, setSelectedProject } =
+    useBoundStore((state) => state, shallow);
 
-  const handleSelectProject = (id) => {
-    selectedProjectById(id);
+  const handleSelectProject = async (project) => {
+    setSelectedProject(project);
+    await updateProjects(User?.uid);
   };
 
   return (
@@ -53,16 +56,16 @@ const ProjectItemsOverview = ({
       <Link
         to={`/project/${_id}`}
         style={{ color: 'inherit', textDecoration: 'none' }}
-        onClick={() => handleSelectProject(_id)}
+        onClick={() => handleSelectProject(project)}
       >
         <Box>
           <div
             // onClick={() => navigate(`/project/${id}`)}
             style={{ fontFamily: 'Poppins' }}
           >
-            <h2 className='projectName'>{name}</h2>
+            <h2 className="projectName">{name}</h2>
           </div>
-          <small className='quantityTasks' style={{ fontFamily: 'Poppins' }}>
+          <small className="quantityTasks" style={{ fontFamily: 'Poppins' }}>
             {/* {quantityTasks} | {item} */}
             {description.length > 25
               ? `${description.slice(0, 25)}...`

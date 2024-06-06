@@ -33,11 +33,13 @@ const BoxFlex = ({ children, sx }) => {
 const ProjectsTableItem = ({ project }) => {
   const { fixStart } = fixDate(project?.start);
 
-  const { selectedProjectById } = useBoundStore((state) => state, shallow);
+  const { selectedProjectById, updateProjects, User, setSelectedProject } =
+    useBoundStore((state) => state, shallow);
   const { handleEdit, handleDelete } = useProjectsOverview();
 
-  const handleSelectProject = (id) => {
-    selectedProjectById(id);
+  const handleSelectProject = async (project) => {
+    setSelectedProject(project);
+    await updateProjects(User?.uid);
   };
 
   const leader = project?.leaders;
@@ -59,7 +61,7 @@ const ProjectsTableItem = ({ project }) => {
           <Link
             to={`/project/${project?._id}`}
             style={{ color: 'inherit', textDecoration: 'none' }}
-            onClick={() => handleSelectProject(project?._id)}
+            onClick={() => handleSelectProject(project)}
           >
             <h2 className={css.projectName}>{project?.name}</h2>
           </Link>
@@ -75,8 +77,8 @@ const ProjectsTableItem = ({ project }) => {
         <p className={css.username}>{leader.name}</p>
       </BoxFlex>
       <BoxFlex>
-        <MdCalendarMonth color='#6B6E75' size='20px' />
-        <p className='date'>{fixStart}</p>
+        <MdCalendarMonth color="#6B6E75" size="20px" />
+        <p className="date">{fixStart}</p>
       </BoxFlex>
 
       <BoxFlex sx={{ gap: '20px' }}>

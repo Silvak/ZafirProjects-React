@@ -24,10 +24,13 @@ export const actualProject = (set, get) => ({
     try {
       const { data } = await axiosInstance.get(`/projects/user/${idUser}`);
       if (data) {
-        set({ projectsData: data, selectedProject: data[0] });
-        if (data[0]) {
-          await get().fetchTasksById(data[0]._id);
+        const selectedProject = get().selectedProject;
+        if (!selectedProject) {
+          set({ projectsData: data, selectedProject: data[0] });
+        } else {
+          set({ projectsData: data });
         }
+        await get().fetchTasksById(selectedProject._id);
       }
     } catch (error) {
       console.error('Error fetching projects:', error);
@@ -42,9 +45,10 @@ export const actualProject = (set, get) => ({
   updateProjects: async (idUser) => {
     try {
       const { data } = await axiosInstance.get(`/projects/user/${idUser}`);
-      set({ projectsData: data, selectedProject: data[0] });
-      if (data[0]) {
-        await get().fetchTasksById(data[0]._id);
+      set({ projectsData: data });
+      const selectedProject = get().selectedProject;
+      if (selectedProject) {
+        await get().fetchTasksById(selectedProject._id);
       }
     } catch (error) {
       console.error('Error actualizando proyectos:', error);
