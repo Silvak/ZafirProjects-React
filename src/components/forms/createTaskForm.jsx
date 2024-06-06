@@ -1,4 +1,4 @@
-import CustomList from '@/components/CustomList/CustomList';
+import CustomList from "@/components/CustomList/CustomList";
 import {
   Avatar,
   Box,
@@ -14,30 +14,30 @@ import {
   Typography,
   createTheme,
   useMediaQuery,
-} from '@mui/material';
-import { useState } from 'react';
-import { shallow } from 'zustand/shallow';
-import user1 from '../../assets/Img/png/userImageMan.png';
-import useSuggestionUsers from '../../hooks/useSuggestionUsers';
-import { useBoundStore } from '../../stores';
-import { axiosInstance } from '@/config/apiConfig';
-import CustomAvatar from '@/components/CustomAvatar/CustomAvatar';
-import SuggestionList from '../SuggestionList/SuggestionList';
-import getUniqueUsers from '../../utils/getUniqueUsers';
+} from "@mui/material";
+import { useState } from "react";
+import { shallow } from "zustand/shallow";
+import user1 from "../../assets/Img/png/userImageMan.png";
+import useSuggestionUsers from "../../hooks/useSuggestionUsers";
+import { useBoundStore } from "../../stores";
+import { axiosInstance } from "@/config/apiConfig";
+import CustomAvatar from "@/components/CustomAvatar/CustomAvatar";
+import SuggestionList from "../SuggestionList/SuggestionList";
+import getUniqueUsers from "../../utils/getUniqueUsers";
 
 const INITIAL_FORM_DATA = {
-  taskName: '',
-  description: '',
-  start: '',
-  end: '',
-  leaders: '',
-  state: '',
-  priority: '',
+  taskName: "",
+  description: "",
+  start: "",
+  end: "",
+  leaders: "",
+  state: "",
+  priority: "",
 };
 
-const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
+const CreateTaskForm = ({ onCreate, placeholderTaskName = "", projectId }) => {
   const theme = createTheme();
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const {
     User,
     addTask,
@@ -57,7 +57,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
   const [filteredLeaders, setFilteredLeaders] = useState([]);
   const [filteredMembers, setFilteredMembers] = useState([]);
   //  nombre del miembro
-  const [member, setMember] = useState('');
+  const [member, setMember] = useState("");
   // miembros a renderizar
   const [members, setMembers] = useState([]);
   const [formData, setformData] = useState(INITIAL_FORM_DATA);
@@ -66,8 +66,8 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
 
   const handleSuggestionChange = ({ inputValue, type }) => {
     // for input leader
-    if (type === 'leader') {
-      if (inputValue === '') {
+    if (type === "leader") {
+      if (inputValue === "") {
         setFilteredLeaders([]);
       } else {
         const result = getUniqueUsers(users);
@@ -78,8 +78,8 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
         setFilteredLeaders(filter);
       }
     } // for input member
-    else if (type === 'member') {
-      if (inputValue === '') {
+    else if (type === "member") {
+      if (inputValue === "") {
         setFilteredMembers([]);
       } else {
         const result = getUniqueUsers(users);
@@ -103,9 +103,9 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
       };
 
       // validamos que no se envie vacio
-      if (Object.values(data).includes('')) {
+      if (Object.values(data).includes("")) {
         ChangeStateAlertError(true);
-        ChangeTitleAlertError('All fields are required');
+        ChangeTitleAlertError("All fields are required");
         return;
       } else {
         await addTask(data, projectId);
@@ -128,7 +128,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
 
         // Mostramos mensaje
         ChangeStateAlert(true);
-        ChangeTitleAlert('Task created successfully');
+        ChangeTitleAlert("Task created successfully");
         ChangeStateModal(false);
       }
     } catch (error) {
@@ -148,7 +148,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
   };
 
   const handleSuggestionClick = (user, type) => {
-    if (type === 'leader') {
+    if (type === "leader") {
       setformData({ ...formData, leaders: user });
       setFilteredLeaders([]);
     } else {
@@ -158,7 +158,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
       if (alreadyExist === undefined) {
         setMembers((prev) => [...prev, user]);
         setFilteredMembers([]);
-        setMember('');
+        setMember("");
       } else {
         return;
       }
@@ -177,79 +177,79 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
       {/* row - colum */}
       <Paper
         elevation={1}
-        component='form'
+        component="form"
         onSubmit={handleSubmit}
         sx={{
-          maxWidth: isMobile ? '90vw' : 'fit-content',
-          padding: '39px',
-          maxHeight: '90vh',
-          height: isMobile ? '90vh' : '',
-          borderTopLeftRadius: '0px',
-          borderTopRightRadius: '0px',
-          overflowY: 'auto',
-          borderBottomLeftRadius: '16px',
-          borderBottomRightRadius: '16px',
+          maxWidth: isMobile ? "90vw" : "fit-content",
+          padding: "39px",
+          maxHeight: "90vh",
+          height: isMobile ? "90vh" : "",
+          borderTopLeftRadius: "0px",
+          borderTopRightRadius: "0px",
+          overflowY: "auto",
+          borderBottomLeftRadius: "16px",
+          borderBottomRightRadius: "16px",
         }}
       >
         <Grid
           item
           sx={{
-            marginBottom: '20px',
+            marginBottom: "20px",
           }}
         >
-          <Typography fontFamily={'Poppins'} color={'#6B6E75'}>
+          <Typography fontFamily={"Poppins"} color={"#6B6E75"}>
             Enter a task name
           </Typography>
           <TextField
-            size='small'
+            size="small"
             value={formData.taskName}
-            placeholder='Task name...'
-            name='taskName'
+            placeholder="Task name..."
+            name="taskName"
             onChange={handleChange}
             sx={{
-              width: '100%',
+              width: "100%",
             }}
           />
         </Grid>
         {/* flex */}
         <div
           style={{
-            display: 'flex',
-            marginBottom: '20px',
+            display: "flex",
+            marginBottom: "20px",
           }}
         >
           <Grid
             item
             sx={{
-              marginRight: '12px',
+              marginRight: "12px",
             }}
           >
-            <Typography fontFamily={'Poppins'} color={'#6B6E75'}>
+            <Typography fontFamily={"Poppins"} color={"#6B6E75"}>
               Start date
             </Typography>
             <TextField
-              size='small'
-              name='start'
-              type='date'
+              size="small"
+              name="start"
+              type="date"
               value={formData.start}
               onChange={handleChange}
               sx={{
-                width: '100%',
+                width: "100%",
               }}
             />
           </Grid>
           <Grid item>
-            <Typography fontFamily={'Poppins'} color={'#6B6E75'}>
+            <Typography fontFamily={"Poppins"} color={"#6B6E75"}>
               End date
             </Typography>
             <TextField
-              size='small'
-              name='end'
-              type='date'
+              size="small"
+              name="end"
+              type="date"
               value={formData.end}
               onChange={handleChange}
               sx={{
-                width: '100%',
+                width: "100%",
               }}
             />
           </Grid>
@@ -258,52 +258,52 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
         <Grid
           item
           sx={{
-            marginBottom: '20px',
+            marginBottom: "20px",
           }}
         >
-          <Typography fontFamily={'Poppins'} color={'#6B6E75'}>
+          <Typography fontFamily={"Poppins"} color={"#6B6E75"}>
             Add a description...
           </Typography>
           <TextField
-            size='small'
-            name='description'
+            size="small"
+            name="description"
             onChange={handleChange}
             value={formData.description}
-            placeholder='...'
+            placeholder="..."
             sx={{
-              width: '100%',
+              width: "100%",
             }}
           />
         </Grid>
 
         {/* leader */}
-        <Box sx={{ position: 'relative' }}>
+        <Box sx={{ position: "relative" }}>
           <Grid
             item
             sx={{
-              marginBottom: '20px',
+              marginBottom: "20px",
             }}
           >
-            <Typography fontFamily={'Poppins'} color={'#6B6E75'}>
+            <Typography fontFamily={"Poppins"} color={"#6B6E75"}>
               Leader
             </Typography>
             <TextField
-              size='small'
-              name='leaders'
+              size="small"
+              name="leaders"
               value={formData.leaders.name}
               onChange={(e) => {
                 handleChange(e);
                 handleSuggestionChange({
                   inputValue: e.target.value,
-                  type: 'leader',
+                  type: "leader",
                 });
               }}
               sx={{
-                width: '100%',
+                width: "100%",
               }}
             />
             <SuggestionList
-              type='leader'
+              type="leader"
               usersList={filteredLeaders}
               onClick={handleSuggestionClick}
             />
@@ -330,36 +330,36 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
         </Box>
 
         {/* members */}
-        <Box sx={{ position: 'relative' }}>
+        <Box sx={{ position: "relative" }}>
           <Grid
             item
             sx={{
               // width: "444px",
-              marginBottom: '20px',
+              marginBottom: "20px",
             }}
           >
-            <Typography fontFamily={'Poppins'} color={'#6B6E75'}>
+            <Typography fontFamily={"Poppins"} color={"#6B6E75"}>
               Add members
             </Typography>
             <TextField
-              size='small'
-              name='members_id'
+              size="small"
+              name="members_id"
               value={member}
               onChange={(e) => {
                 setMember(e.target.value);
                 handleSuggestionChange({
                   inputValue: e.target.value,
-                  type: 'member',
+                  type: "member",
                 });
               }}
-              placeholder='Search a member'
+              placeholder="Search a member"
               sx={{
-                width: '100%',
+                width: "100%",
               }}
             />
           </Grid>
           <SuggestionList
-            type='member'
+            type="member"
             usersList={filteredMembers}
             onClick={handleSuggestionClick}
           />
@@ -385,18 +385,20 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
         <Grid item xs={12}>
           <Box
             sx={{
-              display: 'flex',
-              gap: '8px',
-              marginBottom: '0px',
-              cursor: 'pointer',
-              width: 'fit-content',
+              display: "flex",
+              gap: "8px",
+              marginBottom: "0px",
+              cursor: "pointer",
+              width: "fit-content",
             }}
           >
             {members.map((member) => {
               return (
                 <CustomAvatar
-                  name={member.name}
+                  member={member}
                   key={member._id}
+                  bgColor={member.colorBg}
+                  textColor={member.colorText}
                   onClick={() => {
                     console.log(member);
                     handleRemoveMember(member);
@@ -408,45 +410,45 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
         </Grid>
         {/* selects */}
         <Grid item xs={12}>
-          <Typography sx={{ fontSize: '0.85rem' }}>Priority</Typography>
+          <Typography sx={{ fontSize: "0.85rem" }}>Priority</Typography>
           <FormControl fullWidth>
             <Select
               required
               value={formData.priority}
-              variant='outlined'
-              size='small'
-              sx={{ fontSize: '14px' }}
-              name='priority'
+              variant="outlined"
+              size="small"
+              sx={{ fontSize: "14px" }}
+              name="priority"
               onChange={handleChange}
               displayEmpty
-              renderValue={(selected) => (selected ? selected : 'Type: All')}
+              renderValue={(selected) => (selected ? selected : "Type: All")}
             >
-              <CustomMenuItem value='High'>High</CustomMenuItem>
-              <CustomMenuItem value='Medium'>Medium</CustomMenuItem>
-              <CustomMenuItem value='Low'>Low</CustomMenuItem>
+              <CustomMenuItem value="High">High</CustomMenuItem>
+              <CustomMenuItem value="Medium">Medium</CustomMenuItem>
+              <CustomMenuItem value="Low">Low</CustomMenuItem>
             </Select>
           </FormControl>
         </Grid>
 
         <Grid item xs={12}>
-          <Typography sx={{ fontSize: '0.85rem', marginTop: 2 }}>
+          <Typography sx={{ fontSize: "0.85rem", marginTop: 2 }}>
             State
           </Typography>
           <FormControl fullWidth>
             <Select
               required
               value={formData.state}
-              variant='outlined'
-              size='small'
-              sx={{ fontSize: '14px' }}
-              name='state'
+              variant="outlined"
+              size="small"
+              sx={{ fontSize: "14px" }}
+              name="state"
               onChange={handleChange}
               displayEmpty
-              renderValue={(selected) => (selected ? selected : 'Type: All')}
+              renderValue={(selected) => (selected ? selected : "Type: All")}
             >
-              <CustomMenuItem value='In Progress'>In Progress</CustomMenuItem>
-              <CustomMenuItem value='Pending'>Pending</CustomMenuItem>
-              <CustomMenuItem value='Completed'>Completed</CustomMenuItem>
+              <CustomMenuItem value="In Progress">In Progress</CustomMenuItem>
+              <CustomMenuItem value="Pending">Pending</CustomMenuItem>
+              <CustomMenuItem value="Completed">Completed</CustomMenuItem>
             </Select>
           </FormControl>
         </Grid>
@@ -454,46 +456,46 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
         {/* buttons */}
         <Grid
           sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            marginTop: '40px',
+            display: "flex",
+            justifyContent: "space-between",
+            marginTop: "40px",
           }}
         >
           <Button
-            title='Cancel'
+            title="Cancel"
             onClick={handleClose}
             sx={{
-              textTransform: 'none',
-              color: 'black',
-              backgroundColor: 'white',
-              height: '40px',
-              width: '75px',
-              borderRadius: '8px',
-              fontSize: '13px',
+              textTransform: "none",
+              color: "black",
+              backgroundColor: "white",
+              height: "40px",
+              width: "75px",
+              borderRadius: "8px",
+              fontSize: "13px",
               fontWeight: 500,
-              fontFamily: 'Poppins',
-              border: '1px solid #D3D5DA',
+              fontFamily: "Poppins",
+              border: "1px solid #D3D5DA",
             }}
           >
             Cancel
           </Button>
           <Button
-            title='Save'
+            title="Save"
             onClick={handleSubmit}
             sx={{
-              textTransform: 'none',
-              color: 'white',
-              backgroundColor: '#7662EA',
-              height: '40px',
-              width: '84px',
-              borderRadius: '8px',
-              fontSize: '13px',
+              textTransform: "none",
+              color: "white",
+              backgroundColor: "#7662EA",
+              height: "40px",
+              width: "84px",
+              borderRadius: "8px",
+              fontSize: "13px",
               fontWeight: 500,
-              fontFamily: 'Poppins',
-              '&:hover': { backgroundColor: 'black' },
+              fontFamily: "Poppins",
+              "&:hover": { backgroundColor: "black" },
             }}
           >
-            {isLoading ? 'Updating...' : 'Save'}
+            {isLoading ? "Updating..." : "Save"}
           </Button>
         </Grid>
       </Paper>
@@ -505,7 +507,7 @@ export default CreateTaskForm;
 
 const CustomMenuItem = ({ children, selected, ...props }) => {
   return (
-    <MenuItem className='menu-item ' sx={{ height: 'min-content' }} {...props}>
+    <MenuItem className="menu-item " sx={{ height: "min-content" }} {...props}>
       {children}
     </MenuItem>
   );
