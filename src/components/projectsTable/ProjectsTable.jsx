@@ -47,11 +47,7 @@ const ProjectsTable = () => {
                 (page - 1) * rowsPerPage + rowsPerPage
               )
               .map((project) => (
-                <ProjectsTableItem
-                  {...project}
-                  key={project.id}
-                  username={username}
-                />
+                <ProjectsTableItem key={project.id} project={project} />
               ))}
         </TableRow>
       </TableBody>

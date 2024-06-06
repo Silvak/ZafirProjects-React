@@ -22,7 +22,9 @@ const CustomAvatar = ({
   }, []);
 
   return (
-    <Tooltip title={member ? `Delete ${member.name}` : ''}>
+    <Tooltip
+      title={deleteMode && member ? `Delete ${member.name}` : `${member.name}`}
+    >
       <div
         style={{
           transition: 'opacity 0.3s ease-in-out',
