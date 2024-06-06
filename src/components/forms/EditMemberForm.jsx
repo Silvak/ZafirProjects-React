@@ -23,6 +23,7 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
   );
   const [customRol, setCustomRol] = useState('');
   const {
+    User,
     ChangeStateModal,
     ChangeStateAlert,
     ChangeTitleAlert,
@@ -59,7 +60,7 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
         `projects/${selectedProject._id}`
       );
       await setSelectedProject(data);
-      await fetchProjects(selectedProject._id);
+      await fetchProjects(User?.uid);
       ChangeStateModal(false);
       ChangeTitleAlert('Member updated');
       ChangeStateAlert(true);
@@ -110,16 +111,16 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
         </h2>
         <form>
           <TextField
-            label="Email"
-            size="small"
+            label='Email'
+            size='small'
             value={row._id.email}
             fullWidth
             disabled
             style={{ marginBottom: 8, marginTop: 4 }}
           />
           <TextField
-            label="Email"
-            size="small"
+            label='Email'
+            size='small'
             value={row._id.email}
             fullWidth
             disabled
@@ -134,8 +135,8 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
             style={{ marginBottom: 8 }}
           /> */}
           <TextField
-            label="Name"
-            name="name"
+            label='Name'
+            name='name'
             disabled
             value={useFormatText(newName)}
             onChange={handleChange}
@@ -143,15 +144,15 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
             style={{ marginBottom: 8 }}
           />
           <InputLabel
-            id="select-role-label"
+            id='select-role-label'
             sx={{ color: 'black', ml: 1, mt: 1, mb: 0.5, fontWeight: 400 }}
           >
             Select Role
           </InputLabel>
-          <Grid container spacing={2} alignItems="center">
+          <Grid container spacing={2} alignItems='center'>
             <Grid item xs={6}>
               <Select
-                name="rol"
+                name='rol'
                 value={newRol}
                 onChange={handleChange}
                 fullWidth
@@ -175,7 +176,7 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
               >
                 {roles.map((role) => (
                   <MenuItem
-                    className="menu-item"
+                    className='menu-item'
                     key={role}
                     value={role}
                     style={{
@@ -192,8 +193,8 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
             <Grid item xs={6}>
               {customRolEnabled && (
                 <TextField
-                  label="Custom Role"
-                  name="customRol"
+                  label='Custom Role'
+                  name='customRol'
                   value={customRol}
                   onChange={handleChange}
                   fullWidth
@@ -202,11 +203,11 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
               )}
             </Grid>
           </Grid>
-          <Grid container justifyContent="space-between" sx={{ mt: 2 }}>
+          <Grid container justifyContent='space-between' sx={{ mt: 2 }}>
             <Grid item>
               <Button
                 disableRipple
-                variant="outlined"
+                variant='outlined'
                 sx={{
                   color: 'black',
                   bgcolor: 'white',
@@ -223,7 +224,7 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
               <Button
                 disableRipple
                 style={{ marginLeft: 8 }}
-                variant="contained"
+                variant='contained'
                 sx={{
                   color: 'white',
                   bgcolor: '#7662EA',
