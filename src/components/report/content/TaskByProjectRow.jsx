@@ -1,47 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Typography, Divider, useMediaQuery } from '@mui/material';
-import { projectsData } from '../../../mockData/projectsData';
+import React from 'react';
+import { Typography, useMediaQuery } from '@mui/material';
 import CircleIcon from '@mui/icons-material/Circle';
-import { useBoundStore } from '../../../stores/index';
-import { shallow } from 'zustand/shallow';
 
-const TaskByProjectRow = () => {
-  const { tasks, fetchTasks } = useBoundStore((state) => state, shallow);
-  const [result, setResult] = useState([]);
+const TaskByProjectRow = ({ completedTasks }) => {
   const isLittleScreen = useMediaQuery('(max-width:800px)');
 
-  const filteredProjects = result.slice(0, 4);
-
-  useEffect(() => {
-    fetchTasks();
-  }, []);
-
-  useEffect(() => {
-    let uniqueProjects = {};
-
-    if (tasks) {
-      tasks.forEach((task) => {
-        const project = task.projectId;
-        if (project && project._id && !uniqueProjects[project._id]) {
-          uniqueProjects[project._id] = {
-            name: project.name,
-            progress: project.progress,
-            totalTasks: 1,
-            completed: task.state === 'Completed' ? 1 : 0,
-          };
-        } else if (project && project._id) {
-          uniqueProjects[project._id].totalTasks++;
-          if (task.state === 'Completed') {
-            uniqueProjects[project._id].completed++;
-          }
-        }
-      });
-    }
-
-    const uniqueProjectsArray = Object.values(uniqueProjects);
-
-    setResult(uniqueProjectsArray.slice(0, 3));
-  }, [tasks]);
+  const filteredProjects = completedTasks;
 
   return (
     <div
@@ -49,7 +13,6 @@ const TaskByProjectRow = () => {
         display: 'flex',
         flexDirection: 'column',
         padding: '18px',
-        marginTop: '-2%',
         marginBottom: '1.2vh',
         borderRadius: '12px',
         marginLeft: 12,
@@ -57,7 +20,7 @@ const TaskByProjectRow = () => {
         width: '95%',
         paddingTop: 28,
         paddingBlock: 18,
-        minHeight: '330px',
+        minHeight: '320px',
       }}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -70,9 +33,8 @@ const TaskByProjectRow = () => {
             width: '90%',
           }}
         >
-          {filteredProjects
-            .sort((a, b) => b.completed - a.completed)
-            .map((project, index) => (
+          {filteredProjects.length > 0 ? (
+            filteredProjects.map((project, index) => (
               <div
                 key={index}
                 style={{
@@ -94,7 +56,7 @@ const TaskByProjectRow = () => {
                     textAlign: 'center',
                   }}
                 >
-                  {project.name}
+                  {project.project}
                 </Typography>
 
                 <div
@@ -120,7 +82,7 @@ const TaskByProjectRow = () => {
                       fontWeight: 600,
                     }}
                   >
-                    {project.totalTasks}
+                    {project.total}
                   </Typography>
 
                   <CircleIcon
@@ -163,19 +125,20 @@ const TaskByProjectRow = () => {
                 >
                   <div
                     style={{
-                      width: `${
-                        (project.completed / project.totalTasks) * 100
-                      }%`,
+                      width: `${(project.completed / project.total) * 100}%`,
                       height: '100%',
                       backgroundColor: getColor(
-                        (project.completed / project.totalTasks) * 100
+                        (project.completed / project.total) * 100
                       ),
                       borderRadius: '2px',
                     }}
                   />
                 </div>
               </div>
-            ))}
+            ))
+          ) : (
+            <Typography sx={{ fontWeight: 700 }}>No tasks to show</Typography>
+          )}
         </div>
 
         <div
@@ -191,11 +154,11 @@ const TaskByProjectRow = () => {
               variant="body1"
               style={{
                 marginBottom: 8,
-                color: getColor((project.completed / project.totalTasks) * 100),
+                color: 'black',
                 fontWeight: 600,
               }}
             >
-              {Math.round((project.completed / project.totalTasks) * 100)}%
+              {Math.round((project.completed / project.total) * 100)}%
             </Typography>
           ))}
         </div>
@@ -211,6 +174,8 @@ const getColor = (percentage) => {
     return '#EBA741';
   } else if (percentage <= 75) {
     return '#429482';
+  } else if (percentage <= 99) {
+    return '#F71b82';
   } else {
     return '#429482';
   }
