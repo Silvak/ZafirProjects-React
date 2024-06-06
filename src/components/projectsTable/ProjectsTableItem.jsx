@@ -1,7 +1,6 @@
-import UserAvatar from '@/assets/Img/png/userImageMan.png';
 import { Box, TableCell } from '@mui/material';
-import { RenderIconByCategory } from './RenderIconByCategory';
 import { fixDate } from '@/utils/fixDate';
+import { BsPen, BsTrash3 } from 'react-icons/bs';
 //styles
 import css from './styles.module.css';
 //icons
@@ -10,6 +9,9 @@ import { Link } from 'react-router-dom';
 
 import { useBoundStore } from '../../stores';
 import { shallow } from 'zustand/shallow';
+import CustomAvatar from '../CustomAvatar/CustomAvatar';
+import { useProjectsOverview } from '../../hooks/useProjectsOverview';
+import EditProjectForm from '../forms/EditProjectForm';
 
 const BoxFlex = ({ children, sx }) => {
   return (
@@ -28,48 +30,67 @@ const BoxFlex = ({ children, sx }) => {
   );
 };
 
-const ProjectsTableItem = ({ _id, name, start, username }) => {
-  const { fixStart } = fixDate(start);
+const ProjectsTableItem = ({ project }) => {
+  const { fixStart } = fixDate(project?.start);
+
   const { selectedProjectById } = useBoundStore((state) => state, shallow);
+  const { handleEdit, handleDelete } = useProjectsOverview();
+
   const handleSelectProject = (id) => {
     selectedProjectById(id);
   };
 
+  const leader = project?.leaders;
+
   return (
-    <Link
-      to={`/project/${_id}`}
-      style={{ color: 'inherit', textDecoration: 'none' }}
-      onClick={() => handleSelectProject(_id)}
+    <TableCell
+      sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        // '&:hover': {
+        //   backgroundColor: 'rgba(0, 0, 0, 0.1)',
+        //   cursor: 'pointer',
+        // },
+      }}
     >
-      <TableCell
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          '&:hover': {
-            backgroundColor: 'rgba(0, 0, 0, 0.1)',
-            cursor: 'pointer',
-          },
-        }}
-      >
-        <BoxFlex sx={{ flex: 2 }}>
-          <Box sx={{ marginLeft: '20px' }}>
-            <h2 className={css.projectName}>{name}</h2>
-          </Box>
-        </BoxFlex>
-        <BoxFlex>
-          <img src={UserAvatar} alt="user avatar" width={40} height={40} />
-          <p className={css.username}>{username}</p>
-        </BoxFlex>
-        <BoxFlex>
-          <MdCalendarMonth color="#6B6E75" size="20px" />
-          <p className="date">{fixStart}</p>
-        </BoxFlex>
-        <BoxFlex>
-          <MdAttachFile color="#6B6E75" size="20px" />
-          {/* <p> {attachments.length} files</p> */}1 files
-        </BoxFlex>
-        {/* <BoxFlex>
+      <BoxFlex sx={{ flex: 2 }}>
+        <Box sx={{ marginLeft: '20px' }}>
+          <Link
+            to={`/project/${project?._id}`}
+            style={{ color: 'inherit', textDecoration: 'none' }}
+            onClick={() => handleSelectProject(project?._id)}
+          >
+            <h2 className={css.projectName}>{project?.name}</h2>
+          </Link>
+        </Box>
+      </BoxFlex>
+      <BoxFlex>
+        <CustomAvatar
+          member={leader}
+          bgColor={leader.colorBg}
+          textColor={leader.colorText}
+          deleteMode={false}
+        />
+        <p className={css.username}>{leader.name}</p>
+      </BoxFlex>
+      <BoxFlex>
+        <MdCalendarMonth color='#6B6E75' size='20px' />
+        <p className='date'>{fixStart}</p>
+      </BoxFlex>
+
+      <BoxFlex sx={{ gap: '20px' }}>
+        <BsPen
+          onClick={() => handleEdit(<EditProjectForm project={project} />)}
+        />
+        <BsTrash3 onClick={() => handleDelete(project?._id)} />
+      </BoxFlex>
+
+      {/* <BoxFlex>
+          <MdAttachFile color='#6B6E75' size='20px' />
+          <p> {attachments.length} files</p>1 files
+        </BoxFlex> */}
+      {/* <BoxFlex>
         {status.name === "In progress" ? (
           <div
             style={{
@@ -100,8 +121,7 @@ const ProjectsTableItem = ({ _id, name, start, username }) => {
           </div>
         )}
       </BoxFlex> */}
-      </TableCell>
-    </Link>
+    </TableCell>
   );
 };
 export default ProjectsTableItem;

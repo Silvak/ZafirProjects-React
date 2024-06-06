@@ -8,6 +8,7 @@ export function useProjectsOverview() {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   const {
+    User,
     projectsData,
     fetchProjects,
     updateProjects,
@@ -26,7 +27,7 @@ export function useProjectsOverview() {
   const handleDelete = async (id) => {
     try {
       await deleteProject(id);
-      await updateProjects();
+      await updateProjects(User?.uid);
     } catch (error) {
       console.error(error);
     }
