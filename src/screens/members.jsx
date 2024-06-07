@@ -36,7 +36,8 @@ const MembersTable = () => {
     ChangeContentModal,
     ChangeStateAlert,
     ChangeTitleAlert,
-    fetchProjects,
+    updateProjects,
+    User,
   } = useBoundStore((state) => state, shallow);
 
   const [allMemberData, setAllMemberData] = useState([]);
@@ -101,11 +102,7 @@ const MembersTable = () => {
         `/projects/${selectedProject.id}/remove-member`,
         { memberId: memberToDelete._id }
       );
-      const updateAllMember = allMemberData.filter(
-        (member) => member._id !== memberToDelete._id
-      );
-
-      setAllMemberData(updateAllMember);
+      await updateProjects(User?.uid);
       ChangeStateModal(false);
       ChangeTitleAlert('Member successfully removed');
       ChangeStateAlert(true);
