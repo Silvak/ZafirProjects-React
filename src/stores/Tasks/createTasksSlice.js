@@ -1,6 +1,6 @@
 import { axiosInstance } from '../../config/apiConfig';
 
-export const createTasksSlice = (set) => ({
+export const createTasksSlice = (set, get) => ({
   tasks: [],
   singleTask: null,
 
@@ -22,7 +22,8 @@ export const createTasksSlice = (set) => ({
     })),
   removeTask: async (taskId) => {
     try {
-      await axiosInstance.delete(`/tasksList/${taskId}`);
+      const taskDeleted = await axiosInstance.delete(`/tasksList/${taskId}`);
+      console.log(taskDeleted);
     } catch (error) {
       console.error('Error deleting task', error);
     }
@@ -36,7 +37,7 @@ export const createTasksSlice = (set) => ({
     try {
       const res = await axiosInstance.put(`/tasksList/${taskId}`, newData);
       if (res.status === 200) {
-        createTasksSlice(set).fetchTasksById(projectId);
+        await get().fetchTasksById(projectId);
       }
       return res.data;
     } catch (e) {

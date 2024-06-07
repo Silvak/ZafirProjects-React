@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Grid,
   IconButton,
@@ -9,7 +9,6 @@ import {
   FormControl,
   Select,
   MenuItem,
-  ListItem,
   Box,
 } from '@mui/material';
 import { EditOutlined as EditOutlinedIcon } from '@mui/icons-material';
@@ -24,35 +23,33 @@ import CustomAvatar from '@/components/CustomAvatar/CustomAvatar';
 import SuggestionList from '../SuggestionList/SuggestionList';
 import getUniqueUsers from '../../utils/getUniqueUsers';
 
-const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
+const TaskDetailContent = ({
+  task = {},
+  projectId,
+  isSubtask = false,
+  setFilterSubtask,
+}) => {
   const [isEditing, setIsEditing] = useState(false);
   const { users } = useSuggestionUsers();
-  //  filtro para mostrar en la lista
-  const [filteredMembers, setFilteredMembers] = useState([]);
+
   //  nombre del miembro
   const [member, setMember] = useState('');
   // miembros a renderizar
-  const [members, setMembers] = useState(task['members_id']);
-  const [originalValues, setOriginalValues] = useState({
-    taskName: task.taskName,
+  const [members, setMembers] = useState(task['members_id'] || []);
+  const [filteredMembers, setFilteredMembers] = useState([]);
+
+  const initialFormData = {
+    taskName: task.taskName || '',
     subtaskName: task.name || '',
-    description: task.description,
-    start: format(new Date(task.start), 'yyyy/MM/dd'),
-    end: format(new Date(task.end), 'yyyy/MM/dd'),
-    state: task.state,
-    priority: task.priority,
-    members_id: task.members_id,
-  });
-  const [formData, setFormData] = useState({
-    taskName: task.taskName,
-    subtaskName: task.name || '',
-    description: task.description,
-    start: format(new Date(task.start), 'yyyy/MM/dd'),
-    end: format(new Date(task.end), 'yyyy/MM/dd'),
-    state: task.state,
-    priority: task.priority,
-    members_id: task.members_id,
-  });
+    description: task.description || '',
+    start: task.start ? format(new Date(task.start), 'yyyy-MM-dd') : '',
+    end: task.end ? format(new Date(task.end), 'yyyy-MM-dd') : '',
+    state: task.state || '',
+    priority: task.priority || '',
+    members_id: task.members_id || [],
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
 
   const {
     updateTask,
@@ -66,43 +63,36 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
   } = useBoundStore((state) => state, shallow);
 
   useEffect(() => {
-    if (!isEditing) {
-      setFormData({
-        ...formData,
-        start: format(new Date(task.start), 'yyyy-MM-dd'),
-        end: format(new Date(task.end), 'yyyy-MM-dd'),
-      });
-      setOriginalValues({
-        ...formData,
-        start: format(new Date(task.start), 'yyyy-MM-dd'),
-        end: format(new Date(task.end), 'yyyy-MM-dd'),
-      });
-    }
-  }, [isEditing]);
+    setMembers(task['members_id'] || []);
+    setFormData({
+      taskName: task.taskName || '',
+      subtaskName: task.name || '',
+      description: task.description || '',
+      start: task.start ? format(new Date(task.start), 'yyyy-MM-dd') : '',
+      end: task.end ? format(new Date(task.end), 'yyyy-MM-dd') : '',
+      state: task.state || '',
+      priority: task.priority || '',
+      members_id: task.members_id || [],
+    });
+  }, [task]);
 
   const handleSuggestionChange = ({ inputValue }) => {
-    // para input miembro
     if (inputValue === '') {
       setFilteredMembers([]);
     } else {
       const result = getUniqueUsers(users);
-      const filter = result.filter((user) => {
-        return user.name.toUpperCase().startsWith(inputValue.toUpperCase());
-      });
+      const filter = result.filter((user) =>
+        user.name.toUpperCase().startsWith(inputValue.toUpperCase())
+      );
       setFilteredMembers(filter);
     }
   };
 
   const handleSuggestionClick = (user) => {
-    const alreadyExist = members.find(
-      (member) => member._id.toString() === user._id.toString()
-    );
-    if (alreadyExist === undefined) {
+    if (!members.find((member) => member._id === user._id)) {
       setMembers((prev) => [...prev, user]);
       setFilteredMembers([]);
       setMember('');
-    } else {
-      return;
     }
   };
 
@@ -110,27 +100,17 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
     setIsEditing(true);
   };
 
-  console.log(members);
-
   const handleCancel = () => {
     setIsEditing(false);
-    setMembers(task['members_id']);
-    setFormData({
-      taskName: task.taskName,
-      description: task.description,
-      start: format(new Date(task.start), 'yyyy/MM/dd'),
-      end: format(new Date(task.end), 'yyyy/MM/dd'),
-      state: task.state,
-      priority: task.priority,
-      members_id: task.members_id,
-    });
+    setFormData(initialFormData);
+    setMembers(task['members_id'] || []);
   };
 
   const handleSubmit = async () => {
     const newValues = { ...formData, members_id: members };
 
     try {
-      if (JSON.stringify(newValues) === JSON.stringify(originalValues)) {
+      if (JSON.stringify(newValues) === JSON.stringify(initialFormData)) {
         ChangeStateAlertError(true);
         ChangeTitleAlertError('No changes were made');
       } else {
@@ -140,76 +120,58 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
             newData: newValues,
             projectId: projectId,
           });
-          setIsEditing(false);
         } else {
-          await updateSubtask({
+          const updatedSubtasks = await updateSubtask({
             ...newValues,
+            name: newValues.subtaskName,
             _id: task._id,
+            taskId: task.taskId._id,
           });
-          setIsEditing(false);
+          setFilterSubtask(updatedSubtasks);
         }
-        setTimeout(() => {
-          ChangeTitleAlert('Data has been updated successfully');
-          ChangeStateAlert(true);
-        }, 500);
+        setIsEditing(false);
+        ChangeTitleAlert('Data has been updated successfully');
+        ChangeStateAlert(true);
       }
     } catch (error) {
-      ChangeTitleAlertError('Error:', error.message);
+      ChangeTitleAlertError('Error: ' + error.message);
       ChangeStateAlertError(true);
     }
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    console.log(name, value);
     setFormData({ ...formData, [name]: value });
   };
 
   const handleRemoveMember = (memberToRemove) => {
-    const updatedMembers = members.filter(
-      (member) => member._id.toString() !== memberToRemove._id.toString()
+    setMembers((prev) =>
+      prev.filter((member) => member._id !== memberToRemove._id)
     );
-    setMembers(updatedMembers);
   };
 
   return (
     <Grid container spacing={3}>
-      {/* MEMBER */}
       <Grid item xs={12}>
         <Box sx={{ position: 'relative' }}>
-          {isEditing ? (
-            <TextField
-              size="small"
-              label="Search Member"
-              fullWidth
-              disabled={!isEditing}
-              value={member}
-              onChange={(e) => {
-                setMember(e.target.value);
-                handleSuggestionChange({
-                  inputValue: e.target.value,
-                });
-              }}
-              sx={{ mt: 4 }}
-              InputLabelProps={{
-                sx: {
-                  color: isEditing ? 'inherit' : 'blue',
-                },
-              }}
-            />
-          ) : (
-            <TextField
-              size="small"
-              label="Search Member"
-              fullWidth
-              disabled={!isEditing}
-              sx={{ mt: 4 }}
-              InputLabelProps={{
-                sx: {
-                  color: isEditing ? 'inherit' : 'blue',
-                },
-              }}
-            />
-          )}
+          <TextField
+            size="small"
+            label="Search Member"
+            fullWidth
+            disabled={!isEditing}
+            value={member}
+            onChange={(e) => {
+              setMember(e.target.value);
+              handleSuggestionChange({ inputValue: e.target.value });
+            }}
+            sx={{ mt: 4 }}
+            InputLabelProps={{
+              sx: {
+                color: isEditing ? 'inherit' : 'blue',
+              },
+            }}
+          />
           <SuggestionList
             type="member"
             usersList={filteredMembers}
@@ -224,18 +186,18 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
             display: 'flex',
             gap: '8px',
             marginBottom: '20px',
-            cursor: `${isEditing ? 'pointer' : 'not-allowed'}`,
+            cursor: isEditing ? 'pointer' : 'not-allowed',
             width: 'fit-content',
           }}
         >
-          {members.map((member) => (
+          {members.map((member, key) => (
             <CustomAvatar
+              key={key}
               member={member}
               size="40px"
               fontSize="14px"
               deleteMode={false}
               name={member.name}
-              key={member._id}
               onClick={() => {
                 isEditing && handleRemoveMember(member);
               }}
@@ -243,14 +205,13 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
           ))}
         </Box>
       </Grid>
-      {/* TASK NAME */}
       <Grid item xs={12}>
         <span>Name</span>
         <TextField
           size="small"
-          name="taskName"
+          name={isSubtask ? 'subtaskName' : 'taskName'}
           onChange={handleChange}
-          value={formData.taskName || formData.subtaskName}
+          value={isSubtask ? formData.subtaskName : formData.taskName}
           fullWidth
           disabled={!isEditing}
           InputLabelProps={{
@@ -260,7 +221,6 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
           }}
         />
       </Grid>
-      {/* DESCRIPTION */}
       <Grid item xs={12}>
         <span>Description</span>
         <TextField
@@ -277,7 +237,6 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
           }}
         />
       </Grid>
-      {/* PRIORITY*/}
       <Grid item xs={12}>
         <Typography sx={{ fontSize: '0.85rem' }}>Priority</Typography>
         <FormControl fullWidth sx={{ bgcolor: 'white' }}>
@@ -299,7 +258,6 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
           </Select>
         </FormControl>
       </Grid>
-      {/* STATE */}
       <Grid item xs={12}>
         <Typography sx={{ fontSize: '0.85rem' }}>State</Typography>
         <FormControl fullWidth>
@@ -321,7 +279,6 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
           </Select>
         </FormControl>
       </Grid>
-      {/* START */}
       <Grid item xs={12}>
         <Typography
           variant="h6"
@@ -345,7 +302,6 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
           }}
         />
       </Grid>
-      {/* END */}
       <Grid item xs={12}>
         <Typography
           variant="h6"
@@ -369,7 +325,6 @@ const TaskDetailContent = ({ task = {}, projectId, isSubtask = false }) => {
           }}
         />
       </Grid>
-      {/* BUTTONS */}
       <Grid item xs={12}>
         {isEditing ? (
           <div
@@ -445,7 +400,7 @@ export default TaskDetailContent;
 
 const CustomMenuItem = ({ children, selected, ...props }) => {
   return (
-    <MenuItem className="menu-item " sx={{ height: 'min-content' }} {...props}>
+    <MenuItem className="menu-item" sx={{ height: 'min-content' }} {...props}>
       {children}
     </MenuItem>
   );

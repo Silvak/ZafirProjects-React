@@ -30,7 +30,9 @@ export const actualProject = (set, get) => ({
         } else {
           set({ projectsData: data });
         }
-        await get().fetchTasksById(selectedProject._id);
+        if (selectedProject && selectedProject?._id) {
+          await get().fetchTasksById(selectedProject._id);
+        }
       }
     } catch (error) {
       console.error('Error fetching projects:', error);
