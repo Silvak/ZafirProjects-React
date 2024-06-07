@@ -1,6 +1,6 @@
 import { axiosInstance } from '../../config/apiConfig';
 
-export const createSubtasksSlice = (set) => ({
+export const createSubtasksSlice = (set, get) => ({
   subtasks: [],
   addSubtask: async (subTaskData, taskId) => {
     try {
@@ -24,27 +24,25 @@ export const createSubtasksSlice = (set) => ({
   //   })),
   removeSubtask: async (subTaskId) => {
     try {
-      await axiosInstance.delete(`/subtaks/${subTaskId}`);
+      // Obtener el estado actual de las subtasks utilizando un getter
+      const { data } = await axiosInstance.delete(`/subtaks/${subTaskId}`);
+      if (data) {
+        const deletedSubTaskId = data._id;
+        if (deletedSubTaskId) {
+          const newSubtasks = await get().fetchSubtasksById(deletedSubTaskId);
+          return newSubtasks;
+        }
+      }
     } catch (error) {
       console.error('Error deleting task', error);
     }
-    // set((state) => ({
-    //   tasks: state.tasks.filter((task) => task.id !== taskIdToDelete),
-    // }))
   },
   updateSubtask: async (updateTask) => {
     try {
-      const newSubTasks = await axiosInstance.put(
-        `/subtaks/${updateTask._id}`,
-        updateTask
-      );
-      set((state) => ({
-        subtasks: state.subtasks.map((task) =>
-          task._id === newSubTasks._id ? newSubTasks : task
-        ),
-      }));
-      fetchSubtasks();
-      return newSubTasks;
+      console.log(updateTask);
+      await axiosInstance.put(`/subtaks/${updateTask._id}`, updateTask);
+      const updatedTasks = await get().fetchSubtasksById(updateTask.taskId);
+      return updatedTasks;
     } catch (error) {
       console.error('Error updating subTask', error);
     }
@@ -63,7 +61,9 @@ export const createSubtasksSlice = (set) => ({
   fetchSubtasksById: async (taskId) => {
     try {
       const { data } = await axiosInstance.get(`/subtaks/task/${taskId}`);
-      set({ subtasks: data });
+      await set({ subtasks: data });
+      const updatedSubtasks = await get().subtasks;
+      return updatedSubtasks;
     } catch (error) {
       console.error('Error fetching subtasks', error);
     }

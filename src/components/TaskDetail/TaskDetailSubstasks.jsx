@@ -24,7 +24,7 @@ const tableHeadData = [
   { id: 5, label: 'Action' },
 ];
 
-const TaskDetailSubstasks = ({ taskId }) => {
+const TaskDetailSubstasks = ({ taskId, task }) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const [filterSubtask, setFilterSubtask] = useState([]);
   const [cleanForm, setCleanForm] = useState(false);
@@ -37,9 +37,11 @@ const TaskDetailSubstasks = ({ taskId }) => {
     ChangeTitleModal,
     ChangeContentModal,
     ChangeIsVisibleButton,
-    removeSubtask,
     ChangeTitleAlert,
     ChangeStateAlert,
+    removeSubtask,
+    User,
+    updateProjects,
   } = useBoundStore((state) => state, shallow);
 
   useEffect(() => {
@@ -59,23 +61,29 @@ const TaskDetailSubstasks = ({ taskId }) => {
   };
 
   const handleAddTask = () => {
-    ChangeStateModal(true);
+    // ChangeStateModal(true);
     ChangeTitleModal('Add SubTask');
     ChangeContentModal(<SubTaskForm taskId={taskId} projectId={taskId} />);
   };
+
   const handleRemoveSubTask = async (idSubtasks) => {
-    console.log('Subtask Eliminada', idSubtasks);
-    await removeSubtask(idSubtasks);
-    ChangeStateAlert(true);
+    const result = await removeSubtask(idSubtasks);
+    setFilterSubtask(result);
     ChangeTitleAlert('Subtask deleted');
-    ChangeStateModal(false);
+    ChangeStateAlert(true);
   };
 
   const handleViewSubstask = (subtask) => {
     setCustomTask(subtask.taskId);
     setCleanForm(true);
     ChangeTitleModal('Substask Detail');
-    ChangeContentModal(<TaskDetail task={subtask} isSubtask={true} />);
+    ChangeContentModal(
+      <TaskDetail
+        task={subtask}
+        isSubtask={true}
+        setFilterSubtask={setFilterSubtask}
+      />
+    );
     ChangeIsVisibleButton(true);
     ChangeStateModal(true);
   };

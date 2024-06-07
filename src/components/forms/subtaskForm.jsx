@@ -96,19 +96,9 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
       } else {
         await addSubtask(data, taskId);
         await fetchSubtasksById(taskId);
-
-        // Actualizamos el estado del proyecto
-        const response = await axiosInstance.get(
-          `projects/${selectedProject._id}`
-        );
-        // await updateProjects();
-        await fetchProjects(selectedProject._id);
-        setSelectedProject(response.data);
-
+        ChangeTitleAlert('Subtask created successfully');
         ChangeStateAlert(true);
-        ChangeTitleAlert('SubTask created successfully');
         ChangeStateModal(false);
-        // Mostramos mensaje
       }
     } catch (error) {
       console.log(error);
@@ -299,8 +289,9 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
               width: 'fit-content',
             }}
           >
-            {members.map((member) => (
+            {members.map((member, key) => (
               <CustomAvatar
+                key={key}
                 bgColor={member.colorBg}
                 textColor={member.colorText}
                 member={member}

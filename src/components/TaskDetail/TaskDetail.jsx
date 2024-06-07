@@ -8,7 +8,12 @@ import { shallow } from 'zustand/shallow';
 import { useEffect, useState } from 'react';
 import Loader from '../Loader/Loader';
 
-const TaskDetail = ({ task, projectId }) => {
+const TaskDetail = ({
+  task,
+  projectId,
+  isSubtask = false,
+  setFilterSubtask,
+}) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const [loading, setLoading] = useState(true);
   const { fetchTaskDetailsById, singleTask, fetchSubtasks, fetchSubtasksById } =
@@ -73,7 +78,8 @@ const TaskDetail = ({ task, projectId }) => {
                 <TaskDetailContent
                   task={task}
                   projectId={projectId}
-                  isSubtask={true}
+                  isSubtask={isSubtask}
+                  setFilterSubtask={setFilterSubtask}
                 />
                 <TaskDetailSubstasks taskId={task._id} />
               </Grid>
@@ -95,9 +101,13 @@ const TaskDetail = ({ task, projectId }) => {
               >
                 <TaskDetailHeader
                   taskId={singleTask._id}
-                  taskTitle={task.name || singleTask.taskName}
+                  taskTitle={task?.name || singleTask?.taskName}
                 />
-                <TaskDetailContent task={singleTask} projectId={projectId} />
+                <TaskDetailContent
+                  setFilterSubtask={setFilterSubtask}
+                  task={singleTask}
+                  projectId={projectId}
+                />
                 <TaskDetailSubstasks taskId={singleTask._id} />
               </Grid>
               <Grid item xs={12} md={5}>

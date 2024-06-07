@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import TableRow from '@material-ui/core/TableRow';
-import TableCell from '@material-ui/core/TableCell';
+
+import { TableHead, TableRow, TableCell } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
 import Select from '@mui/material/Select';
@@ -56,7 +56,7 @@ const TableHeader = ({
   };
 
   return (
-    <>
+    <TableHead>
       <TableRow>
         <TableCell colSpan={columns.length + 1}>
           <Grid container justifyContent="space-between" alignItems="center">
@@ -199,7 +199,7 @@ const TableHeader = ({
             </TableCell>
           ))}
       </TableRow>
-    </>
+    </TableHead>
   );
 };
 
