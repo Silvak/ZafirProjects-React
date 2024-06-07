@@ -17,12 +17,9 @@ import { shallow } from 'zustand/shallow';
 import useFormatText from '@/hooks/useFormatText';
 import EditMember from '@/components/forms/EditMemberForm';
 import './styles.css';
-import CustomAvatar from '../CustomAvatar/CustomAvatar';
 
 const TableRowComponent = ({
   isMobile,
-  handleRowClick,
-  handleCheckboxClick,
   handleDeleteClick,
   row,
   isSelected,
@@ -141,14 +138,6 @@ const TableRowComponent = ({
                           : ''}
                       </Avatar>
                     ) : (
-                      // <CustomAvatar
-                      //   bgColor={row.colorBg}
-                      //   textColor={row.colorText}
-                      //   size="40px"
-                      //   fontSize="14px"
-                      //   member={row._id}
-                      //   deleteMode={false}
-                      // />
                       <CircularProgress
                         style={{ color: '#C02327' }}
                         sx={{ m: 2 }}
@@ -190,14 +179,6 @@ const TableRowComponent = ({
                 )
               ) : (
                 column.id === 'name' && ''
-                // <span
-                //   style={{
-                //     display: 'flex',
-                //     minWidth: !isMobile ? '5rem' : '10rem',
-                //   }}
-                // >
-                //   {cellContent}
-                // </span>
               )}
             </TableCell>
           );
