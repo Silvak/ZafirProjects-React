@@ -15,6 +15,7 @@ import css from './style.module.css';
 import SubTaskForm from '../forms/subtaskForm';
 import SubdirectoryArrowLeftIcon from '@mui/icons-material/SubdirectoryArrowLeft';
 import moment from 'moment';
+import Modal from '../modal/modalSubtask';
 
 const tableHeadData = [
   { id: 1, label: 'Name' },
@@ -40,9 +41,12 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
     ChangeTitleAlert,
     ChangeStateAlert,
     removeSubtask,
-    User,
-    updateProjects,
   } = useBoundStore((state) => state, shallow);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   useEffect(() => {
     fetchData();
@@ -60,15 +64,19 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
     }
   };
 
+  // const handleAddTask = () => {
+  //   // ChangeStateModal(true);
+  //   ChangeTitleModal('Add SubTask');
+  //   ChangeContentModal(<SubTaskForm taskId={taskId} projectId={taskId} />);
+  // };
+
   const handleAddTask = () => {
-    // ChangeStateModal(true);
-    ChangeTitleModal('Add SubTask');
-    ChangeContentModal(<SubTaskForm taskId={taskId} projectId={taskId} />);
+    openModal();
   };
 
-  const handleRemoveSubTask = async (idSubtasks) => {
-    const result = await removeSubtask(idSubtasks);
-    setFilterSubtask(result);
+  const handleRemoveSubTask = async (subtask) => {
+    const updatedSubtasks = await removeSubtask(subtask);
+    setFilterSubtask(updatedSubtasks);
     ChangeTitleAlert('Subtask deleted');
     ChangeStateAlert(true);
   };
@@ -179,7 +187,7 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
                       </Button>
                       <Button
                         color="inherit"
-                        onClick={() => handleRemoveSubTask(item._id)}
+                        onClick={() => handleRemoveSubTask(item)}
                       >
                         <RxTrash size={25} />
                       </Button>
@@ -217,6 +225,14 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
           <span className={css.backText}>Back to Task</span>
         </div>
       )}
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+        <SubTaskForm
+          taskId={taskId}
+          projectId={taskId}
+          closeModal={closeModal}
+          setFilterSubtask={setFilterSubtask}
+        />
+      </Modal>
     </>
   );
 };
