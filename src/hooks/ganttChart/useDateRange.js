@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 const useDateRange = (taskList, view) => {
   const [dateRange, setDateRange] = useState([]);
@@ -23,12 +23,12 @@ const useDateRange = (taskList, view) => {
 
   useEffect(() => {
     const minDate = taskList.reduce((min, task) => {
-      const taskDate = new Date(task.date.start.replace(/-/g, "/"));
+      const taskDate = new Date(task.date.start.replace(/-/g, '/'));
       return taskDate < min ? taskDate : min;
     }, new Date());
 
     const maxDate = taskList.reduce((max, task) => {
-      const taskDate = new Date(task.date.end.replace(/-/g, "/"));
+      const taskDate = new Date(task.date.end.replace(/-/g, '/'));
       return taskDate > max ? taskDate : max;
     }, new Date());
 
@@ -58,38 +58,3 @@ const useDateRange = (taskList, view) => {
 };
 
 export default useDateRange;
-
-/*
-//  ORIGINAL CODE 
-
-const minDate = taskList.reduce((min, task) => {
-    const taskDate = new Date(task.date.start.replace(/-/g, "/"));
-    return taskDate < min ? taskDate : min;
-  }, new Date());
-
-  const maxDate = taskList.reduce((max, task) => {
-    const taskDate = new Date(task.date.end.replace(/-/g, "/"));
-    return taskDate > max ? taskDate : max;
-  }, new Date());
-
-  const calculateDateRange = (startDate, endDate, typeView) => {
-    const dateRange = [];
-    let iterator = startDate;
-
-    const addTime = {
-      day: addDays,
-      week: addWeeks,
-      month: addMonths,
-    }[typeView];
-
-    while (iterator <= endDate) {
-      dateRange.push(iterator);
-      iterator = addTime(iterator, 1);
-    }
-
-    return dateRange;
-  };
-
-  let dataRange = calculateDateRange(minDate, maxDate, view);
-  //console.log(format(dateRange[0].getTime(), "M-d-yyyy"));
-*/
