@@ -1,11 +1,8 @@
-import CustomList from '@/components/CustomList/CustomList';
 import {
-  Avatar,
   Box,
   Button,
   FormControl,
   Grid,
-  ListItem,
   MenuItem,
   Paper,
   Select,
@@ -14,16 +11,16 @@ import {
   Typography,
   createTheme,
   useMediaQuery,
+  IconButton,
 } from '@mui/material';
 import { useState } from 'react';
 import { shallow } from 'zustand/shallow';
-import user1 from '../../assets/Img/png/userImageMan.png';
 import useSuggestionUsers from '../../hooks/useSuggestionUsers';
 import { useBoundStore } from '../../stores';
-import { axiosInstance } from '@/config/apiConfig';
 import getUniqueUsers from '../../utils/getUniqueUsers';
 import SuggestionList from '../SuggestionList/SuggestionList';
 import CustomAvatar from '../CustomAvatar/CustomAvatar';
+import CloseIcon from '@mui/icons-material/Close';
 
 const INITIAL_FORM_DATA = {
   subTaskName: '',
@@ -34,23 +31,16 @@ const INITIAL_FORM_DATA = {
   priority: '',
 };
 
-const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
+const SubTaskForm = ({ taskId, closeModal, setFilterSubtask }) => {
   const theme = createTheme();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const {
-    User,
-    selectedProject,
     addSubtask,
-    subtasks,
     fetchSubtasksById,
-    ChangeStateModal,
     ChangeTitleAlert,
     ChangeStateAlert,
     ChangeTitleAlertError,
     ChangeStateAlertError,
-    setSelectedProject,
-    updateProjects,
-    fetchProjects,
   } = useBoundStore((state) => state, shallow);
   const { users } = useSuggestionUsers();
 
@@ -65,6 +55,7 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
   const [formData, setformData] = useState(INITIAL_FORM_DATA);
 
   // '/project/:taskId'
+  const today = new Date().toISOString().split('T')[0];
 
   const handleSuggestionChange = ({ inputValue }) => {
     if (inputValue === '') {
@@ -94,11 +85,11 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
         ChangeTitleAlertError('All fields are required');
         return;
       } else {
-        await addSubtask(data, taskId);
-        await fetchSubtasksById(taskId);
+        const newSubtasks = await addSubtask(data, taskId);
+        setFilterSubtask(newSubtasks);
         ChangeTitleAlert('Subtask created successfully');
         ChangeStateAlert(true);
-        ChangeStateModal(false);
+        closeModal();
       }
     } catch (error) {
       console.log(error);
@@ -113,7 +104,7 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
   };
 
   const handleClose = () => {
-    ChangeStateModal(false);
+    closeModal();
   };
 
   const handleSuggestionClick = (user, type) => {
@@ -150,22 +141,49 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
         onSubmit={handleSubmit}
         sx={{
           maxWidth: isMobile ? '90vw' : 'fit-content',
-          padding: '39px',
+          padding: '30px',
+          paddingBlock: '24px',
           maxHeight: '90vh',
           height: isMobile ? '90vh' : '',
           borderTopLeftRadius: '0px',
           borderTopRightRadius: '0px',
           overflowY: 'auto',
-          borderBottomLeftRadius: '16px',
-          borderBottomRightRadius: '16px',
+          borderRadius: '16px',
         }}
       >
-        <Grid
-          item
-          sx={{
-            marginBottom: '20px',
-          }}
-        >
+        <Grid item>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Typography
+              variant="h4"
+              sx={{
+                color: 'black',
+                fontWeight: 'bold',
+                fontSize: '1.5rem',
+                marginBottom: '2rem',
+              }}
+            >
+              Create Subtask
+            </Typography>
+            <IconButton
+              sx={{
+                mb: '2rem',
+                color: '#7661EA',
+                mr: '-1rem',
+              }}
+              disableRipple
+              title="Close"
+              variant="text"
+              onClick={closeModal}
+            >
+              <CloseIcon />
+            </IconButton>
+          </div>
           <Typography fontFamily={'Poppins'} color={'#6B6E75'}>
             Enter a SubTask name
           </Typography>
@@ -177,6 +195,7 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
             onChange={handleChange}
             sx={{
               width: '100%',
+              mb: '1.2rem',
             }}
           />
         </Grid>
@@ -200,6 +219,7 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
               size="small"
               name="start"
               type="date"
+              InputProps={{ inputProps: { min: today } }}
               value={formData.start}
               onChange={handleChange}
               sx={{
@@ -215,6 +235,7 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
               size="small"
               name="end"
               type="date"
+              InputProps={{ inputProps: { min: formData.start || today } }}
               value={formData.end}
               onChange={handleChange}
               sx={{
@@ -389,7 +410,7 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
               '&:hover': { backgroundColor: 'black' },
             }}
           >
-            {isLoading ? 'Updating...' : 'Save'}
+            {isLoading ? 'Saving...' : 'Save'}
           </Button>
         </Grid>
       </Paper>
@@ -406,23 +427,3 @@ const CustomMenuItem = ({ children, selected, ...props }) => {
     </MenuItem>
   );
 };
-
-// <Avatar
-//   title={`Remove ${member.name}`}
-//   key={member._id}
-//   onClick={() => {
-//     handleRemoveMember(member);
-//   }}
-//   style={{ transition: 'opacity 0.3s ease-in-out' }}
-//   sx={{
-//     borderRadius: '50%',
-//     bgcolor: `${member.colorbg}`,
-//     color: `${member.colorText}`,
-//     marginRight: 1,
-//   }}
-// >
-//   {member?.name?.split(' ')[0][0].toUpperCase()}
-//   {member.name?.split(' ').length > 1
-//     ? member.name?.split(' ')[1][0].toUpperCase()
-//     : ''}
-// </Avatar>
