@@ -136,13 +136,13 @@ function ItemMenu(props) {
           {element.submenu.length > 0 ? (
             <>
               <ListItemButton
-                key={`list-item-buttom-${index}`}
+                key={`list-item-buttom-${crypto.randomUUID()}`}
                 onClick={() => handleClick(index)}
                 sx={{ m: 0, p: 0 }}
                 disableRipple
               >
                 <ItemNav
-                  key={`item-nav-${index}`}
+                  key={`item-nav-${crypto.randomUUID()}`}
                   to={element.url}
                   title={element.title}
                   icon={element.icon}
@@ -157,7 +157,7 @@ function ItemMenu(props) {
               </ListItemButton>
 
               <Collapse
-                key={`collapse-${index}`}
+                key={`collapse-${crypto.randomUUID()}`}
                 in={openIndex === index && props.open}
                 timeout='auto'
                 unmountOnExit
@@ -169,7 +169,7 @@ function ItemMenu(props) {
             </>
           ) : (
             <ItemNav
-              key={`item-nav-${index}`}
+              key={`item-nav-${crypto.randomUUID()}`}
               to={element.url}
               title={element.title}
               icon={element.icon}
