@@ -121,10 +121,7 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
                     key={item.id}
                     className={css.headText}
                     style={{
-                      marginLeft:
-                        item.label === 'Actions' || item.label === 'Status'
-                          ? '1.5rem'
-                          : 0,
+                      marginLeft: item.label === 'Status' ? '1.5rem' : 0,
                     }}
                   >
                     {item.label}
@@ -143,7 +140,7 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
                     }}
                   >
                     <td style={{ maxWidth: '10rem', paddingInline: 4 }}>
-                      <Tooltip title={item.name} placement="bottom-end">
+                      <Tooltip title={item.name} placement="bottom">
                         <strong style={{ fontSize: '14px', cursor: 'default' }}>
                           {item.name.slice(0, 10)}
                           {item.name.length > 10 ? '...' : ''}
@@ -165,12 +162,16 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
                               <strong
                                 style={{
                                   fontSize: '14px',
+                                  cursor: 'default',
                                 }}
                               >
-                                {member.name}
+                                <Tooltip title={member.name} placement="right">
+                                  {member.name.slice(0, 12)}
+                                  {member.name.length > 12 ? '...' : ''}
+                                </Tooltip>
                               </strong>
                               <br />
-                              <Tooltip title={member.email}>
+                              <Tooltip title={member.email} placement="right">
                                 <small style={{ cursor: 'default' }}>
                                   {member?.email?.length > 12
                                     ? member.email.slice(0, 12) + '...'
@@ -208,19 +209,23 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
                         alignItems: 'center',
                       }}
                     >
-                      <Button
-                        color="inherit"
-                        disableRipple
-                        onClick={() => handleViewSubstask(item)}
-                      >
-                        <RxEyeOpen size={25} />
-                      </Button>
-                      <Button
-                        color="inherit"
-                        onClick={() => handleRemoveSubTask(item)}
-                      >
-                        <RxTrash size={25} />
-                      </Button>
+                      <Tooltip title="Show subtask details" placement="top">
+                        <Button
+                          color="inherit"
+                          disableRipple
+                          onClick={() => handleViewSubstask(item)}
+                        >
+                          <RxEyeOpen size={25} />
+                        </Button>
+                      </Tooltip>
+                      <Tooltip title="Delete subtask" placement="top">
+                        <Button
+                          color="inherit"
+                          onClick={() => handleRemoveSubTask(item)}
+                        >
+                          <RxTrash size={25} />
+                        </Button>
+                      </Tooltip>
                     </td>
                   </tr>
                 ))
