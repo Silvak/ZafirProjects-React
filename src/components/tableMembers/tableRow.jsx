@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  TableHead,
   TableRow,
   TableCell,
   Grid,
@@ -155,9 +156,29 @@ const TableRowComponent = ({
                       {column.id === 'name' ? (
                         useFormatText(row._id.name)
                       ) : (
-                        <span style={{ marginLeft: 12 }}>
-                          {useFormatText(row['leadOwner'])}
-                        </span>
+                        // <span style={{ marginLeft: 12 }}>
+                        //   {useFormatText(row['leadOwner'])}
+                        // </span>
+                        <Tooltip title={row?.leadOwner}>
+                          <div style={{ marginLeft: 20 }}>
+                            <Avatar
+                              sx={{
+                                borderRadius: '50%',
+                                bgcolor: 'rgba(0,0,0,0.8)',
+                                color: 'white',
+                              }}
+                            >
+                              {row && row.leadOwner
+                                ? row.leadOwner.split(' ')[0][0]
+                                : ''}
+                              {row &&
+                              row.leadOwner &&
+                              row.leadOwner.split(' ').length > 0
+                                ? row.leadOwner.split(' ')[1][0]
+                                : ''}
+                            </Avatar>
+                          </div>
+                        </Tooltip>
                       )}
                     </div>
                     {column.id === 'name' && (

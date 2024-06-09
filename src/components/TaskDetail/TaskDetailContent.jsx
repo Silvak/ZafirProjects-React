@@ -17,8 +17,8 @@ import { useBoundStore } from '../../stores';
 import { shallow } from 'zustand/shallow';
 import useSuggestionUsers from '../../hooks/useSuggestionUsers';
 import './dataPicker.css';
+import css from './style.module.css';
 import { format } from 'date-fns';
-import CustomList from '../CustomList/CustomList';
 import CustomAvatar from '@/components/CustomAvatar/CustomAvatar';
 import SuggestionList from '../SuggestionList/SuggestionList';
 import getUniqueUsers from '../../utils/getUniqueUsers';
@@ -361,34 +361,26 @@ const TaskDetailContent = ({
             </Button>
           </div>
         ) : (
-          <div
+          <Box
             style={{
               display: 'flex',
               alignItems: 'center',
               width: '100%',
+              fontSize: '14px',
               justifyContent: 'center',
             }}
           >
             <IconButton
-              disableRipple
-              color="primary"
+              // disableRipple
               size="small"
-              sx={{
-                '&:hover': {
-                  color: 'blue',
-                  transition: 'color 0.1s',
-                },
-              }}
-              style={{
-                cursor: 'pointer',
-                gap: 8,
-              }}
+              color="primary"
+              className={css.backText}
               onClick={handleEdit}
             >
               <EditOutlinedIcon />
-              Edit Task
+              {isSubtask ? 'Edit Subtask' : 'Edit Task'}
             </IconButton>
-          </div>
+          </Box>
         )}
       </Grid>
     </Grid>
