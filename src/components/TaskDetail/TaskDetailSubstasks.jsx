@@ -140,7 +140,7 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
                     }}
                   >
                     <td style={{ maxWidth: '10rem', paddingInline: 4 }}>
-                      <Tooltip title={item.name} placement="bottom">
+                      <Tooltip title={item.name} placement="bottom-end">
                         <strong style={{ fontSize: '14px', cursor: 'default' }}>
                           {item.name.slice(0, 10)}
                           {item.name.length > 10 ? '...' : ''}
@@ -165,7 +165,7 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
                                   cursor: 'default',
                                 }}
                               >
-                                <Tooltip title={member.name} placement="right">
+                                <Tooltip title={member?.name} placement="right">
                                   {member.name.slice(0, 12)}
                                   {member.name.length > 12 ? '...' : ''}
                                 </Tooltip>

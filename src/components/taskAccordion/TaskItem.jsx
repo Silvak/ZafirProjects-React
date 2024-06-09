@@ -1,4 +1,4 @@
-import { Grid, Paper, Typography } from '@mui/material';
+import { Grid, Paper, Tooltip, Typography } from '@mui/material';
 import { useDrag, useDrop } from 'react-dnd';
 
 //icons
@@ -9,6 +9,7 @@ import {
   MarkUnreadChatAltOutlined as MarkUnreadChatAltOutlinedIcon,
   MoreHoriz as MoreHorizIcon,
 } from '@mui/icons-material';
+import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import CircleIcon from '@mui/icons-material/Circle';
@@ -209,21 +210,24 @@ const TaskItem = ({ task, isMobile, isKanbanView, projectId }) => {
               alignItems: 'center',
             }}
           >
-            <div style={{ display: 'flex' }}>
-              <MarkUnreadChatAltOutlinedIcon
-                sx={{ mr: '5px', color: 'gray' }}
-              />
-              <Typography
-                variant="body1"
-                noWrap
-                style={{
-                  fontSize: '14px',
-                  fontWeight: 'bold',
-                }}
-              >
-                {'5'}
-              </Typography>
-            </div>
+            <Tooltip
+              title={`${task?.members_id?.length} members`}
+              placement="top"
+            >
+              <div style={{ display: 'flex' }}>
+                <PeopleAltOutlinedIcon sx={{ mr: '5px', color: 'gray' }} />
+                <Typography
+                  variant="body1"
+                  noWrap
+                  style={{
+                    fontSize: '14px',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  {task?.members_id?.length}
+                </Typography>
+              </div>
+            </Tooltip>
             {isKanbanView && (
               <CircleIcon
                 style={{
