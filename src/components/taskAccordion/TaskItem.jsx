@@ -210,24 +210,19 @@ const TaskItem = ({ task, isMobile, isKanbanView, projectId }) => {
               alignItems: 'center',
             }}
           >
-            <Tooltip
-              title={`${task?.members_id?.length} members`}
-              placement="top"
-            >
-              <div style={{ display: 'flex' }}>
-                <PeopleAltOutlinedIcon sx={{ mr: '5px', color: 'gray' }} />
-                <Typography
-                  variant="body1"
-                  noWrap
-                  style={{
-                    fontSize: '14px',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  {task?.members_id?.length}
-                </Typography>
-              </div>
-            </Tooltip>
+            <div style={{ display: 'flex' }}>
+              <PeopleAltOutlinedIcon sx={{ mr: '5px', color: 'gray' }} />
+              <Typography
+                variant="body1"
+                noWrap
+                style={{
+                  fontSize: '14px',
+                  fontWeight: 'bold',
+                }}
+              >
+                {task?.members_id?.length}
+              </Typography>
+            </div>
             {isKanbanView && (
               <CircleIcon
                 style={{

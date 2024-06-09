@@ -164,8 +164,9 @@ const TableRowComponent = ({
                             <Avatar
                               sx={{
                                 borderRadius: '50%',
-                                bgcolor: 'rgba(0,0,0,0.8)',
+                                bgcolor: 'lightgray',
                                 color: 'white',
+                                border: '1px solid darkgray',
                               }}
                             >
                               {row && row.leadOwner
