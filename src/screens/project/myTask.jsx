@@ -1,19 +1,19 @@
-import useMediaQuery from '@mui/material/useMediaQuery';
-import React, { useEffect, useState } from 'react';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import CreateTaskForm from '@/components/forms/createTaskForm';
-import TaskHeader from '@/components/taskAccordion/taskHeader';
-import TaskList from '@/components/taskAccordion/taskList';
-import { useBoundStore } from '@/stores/index';
-import { shallow } from 'zustand/shallow';
+import useMediaQuery from "@mui/material/useMediaQuery";
+import React, { useEffect, useState } from "react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import CreateTaskForm from "@/components/forms/createTaskForm";
+import TaskHeader from "@/components/taskAccordion/taskHeader";
+import TaskList from "@/components/taskAccordion/taskList";
+import { useBoundStore } from "@/stores/index";
+import { shallow } from "zustand/shallow";
 
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 
 const App = () => {
-  const [view, setView] = useState('Format List');
+  const [view, setView] = useState("Format List");
 
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("md"));
 
   const params = useParams();
 
@@ -47,9 +47,9 @@ const App = () => {
 
   useEffect(() => {
     if (Array.isArray(myTasks)) {
-      setPendingTasks(myTasks.filter((task) => task.state === 'Pending'));
-      setCompletedTasks(myTasks.filter((task) => task.state === 'Completed'));
-      setWorkingTasks(myTasks.filter((task) => task.state === 'In Progress'));
+      setPendingTasks(myTasks.filter((task) => task.state === "Pending"));
+      setCompletedTasks(myTasks.filter((task) => task.state === "Completed"));
+      setWorkingTasks(myTasks.filter((task) => task.state === "In Progress"));
     }
   }, [myTasks]);
 
@@ -58,7 +58,7 @@ const App = () => {
   };
 
   const handleAddTask = (title, description) => {
-    ChangeTitleModal('Create Task');
+    ChangeTitleModal("Create Task");
     ChangeContentModal(
       <CreateTaskForm placeholderTaskName="task 1" projectId={params.id} />
     );
@@ -66,54 +66,54 @@ const App = () => {
   };
 
   const setColumnsStyle = () => {
-    if (view === 'View Kanban' && !isMobile) return 'repeat(3,1fr)';
-    if (view === 'View Kanban' && isMobile) return '1fr';
-    return '1fr'; // Default style
+    if (view === "View Kanban" && !isMobile) return "repeat(3,1fr)";
+    if (view === "View Kanban" && isMobile) return "1fr";
+    return "1fr"; // Default style
   };
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div sx={{ minWidth: '250px' }}>
+      <div sx={{ minWidth: "250px" }}>
         <TaskHeader
-          title={selectedProject?.name ? selectedProject.name : 'No projects'}
+          title={
+            selectedProject?.name
+              ? `${selectedProject.name} Tasks`
+              : "No projects"
+          }
           handleAddTask={handleAddTask}
           handleButton={handleButton}
         />
         <div
           style={{
-            display: 'grid',
+            display: "grid",
             gridTemplateColumns: setColumnsStyle(),
-            gap: '1rem',
-            padding: '0 20px',
+            gap: "24px",
+            padding: "0 20px",
           }}
         >
-          <div>
-            <TaskList
-              title="In progress Tasks"
-              tasks={workingTasks}
-              view={view}
-              state="In Progress"
-              handleAddTask={() => handleAddTask()}
-            />
-          </div>
-          <div>
-            <TaskList
-              title="Pending Tasks"
-              tasks={pendingTasks}
-              view={view}
-              state="Pending"
-              handleAddTask={() => handleAddTask()}
-            />
-          </div>
-          <div>
-            <TaskList
-              title="Completed Tasks"
-              tasks={completedTasks}
-              view={view}
-              state="Completed"
-              handleAddTask={() => handleAddTask()}
-            />
-          </div>
+          <TaskList
+            title="In progress"
+            tasks={workingTasks}
+            view={view}
+            state="In Progress"
+            handleAddTask={() => handleAddTask()}
+          />
+
+          <TaskList
+            title="Pending"
+            tasks={pendingTasks}
+            view={view}
+            state="Pending"
+            handleAddTask={() => handleAddTask()}
+          />
+
+          <TaskList
+            title="Completed"
+            tasks={completedTasks}
+            view={view}
+            state="Completed"
+            handleAddTask={() => handleAddTask()}
+          />
         </div>
       </div>
     </DndProvider>
