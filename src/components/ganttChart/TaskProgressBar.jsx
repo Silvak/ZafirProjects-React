@@ -1,6 +1,26 @@
-import { Task, TaskBar } from "./GanttStyles";
+import { useState } from "react";
+import Avatar from "@mui/material/Avatar";
+import { Task, TaskBar, CtmToolTip } from "./GanttStyles";
+
+const CustomToolTip = ({ task }) => {
+  return (
+    <CtmToolTip>
+      <p>{task.task}</p>
+    </CtmToolTip>
+  );
+};
 
 const TaskProgressBar = ({ task, taskWidth }) => {
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  const handleMouseEnter = () => {
+    setShowTooltip(true);
+  };
+
+  const handleMouseLeave = () => {
+    setShowTooltip(false);
+  };
+
   return (
     <Task>
       <TaskBar
@@ -14,7 +34,10 @@ const TaskProgressBar = ({ task, taskWidth }) => {
           cursor: "pointer",
         }}
         draggable
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
+        {/* content */}
         <div
           style={{
             display: "flex",
@@ -22,21 +45,28 @@ const TaskProgressBar = ({ task, taskWidth }) => {
             alignItems: "center",
             height: "100%",
             width: "100%",
-            padding: "0 8px",
+            padding: "0 12px",
           }}
         >
           <p
             style={{
-              fontSize: "12px",
-              fontWeight: 500,
+              fontSize: "14px",
+              fontWeight: 400,
               color: "white",
             }}
           >
-            {task.task}
+            {taskWidth.width > 500 && task.task}
           </p>
-          <div>Persons</div>
+          {taskWidth.width > 99 && (
+            <Avatar
+              alt="Remy Sharp"
+              src="/static/images/avatar/1.jpg"
+              style={{ height: "24px", width: "24px" }}
+            />
+          )}
         </div>
 
+        {/* internal progress bar */}
         <div
           style={{
             position: "relative",
@@ -46,8 +76,11 @@ const TaskProgressBar = ({ task, taskWidth }) => {
             width: `${task.progress}%`,
             background: `${task.styles.color}`,
             zIndex: "-1",
+            borderRadius: "12px 0px 0px 12px",
           }}
         ></div>
+
+        {showTooltip && <CustomToolTip task={task} />}
       </TaskBar>
     </Task>
   );

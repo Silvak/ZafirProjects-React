@@ -2,6 +2,12 @@
 import photo from "@/assets/Img/png/userImageMan.png";
 import photow from "@/assets/Img/png/userImageWoman.png";
 
+const colors = ["#459CED", "#e55d57", "#EBA741", "#429482", "#7662EA"];
+
+function getRandomColor() {
+  return colors[Math.floor(Math.random() * colors.length)];
+}
+
 export const useNewTaskArr = (task) => {
   let newTask = [];
 
@@ -41,7 +47,7 @@ export const useNewTaskArr = (task) => {
         "https://res.cloudinary.com/dgdcfmnnx/image/upload/v1707754534/wwdhjjme5wixbr7z0hav.webp",
 
       styles: {
-        color: "#E55D57",
+        color: getRandomColor(),
       },
     });
   }

@@ -65,7 +65,7 @@ export const TableElementBody = styled("div")({
   //overflowY: "auto",
   color: "darkslategray",
   borderBottom: "1px solid #E0E3E8",
-  padding: "0",
+  padding: "4rem 0",
 });
 
 // ----------------- TaskElement syles ----------------------
@@ -87,5 +87,20 @@ export const Task = styled("div")({
 export const TaskBar = styled("div")({
   borderRadius: "12px",
   height: "40px",
+});
+
+export const CtmToolTip = styled("div")({
+  position: "absolute",
+  background: "white",
+  padding: "5px 10px",
+  borderRadius: "12px",
+  top: "-164%",
+  left: "100%",
+  minWidth: "200px",
+  height: "56px",
+  transform: "translateX(-50%)",
+  zIndex: "1000",
+  border: "1px solid #E0E3E8",
+  pointerEvents: "none",
   overflow: "hidden",
 });

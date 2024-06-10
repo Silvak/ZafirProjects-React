@@ -12,7 +12,7 @@ import {
 } from "./GanttStyles";
 import { useBoundStore } from "@/stores/index";
 import { shallow } from "zustand/shallow";
-import { useNewTaskArr } from "../../hooks/ganttChart/useNewTaskArr";
+import { useNewTaskArr } from "@/hooks/ganttChart/useNewTaskArr";
 
 // ----------------- gantt chart ----------------------
 const GanttChart = () => {
