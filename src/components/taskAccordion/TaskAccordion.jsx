@@ -15,9 +15,38 @@ import CustomAccordion from "./customAccordion";
 import { useDrop } from "react-dnd";
 import { useBoundStore } from "../../stores";
 import { shallow } from "zustand/shallow";
-
 import { useParams } from "react-router-dom";
 
+/* Expan Toggle Button */
+const ExpandIcon = ({ expanded }) => {
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        cursor: "pointer",
+        color: "#424242",
+      }}
+      onClick={() => setExpanded(!expanded)}
+    >
+      {expanded ? (
+        <ExpandLessIcon
+          style={{
+            fontSize: "1.6rem",
+          }}
+        />
+      ) : (
+        <ExpandMoreIcon
+          style={{
+            fontSize: "1.6rem",
+          }}
+        />
+      )}
+    </div>
+  );
+};
+
+/* Main Component */
 const TaskAccordion = ({ title, state, tasks, handleAddTask, view }) => {
   const { updateTask } = useBoundStore((state) => state, shallow);
   const theme = createTheme();
@@ -45,33 +74,6 @@ const TaskAccordion = ({ title, state, tasks, handleAddTask, view }) => {
     },
   });
 
-  const ExpandIcon = ({ expanded }) => {
-    return (
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          cursor: "pointer",
-          color: "#424242",
-        }}
-        onClick={() => setExpanded(!expanded)}
-      >
-        {expanded ? (
-          <ExpandLessIcon
-            style={{
-              fontSize: "1.6rem",
-            }}
-          />
-        ) : (
-          <ExpandMoreIcon
-            style={{
-              fontSize: "1.6rem",
-            }}
-          />
-        )}
-      </div>
-    );
-  };
   return (
     <ThemeProvider theme={theme}>
       <div
@@ -100,23 +102,24 @@ const TaskAccordion = ({ title, state, tasks, handleAddTask, view }) => {
               display: "flex",
               alignItems: "center",
               padding: 0,
-              maxHeight: "40px",
+              height: "30px",
             }}
           >
             <div
               style={{
                 display: "flex",
                 alignItems: "center",
+                gap: "10px",
               }}
               onClick={() => setExpanded(!expanded)}
             >
               <ExpandIcon expanded={expanded} />
+
               <Typography
                 variant="p"
                 sx={{
                   fontSize: "20px",
                   fontWeight: 600,
-                  marginInline: "1rem",
                   color: "#1D1F24",
                 }}
               >
@@ -128,7 +131,6 @@ const TaskAccordion = ({ title, state, tasks, handleAddTask, view }) => {
                   style={{
                     fontSize: "13px",
                     fontWeight: 400,
-                    marginRight: "10px",
                     borderRadius: "8px",
                     height: "24px",
                     width: "24px",

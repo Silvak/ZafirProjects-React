@@ -10,7 +10,7 @@ function Layout() {
       {/* title & actions */}
 
       {/* Content */}
-      <Box sx={{ paddingTop: "40px" }}>
+      <Box sx={{ padding: "40px 20px" }}>
         <Outlet />
       </Box>
     </Box>
