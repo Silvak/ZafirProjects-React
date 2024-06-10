@@ -78,11 +78,11 @@ const TaskItem = ({ task, isMobile, isKanbanView, projectId }) => {
       sx={{
         padding: '14px',
         opacity: opacity,
-        borderRadius: '12px',
+        borderRadius: '20px',
         width: '100%',
         marginInline: 'auto',
-        boxShadow:
-          ' rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px',
+        boxShadow: 'none',
+        border: '1px solid #E0E3E8',
       }}
       ref={dragRef}
     >

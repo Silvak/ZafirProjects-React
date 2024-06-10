@@ -7,13 +7,14 @@ import TaskHeader from "@/components/taskAccordion/taskHeader";
 import TaskList from "@/components/taskAccordion/taskList";
 import { useBoundStore } from "@/stores/index";
 import { shallow } from "zustand/shallow";
+import Grid from "@mui/material/Grid";
 
 import { useParams } from "react-router-dom";
 
 const App = () => {
   const [view, setView] = useState("Format List");
 
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("md"));
+  //const isMobile = useMediaQuery((theme) => theme.breakpoints.down("md"));
 
   const params = useParams();
 
@@ -65,11 +66,13 @@ const App = () => {
     ChangeStateModal(true);
   };
 
+  /*
   const setColumnsStyle = () => {
     if (view === "View Kanban" && !isMobile) return "repeat(3,1fr)";
     if (view === "View Kanban" && isMobile) return "1fr";
     return "1fr"; // Default style
   };
+  */
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -83,38 +86,75 @@ const App = () => {
           handleAddTask={handleAddTask}
           handleButton={handleButton}
         />
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: setColumnsStyle(),
-            gap: "24px",
-            padding: "0 20px",
-          }}
-        >
-          <TaskList
-            title="In progress"
-            tasks={workingTasks}
-            view={view}
-            state="In Progress"
-            handleAddTask={() => handleAddTask()}
-          />
+        {view != "View Kanban" ? (
+          <>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TaskList
+                  title="In progress"
+                  tasks={workingTasks}
+                  view={view}
+                  state="In Progress"
+                  handleAddTask={() => handleAddTask()}
+                />
+              </Grid>
 
-          <TaskList
-            title="Pending"
-            tasks={pendingTasks}
-            view={view}
-            state="Pending"
-            handleAddTask={() => handleAddTask()}
-          />
+              <Grid item xs={12}>
+                <TaskList
+                  title="Pending"
+                  tasks={pendingTasks}
+                  view={view}
+                  state="Pending"
+                  handleAddTask={() => handleAddTask()}
+                />
+              </Grid>
 
-          <TaskList
-            title="Completed"
-            tasks={completedTasks}
-            view={view}
-            state="Completed"
-            handleAddTask={() => handleAddTask()}
-          />
-        </div>
+              <Grid item xs={12}>
+                <TaskList
+                  title="Completed"
+                  tasks={completedTasks}
+                  view={view}
+                  state="Completed"
+                  handleAddTask={() => handleAddTask()}
+                />
+              </Grid>
+            </Grid>
+          </>
+        ) : (
+          <>
+            <Grid container spacing={2}>
+              <Grid item xs={12} lg={4}>
+                <TaskList
+                  title="In progress"
+                  tasks={workingTasks}
+                  view={view}
+                  state="In Progress"
+                  handleAddTask={() => handleAddTask()}
+                />
+              </Grid>
+
+              <Grid item xs={12} lg={4}>
+                <TaskList
+                  title="Pending"
+                  tasks={pendingTasks}
+                  view={view}
+                  state="Pending"
+                  handleAddTask={() => handleAddTask()}
+                />
+              </Grid>
+
+              <Grid item xs={12} lg={4}>
+                <TaskList
+                  title="Completed"
+                  tasks={completedTasks}
+                  view={view}
+                  state="Completed"
+                  handleAddTask={() => handleAddTask()}
+                />
+              </Grid>
+            </Grid>
+          </>
+        )}
       </div>
     </DndProvider>
   );

@@ -15,7 +15,6 @@ import CustomAccordion from './customAccordion';
 import { useDrop } from 'react-dnd';
 import { useBoundStore } from '../../stores';
 import { shallow } from 'zustand/shallow';
-
 import { useParams } from 'react-router-dom';
 
 const TaskAccordion = ({ title, state, tasks, handleAddTask, view }) => {
@@ -105,7 +104,7 @@ const TaskAccordion = ({ title, state, tasks, handleAddTask, view }) => {
               display: 'flex',
               alignItems: 'center',
               padding: 0,
-              maxHeight: '40px',
+              height: '30px',
             }}
           >
             <div
@@ -116,6 +115,7 @@ const TaskAccordion = ({ title, state, tasks, handleAddTask, view }) => {
               onClick={() => setExpanded(!expanded)}
             >
               <ExpandIcon expanded={expanded} />
+
               <Typography
                 variant="p"
                 sx={{
