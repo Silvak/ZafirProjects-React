@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { mockTasksGantt } from "@/mockData/taskData";
 import { format } from "date-fns";
 import useDateRange from "@/hooks/ganttChart/useDateRange";
 import TaskElement from "@/components/ganttChart/TaskElement";
@@ -11,10 +10,8 @@ import {
   TableElementHead,
   TableElementBody,
 } from "./GanttStyles";
-
 import { useBoundStore } from "@/stores/index";
 import { shallow } from "zustand/shallow";
-
 import { useNewTaskArr } from "../../hooks/ganttChart/useNewTaskArr";
 
 // ----------------- gantt chart ----------------------
@@ -26,18 +23,16 @@ const GanttChart = () => {
     setView(event.target.value);
   };
 
-  const { myTasks, selectedProject } = useBoundStore((state) => state, shallow);
+  const { myTasks } = useBoundStore((state) => state, shallow);
 
   useEffect(() => {
     setResult(useNewTaskArr(myTasks));
-  }, []);
-
-  //console.log("mockTasksGantt", mockTasksGantt);
-  //console.log("task", result);
+    //console.log(myTasks.length + "-total  Task:", myTasks);
+  }, [myTasks]);
 
   let dateRange = useDateRange(result, view);
 
-  if (dateRange == undefined) return <>Loading</>;
+  if (result.length == 0) return <>Loading</>;
   return (
     <Container>
       <UtilsTable>
