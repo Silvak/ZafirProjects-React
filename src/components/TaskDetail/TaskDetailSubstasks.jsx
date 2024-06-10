@@ -42,6 +42,7 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
     ChangeTitleAlert,
     ChangeStateAlert,
     removeSubtask,
+    ChangeContentTitle,
   } = useBoundStore((state) => state, shallow);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -85,6 +86,8 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
   const handleViewSubstask = (subtask) => {
     setCustomTask(subtask.taskId);
     setCleanForm(true);
+    const titleTask = subtask?.taskId?.taskName;
+    ChangeContentTitle(titleTask);
     ChangeTitleModal('Substask Detail');
     ChangeContentModal(
       <TaskDetail
@@ -98,6 +101,7 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
   };
 
   const handleBack = () => {
+    ChangeContentTitle('');
     ChangeTitleModal('Task Detail');
     ChangeContentModal(<TaskDetail task={customTask} isSubtask={false} />);
     ChangeIsVisibleButton(true);
@@ -260,24 +264,25 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
           </td>
         </Box>
       ) : (
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            paddingBlock: '26px',
-            fontSize: '18px',
-            width: 'max-content',
-            border: 'none',
-          }}
-          className={css.backText}
-          onClick={() => handleBack()}
-        >
-          <SubdirectoryArrowLeftIcon sx={{ fontSize: '2rem' }} />
-          <Tooltip title="Return to main task details" placement="top">
-            <span>Back to Task</span>
-          </Tooltip>
-        </div>
+        // <div
+        //   style={{
+        //     display: 'flex',
+        //     alignItems: 'center',
+        //     justifyContent: 'center',
+        //     paddingBlock: '26px',
+        //     fontSize: '18px',
+        //     width: 'max-content',
+        //     border: 'none',
+        //   }}
+        //   className={css.backText}
+        //   onClick={() => handleBack()}
+        // >
+        //   <SubdirectoryArrowLeftIcon sx={{ fontSize: '2rem' }} />
+        //   <Tooltip title="Return to main task details" placement="top">
+        //     <span>Back to Task</span>
+        //   </Tooltip>
+        // </div>
+        ''
       )}
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <SubTaskForm

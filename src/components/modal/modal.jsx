@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { Box, Button, Modal, Typography, IconButton } from '@mui/material';
+import {
+  Box,
+  Button,
+  Modal,
+  Typography,
+  IconButton,
+  Tooltip,
+} from '@mui/material';
 import { useBoundStore } from '@/stores/index';
 import { shallow } from 'zustand/shallow';
 import CloseIcon from '@mui/icons-material/Close';
@@ -16,9 +23,12 @@ const ModalGlobal = () => {
     ChangeStateModal,
     contentModal,
     isVisibleButton,
+    contentTitle,
+    ChangeContentTitle,
   } = useBoundStore((state) => state, shallow);
 
   const handleClose = () => {
+    ChangeContentTitle('');
     ChangeStateModal(false);
   };
 
@@ -78,7 +88,24 @@ const ModalGlobal = () => {
                   border: 'none',
                 }}
               >
-                {titleModal}
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <span>{titleModal} </span>
+                  <span style={{ marginLeft: '4px' }}>
+                    {contentTitle && `-`}{' '}
+                  </span>
+                  {contentTitle && (
+                    <Typography
+                      variant="h3"
+                      color="primary"
+                      style={{ marginLeft: '4px', cursor: 'default' }}
+                    >
+                      <Tooltip title={contentTitle} placement="bottom">
+                        {contentTitle.slice(0, 36)}
+                        {contentTitle.length > 36 ? '...' : ''}
+                      </Tooltip>
+                    </Typography>
+                  )}
+                </div>
                 {/* Close Modal */}
                 {isVisibleButton && (
                   <IconButton
