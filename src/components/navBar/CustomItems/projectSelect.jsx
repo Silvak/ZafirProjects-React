@@ -37,7 +37,6 @@ function ProjectSelect(props) {
       setOpen(false);
     }
   }, [props.open]);
-
   return (
     <List
       sx={{
@@ -52,7 +51,7 @@ function ProjectSelect(props) {
     >
       {/* btn project */}
       {selectedProject && (
-        <Tooltip title={selectedProject.name} placement="right">
+        <Tooltip title={selectedProject.name} placement='right'>
           <ListItemButton
             onClick={handleClick}
             sx={{
@@ -64,8 +63,10 @@ function ProjectSelect(props) {
             disableRipple
           >
             <ItemNav
-              to="#"
-              title={selectedProject.name.slice(0, 12) + '...'}
+              to='#'
+              title={
+                selectedProject && selectedProject.name.slice(0, 12) + '...'
+              }
               icon={<CloudCircleIcon />}
               arrow={open ? <ExpandLessIcon /> : <KeyboardArrowDownIcon />}
               bgColor={'#F6F7FA'}
@@ -76,7 +77,7 @@ function ProjectSelect(props) {
 
       {/* submenu */}
       {selectedProject && (
-        <Collapse in={open} timeout="auto" unmountOnExit>
+        <Collapse in={open} timeout='auto' unmountOnExit>
           {projectsData?.slice(0, 3).map((submenuItem) => (
             <ListItemButton
               key={submenuItem.id}

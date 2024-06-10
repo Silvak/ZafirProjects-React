@@ -24,6 +24,13 @@ const Projects = React.lazy(() => import('@/screens/project/projects'));
 const Layout = React.lazy(() => import('@/screens/project/layout'));
 const Report = React.lazy(() => import('@/screens/project/report'));
 const Gantt = React.lazy(() => import('@/screens/project/gantt'));
+const Tasks = React.lazy(() => import('@/screens/project/tasks'));
+
+const ListView = React.lazy(() => import('@/components/TasksViews/ListView'));
+const TrelloView = React.lazy(
+  () => import('@/components/TasksViews/TrelloView')
+);
+const GanttView = React.lazy(() => import('@/components/TasksViews/GanttView'));
 
 export default function Navigator() {
   const { Authenticated } = useBoundStore((state: any) => state, shallow);
@@ -32,13 +39,13 @@ export default function Navigator() {
 
   let Logo = '';
 
-  useEffect(() => {
-    if (!Authenticated) {
-      navigate('/sign-in');
-    } else {
-      navigate('/');
-    }
-  }, [Authenticated]);
+  // useEffect(() => {
+  //   if (!Authenticated) {
+  //     navigate('/sign-in');
+  //   } else {
+  //     navigate('/');
+  //   }
+  // }, [Authenticated]);
 
   return (
     <React.Suspense
@@ -46,9 +53,9 @@ export default function Navigator() {
         <Grid
           container
           spacing={0}
-          direction="column"
-          alignItems="center"
-          justifyContent="center"
+          direction='column'
+          alignItems='center'
+          justifyContent='center'
           sx={{
             backgroundColor: 'common.tree',
             width: '100%',
@@ -56,9 +63,9 @@ export default function Navigator() {
           }}
         >
           <CardMedia
-            component="img"
+            component='img'
             image={Logo}
-            alt="Logo"
+            alt='Logo'
             sx={{
               width: { xs: 150, sm: 150, md: 200, lg: '497px', xl: 300 },
               objectFit: 'cover',
@@ -67,7 +74,7 @@ export default function Navigator() {
           <CircularProgress
             style={{ color: '#C02327' }}
             sx={{ m: 2 }}
-            size="68px"
+            size='68px'
           />
         </Grid>
       }
@@ -77,26 +84,28 @@ export default function Navigator() {
       {Authenticated ? (
         <NavbarDrawer>
           <Routes>
-            <Route path="/" element={<Home />} />
-
-            <Route path="/projects" element={<Projects />} />
-
-            <Route path="/project/:id" element={<Layout />}>
-              <Route index element={<MyTask />} />
-              <Route path="tasks" element={<MyTask />} />
-              <Route path="report" element={<Report />} />
-              <Route path="gantt" element={<Gantt />} />
+            <Route path='/' element={<Home />} />
+            <Route path='/projects' element={<Projects />} />
+            <Route path='/project/:id' element={<Layout />}>
+              <Route path='tasks' element={<Tasks />}>
+                <Route index element={<ListView />} />
+                <Route index path='list' element={<ListView />} />
+                <Route path='trello' element={<TrelloView />} />
+                <Route path='gantt' element={<GanttView />} />
+              </Route>
+              <Route path='report' element={<Report />} />
+              <Route path='gantt' element={<Gantt />} />
             </Route>
 
-            <Route path="/members" element={<Members />} />
-            <Route path="*" element={<NotFoundPage />} />
+            <Route path='/members' element={<Members />} />
+            <Route path='*' element={<NotFoundPage />} />
           </Routes>
         </NavbarDrawer>
       ) : (
         <Routes>
-          <Route path="/sign-in" element={<SignIn />} />
-          <Route path="/sign-up" element={<SignUp />} />
-          <Route path="*" element={<NotFoundPage />} />
+          <Route path='/sign-in' element={<SignIn />} />
+          <Route path='/sign-up' element={<SignUp />} />
+          <Route path='*' element={<NotFoundPage />} />
         </Routes>
       )}
 
