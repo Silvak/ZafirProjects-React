@@ -42,6 +42,10 @@ main {
   overflow: hidden;
 }
 
+body {
+  scrollbar-gutter: stable;
+}
+
 /* HTML: <div class="loader"></div> */
 .loader {
   width: 60px;
