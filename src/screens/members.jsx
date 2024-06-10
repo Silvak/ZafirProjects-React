@@ -90,7 +90,7 @@ const MembersTable = () => {
       <ConfirmForm
         handleCancelDelete={handleCancelDelete}
         handleConfirmDelete={handleConfirmDelete}
-        memberToDelete={memberToDelete}
+        itemToDelete={memberToDelete}
       />
     );
     ChangeStateModal(true);
@@ -151,7 +151,7 @@ const MembersTable = () => {
             </span>
           </h6>
           <Button
-            variant="contained"
+            variant='contained'
             disableRipple
             onClick={() => handleButtonMore(filteredSearchData)}
             sx={{
@@ -174,7 +174,7 @@ const MembersTable = () => {
               marginInline: 'auto',
             }}
           >
-            <Table stickyHeader aria-label="sticky table">
+            <Table stickyHeader aria-label='sticky table'>
               <TableHeader
                 isMobile={isMobile}
                 selectedRows={selectedRows}

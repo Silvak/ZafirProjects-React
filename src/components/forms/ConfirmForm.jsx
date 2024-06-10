@@ -3,7 +3,7 @@ import { Paper, Button, Typography } from '@mui/material';
 function ConfirmForm({
   handleCancelDelete,
   handleConfirmDelete,
-  memberToDelete,
+  itemToDelete,
 }) {
   return (
     <div style={{ maxWidth: '32vw', minWidth: 'max-content' }}>
@@ -12,13 +12,13 @@ function ConfirmForm({
         style={{ padding: 20, backgroundColor: '#fff', borderRadius: 12 }}
       >
         <Typography
-          variant="h6"
+          variant='h6'
           sx={{ mb: 4, mt: 2 }}
           style={{ fontSize: 18, letterSpacing: -1 }}
         >
           Are you sure you want to delete to{' '}
           <strong style={{ color: 'black', width: 'max-content' }}>
-            {memberToDelete._id.name}
+            {itemToDelete._id.name || itemToDelete.taskName}
           </strong>{' '}
           ?
         </Typography>
@@ -31,7 +31,7 @@ function ConfirmForm({
         >
           <Button
             disableRipple
-            variant="outlined"
+            variant='outlined'
             sx={{
               color: 'black',
               bgcolor: 'white',
@@ -46,14 +46,14 @@ function ConfirmForm({
           <Button
             disableRipple
             style={{ marginLeft: 8 }}
-            variant="contained"
+            variant='contained'
             sx={{
               color: 'white',
               bgcolor: '#7662EA',
               borderRadius: '0.5rem',
               minWidth: '6rem',
             }}
-            onClick={() => handleConfirmDelete(memberToDelete)}
+            onClick={() => handleConfirmDelete(itemToDelete)}
           >
             Yes
           </Button>
