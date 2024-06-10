@@ -24,21 +24,6 @@ const App = () => {
     selectedProject,
   } = useBoundStore((state) => state, shallow);
 
-  // useEffect(() => {
-  //   if (params.id) {
-  //     const fetchData = async () => {
-  //       try {
-  //         // Only fetch tasks if idProject has changed
-  //         await fetchTasksById(params.id);
-  //       } catch (error) {
-  //         console.error('Error fetching tasks', error);
-  //       }
-  //     };
-
-  //     fetchData();
-  //   }
-  // }, [params.id, fetchTasksById]);
-
   const [pendingTasks, setPendingTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
   const [workingTasks, setWorkingTasks] = useState([]);
@@ -63,14 +48,6 @@ const App = () => {
     ChangeStateModal(true);
   };
 
-  /*
-  const setColumnsStyle = () => {
-    if (view === "View Kanban" && !isMobile) return "repeat(3,1fr)";
-    if (view === "View Kanban" && isMobile) return "1fr";
-    return "1fr"; // Default style
-  };
-  */
-
   return (
     <DndProvider backend={HTML5Backend}>
       <div sx={{ minWidth: "250px" }}>
@@ -83,7 +60,7 @@ const App = () => {
           handleAddTask={handleAddTask}
           handleButton={handleButton}
         />
-        {view != "View Kanban" ? (
+        {view !== "View Kanban" ? (
           <>
             <Grid container spacing={2}>
               <Grid item xs={12}>
