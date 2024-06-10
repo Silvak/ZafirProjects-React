@@ -85,23 +85,23 @@ function MyWorkGlance() {
       total: pendingTasks.length,
       color: '#6B6E75',
     },
-    // issues: {
-    //   issuesTasks,
-    //   title: 'Issues',
-    //   total: issuesTasks.length,
-    //   color: '#EBA741',
-    // },
-    // review: {
-    //   reviewTasks,
-    //   title: 'Review',
-    //   total: reviewTasks.length,
-    //   color: '#E55D57',
-    // },
+    issues: {
+      issuesTasks,
+      title: 'Issues',
+      total: issuesTasks.length,
+      color: '#EBA741',
+    },
+    review: {
+      reviewTasks,
+      title: 'Review',
+      total: reviewTasks.length,
+      color: '#E55D57',
+    },
     completed: {
       completedTasks,
       title: 'Completed',
       total: completedTasks.length,
-      color: '#00913f',
+      color: '#429482',
     },
   };
 
@@ -114,13 +114,14 @@ function MyWorkGlance() {
           borderRadius: '20px',
           padding: '20px',
           overflowX: 'auto',
+          minHeight: '180px',
         }}
       >
         <Grid
           item
           sx={{
             display: isMobile ? 'inline-table' : 'flex',
-            padding: '20px 10px',
+            marginBottom: '20px',
             alignItems: 'center',
             justifyContent: 'space-between',
             overflowX: 'hidden',
@@ -143,11 +144,12 @@ function MyWorkGlance() {
                 onChange={handleFilter}
                 style={{
                   border: 'none',
-                  outline: '1px solid #808080',
                   background: 'white',
                   borderRadius: '8px',
                   cursor: 'pointer',
-                  padding: '10px',
+                  padding: '8px 16px',
+                  height: '40px',
+                  border: '1px solid #E0E3E8',
                 }}
               >
                 {filtersData.map((filter) => (

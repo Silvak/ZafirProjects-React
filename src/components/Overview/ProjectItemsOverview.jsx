@@ -1,4 +1,5 @@
 import { Box, TableCell, useMediaQuery } from '@mui/material';
+import { RenderProjectItems } from './RenderProjectItems';
 import { BsPen, BsTrash3 } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import { useBoundStore } from '../../stores';
@@ -32,11 +33,13 @@ const ProjectItemsOverview = ({
         alignItems: 'center',
         borderBottom: 'none',
         '&:hover': {
-          backgroundColor: 'rgba(0, 0, 0, 0.1)',
+          backgroundColor: '#ECE9FF',
           cursor: 'pointer',
         },
         height: 'auto',
         width: '100%',
+        padding: '8px 0px 8px 12px',
+        borderRadius: '8px',
       }}
     >
       {/* <div
@@ -56,16 +59,15 @@ const ProjectItemsOverview = ({
       <Link
         to={`/project/${_id}`}
         style={{ color: 'inherit', textDecoration: 'none' }}
-        onClick={() => handleSelectProject(project)}
+        onClick={() => handleSelectProject(_id)}
       >
         <Box>
           <div
-            // onClick={() => navigate(`/project/${id}`)}
-            style={{ fontFamily: 'Poppins' }}
+          // onClick={() => navigate(`/project/${id}`)}
           >
             <h2 className="projectName">{name}</h2>
           </div>
-          <small className="quantityTasks" style={{ fontFamily: 'Poppins' }}>
+          <small className="quantityTasks">
             {/* {quantityTasks} | {item} */}
             {description.length > 25
               ? `${description.slice(0, 25)}...`
