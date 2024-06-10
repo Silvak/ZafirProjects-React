@@ -1,141 +1,50 @@
 import React from "react";
-import { mockTasksGantt } from "@/mockData/taskData";
-import { styled } from "@mui/system";
-import { differenceInDays, addDays } from "date-fns";
-import useTaskWidth from "../../hooks/ganttChart/useTaskWidth";
+import { TaskRow } from "./GanttStyles";
+import {
+  isTaskInRange,
+  isCurrentDateTaskStart,
+} from "@/utils/ganttChart/dateRange";
+import useTaskWidth from "@/hooks/ganttChart/useTaskWidth";
+import TaskProgressBar from "./TaskProgressBar";
 
-// ----------------- syles ----------------------
-const TaskRow = styled("div")({
-  display: "flex",
-  height: "70px",
-  width: "100px", // The width must be the same as that of <TableElement/>.
-  alignItems: "center",
-  padding: "0px",
-  //borderBottom: "1px solid #E0E3E8",
-});
+const Task = ({ task, view, date, dateRange }) => {
+  const taskStartDate = new Date(task.date.start);
+  const taskEndDate = new Date(task.date.end);
 
-const Task = styled("div")({
-  height: "100%",
-  width: "100%",
-  //backgroundColor: "#a0c9c030",
-});
+  const taskInRange = isTaskInRange(view, date, taskStartDate, taskEndDate);
+  const currentDateTaskStart = isCurrentDateTaskStart(
+    view,
+    date,
+    taskStartDate
+  );
 
-const TaskBar = styled("div")({
-  borderRadius: "12px",
-  height: "40px",
-  overflow: "hidden",
-});
-
-// ----------------- Component ----------------------
-function TaskElement({ date, view, dateRange }) {
-  // Range
-  const isTaskInRange2 = (view, date, taskStartDate, taskEndDate) =>
-    (view === "day" && date >= taskStartDate && date <= taskEndDate) ||
-    (view === "week" &&
-      date >= addDays(taskStartDate, -taskStartDate.getDay()) &&
-      date <= addDays(taskEndDate, 6 - taskEndDate.getDay())) ||
-    (view === "month" &&
-      date.getMonth() === taskStartDate.getMonth() &&
-      date.getFullYear() === taskStartDate.getFullYear());
-
-  // Calculate if the task start date is within the current view
-  const isCurrentDateTaskStart = (view, date, taskStartDate) =>
-    (view === "day" && differenceInDays(taskStartDate, date) === 0) ||
-    (view === "week" &&
-      date >= addDays(taskStartDate, -taskStartDate.getDay()) &&
-      date <= addDays(taskStartDate, 6 - taskStartDate.getDay())) ||
-    (view === "month" &&
-      date.getMonth() === taskStartDate.getMonth() &&
-      date.getFullYear() === taskStartDate.getFullYear());
+  const taskWidth =
+    taskInRange && currentDateTaskStart
+      ? useTaskWidth(view, date, taskStartDate, taskEndDate, dateRange)
+      : 0;
 
   return (
+    <TaskRow key={task.id}>
+      {taskInRange && currentDateTaskStart && (
+        <TaskProgressBar task={task} taskWidth={taskWidth} />
+      )}
+    </TaskRow>
+  );
+};
+
+/* Main component */
+function TaskElement({ date, view, dateRange, tasksList }) {
+  return (
     <>
-      {mockTasksGantt.map((task) => {
-        const taskStartDate = new Date(task.date.start);
-        const taskEndDate = new Date(task.date.end);
-
-        const taskInRange = isTaskInRange2(
-          view,
-          date,
-          taskStartDate,
-          taskEndDate
-        );
-
-        const currentDateTaskStart = isCurrentDateTaskStart(
-          view,
-          date,
-          taskStartDate
-        );
-
-        // Calculate the width of the task bar based on its duration and view
-        let taskWidth = 0;
-
-        // Adjust the left position of the task bar based on its start date
-        if (taskInRange & currentDateTaskStart) {
-          taskWidth = useTaskWidth(
-            view,
-            date,
-            taskStartDate,
-            taskEndDate,
-            dateRange
-          );
-        }
-
-        return (
-          <TaskRow key={task.id}>
-            {taskInRange & currentDateTaskStart ? (
-              <Task>
-                <TaskBar
-                  style={{
-                    background: `${task.styles.color}99`,
-                    width: `${taskWidth.width}px`,
-                    left: `${taskWidth.left}px`,
-                    position: "relative",
-                    top: "15px",
-                    zIndex: "1",
-                    cursor: "pointer",
-                  }}
-                  draggable
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      height: "100%",
-                      width: "100%",
-                      padding: "0 8px",
-                    }}
-                  >
-                    <p
-                      style={{
-                        fontSize: "12px",
-                        fontWeight: 500,
-                        color: "white",
-                      }}
-                    >
-                      {task.task}
-                    </p>
-                    <div>Persons </div>
-                  </div>
-
-                  <div
-                    style={{
-                      position: "relative",
-                      left: 0,
-                      top: "-40px",
-                      height: "100%",
-                      width: `${task.progress}%`,
-                      background: `${task.styles.color}`,
-                      zIndex: "-1",
-                    }}
-                  ></div>
-                </TaskBar>
-              </Task>
-            ) : null}
-          </TaskRow>
-        );
-      })}
+      {tasksList.map((task) => (
+        <Task
+          key={task.id}
+          task={task}
+          view={view}
+          date={date}
+          dateRange={dateRange}
+        />
+      ))}
     </>
   );
 }
