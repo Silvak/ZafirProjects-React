@@ -24,43 +24,37 @@ function ProjectsOverview() {
           backgroundColor: '#ffffff',
           height: 'auto',
           width: '100%',
+          height: '100%',
           borderRadius: '20px',
+          padding: '20px 0px',
+          maxHeight: '572px',
+          overflow: 'hidden',
         }}
       >
         <Grid
           sx={{
             display: isMobile ? 'flex' : 'flex',
             justifyContent: 'space-between',
+            padding: '0px 20px 20px 20px',
           }}
         >
-          <Grid
-            item
-            sx={{
-              marginLeft: '20px',
-              marginTop: '22px',
-            }}
-          >
+          <Grid item>
             <Typography
               sx={{ fontSize: '20px', fontWeight: 500, fontFamily: 'Poppins' }}
             >
               Projects
             </Typography>
           </Grid>
-          <Grid
-            item
-            sx={{
-              marginTop: '26px',
-              marginRight: '30px',
-              marginLeft: isMobile ? '30px' : '',
-            }}
-          >
+
+          <Grid item>
             <NavLink
               to="/projects"
               style={{
                 textDecoration: 'none',
                 display: 'flex',
                 alignItems: 'center',
-                fontFamily: 'Poppins',
+                fontWeight: 600,
+                color: '#7662EA',
               }}
             >
               View all
@@ -68,26 +62,30 @@ function ProjectsOverview() {
             </NavLink>
           </Grid>
         </Grid>
+
         <Table
           sx={{
-            mt: '10px',
             background: '#FFFFFF',
-            borderRadius: '20px',
             display: 'block',
-            padding: '10px',
+            padding: '0px 20px',
             borderBottom: 'none',
             width: '100%',
+            overflowX: 'hidden',
+            height: '482px',
           }}
         >
           <TableBody sx={{ display: 'grid' }}>
             <TableRow
               sx={{
+                display: 'flex',
+                flexDirection: 'column',
                 overflowX: 'auto',
                 borderBottom: 'none',
                 '&>*': {
                   borderBottom: 'none',
                   width: '100%',
                 },
+                gap: '20px',
               }}
             >
               {projectsData.length === 0 ? (
@@ -101,19 +99,16 @@ function ProjectsOverview() {
                   No Projects
                 </strong>
               ) : (
-                projectsData
-                  .slice(0, 6)
-                  .map((project) => (
-                    <ProjectItemsOverview
-                      handleDelete={handleDelete}
-                      handleEdit={() =>
-                        handleEdit(<EditProjectForm project={project} />)
-                      }
-                      {...project}
-                      project={project}
-                      key={project._id}
-                    />
-                  ))
+                projectsData.map((project) => (
+                  <ProjectItemsOverview
+                    handleDelete={handleDelete}
+                    handleEdit={() =>
+                      handleEdit(<EditProjectForm project={project} />)
+                    }
+                    {...project}
+                    key={project._id}
+                  />
+                ))
               )}
             </TableRow>
           </TableBody>
