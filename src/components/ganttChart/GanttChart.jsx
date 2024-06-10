@@ -67,18 +67,42 @@ const GanttChart = () => {
   };
 
   return (
-    <div>
-      <select
-        name="view"
-        id="view"
-        value={view}
-        onChange={handleChange}
-        disabled={false}
+    <div
+      style={{
+        height: "auto",
+        display: "flex",
+        flexDirection: "column",
+        backgroundColor: "#F6F7FA",
+        borderRadius: 20,
+        padding: "1.5rem 1rem 1rem 1rem",
+        border: "1px solid #E0E3E8",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "end",
+          marginBottom: "1.5rem",
+        }}
       >
-        <option value="day">Day</option>
-        <option value="week">Week</option>
-        <option value="month">Month</option>
-      </select>
+        <select
+          name="view"
+          id="view"
+          value={view}
+          onChange={handleChange}
+          disabled={false}
+          style={{
+            padding: "0.5rem 1rem",
+            borderRadius: "8px",
+            width: "140px",
+            border: "1px solid #E0E3E8",
+          }}
+        >
+          <option value="day">Day</option>
+          <option value="week">Week</option>
+          <option value="month">Month</option>
+        </select>
+      </div>
 
       <div
         style={{
