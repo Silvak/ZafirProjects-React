@@ -9,7 +9,9 @@ import {
   FormControl,
   Select,
   MenuItem,
+  ThemeProvider,
   Box,
+  createTheme,
 } from '@mui/material';
 import { EditOutlined as EditOutlinedIcon } from '@mui/icons-material';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -17,8 +19,8 @@ import { useBoundStore } from '../../stores';
 import { shallow } from 'zustand/shallow';
 import useSuggestionUsers from '../../hooks/useSuggestionUsers';
 import './dataPicker.css';
+import css from './style.module.css';
 import { format } from 'date-fns';
-import CustomList from '../CustomList/CustomList';
 import CustomAvatar from '@/components/CustomAvatar/CustomAvatar';
 import SuggestionList from '../SuggestionList/SuggestionList';
 import getUniqueUsers from '../../utils/getUniqueUsers';
@@ -31,6 +33,7 @@ const TaskDetailContent = ({
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const { users } = useSuggestionUsers();
+  const theme = createTheme();
 
   //  nombre del miembro
   const [member, setMember] = useState('');
@@ -141,7 +144,6 @@ const TaskDetailContent = ({
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
     setFormData({ ...formData, [name]: value });
   };
 
@@ -152,247 +154,241 @@ const TaskDetailContent = ({
   };
 
   return (
-    <Grid container spacing={3}>
-      <Grid item xs={12}>
-        <Box sx={{ position: 'relative' }}>
+    <ThemeProvider theme={theme}>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <Box sx={{ position: 'relative' }}>
+            <TextField
+              size="small"
+              label="Search Member"
+              fullWidth
+              disabled={!isEditing}
+              value={member}
+              onChange={(e) => {
+                setMember(e.target.value);
+                handleSuggestionChange({ inputValue: e.target.value });
+              }}
+              sx={{ mt: 4 }}
+              InputLabelProps={{
+                sx: {
+                  color: isEditing ? 'inherit' : 'blue',
+                },
+              }}
+            />
+            <SuggestionList
+              type="member"
+              usersList={filteredMembers}
+              onClick={handleSuggestionClick}
+              top="80px"
+            />
+          </Box>
+        </Grid>
+        <Grid item xs={12}>
+          <Box
+            sx={{
+              display: 'flex',
+              gap: '8px',
+              marginBottom: '20px',
+              cursor: isEditing ? 'pointer' : 'not-allowed',
+              width: 'fit-content',
+            }}
+          >
+            {members.map((member, key) => (
+              <CustomAvatar
+                key={key}
+                member={member}
+                size="40px"
+                fontSize="14px"
+                deleteMode={false}
+                name={member.name}
+                onClick={() => {
+                  isEditing && handleRemoveMember(member);
+                }}
+              />
+            ))}
+          </Box>
+        </Grid>
+        <Grid item xs={12}>
+          <span>Name</span>
           <TextField
             size="small"
-            label="Search Member"
+            name={isSubtask ? 'subtaskName' : 'taskName'}
+            onChange={handleChange}
+            value={isSubtask ? formData.subtaskName : formData.taskName}
             fullWidth
             disabled={!isEditing}
-            value={member}
-            onChange={(e) => {
-              setMember(e.target.value);
-              handleSuggestionChange({ inputValue: e.target.value });
-            }}
-            sx={{ mt: 4 }}
             InputLabelProps={{
               sx: {
                 color: isEditing ? 'inherit' : 'blue',
               },
             }}
           />
-          <SuggestionList
-            type="member"
-            usersList={filteredMembers}
-            onClick={handleSuggestionClick}
-            top="80px"
+        </Grid>
+        <Grid item xs={12}>
+          <span>Description</span>
+          <TextField
+            size="small"
+            name="description"
+            onChange={handleChange}
+            value={formData.description}
+            fullWidth
+            disabled={!isEditing}
+            InputLabelProps={{
+              sx: {
+                color: isEditing ? 'inherit' : 'blue',
+              },
+            }}
           />
-        </Box>
-      </Grid>
-      <Grid item xs={12}>
-        <Box
-          sx={{
-            display: 'flex',
-            gap: '8px',
-            marginBottom: '20px',
-            cursor: isEditing ? 'pointer' : 'not-allowed',
-            width: 'fit-content',
-          }}
-        >
-          {members.map((member, key) => (
-            <CustomAvatar
-              key={key}
-              member={member}
-              size="40px"
-              fontSize="14px"
-              deleteMode={false}
-              name={member.name}
-              onClick={() => {
-                isEditing && handleRemoveMember(member);
-              }}
-            />
-          ))}
-        </Box>
-      </Grid>
-      <Grid item xs={12}>
-        <span>Name</span>
-        <TextField
-          size="small"
-          name={isSubtask ? 'subtaskName' : 'taskName'}
-          onChange={handleChange}
-          value={isSubtask ? formData.subtaskName : formData.taskName}
-          fullWidth
-          disabled={!isEditing}
-          InputLabelProps={{
-            sx: {
-              color: isEditing ? 'inherit' : 'blue',
-            },
-          }}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <span>Description</span>
-        <TextField
-          size="small"
-          name="description"
-          onChange={handleChange}
-          value={formData.description}
-          fullWidth
-          disabled={!isEditing}
-          InputLabelProps={{
-            sx: {
-              color: isEditing ? 'inherit' : 'blue',
-            },
-          }}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <Typography sx={{ fontSize: '0.85rem' }}>Priority</Typography>
-        <FormControl fullWidth sx={{ bgcolor: 'white' }}>
-          <Select
-            required
-            variant="outlined"
-            size="small"
-            sx={{ fontSize: '2rem', bgcolor: 'white' }}
-            name="priority"
-            value={formData.priority}
-            onChange={handleChange}
-            displayEmpty
-            renderValue={(selected) => (selected ? selected : 'Type: All')}
-            disabled={!isEditing}
-          >
-            <CustomMenuItem value="High">High</CustomMenuItem>
-            <CustomMenuItem value="Medium">Medium</CustomMenuItem>
-            <CustomMenuItem value="Low">Low</CustomMenuItem>
-          </Select>
-        </FormControl>
-      </Grid>
-      <Grid item xs={12}>
-        <Typography sx={{ fontSize: '0.85rem' }}>State</Typography>
-        <FormControl fullWidth>
-          <Select
-            required
-            variant="outlined"
-            size="small"
-            sx={{ fontSize: '2rem', backgroundColor: 'white' }}
-            name="state"
-            value={formData.state}
-            onChange={handleChange}
-            displayEmpty
-            renderValue={(selected) => (selected ? selected : 'Type: All')}
-            disabled={!isEditing}
-          >
-            <CustomMenuItem value="In Progress">In Progress</CustomMenuItem>
-            <CustomMenuItem value="Pending">Pending</CustomMenuItem>
-            <CustomMenuItem value="Completed">Completed</CustomMenuItem>
-          </Select>
-        </FormControl>
-      </Grid>
-      <Grid item xs={12}>
-        <Typography
-          variant="h6"
-          style={{
-            fontSize: 14,
-            fontWeight: 'normal',
-            color: isEditing ? 'black' : 'darkgray',
-          }}
-        >
-          Start date
-        </Typography>
-        <TextField
-          size="small"
-          name="start"
-          type="date"
-          value={formData.start}
-          onChange={handleChange}
-          disabled={!isEditing}
-          sx={{
-            width: '100%',
-          }}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <Typography
-          variant="h6"
-          style={{
-            fontSize: 14,
-            fontWeight: 'normal',
-            color: isEditing ? 'black' : 'darkgray',
-          }}
-        >
-          End date
-        </Typography>
-        <TextField
-          size="small"
-          name="end"
-          type="date"
-          disabled={!isEditing}
-          value={formData.end}
-          onChange={handleChange}
-          sx={{
-            width: '100%',
-          }}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        {isEditing ? (
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              width: '100%',
-              justifyContent: 'space-around',
-            }}
-          >
-            <Button
+        </Grid>
+        <Grid item xs={12}>
+          <Typography sx={{ fontSize: '0.85rem' }}>Priority</Typography>
+          <FormControl fullWidth sx={{ bgcolor: 'white' }}>
+            <Select
+              required
               variant="outlined"
-              color="primary"
-              onClick={handleCancel}
-              disableRipple
-              style={{
-                paddingInline: '1.5rem',
-                borderRadius: 10,
-              }}
+              size="small"
+              sx={{ fontSize: '1rem', bgcolor: 'white' }}
+              name="priority"
+              value={formData.priority}
+              onChange={handleChange}
+              displayEmpty
+              renderValue={(selected) => (selected ? selected : 'Type: All')}
+              disabled={!isEditing}
             >
-              Cancel
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleSubmit}
-              disableRipple
-              style={{
-                color: 'white',
-                paddingInline: '2rem',
-                borderRadius: 10,
-              }}
+              <CustomMenuItem value="High">High</CustomMenuItem>
+              <CustomMenuItem value="Medium">Medium</CustomMenuItem>
+              <CustomMenuItem value="Low">Low</CustomMenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography sx={{ fontSize: '0.85rem' }}>State</Typography>
+          <FormControl fullWidth>
+            <Select
+              required
+              variant="outlined"
+              size="small"
+              sx={{ fontSize: '1rem', backgroundColor: 'white' }}
+              name="state"
+              value={formData.state}
+              onChange={handleChange}
+              displayEmpty
+              renderValue={(selected) => (selected ? selected : 'Type: All')}
+              disabled={!isEditing}
             >
-              Save
-            </Button>
-          </div>
-        ) : (
-          <div
+              <CustomMenuItem value="In Progress">In Progress</CustomMenuItem>
+              <CustomMenuItem value="Pending">Pending</CustomMenuItem>
+              <CustomMenuItem value="Completed">Completed</CustomMenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography
+            variant="h6"
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              width: '100%',
-              justifyContent: 'center',
+              fontSize: 14,
+              fontWeight: 'normal',
+              color: isEditing ? 'black' : 'darkgray',
             }}
           >
-            <IconButton
-              disableRipple
-              color="primary"
-              size="small"
-              sx={{
-                '&:hover': {
-                  color: 'blue',
-                  transition: 'color 0.1s',
-                },
-              }}
+            Start date
+          </Typography>
+          <TextField
+            size="small"
+            name="start"
+            type="date"
+            value={formData.start}
+            onChange={handleChange}
+            disabled={!isEditing}
+            sx={{
+              width: '100%',
+            }}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <Typography
+            variant="h6"
+            style={{
+              fontSize: 14,
+              fontWeight: 'normal',
+              color: isEditing ? 'black' : 'darkgray',
+            }}
+          >
+            End date
+          </Typography>
+          <TextField
+            size="small"
+            name="end"
+            type="date"
+            disabled={!isEditing}
+            value={formData.end}
+            onChange={handleChange}
+            sx={{
+              width: '100%',
+            }}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          {isEditing ? (
+            <div
               style={{
-                cursor: 'pointer',
-                gap: 8,
+                display: 'flex',
+                alignItems: 'center',
+                width: '100%',
+                justifyContent: 'space-around',
               }}
-              onClick={handleEdit}
             >
-              <EditOutlinedIcon />
-              Edit Task
-            </IconButton>
-          </div>
-        )}
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={handleCancel}
+                disableRipple
+                style={{
+                  paddingInline: '1.5rem',
+                  borderRadius: 10,
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleSubmit}
+                disableRipple
+                style={{
+                  color: 'white',
+                  paddingInline: '2rem',
+                  borderRadius: 10,
+                }}
+              >
+                Save
+              </Button>
+            </div>
+          ) : (
+            <Box
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                width: '100%',
+                fontSize: '14px',
+                justifyContent: 'center',
+              }}
+            >
+              <IconButton
+                // disableRipple
+                size="small"
+                color="primary"
+                className={css.backText}
+                onClick={handleEdit}
+              >
+                <EditOutlinedIcon />
+                {isSubtask ? 'Edit Subtask' : 'Edit Task'}
+              </IconButton>
+            </Box>
+          )}
+        </Grid>
       </Grid>
-    </Grid>
+    </ThemeProvider>
   );
 };
 

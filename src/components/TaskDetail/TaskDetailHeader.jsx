@@ -3,7 +3,7 @@ import { Box } from '@mui/material';
 const TaskDetailHeader = ({ taskId, taskTitle }) => {
   return (
     <Box
-      component='header'
+      component="header"
       sx={{
         display: 'flex',
         justifyContent: 'space-between',
@@ -15,6 +15,7 @@ const TaskDetailHeader = ({ taskId, taskTitle }) => {
           fontSize: 'clamp(13px,2vw, 20px)',
           fontWeight: 'bold',
           textBalance: 'balance',
+          paddingRight: 8,
         }}
       >
         {taskTitle}

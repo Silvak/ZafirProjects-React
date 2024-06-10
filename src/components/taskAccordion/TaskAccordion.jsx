@@ -15,7 +15,6 @@ import CustomAccordion from './customAccordion';
 import { useDrop } from 'react-dnd';
 import { useBoundStore } from '../../stores';
 import { shallow } from 'zustand/shallow';
-
 import { useParams } from 'react-router-dom';
 
 const TaskAccordion = ({ title, state, tasks, handleAddTask, view }) => {
@@ -53,21 +52,23 @@ const TaskAccordion = ({ title, state, tasks, handleAddTask, view }) => {
     return (
       <div
         style={{
+          display: 'flex',
+          alignItems: 'center',
           cursor: 'pointer',
           color: '#424242',
         }}
         onClick={() => setExpanded(!expanded)}
       >
         {expanded ? (
-          <ExpandMoreIcon
+          <ExpandLessIcon
             style={{
-              fontSize: '2rem',
+              fontSize: '1.6rem',
             }}
           />
         ) : (
-          <ExpandLessIcon
+          <ExpandMoreIcon
             style={{
-              fontSize: '2rem',
+              fontSize: '1.6rem',
             }}
           />
         )}
@@ -90,17 +91,10 @@ const TaskAccordion = ({ title, state, tasks, handleAddTask, view }) => {
           className="custom-accordion"
           style={{
             backgroundColor: '#F6F7FA',
-            // backgroundColor:
-            //   title === 'Completed Tasks'
-            //     ? 'rgba(0, 145, 63, 0.3)'
-            //     : title === 'Pending Tasks'
-            //     ? 'rgba(107, 110, 117, 0.3)'
-            //     : 'rgba(69, 156, 237, 0.3)',
-
-            borderRadius: '12px',
-            padding: '20px',
-            boxShadow:
-              ' rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px',
+            borderRadius: '20px',
+            padding: '10px 20PX',
+            boxShadow: 'none',
+            border: '1px solid #E0E3E8',
           }}
         >
           <AccordionSummary
@@ -109,49 +103,58 @@ const TaskAccordion = ({ title, state, tasks, handleAddTask, view }) => {
             sx={{
               display: 'flex',
               alignItems: 'center',
-              borderRadius: 8,
-              padding: 1,
+              padding: 0,
+              height: '30px',
             }}
           >
             <div
-              style={{ display: 'flex', alignItems: 'center' }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+              }}
               onClick={() => setExpanded(!expanded)}
             >
               <ExpandIcon expanded={expanded} />
+
               <Typography
-                variant="h4"
+                variant="p"
                 sx={{
-                  fontSize: '18px',
-                  fontWeight: 'bold',
+                  fontSize: '20px',
+                  fontWeight: 600,
                   marginInline: '1rem',
+                  color: '#1D1F24',
                 }}
               >
                 {title}
               </Typography>
-              <div
-                style={{
-                  fontSize: '12px',
-                  fontWeight: 'normal',
-                  marginRight: '1rem',
-                  borderRadius: '12px',
-                  height: '1.6rem',
-                  width: '1.6rem',
-                  textAlign: 'center',
-                  lineHeight: '1.6rem',
-                  backgroundColor: '#7662EA',
-                  color: '#FFFFFF',
-                }}
-              >
-                {tasks?.length.toString()}
-              </div>
+
+              {tasks?.length > 0 && (
+                <div
+                  style={{
+                    fontSize: '13px',
+                    fontWeight: 400,
+                    marginRight: '10px',
+                    borderRadius: '8px',
+                    height: '24px',
+                    width: '24px',
+                    textAlign: 'center',
+                    lineHeight: '24px',
+                    backgroundColor: '#7662EA',
+                    color: '#FFFFFF',
+                  }}
+                >
+                  {tasks?.length.toString()}
+                </div>
+              )}
 
               <AddIcon
                 sx={{
                   color: '#8C7BEE',
                   cursor: 'pointer',
                   borderRadius: '8px',
-                  backgroundColor: 'cyan',
-                  fontSize: '1.5rem',
+                  backgroundColor: '#ECE9FF',
+                  height: '24px',
+                  width: '24px',
                 }}
                 onClick={() => handleAddTask()}
               />

@@ -23,7 +23,6 @@ export const createTasksSlice = (set, get) => ({
   removeTask: async (taskId) => {
     try {
       const taskDeleted = await axiosInstance.delete(`/tasksList/${taskId}`);
-      console.log(taskDeleted);
     } catch (error) {
       console.error('Error deleting task', error);
     }
@@ -33,7 +32,7 @@ export const createTasksSlice = (set, get) => ({
   },
 
   updateTask: async ({ taskId, newData, projectId }) => {
-    console.log('FROM SLICE', newData);
+    // console.log('FROM SLICE', newData);
     try {
       const res = await axiosInstance.put(`/tasksList/${taskId}`, newData);
       if (res.status === 200) {

@@ -7,6 +7,7 @@ import {
   ThemeProvider,
   createTheme,
   useMediaQuery,
+  Tooltip,
 } from '@mui/material';
 import {
   AttachFile as AttachFileIcon,
@@ -14,6 +15,7 @@ import {
   MarkUnreadChatAltOutlined as MarkUnreadChatAltOutlinedIcon,
 } from '@mui/icons-material';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 
 import { priorityColors, statusColors } from '@/utils/colors';
 
@@ -111,7 +113,7 @@ function MyTaskItems({ tasks }) {
                         // marginLeft: 50,
                       }}
                     >
-                      <div style={{ display: 'flex' }}>
+                      {/* <div style={{ display: 'flex' }}>
                         <MarkUnreadChatAltOutlinedIcon
                           sx={{ mr: '5px', color: 'gray' }}
                         />
@@ -125,8 +127,23 @@ function MyTaskItems({ tasks }) {
                         >
                           {'5'}
                         </Typography>
-                      </div>
+                      </div> */}
 
+                      <div style={{ display: 'flex' }}>
+                        <PeopleAltOutlinedIcon
+                          sx={{ mr: '5px', color: 'gray' }}
+                        />
+                        <Typography
+                          variant="body1"
+                          noWrap
+                          style={{
+                            fontSize: '14px',
+                            fontWeight: 'bold',
+                          }}
+                        >
+                          {task?.members_id?.length}
+                        </Typography>
+                      </div>
                       <div
                         style={{
                           display: 'flex',

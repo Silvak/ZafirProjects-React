@@ -1,4 +1,4 @@
-import GanttChart from "../../components/ganttChart/GanttChart";
+import GanttChart from "@/components/ganttChart/GanttChart";
 
 // Screen Componente
 function Gantt() {

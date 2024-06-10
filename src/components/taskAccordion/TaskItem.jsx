@@ -1,4 +1,4 @@
-import { Grid, Paper, Typography } from '@mui/material';
+import { Grid, Paper, Tooltip, Typography } from '@mui/material';
 import { useDrag, useDrop } from 'react-dnd';
 
 //icons
@@ -9,6 +9,7 @@ import {
   MarkUnreadChatAltOutlined as MarkUnreadChatAltOutlinedIcon,
   MoreHoriz as MoreHorizIcon,
 } from '@mui/icons-material';
+import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import CircleIcon from '@mui/icons-material/Circle';
@@ -77,11 +78,11 @@ const TaskItem = ({ task, isMobile, isKanbanView, projectId }) => {
       sx={{
         padding: '14px',
         opacity: opacity,
-        borderRadius: '12px',
+        borderRadius: '20px',
         width: '100%',
         marginInline: 'auto',
-        boxShadow:
-          ' rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px',
+        boxShadow: 'none',
+        border: '1px solid #E0E3E8',
       }}
       ref={dragRef}
     >
@@ -210,9 +211,7 @@ const TaskItem = ({ task, isMobile, isKanbanView, projectId }) => {
             }}
           >
             <div style={{ display: 'flex' }}>
-              <MarkUnreadChatAltOutlinedIcon
-                sx={{ mr: '5px', color: 'gray' }}
-              />
+              <PeopleAltOutlinedIcon sx={{ mr: '5px', color: 'gray' }} />
               <Typography
                 variant="body1"
                 noWrap
@@ -221,7 +220,7 @@ const TaskItem = ({ task, isMobile, isKanbanView, projectId }) => {
                   fontWeight: 'bold',
                 }}
               >
-                {'5'}
+                {task?.members_id?.length}
               </Typography>
             </div>
             {isKanbanView && (

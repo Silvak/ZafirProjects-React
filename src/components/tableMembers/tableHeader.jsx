@@ -56,9 +56,12 @@ const TableHeader = ({
   };
 
   return (
-    <TableHead>
-      <TableRow>
-        <TableCell colSpan={columns.length + 1}>
+    <TableHead style={{ backgroundColor: 'white' }}>
+      <TableRow style={{ backgroundColor: 'white' }}>
+        <TableCell
+          colSpan={columns.length + 1}
+          style={{ backgroundColor: 'white' }}
+        >
           <Grid container justifyContent="space-between" alignItems="center">
             <div>
               <Grid item sx={{ textAlign: 'center' }}>
@@ -105,8 +108,13 @@ const TableHeader = ({
                 )}
               </Grid>
             </div>
-            <Grid item>
-              <Grid container spacing={2} alignItems="center">
+            <Grid item style={{ backgroundColor: 'white' }}>
+              <Grid
+                container
+                spacing={2}
+                alignItems="center"
+                style={{ backgroundColor: 'white' }}
+              >
                 {!isMobile && (
                   <>
                     <Grid item style={{ position: 'relative' }}>
