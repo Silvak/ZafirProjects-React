@@ -1,33 +1,11 @@
 import React from "react";
 import { mockTasksGantt } from "@/mockData/taskData";
-import { styled } from "@mui/system";
 import { differenceInDays, addDays } from "date-fns";
 import useTaskWidth from "../../hooks/ganttChart/useTaskWidth";
-
-// ----------------- syles ----------------------
-const TaskRow = styled("div")({
-  display: "flex",
-  height: "70px",
-  width: "100px", // The width must be the same as that of <TableElement/>.
-  alignItems: "center",
-  padding: "0px",
-  //borderBottom: "1px solid #E0E3E8",
-});
-
-const Task = styled("div")({
-  height: "100%",
-  width: "100%",
-  //backgroundColor: "#a0c9c030",
-});
-
-const TaskBar = styled("div")({
-  borderRadius: "12px",
-  height: "40px",
-  overflow: "hidden",
-});
+import { TaskRow, Task, TaskBar } from "./GanttStyles";
 
 // ----------------- Component ----------------------
-function TaskElement({ date, view, dateRange }) {
+function TaskElement({ date, view, dateRange, tasksList }) {
   // Range
   const isTaskInRange2 = (view, date, taskStartDate, taskEndDate) =>
     (view === "day" && date >= taskStartDate && date <= taskEndDate) ||
@@ -50,7 +28,7 @@ function TaskElement({ date, view, dateRange }) {
 
   return (
     <>
-      {mockTasksGantt.map((task) => {
+      {tasksList.map((task) => {
         const taskStartDate = new Date(task.date.start);
         const taskEndDate = new Date(task.date.end);
 

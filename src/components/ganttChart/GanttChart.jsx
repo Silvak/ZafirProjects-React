@@ -1,90 +1,46 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { mockTasksGantt } from "@/mockData/taskData";
-import { styled } from "@mui/system";
 import { format } from "date-fns";
 import useDateRange from "@/hooks/ganttChart/useDateRange";
 import TaskElement from "@/components/ganttChart/TaskElement";
+import {
+  Container,
+  UtilsTable,
+  TaskTable,
+  TableElement,
+  TableElementHead,
+  TableElementBody,
+} from "./GanttStyles";
 
-// ----------------- syles ----------------------
-const TaskTable = styled("div")({
-  height: "auto",
-  maxHeight: "640px",
-  display: "flex",
-  backgroundColor: "#FFFFFF",
-  borderRadius: 20,
-  overflowX: "scroll",
-});
+import { useBoundStore } from "@/stores/index";
+import { shallow } from "zustand/shallow";
 
-// Day drop element
-const TableElement = styled("div")({
-  width: "100px",
-  height: "100%",
-  color: "darkslategray",
-  borderRight: "1px solid #E0E3E8",
-});
-
-const TableElementHead = styled("div")({
-  width: "100%",
-  height: "98px",
-  overflow: "hidden",
-  borderBottom: "1px solid #E0E3E8",
-  padding: "20px",
-  position: "sticky",
-  top: 0,
-  zIndex: 10,
-  background: "#FFFFFF",
-  "& p:first-of-type": {
-    // Cambiado de ":first-child" a ":first-of-type"
-    color: "#1D1F24",
-    fontSize: "22px",
-    fontWeight: 500,
-  },
-  "& p:last-child": {
-    // day
-    color: "#6B6E75",
-    fontSize: "8px", //"14px",
-    textTransform: "uppercase",
-  },
-});
-
-const TableElementBody = styled("div")({
-  flex: 1,
-  flexDirection: "column",
-  width: "100%",
-  //overflowY: "auto",
-  color: "darkslategray",
-  borderBottom: "1px solid #E0E3E8",
-  padding: "0",
-});
+import { useNewTaskArr } from "../../hooks/ganttChart/useNewTaskArr";
 
 // ----------------- gantt chart ----------------------
 const GanttChart = () => {
   const [view, setView] = useState("month");
-  const dateRange = useDateRange(mockTasksGantt, view);
+  const [result, setResult] = useState([]);
 
   const handleChange = (event) => {
     setView(event.target.value);
   };
 
+  const { myTasks, selectedProject } = useBoundStore((state) => state, shallow);
+
+  useEffect(() => {
+    setResult(useNewTaskArr(myTasks));
+  }, []);
+
+  //console.log("mockTasksGantt", mockTasksGantt);
+  //console.log("task", result);
+
+  let dateRange = useDateRange(result, view);
+
+  if (dateRange == undefined) return <>Loading</>;
   return (
-    <div
-      style={{
-        height: "auto",
-        display: "flex",
-        flexDirection: "column",
-        backgroundColor: "#F6F7FA",
-        borderRadius: 20,
-        padding: "1.5rem 1rem 1rem 1rem",
-        border: "1px solid #E0E3E8",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "end",
-          marginBottom: "1.5rem",
-        }}
-      >
+    <Container>
+      <UtilsTable>
         <select
           name="view"
           id="view"
@@ -102,7 +58,7 @@ const GanttChart = () => {
           <option value="week">Week</option>
           <option value="month">Month</option>
         </select>
-      </div>
+      </UtilsTable>
 
       <div
         style={{
@@ -127,13 +83,18 @@ const GanttChart = () => {
               </TableElementHead>
 
               <TableElementBody>
-                <TaskElement date={date} view={view} dateRange={dateRange} />
+                <TaskElement
+                  date={date}
+                  view={view}
+                  dateRange={dateRange}
+                  tasksList={result}
+                />
               </TableElementBody>
             </TableElement>
           ))}
         </TaskTable>
       </div>
-    </div>
+    </Container>
   );
 };
 
