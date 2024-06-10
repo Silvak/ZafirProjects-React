@@ -22,7 +22,6 @@ function ProjectsOverview() {
       <Box
         sx={{
           backgroundColor: '#ffffff',
-          height: 'auto',
           width: '100%',
           height: '100%',
           borderRadius: '20px',
