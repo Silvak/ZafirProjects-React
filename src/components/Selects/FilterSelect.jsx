@@ -7,7 +7,6 @@ const FilterSelect = ({ data, padding }) => {
 
   const handleFilterChange = (event) => {
     setFilter(event.target.value);
-    console.log(filter);
   };
 
   return (

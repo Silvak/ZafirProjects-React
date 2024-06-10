@@ -5,6 +5,10 @@ export const createSubtasksSlice = (set, get) => ({
   addSubtask: async (subTaskData, taskId) => {
     try {
       await axiosInstance.post(`/subtaks/${taskId}`, subTaskData);
+      if (taskId) {
+        const newSubtasks = await get().fetchSubtasksById(taskId);
+        return newSubtasks;
+      }
     } catch (error) {
       console.error('Error creating subTask', error);
     }
@@ -22,24 +26,17 @@ export const createSubtasksSlice = (set, get) => ({
   //   set((state) => ({
   //     subtasks: state.subtasks.filter((task) => task.id !== taskIdToDelete),
   //   })),
-  removeSubtask: async (subTaskId) => {
+  removeSubtask: async (subTask) => {
     try {
-      // Obtener el estado actual de las subtasks utilizando un getter
-      const { data } = await axiosInstance.delete(`/subtaks/${subTaskId}`);
-      if (data) {
-        const deletedSubTaskId = data._id;
-        if (deletedSubTaskId) {
-          const newSubtasks = await get().fetchSubtasksById(deletedSubTaskId);
-          return newSubtasks;
-        }
-      }
+      await axiosInstance.delete(`/subtaks/${subTask._id}`);
+      const newSubtasks = await get().fetchSubtasksById(subTask.taskId._id);
+      return newSubtasks;
     } catch (error) {
       console.error('Error deleting task', error);
     }
   },
   updateSubtask: async (updateTask) => {
     try {
-      console.log(updateTask);
       await axiosInstance.put(`/subtaks/${updateTask._id}`, updateTask);
       const updatedTasks = await get().fetchSubtasksById(updateTask.taskId);
       return updatedTasks;

@@ -18,8 +18,9 @@ function ConfirmForm({
         >
           Are you sure you want to delete to{' '}
           <strong style={{ color: 'black', width: 'max-content' }}>
-            {memberToDelete._id.name}?
-          </strong>
+            {memberToDelete._id.name}
+          </strong>{' '}
+          ?
         </Typography>
         <div
           style={{
