@@ -22,7 +22,6 @@ function ProjectsOverview() {
       <Box
         sx={{
           backgroundColor: "#ffffff",
-          height: "auto",
           width: "100%",
           height: "100%",
           borderRadius: "20px",
@@ -35,12 +34,18 @@ function ProjectsOverview() {
           sx={{
             display: isMobile ? "flex" : "flex",
             justifyContent: "space-between",
+            alignItems: "center",
             padding: "0px 20px 20px 20px",
           }}
         >
           <Grid item>
             <Typography
-              sx={{ fontSize: "20px", fontWeight: 500, fontFamily: "Poppins" }}
+              sx={{
+                fontSize: "20px",
+                fontWeight: 600,
+                color: "#1D1F24",
+                paddingLeft: "8px",
+              }}
             >
               Projects
             </Typography>
@@ -55,10 +60,11 @@ function ProjectsOverview() {
                 alignItems: "center",
                 fontWeight: 600,
                 color: "#7662EA",
+                fontSize: "13px",
               }}
             >
               View all
-              <EastIcon xs sx={{ marginLeft: "6px" }} />
+              <EastIcon xs sx={{ marginLeft: "6px", fontSize: "16px" }} />
             </NavLink>
           </Grid>
         </Grid>
@@ -105,7 +111,7 @@ function ProjectsOverview() {
                     handleEdit={() =>
                       handleEdit(<EditProjectForm project={project} />)
                     }
-                    {...project}
+                    project={project}
                     key={project._id}
                   />
                 ))

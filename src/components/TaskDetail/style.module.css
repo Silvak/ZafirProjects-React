@@ -78,10 +78,17 @@ td {
 }
 
 .backText {
-  color: #8a8c91;
-  font-weight: 600;
+  color: #7661ea;
+  font-weight: 500;
+  font-size: 14px;
+  padding-inline: 18px;
+  padding-block: 8px;
+  border-radius: 16px;
+  cursor: pointer;
+  gap: 8px;
+  border: 1px solid;
 }
 
 .backText:hover {
-  color: #7661ea;
+  color: #7569bc;
 }

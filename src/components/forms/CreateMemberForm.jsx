@@ -34,8 +34,7 @@ function CreateMember() {
     ChangeTitleAlertError,
     updateProjects,
     selectedProject,
-    fetchProjects,
-    setSelectedProject,
+    User,
   } = useBoundStore((state) => state, shallow);
 
   const [newRol, setNewRol] = useState('Select rol');
@@ -91,12 +90,7 @@ function CreateMember() {
       await Promise.all(promises);
 
       // Actualizamos el estado del proyecto
-      await fetchProjects(selectedProject._id);
-      // const { data } = await axiosInstance.get(
-      //   `projects/${selectedProject._id}`
-      // );
-      // setSelectedProject(data);
-      // await updateProjects();
+      await updateProjects(User?.uid);
 
       // Mostramos mensaje satisfactorio
       ChangeStateModal(false);
@@ -168,8 +162,8 @@ function CreateMember() {
               Add members
             </Typography>
             <TextField
-              size='small'
-              name='members_id'
+              size="small"
+              name="members_id"
               value={member}
               onChange={(e) => {
                 setMember(e.target.value);
@@ -177,7 +171,7 @@ function CreateMember() {
                   inputValue: e.target.value,
                 });
               }}
-              placeholder='Search a member'
+              placeholder="Search a member"
               sx={{
                 width: '100%',
               }}
@@ -236,7 +230,7 @@ function CreateMember() {
           </Typography>
           <Grid item xs={6}>
             <Select
-              size='small'
+              size="small"
               value={newRol}
               onChange={(e) => {
                 const selectedrol = e.target.value;
@@ -266,7 +260,7 @@ function CreateMember() {
                 <MenuItem
                   key={rol}
                   value={rol}
-                  className='menu-item'
+                  className="menu-item"
                   style={{ backgroundColor: '#fff', cursor: 'pointer' }}
                 >
                   {rol}
@@ -279,7 +273,7 @@ function CreateMember() {
         {customrolnabled && (
           <Grid
             item
-            size='small'
+            size="small"
             sx={{
               marginBottom: '20px',
             }}
@@ -288,20 +282,20 @@ function CreateMember() {
               Custom rol
             </Typography>
             <TextField
-              size='small'
+              size="small"
               fullWidth
-              placeholder='enter a custom rol'
+              placeholder="enter a custom rol"
               value={customRol}
               onChange={(e) => setCustomRol(useFormatText(e.target.value))}
             />
           </Grid>
         )}
 
-        <Grid container justifyContent='space-between' sx={{ mt: 2 }}>
+        <Grid container justifyContent="space-between" sx={{ mt: 2 }}>
           <Grid item>
             <Button
               disableRipple
-              variant='outlined'
+              variant="outlined"
               sx={{
                 color: 'black',
                 bgcolor: 'white',
@@ -319,7 +313,7 @@ function CreateMember() {
             <Button
               disableRipple
               style={{ marginLeft: 8 }}
-              variant='contained'
+              variant="contained"
               sx={{
                 color: 'white',
                 bgcolor: '#7662EA',

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import TableRow from '@material-ui/core/TableRow';
-import TableCell from '@material-ui/core/TableCell';
+
+import { TableHead, TableRow, TableCell } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
 import Select from '@mui/material/Select';
@@ -56,9 +56,12 @@ const TableHeader = ({
   };
 
   return (
-    <>
-      <TableRow>
-        <TableCell colSpan={columns.length + 1}>
+    <TableHead style={{ backgroundColor: 'white' }}>
+      <TableRow style={{ backgroundColor: 'white' }}>
+        <TableCell
+          colSpan={columns.length + 1}
+          style={{ backgroundColor: 'white' }}
+        >
           <Grid container justifyContent="space-between" alignItems="center">
             <div>
               <Grid item sx={{ textAlign: 'center' }}>
@@ -105,8 +108,13 @@ const TableHeader = ({
                 )}
               </Grid>
             </div>
-            <Grid item>
-              <Grid container spacing={2} alignItems="center">
+            <Grid item style={{ backgroundColor: 'white' }}>
+              <Grid
+                container
+                spacing={2}
+                alignItems="center"
+                style={{ backgroundColor: 'white' }}
+              >
                 {!isMobile && (
                   <>
                     <Grid item style={{ position: 'relative' }}>
@@ -199,7 +207,7 @@ const TableHeader = ({
             </TableCell>
           ))}
       </TableRow>
-    </>
+    </TableHead>
   );
 };
 

@@ -38,7 +38,7 @@ export default function CustomPieChart({ projectSelected }) {
     const FetchTasks = async () => {
       if (projectSelected) {
         const id = projectSelected._id;
-        await fetchTasksById(id);
+        const result = await fetchTasksById(id);
       }
     };
     FetchTasks();
@@ -81,7 +81,7 @@ export default function CustomPieChart({ projectSelected }) {
       completedTasks,
       title: 'Completed',
       total: completedTasks.length,
-      color: '#429482',
+      color: '#00913f',
     },
   };
 

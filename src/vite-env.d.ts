@@ -54,6 +54,14 @@ declare module "@/components/SuggestionList/SuggestionList";
 declare module "@/components/Loader/Loader";
 declare module "@/components/CustomList/CustomList";
 declare module "@/components/CustomAvatar/CustomAvatar";
+declare module "@/components/TasksViews/TasksViews";
+declare module "@/components/TasksViews/ListView";
+declare module "@/components/TasksViews/TrelloView";
+declare module "@/components/TasksViews/GanttView";
+declare module "@/components/MyTaskSections/MyTaskList";
+declare module "@/components/MyTaskSections/MyTaskItems";
+declare module "@/components/MyTaskSections/MyTaskAccordion";
+declare module "@/components/MyTaskSections/CustomTaskAccordion";
 
 declare module "@/context/AppContextProvider";
 declare module "@/stores/index";
@@ -80,6 +88,8 @@ declare module "@/screens/project/myTask";
 declare module "@/screens/project/report";
 declare module "@/screens/project/layout";
 declare module "@/screens/project/gantt";
+declare module "@/screens/project/tasks";
+declare module "@/screens/project/MyTaskView";
 
 declare module "@/hooks/usePagination";
 declare module "@/hooks/useSignUp";

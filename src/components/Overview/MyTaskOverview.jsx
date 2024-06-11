@@ -82,16 +82,21 @@ function MyTask() {
           sx={{
             display: isMobile ? "inline-table" : "flex",
             justifyContent: "space-between",
-            padding: "10px 20px",
+            padding: "0px 20px",
             marginBottom: "8px",
             alignItems: "center",
           }}
         >
           <Grid item>
-            <Typography sx={{ fontSize: "20px", fontWeight: 500 }}>
-              My Tasks of
+            <Typography
+              sx={{ fontSize: "20px", fontWeight: 600, color: "#1D1F24" }}
+            >
+              My Tasks -{" "}
               {selectedProject ? (
-                <span style={{ color: "black" }}> {selectedProject.name}</span>
+                <span style={{ color: "#6B6E75" }}>
+                  {" "}
+                  {selectedProject.name}
+                </span>
               ) : (
                 ""
               )}

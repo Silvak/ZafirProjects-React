@@ -13,7 +13,7 @@ type ContextType = {
 export const RenderDataHome = createContext<ContextType>(null);
 
 const RenderNftState = (props: any) => {
-  const { Moralis } = useMoralis();
+  // const { Moralis } = useMoralis();
 
   const {
     DataContentLive,
@@ -24,53 +24,54 @@ const RenderNftState = (props: any) => {
     setDataContentUsers,
   } = useBoundStore((state: any) => state, shallow);
 
-  const getDataContentLive = async () => {
-    let resDataContentLive: any = await Moralis.Cloud.run('getDataContentLive');
+  // const getDataContentLive = async () => {
+  //   let resDataContentLive: any = await Moralis.Cloud.run('getDataContentLive');
 
-    setDataContentLive(resDataContentLive);
-  };
+  //   setDataContentLive(resDataContentLive);
+  // };
 
-  const getDataContentExplore = async (id: any) => {
-    const idConvertType = id;
+  // const getDataContentExplore = async (id: any) => {
+  //   const idConvertType = id;
 
-    let resDataContentExplore: any = await Moralis.Cloud.run(
-      'getDataContentExplore',
-      {
-        idConvertType,
-      }
-    );
+  //   let resDataContentExplore: any = await Moralis.Cloud.run(
+  //     'getDataContentExplore',
+  //     {
+  //       idConvertType,
+  //     }
+  //   );
 
-    setDataContentExplore(resDataContentExplore);
-  };
+  //   setDataContentExplore(resDataContentExplore);
+  // };
 
-  const getDataContentUsers = async (id: any) => {
-    const idConvertType = id;
+  // const getDataContentUsers = async (id: any) => {
+  //   const idConvertType = id;
 
-    let resDataContentUsers: any = await Moralis.Cloud.run(
-      'getDataContentUsers',
-      {
-        idConvertType,
-      }
-    );
+  //   let resDataContentUsers: any = await Moralis.Cloud.run(
+  //     'getDataContentUsers',
+  //     {
+  //       idConvertType,
+  //     }
+  //   );
 
-    setDataContentUsers(resDataContentUsers);
-  };
+  //   setDataContentUsers(resDataContentUsers);
+  // };
 
-  const SubscriptionDataContentExplore = async () => {
-    const query = new Moralis.Query('ItemsMinted');
-    let subscription = await query.subscribe();
+  // const SubscriptionDataContentExplore = async () => {
+  //   const query = new Moralis.Query('ItemsMinted');
+  //   let subscription = await query.subscribe();
 
-    subscription.on('create', SubscriptionDataContentExplore);
-    subscription.on('update', getDataContentLive);
-  };
+  //   subscription.on('create', SubscriptionDataContentExplore);
+  //   subscription.on('update', getDataContentLive);
+  // };
 
   return (
     <RenderDataHome.Provider
-      value={{
-        getDataContentLive,
-        getDataContentExplore,
-        getDataContentUsers,
-      }}
+      value={null}
+      // value={{
+      //   getDataContentLive,
+      //   getDataContentExplore,
+      //   getDataContentUsers,
+      // }}
     >
       {props.children}
     </RenderDataHome.Provider>

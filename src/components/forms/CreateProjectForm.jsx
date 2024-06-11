@@ -84,11 +84,7 @@ function CreateProjectForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    console.log({
-      ...formData,
-      leaders: formData.leaders._id,
-      members_id: members,
-    });
+
     try {
       const data = {
         ...formData,
@@ -103,7 +99,7 @@ function CreateProjectForm() {
         return;
       } else {
         await addProject(User._id, data);
-        await updateProjects();
+        await updateProjects(User?.uid);
         ChangeStateAlert(true);
         ChangeTitleAlert('Project created successfully');
         setIsLoading(false);

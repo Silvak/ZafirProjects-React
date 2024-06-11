@@ -65,8 +65,8 @@ function ReportTasks({ customProject }) {
   const pendingTasks = filteredTasks.filter(
     (tasks) => tasks.state === 'Pending'
   );
-  const issuesTasks = filteredTasks.filter((tasks) => tasks.state === 'Issues');
-  const reviewTasks = filteredTasks.filter((tasks) => tasks.state === 'Review');
+  // const issuesTasks = filteredTasks.filter((tasks) => tasks.state === 'Issues');
+  // const reviewTasks = filteredTasks.filter((tasks) => tasks.state === 'Review');
   const completedTasks = filteredTasks.filter(
     (tasks) => tasks.state === 'Completed'
   );
@@ -84,23 +84,23 @@ function ReportTasks({ customProject }) {
       total: pendingTasks.length,
       color: '#6B6E75',
     },
-    issues: {
-      issuesTasks,
-      title: 'Issues',
-      total: issuesTasks.length,
-      color: '#E55D57',
-    },
-    review: {
-      reviewTasks,
-      title: 'Review',
-      total: reviewTasks.length,
-      color: '#EBA741',
-    },
+    // issues: {
+    //   issuesTasks,
+    //   title: 'Issues',
+    //   total: issuesTasks.length,
+    //   color: '#E55D57',
+    // },
+    // review: {
+    //   reviewTasks,
+    //   title: 'Review',
+    //   total: reviewTasks.length,
+    //   color: '#EBA741',
+    // },
     completed: {
       completedTasks,
       title: 'Completed',
       total: completedTasks.length,
-      color: '#429482',
+      color: '#00913f',
     },
   };
 

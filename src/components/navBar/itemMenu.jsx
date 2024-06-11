@@ -31,21 +31,12 @@ function initializeItems(selectedProject) {
       submenu: [
         {
           title: 'My project',
-          url: `/project/${selectedProject?._id}`,
-        },
-        {
-          title: 'Project Tasks',
           url: `/project/${selectedProject?._id}/tasks`,
         },
         {
           title: 'members',
           url: '/members',
           icon: <BiGroup />,
-          submenu: [],
-        },
-        {
-          title: 'gantt',
-          url: `/project/${selectedProject?._id}/gantt`,
           submenu: [],
         },
       ],
@@ -132,17 +123,17 @@ function ItemMenu(props) {
       }}
     >
       {itemsActual?.map((element, index) => (
-        <>
+        <div key={crypto.randomUUID()}>
           {element.submenu.length > 0 ? (
-            <>
+            <div key={crypto.randomUUID()}>
               <ListItemButton
-                key={`list-item-buttom-${index}`}
+                key={`list-item-buttom-${crypto.randomUUID()}`}
                 onClick={() => handleClick(index)}
                 sx={{ m: 0, p: 0 }}
                 disableRipple
               >
                 <ItemNav
-                  key={`item-nav-${index}`}
+                  key={`item-nav-${crypto.randomUUID()}`}
                   to={element.url}
                   title={element.title}
                   icon={element.icon}
@@ -157,25 +148,30 @@ function ItemMenu(props) {
               </ListItemButton>
 
               <Collapse
-                key={`collapse-${index}`}
+                key={`collapse-${crypto.randomUUID()}`}
                 in={openIndex === index && props.open}
-                timeout='auto'
+                timeout="auto"
                 unmountOnExit
               >
-                {element.submenu.map((link) => (
-                  <ItemNav to={link.url} title={link.title} sx={{ pl: 8 }} />
+                {element.submenu.map((link, key) => (
+                  <ItemNav
+                    key={link.url + key}
+                    to={link.url}
+                    title={link.title}
+                    sx={{ pl: 8 }}
+                  />
                 ))}
               </Collapse>
-            </>
+            </div>
           ) : (
             <ItemNav
-              key={`item-nav-${index}`}
+              key={`item-nav-${crypto.randomUUID()}`}
               to={element.url}
               title={element.title}
               icon={element.icon}
             />
           )}
-        </>
+        </div>
       ))}
     </List>
   );

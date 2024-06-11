@@ -12,7 +12,7 @@ initializeApp(firebaseConfig);
 type UserContextType = {
   Register: (values: any) => Promise<void>;
   LoginMail: (values: any) => Promise<void>;
-  SettingsUser: (userAddress: string) => Promise<void>;
+  // SettingsUser: (userAddress: string) => Promise<void>;
   LogoutFunc: () => Promise<void>;
 } | null;
 
@@ -53,8 +53,8 @@ async function checkUserRole(roleName: string, ethAddress: string) {
 }
 
 const UserState = (props: { children: any }) => {
-  const { logout, enableWeb3, authenticate } = useMoralis();
-  const { user } = useMoralis();
+  // const { logout, enableWeb3, authenticate } = useMoralis();
+  // const { user } = useMoralis();
 
   // const userAddress = user!.get("ethAddress");
 
@@ -96,15 +96,15 @@ const UserState = (props: { children: any }) => {
     }
   };
 
-  const SettingsUser = async (userAddress: string) => {
-    try {
-      const SetSettingsUser = await Moralis.Cloud.run('SetSettingsUser', {
-        owner: userAddress,
-      });
-    } catch (error: any) {
-      console.error('🚀 error de SettingsUser', error);
-    }
-  };
+  // const SettingsUser = async (userAddress: string) => {
+  //   try {
+  //     const SetSettingsUser = await Moralis.Cloud.run('SetSettingsUser', {
+  //       owner: userAddress,
+  //     });
+  //   } catch (error: any) {
+  //     console.error('🚀 error de SettingsUser', error);
+  //   }
+  // };
 
   const LogoutFunc = async () => {
     try {
@@ -132,9 +132,14 @@ const UserState = (props: { children: any }) => {
       value={{
         LoginMail,
         Register,
-        SettingsUser,
         LogoutFunc,
       }}
+      // value={{
+      //   LoginMail,
+      //   Register,
+      //   SettingsUser,
+      //   LogoutFunc,
+      // }}
     >
       {props.children}
     </UserContext.Provider>

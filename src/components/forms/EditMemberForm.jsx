@@ -16,22 +16,20 @@ import { axiosInstance } from '@/config/apiConfig';
 import roles from '@/utils/roles';
 import useFormatText from '@/hooks/useFormatText';
 
-function EditMember({ row, setAllMemberData, allMemberData }) {
+function EditMember({ row }) {
   const [newName, setNewName] = useState(row._id.name);
   const [newRol, setNewRol] = useState(
     useFormatText(row.rolToProject) || 'Select Role'
   );
   const [customRol, setCustomRol] = useState('');
   const {
+    User,
     ChangeStateModal,
     ChangeStateAlert,
     ChangeTitleAlert,
     ChangeStateAlertError,
     ChangeTitleAlertError,
-    // updateProjects,
-    selectedProject,
-    setSelectedProject,
-    fetchProjects,
+    updateProjects,
   } = useBoundStore((state) => state, shallow);
 
   const theme = useTheme();
@@ -55,11 +53,7 @@ function EditMember({ row, setAllMemberData, allMemberData }) {
         newName: newValues.name,
       });
 
-      const { data } = await axiosInstance.get(
-        `projects/${selectedProject._id}`
-      );
-      await setSelectedProject(data);
-      await fetchProjects(selectedProject._id);
+      await updateProjects(User?.uid);
       ChangeStateModal(false);
       ChangeTitleAlert('Member updated');
       ChangeStateAlert(true);

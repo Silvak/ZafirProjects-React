@@ -1,11 +1,8 @@
-import CustomList from '@/components/CustomList/CustomList';
 import {
-  Avatar,
   Box,
   Button,
   FormControl,
   Grid,
-  ListItem,
   MenuItem,
   Paper,
   Select,
@@ -14,16 +11,16 @@ import {
   Typography,
   createTheme,
   useMediaQuery,
+  IconButton,
 } from '@mui/material';
 import { useState } from 'react';
 import { shallow } from 'zustand/shallow';
-import user1 from '../../assets/Img/png/userImageMan.png';
 import useSuggestionUsers from '../../hooks/useSuggestionUsers';
 import { useBoundStore } from '../../stores';
-import { axiosInstance } from '@/config/apiConfig';
 import getUniqueUsers from '../../utils/getUniqueUsers';
 import SuggestionList from '../SuggestionList/SuggestionList';
 import CustomAvatar from '../CustomAvatar/CustomAvatar';
+import CloseIcon from '@mui/icons-material/Close';
 
 const INITIAL_FORM_DATA = {
   subTaskName: '',
@@ -34,23 +31,16 @@ const INITIAL_FORM_DATA = {
   priority: '',
 };
 
-const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
+const SubTaskForm = ({ taskId, closeModal, setFilterSubtask }) => {
   const theme = createTheme();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const {
-    User,
-    selectedProject,
     addSubtask,
-    subtasks,
     fetchSubtasksById,
-    ChangeStateModal,
     ChangeTitleAlert,
     ChangeStateAlert,
     ChangeTitleAlertError,
     ChangeStateAlertError,
-    setSelectedProject,
-    updateProjects,
-    fetchProjects,
   } = useBoundStore((state) => state, shallow);
   const { users } = useSuggestionUsers();
 
@@ -65,6 +55,7 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
   const [formData, setformData] = useState(INITIAL_FORM_DATA);
 
   // '/project/:taskId'
+  const today = new Date().toISOString().split('T')[0];
 
   const handleSuggestionChange = ({ inputValue }) => {
     if (inputValue === '') {
@@ -94,21 +85,11 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
         ChangeTitleAlertError('All fields are required');
         return;
       } else {
-        await addSubtask(data, taskId);
-        await fetchSubtasksById(taskId);
-
-        // Actualizamos el estado del proyecto
-        const response = await axiosInstance.get(
-          `projects/${selectedProject._id}`
-        );
-        // await updateProjects();
-        await fetchProjects(selectedProject._id);
-        setSelectedProject(response.data);
-
+        const newSubtasks = await addSubtask(data, taskId);
+        setFilterSubtask(newSubtasks);
+        ChangeTitleAlert('Subtask created successfully');
         ChangeStateAlert(true);
-        ChangeTitleAlert('SubTask created successfully');
-        ChangeStateModal(false);
-        // Mostramos mensaje
+        closeModal();
       }
     } catch (error) {
       console.log(error);
@@ -123,7 +104,7 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
   };
 
   const handleClose = () => {
-    ChangeStateModal(false);
+    closeModal();
   };
 
   const handleSuggestionClick = (user, type) => {
@@ -156,37 +137,65 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
       {/* row - colum */}
       <Paper
         elevation={1}
-        component='form'
+        component="form"
         onSubmit={handleSubmit}
         sx={{
           maxWidth: isMobile ? '90vw' : 'fit-content',
-          padding: '39px',
+          padding: '30px',
+          paddingBlock: '24px',
           maxHeight: '90vh',
           height: isMobile ? '90vh' : '',
           borderTopLeftRadius: '0px',
           borderTopRightRadius: '0px',
           overflowY: 'auto',
-          borderBottomLeftRadius: '16px',
-          borderBottomRightRadius: '16px',
+          borderRadius: '16px',
         }}
       >
-        <Grid
-          item
-          sx={{
-            marginBottom: '20px',
-          }}
-        >
+        <Grid item>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Typography
+              variant="h4"
+              sx={{
+                color: 'black',
+                fontWeight: 'bold',
+                fontSize: '1.5rem',
+                marginBottom: '2rem',
+              }}
+            >
+              Create Subtask
+            </Typography>
+            <IconButton
+              sx={{
+                mb: '2rem',
+                color: '#7661EA',
+                mr: '-1rem',
+              }}
+              disableRipple
+              title="Close"
+              variant="text"
+              onClick={closeModal}
+            >
+              <CloseIcon />
+            </IconButton>
+          </div>
           <Typography fontFamily={'Poppins'} color={'#6B6E75'}>
             Enter a SubTask name
           </Typography>
           <TextField
-            size='small'
+            size="small"
             value={formData.subTaskName}
-            placeholder='SubTask name...'
-            name='subTaskName'
+            placeholder="SubTask name..."
+            name="subTaskName"
             onChange={handleChange}
             sx={{
               width: '100%',
+              mb: '1.2rem',
             }}
           />
         </Grid>
@@ -207,9 +216,10 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
               Start date
             </Typography>
             <TextField
-              size='small'
-              name='start'
-              type='date'
+              size="small"
+              name="start"
+              type="date"
+              InputProps={{ inputProps: { min: today } }}
               value={formData.start}
               onChange={handleChange}
               sx={{
@@ -222,9 +232,10 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
               End date
             </Typography>
             <TextField
-              size='small'
-              name='end'
-              type='date'
+              size="small"
+              name="end"
+              type="date"
+              InputProps={{ inputProps: { min: formData.start || today } }}
               value={formData.end}
               onChange={handleChange}
               sx={{
@@ -244,11 +255,11 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
             Add a description...
           </Typography>
           <TextField
-            size='small'
-            name='description'
+            size="small"
+            name="description"
             onChange={handleChange}
             value={formData.description}
-            placeholder='...'
+            placeholder="..."
             sx={{
               width: '100%',
             }}
@@ -268,8 +279,8 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
               Add members
             </Typography>
             <TextField
-              size='small'
-              name='members_id'
+              size="small"
+              name="members_id"
               value={member}
               onChange={(e) => {
                 setMember(e.target.value);
@@ -277,14 +288,14 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
                   inputValue: e.target.value,
                 });
               }}
-              placeholder='Search a member'
+              placeholder="Search a member"
               sx={{
                 width: '100%',
               }}
             />
           </Grid>
           <SuggestionList
-            type='member'
+            type="member"
             usersList={filteredMembers}
             onClick={handleSuggestionClick}
           />
@@ -299,8 +310,9 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
               width: 'fit-content',
             }}
           >
-            {members.map((member) => (
+            {members.map((member, key) => (
               <CustomAvatar
+                key={key}
                 bgColor={member.colorBg}
                 textColor={member.colorText}
                 member={member}
@@ -318,17 +330,17 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
             <Select
               required
               value={formData.priority}
-              variant='outlined'
-              size='small'
+              variant="outlined"
+              size="small"
               sx={{ fontSize: '14px', marginBottom: 2 }}
-              name='priority'
+              name="priority"
               onChange={handleChange}
               displayEmpty
               renderValue={(selected) => (selected ? selected : 'Type: All')}
             >
-              <CustomMenuItem value='High'>High</CustomMenuItem>
-              <CustomMenuItem value='Medium'>Medium</CustomMenuItem>
-              <CustomMenuItem value='Low'>Low</CustomMenuItem>
+              <CustomMenuItem value="High">High</CustomMenuItem>
+              <CustomMenuItem value="Medium">Medium</CustomMenuItem>
+              <CustomMenuItem value="Low">Low</CustomMenuItem>
             </Select>
           </FormControl>
         </Grid>
@@ -339,17 +351,19 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
             <Select
               required
               value={formData.state}
-              variant='outlined'
-              size='small'
+              variant="outlined"
+              size="small"
               sx={{ fontSize: '14px' }}
-              name='state'
+              name="state"
               onChange={handleChange}
               displayEmpty
               renderValue={(selected) => (selected ? selected : 'Type: All')}
             >
-              <CustomMenuItem value='In Progress'>In Progress</CustomMenuItem>
-              <CustomMenuItem value='Pending'>Pending</CustomMenuItem>
-              <CustomMenuItem value='Completed'>Completed</CustomMenuItem>
+              <CustomMenuItem value="In Progress">In Progress</CustomMenuItem>
+              <CustomMenuItem value="Pending">Pending</CustomMenuItem>
+              <CustomMenuItem disabled value="Completed">
+                Completed
+              </CustomMenuItem>
             </Select>
           </FormControl>
         </Grid>
@@ -363,7 +377,7 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
           }}
         >
           <Button
-            title='Cancel'
+            title="Cancel"
             onClick={handleClose}
             sx={{
               textTransform: 'none',
@@ -381,7 +395,7 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
             Cancel
           </Button>
           <Button
-            title='Save'
+            title="Save"
             onClick={handleSubmit}
             sx={{
               textTransform: 'none',
@@ -396,7 +410,7 @@ const SubTaskForm = ({ onCreate, placeholdersubTaskName = '', taskId }) => {
               '&:hover': { backgroundColor: 'black' },
             }}
           >
-            {isLoading ? 'Updating...' : 'Save'}
+            {isLoading ? 'Saving...' : 'Save'}
           </Button>
         </Grid>
       </Paper>
@@ -408,28 +422,8 @@ export default SubTaskForm;
 
 const CustomMenuItem = ({ children, selected, ...props }) => {
   return (
-    <MenuItem className='menu-item ' sx={{ height: 'min-content' }} {...props}>
+    <MenuItem className="menu-item " sx={{ height: 'min-content' }} {...props}>
       {children}
     </MenuItem>
   );
 };
-
-// <Avatar
-//   title={`Remove ${member.name}`}
-//   key={member._id}
-//   onClick={() => {
-//     handleRemoveMember(member);
-//   }}
-//   style={{ transition: 'opacity 0.3s ease-in-out' }}
-//   sx={{
-//     borderRadius: '50%',
-//     bgcolor: `${member.colorbg}`,
-//     color: `${member.colorText}`,
-//     marginRight: 1,
-//   }}
-// >
-//   {member?.name?.split(' ')[0][0].toUpperCase()}
-//   {member.name?.split(' ').length > 1
-//     ? member.name?.split(' ')[1][0].toUpperCase()
-//     : ''}
-// </Avatar>

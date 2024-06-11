@@ -21,10 +21,14 @@ const filtersData = [
 
 function MyWorkGlance() {
   const theme = createTheme();
-  const { myTasks, fetchTasksById, selectedProject } = useBoundStore(
-    (state) => state,
-    shallow
-  );
+  const {
+    myTasks,
+    fetchTasksById,
+    selectedProject,
+    fetchTasksByUser,
+    User,
+    userTasks,
+  } = useBoundStore((state) => state, shallow);
   const [filterOption, setFilterOption] = useState("All");
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
@@ -32,18 +36,18 @@ function MyWorkGlance() {
     setFilterOption(event.target.value);
   };
 
-  // useEffect(() => {
-  //   if (selectedProject) {
-  //     const fetchData = async () => {
-  //       try {
-  //         await fetchTasksById(selectedProject._id);
-  //       } catch (error) {
-  //         console.error('Error fetching tasks', error);
-  //       }
-  //     };
-  //     fetchData();
-  //   }
-  // }, [selectedProject, fetchTasksById]);
+  useEffect(() => {
+    if (User) {
+      const fetchData = async () => {
+        try {
+          await fetchTasksByUser(User.uid);
+        } catch (error) {
+          console.error("Error fetching tasks", error);
+        }
+      };
+      fetchData();
+    }
+  }, []);
 
   const filteredTasks = Array.isArray(myTasks)
     ? myTasks.filter((task) => {
@@ -110,7 +114,6 @@ function MyWorkGlance() {
       <Box
         sx={{
           backgroundColor: "#ffffff",
-          height: "auto",
           borderRadius: "20px",
           padding: "20px",
           overflowX: "auto",
@@ -130,7 +133,7 @@ function MyWorkGlance() {
           <Typography
             sx={{
               fontSize: "20px",
-              fontWeight: "500",
+              fontWeight: 600,
               fontFamily: "Poppins",
               color: "black",
             }}
@@ -143,7 +146,7 @@ function MyWorkGlance() {
                 value={filterOption}
                 onChange={handleFilter}
                 style={{
-                  border: "none",
+                  // border: 'none',
                   background: "white",
                   borderRadius: "8px",
                   cursor: "pointer",

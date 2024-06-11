@@ -1,9 +1,9 @@
 import { Box } from '@mui/material';
 
-const TaskDetailHeader = ({ taskId, taskTitle }) => {
+const TaskDetailHeader = ({ taskId, taskTitle, isSubtask }) => {
   return (
     <Box
-      component='header'
+      component="header"
       sx={{
         display: 'flex',
         justifyContent: 'space-between',
@@ -15,8 +15,10 @@ const TaskDetailHeader = ({ taskId, taskTitle }) => {
           fontSize: 'clamp(13px,2vw, 20px)',
           fontWeight: 'bold',
           textBalance: 'balance',
+          paddingRight: 8,
         }}
       >
+        {isSubtask && <span>Subtask: </span>}
         {taskTitle}
       </h2>
       <Box

@@ -5,8 +5,10 @@ import {
   useMediaQuery,
   CircularProgress,
   Tooltip,
+  TableHead,
+  Typography,
 } from '@mui/material';
-import { RxEyeOpen } from 'react-icons/rx';
+import { RxEyeOpen, RxTrash } from 'react-icons/rx';
 import { useBoundStore } from '../../stores';
 import { shallow } from 'zustand/shallow';
 import { statusColors } from '../../utils/colors';
@@ -15,20 +17,20 @@ import css from './style.module.css';
 import SubTaskForm from '../forms/subtaskForm';
 import SubdirectoryArrowLeftIcon from '@mui/icons-material/SubdirectoryArrowLeft';
 import moment from 'moment';
+import Modal from '../modal/modalSubtask';
 
 const tableHeadData = [
   { id: 1, label: 'Name' },
   { id: 2, label: 'Assignee' },
   { id: 3, label: 'Status' },
   { id: 4, label: 'Date' },
-  { id: 5, label: 'Action' },
+  { id: 5, label: 'Actions' },
 ];
 
-const TaskDetailSubstasks = ({ taskId }) => {
+const TaskDetailSubstasks = ({ taskId, task }) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const [filterSubtask, setFilterSubtask] = useState([]);
   const [cleanForm, setCleanForm] = useState(false);
-  const [customTask, setCustomTask] = useState(null);
 
   const {
     subtasks,
@@ -37,7 +39,17 @@ const TaskDetailSubstasks = ({ taskId }) => {
     ChangeTitleModal,
     ChangeContentModal,
     ChangeIsVisibleButton,
+    ChangeTitleAlert,
+    ChangeStateAlert,
+    removeSubtask,
+    ChangeContentTitle,
+    ChangeTitleWithBackButton,
   } = useBoundStore((state) => state, shallow);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   useEffect(() => {
     fetchData();
@@ -46,51 +58,112 @@ const TaskDetailSubstasks = ({ taskId }) => {
   const fetchData = async () => {
     try {
       if (taskId) {
-        await fetchSubtasksById(taskId);
+        const updatedSubtasks = await fetchSubtasksById(taskId);
+        setFilterSubtask(updatedSubtasks);
       }
-      const result = subtasks.filter((sub) => sub.taskId._id === taskId);
-      setFilterSubtask(result);
+      // const result = subtasks.filter((sub) => sub.taskId._id === taskId);
     } catch (error) {
       console.error('Error fetching tasks', error);
     }
   };
 
+  // const handleAddTask = () => {
+  //   // ChangeStateModal(true);
+  //   ChangeTitleModal('Add SubTask');
+  //   ChangeContentModal(<SubTaskForm taskId={taskId} projectId={taskId} />);
+  // };
+
   const handleAddTask = () => {
-    ChangeStateModal(true);
-    ChangeTitleModal('Add SubTask');
-    ChangeContentModal(<SubTaskForm taskId={taskId} projectId={taskId} />);
+    openModal();
+  };
+
+  const handleRemoveSubTask = async (subtask) => {
+    const updatedSubtasks = await removeSubtask(subtask);
+    setFilterSubtask(updatedSubtasks);
+    ChangeTitleAlert('Subtask deleted');
+    ChangeStateAlert(true);
   };
 
   const handleViewSubstask = (subtask) => {
-    setCustomTask(subtask.taskId);
     setCleanForm(true);
-    ChangeTitleModal('Substask Detail');
-    ChangeContentModal(<TaskDetail task={subtask} isSubtask={true} />);
+    const titleTask = subtask?.taskId?.taskName;
+
+    ChangeTitleWithBackButton(
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <Tooltip title="Back to task details" placement="bottom">
+          <Button
+            onClick={() => handleBack(subtask)}
+            style={{ marginRight: '5px' }}
+            disableRipple
+          >
+            <SubdirectoryArrowLeftIcon />
+          </Button>
+        </Tooltip>
+        <span style={{ marginRight: '5px' }}>Task:</span>
+        {/* Typogra */}
+        <Typography
+          variant="p"
+          color="#6B6E75"
+          sx={{ cursor: titleTask.length > 48 ? 'default' : 'inherit' }}
+        >
+          <Tooltip
+            title={titleTask.length > 48 ? titleTask : ''}
+            placement="bottom"
+          >
+            {titleTask.slice(0, 48)}
+            {titleTask.length > 48 ? '...' : ''}
+          </Tooltip>
+        </Typography>
+      </div>
+    );
+
+    ChangeContentModal(
+      <TaskDetail
+        task={subtask}
+        isSubtask={true}
+        setFilterSubtask={setFilterSubtask}
+      />
+    );
     ChangeIsVisibleButton(true);
     ChangeStateModal(true);
   };
 
-  const handleBack = () => {
-    ChangeTitleModal('Task Detail');
-    ChangeContentModal(<TaskDetail task={customTask} isSubtask={false} />);
-    ChangeIsVisibleButton(true);
-    ChangeStateModal(true);
-    setCleanForm(false);
+  const handleBack = async (subtask) => {
+    if (subtask && subtask.taskId) {
+      const { taskId } = subtask;
+      clear();
+      ChangeTitleModal('Task Detail');
+      ChangeContentModal(<TaskDetail task={taskId} isSubtask={false} />);
+      ChangeIsVisibleButton(true);
+      ChangeStateModal(true);
+      setCleanForm(false);
+    }
   };
+
+  function clear() {
+    ChangeTitleWithBackButton(null);
+    ChangeContentTitle('');
+  }
 
   return (
     <>
       {!cleanForm ? (
         <Box sx={{ padding: '50px 0' }}>
           <p className={css.title}>Subtasks</p>
-          <table
+          <TableHead
             className={css.table}
-            style={{ padding: isMobile ? '5px' : '20px' }}
+            style={{ padding: isMobile ? '5px' : '20px', maxHeight: '650px' }}
           >
             <thead>
               <tr>
                 {tableHeadData.map((item) => (
-                  <th key={item.id} className={css.headText}>
+                  <th
+                    key={item.id}
+                    className={css.headText}
+                    style={{
+                      marginLeft: item.label === 'Status' ? '1.5rem' : 0,
+                    }}
+                  >
                     {item.label}
                   </th>
                 ))}
@@ -99,26 +172,49 @@ const TaskDetailSubstasks = ({ taskId }) => {
             <tbody>
               {filterSubtask ? (
                 filterSubtask.map((item) => (
-                  <tr key={item._id}>
+                  <tr
+                    key={item._id}
+                    style={{
+                      border: 'none',
+                      minWidth: 'max-content',
+                    }}
+                  >
                     <td style={{ maxWidth: '10rem', paddingInline: 4 }}>
-                      <strong style={{ fontSize: '14px' }}>{item.name}</strong>
+                      <Tooltip
+                        title={item.name ? item.name : ''}
+                        placement="bottom-end"
+                      >
+                        <strong style={{ fontSize: '14px', cursor: 'default' }}>
+                          {item.name.slice(0, 10)}
+                          {item.name.length > 10 ? '...' : ''}
+                        </strong>
+                      </Tooltip>
                     </td>
                     <td>
                       <div>
                         {item.members_id ? (
-                          item.members_id.map((member) => (
+                          item.members_id.map((member, key) => (
                             <div
-                              key={member._id}
+                              key={key}
                               style={{
                                 width: '7rem',
                                 overflow: 'hidden',
+                                minWidth: 'max-content',
                               }}
                             >
-                              <strong style={{ fontSize: '14px' }}>
-                                {member.name}
+                              <strong
+                                style={{
+                                  fontSize: '14px',
+                                  cursor: 'default',
+                                }}
+                              >
+                                <Tooltip title={member?.name} placement="right">
+                                  {member.name.slice(0, 12)}
+                                  {member.name.length > 12 ? '...' : ''}
+                                </Tooltip>
                               </strong>
                               <br />
-                              <Tooltip title={member.email}>
+                              <Tooltip title={member.email} placement="right">
                                 <small style={{ cursor: 'default' }}>
                                   {member?.email?.length > 12
                                     ? member.email.slice(0, 12) + '...'
@@ -149,13 +245,30 @@ const TaskDetailSubstasks = ({ taskId }) => {
                       </div>
                     </td>
                     <td>{moment(item.start).format('DD/MM/YYYY')}</td>
-                    <td className={css.icon}>
-                      <Button
-                        color="inherit"
-                        onClick={() => handleViewSubstask(item)}
-                      >
-                        <RxEyeOpen size={25} />
-                      </Button>
+                    <td
+                      className={css.icon}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Tooltip title="Show subtask details" placement="top">
+                        <Button
+                          color="inherit"
+                          disableRipple
+                          onClick={() => handleViewSubstask(item)}
+                        >
+                          <RxEyeOpen size={25} />
+                        </Button>
+                      </Tooltip>
+                      <Tooltip title="Delete subtask" placement="top">
+                        <Button
+                          color="inherit"
+                          onClick={() => handleRemoveSubTask(item)}
+                        >
+                          <RxTrash size={25} />
+                        </Button>
+                      </Tooltip>
                     </td>
                   </tr>
                 ))
@@ -166,30 +279,58 @@ const TaskDetailSubstasks = ({ taskId }) => {
                   size="32px"
                 />
               )}
-              <tr>
-                <td colSpan={5} className={css.icon}>
-                  <Button disableRipple color="inherit" onClick={handleAddTask}>
-                    + Add substask
-                  </Button>
-                </td>
-              </tr>
             </tbody>
-          </table>
+          </TableHead>
+          <td
+            colSpan={6}
+            className={css.icon}
+            style={{
+              display: 'flex',
+              width: '100%',
+              justifyContent: 'center',
+              marginBlock: '2rem',
+            }}
+          >
+            <Button
+              // disableRipple
+              color="primary"
+              variant="outlined"
+              onClick={handleAddTask}
+              sx={{ border: '1px solid', borderRadius: '16px' }}
+            >
+              + Add substask
+            </Button>
+          </td>
         </Box>
       ) : (
-        <div
-          style={{
-            cursor: 'pointer',
-            display: 'flex',
-            gap: 4,
-            paddingBlock: 16,
-          }}
-          onClick={() => handleBack()}
-        >
-          <SubdirectoryArrowLeftIcon color="primary" className={css.icon} />
-          <span className={css.backText}>Back to Task</span>
-        </div>
+        // <div
+        //   style={{
+        //     display: 'flex',
+        //     alignItems: 'center',
+        //     justifyContent: 'center',
+        //     paddingBlock: '26px',
+        //     fontSize: '18px',
+        //     width: 'max-content',
+        //     border: 'none',
+        //   }}
+        //   className={css.backText}
+        //   onClick={() => handleBack()}
+        // >
+        //   <SubdirectoryArrowLeftIcon sx={{ fontSize: '2rem' }} />
+        //   <Tooltip title="Return to main task details" placement="top">
+        //     <span>Back to Task</span>
+        //   </Tooltip>
+        // </div>
+        ''
       )}
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+        <SubTaskForm
+          taskId={taskId}
+          projectId={taskId}
+          closeModal={closeModal}
+          setFilterSubtask={setFilterSubtask}
+        />
+      </Modal>
     </>
   );
 };

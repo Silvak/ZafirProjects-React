@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  TableHead,
   TableRow,
   TableCell,
   Grid,
@@ -17,12 +18,9 @@ import { shallow } from 'zustand/shallow';
 import useFormatText from '@/hooks/useFormatText';
 import EditMember from '@/components/forms/EditMemberForm';
 import './styles.css';
-import CustomAvatar from '../CustomAvatar/CustomAvatar';
 
 const TableRowComponent = ({
   isMobile,
-  handleRowClick,
-  handleCheckboxClick,
   handleDeleteClick,
   row,
   isSelected,
@@ -141,14 +139,6 @@ const TableRowComponent = ({
                           : ''}
                       </Avatar>
                     ) : (
-                      // <CustomAvatar
-                      //   bgColor={row.colorBg}
-                      //   textColor={row.colorText}
-                      //   size="40px"
-                      //   fontSize="14px"
-                      //   member={row._id}
-                      //   deleteMode={false}
-                      // />
                       <CircularProgress
                         style={{ color: '#C02327' }}
                         sx={{ m: 2 }}
@@ -166,9 +156,30 @@ const TableRowComponent = ({
                       {column.id === 'name' ? (
                         useFormatText(row._id.name)
                       ) : (
-                        <span style={{ marginLeft: 12 }}>
-                          {useFormatText(row['leadOwner'])}
-                        </span>
+                        // <span style={{ marginLeft: 12 }}>
+                        //   {useFormatText(row['leadOwner'])}
+                        // </span>
+                        <Tooltip title={row?.leadOwner}>
+                          <div style={{ marginLeft: 20 }}>
+                            <Avatar
+                              sx={{
+                                borderRadius: '50%',
+                                bgcolor: 'lightgray',
+                                color: 'white',
+                                border: '1px solid darkgray',
+                              }}
+                            >
+                              {row && row.leadOwner
+                                ? row.leadOwner.split(' ')[0][0]
+                                : ''}
+                              {row &&
+                              row.leadOwner &&
+                              row.leadOwner.split(' ').length > 0
+                                ? row.leadOwner.split(' ')[1][0]
+                                : ''}
+                            </Avatar>
+                          </div>
+                        </Tooltip>
                       )}
                     </div>
                     {column.id === 'name' && (
@@ -190,14 +201,6 @@ const TableRowComponent = ({
                 )
               ) : (
                 column.id === 'name' && ''
-                // <span
-                //   style={{
-                //     display: 'flex',
-                //     minWidth: !isMobile ? '5rem' : '10rem',
-                //   }}
-                // >
-                //   {cellContent}
-                // </span>
               )}
             </TableCell>
           );

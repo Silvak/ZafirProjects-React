@@ -8,13 +8,19 @@ import { shallow } from 'zustand/shallow';
 import { useEffect, useState } from 'react';
 import Loader from '../Loader/Loader';
 
-const TaskDetail = ({ task, projectId }) => {
+const TaskDetail = ({
+  task,
+  projectId,
+  isSubtask = false,
+  setFilterSubtask,
+}) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const [loading, setLoading] = useState(true);
   const { fetchTaskDetailsById, singleTask, fetchSubtasks, fetchSubtasksById } =
     useBoundStore((state) => state, shallow);
 
   useEffect(() => {
+    setLoading(true);
     fetchTaskDetailsById(task._id, false);
     fetchSubtasksById(task._id);
     setTimeout(() => {
@@ -69,13 +75,18 @@ const TaskDetail = ({ task, projectId }) => {
                   overflowY: isMobile ? 'none' : 'scroll',
                 }}
               >
-                <TaskDetailHeader taskId={task._id} taskTitle={task.name} />
+                <TaskDetailHeader
+                  isSubtask={isSubtask}
+                  taskId={task._id}
+                  taskTitle={task.name}
+                />
                 <TaskDetailContent
                   task={task}
                   projectId={projectId}
-                  isSubtask={true}
+                  isSubtask={isSubtask}
+                  setFilterSubtask={setFilterSubtask}
                 />
-                <TaskDetailSubstasks taskId={task._id} />
+                {/* <TaskDetailSubstasks taskId={task._id} /> */}
               </Grid>
               <Grid item xs={12} md={5}>
                 <ChatMessage />
@@ -95,10 +106,15 @@ const TaskDetail = ({ task, projectId }) => {
               >
                 <TaskDetailHeader
                   taskId={singleTask._id}
-                  taskTitle={task.name || singleTask.taskName}
+                  taskTitle={task?.name || singleTask?.taskName}
+                  isSubtask={isSubtask}
                 />
-                <TaskDetailContent task={singleTask} projectId={projectId} />
-                <TaskDetailSubstasks taskId={singleTask._id} />
+                <TaskDetailContent
+                  setFilterSubtask={setFilterSubtask}
+                  task={singleTask}
+                  projectId={projectId}
+                />
+                {!isSubtask && <TaskDetailSubstasks taskId={singleTask._id} />}
               </Grid>
               <Grid item xs={12} md={5}>
                 <ChatMessage />

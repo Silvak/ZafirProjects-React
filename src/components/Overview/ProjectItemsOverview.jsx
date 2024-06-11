@@ -6,20 +6,20 @@ import { useBoundStore } from "../../stores";
 import { shallow } from "zustand/shallow";
 
 const ProjectItemsOverview = ({
-  _id,
-  name,
-  description,
   handleEdit,
   handleDelete,
+  project,
   // quantityTasks,
   // category,
 }) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
-  const { selectedProjectById } = useBoundStore((state) => state, shallow);
+  const { selectedProjectById, updateProjects, User, setSelectedProject } =
+    useBoundStore((state) => state, shallow);
 
-  const handleSelectProject = (id) => {
-    selectedProjectById(id);
+  const handleSelectProject = async (project) => {
+    setSelectedProject(project);
+    await updateProjects(User?.uid);
   };
 
   return (
@@ -30,12 +30,12 @@ const ProjectItemsOverview = ({
         alignItems: "center",
         borderBottom: "none",
         "&:hover": {
-          backgroundColor: "#ECE9FF",
+          backgroundColor: "#F6F7FA",
           cursor: "pointer",
         },
         height: "auto",
         width: "100%",
-        padding: "8px 0px 8px 12px",
+        padding: "8px 8px 4px 8px",
         borderRadius: "8px",
       }}
     >
@@ -54,21 +54,26 @@ const ProjectItemsOverview = ({
           <RenderProjectItems category={category} />
         </div> */}
       <Link
-        to={`/project/${_id}`}
+        to={`/project/${project?._id}/tasks`}
         style={{ color: "inherit", textDecoration: "none" }}
-        onClick={() => handleSelectProject(_id)}
+        onClick={() => handleSelectProject(project)}
       >
         <Box>
           <div
           // onClick={() => navigate(`/project/${id}`)}
           >
-            <h2 className="projectName">{name}</h2>
+            <h2 style={{ fontSize: "14px", fontWeight: 600 }}>
+              {project?.name}
+            </h2>
           </div>
-          <small className="quantityTasks">
+          <small
+            className="quantityTasks"
+            style={{ color: "#6B6E75", fontSize: "12px" }}
+          >
             {/* {quantityTasks} | {item} */}
-            {description.length > 25
-              ? `${description.slice(0, 25)}...`
-              : description}
+            {project?.description.length > 25
+              ? `${project?.description.slice(0, 25)}...`
+              : project?.description}
           </small>
         </Box>
       </Link>
@@ -77,9 +82,8 @@ const ProjectItemsOverview = ({
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          width: "80px",
           marginLeft: isMobile ? "unset" : "auto",
-          gap: "20px",
+          gap: "16px",
         }}
       >
         <div
@@ -102,7 +106,7 @@ const ProjectItemsOverview = ({
             borderRadius: "12px",
             width: isMobile ? "auto" : "",
           }}
-          onClick={() => handleDelete(_id)}
+          onClick={() => handleDelete(project?._id)}
         >
           <BsTrash3 />
         </div>
