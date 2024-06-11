@@ -33,6 +33,7 @@ const TaskAccordion = ({ title, state, tasks, handleAddTask, view }) => {
       taskId: taskId,
       newData: { state },
       projectId: params.id,
+      userId: User?.uid,
     });
     await updateProjects(User?.uid);
   };

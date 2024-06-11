@@ -18,7 +18,7 @@ function ProjectSelect(props) {
   } = useBoundStore((state) => state, shallow);
 
   useEffect(() => {
-    fetchProjects(User.uid);
+    fetchProjects(User?.uid);
   }, []);
 
   const handleClick = () => {
@@ -51,7 +51,7 @@ function ProjectSelect(props) {
     >
       {/* btn project */}
       {selectedProject && (
-        <Tooltip title={selectedProject.name} placement='right'>
+        <Tooltip title={selectedProject.name} placement="right">
           <ListItemButton
             onClick={handleClick}
             sx={{
@@ -63,7 +63,7 @@ function ProjectSelect(props) {
             disableRipple
           >
             <ItemNav
-              to='#'
+              to="#"
               title={
                 selectedProject && selectedProject.name.slice(0, 12) + '...'
               }
@@ -77,7 +77,7 @@ function ProjectSelect(props) {
 
       {/* submenu */}
       {selectedProject && (
-        <Collapse in={open} timeout='auto' unmountOnExit>
+        <Collapse in={open} timeout="auto" unmountOnExit>
           {projectsData?.slice(0, 3).map((submenuItem) => (
             <ListItemButton
               key={submenuItem.id}
@@ -85,7 +85,7 @@ function ProjectSelect(props) {
               sx={{ m: 0, p: 0 }}
             >
               <ItemNav
-                to={`/project/${submenuItem._id}`}
+                to={`/project/${submenuItem._id}/tasks`}
                 title={submenuItem.name.slice(0, 20) + '...'}
                 //icon={submenuItem.icon}
               />

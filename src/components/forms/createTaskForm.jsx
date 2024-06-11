@@ -49,6 +49,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
     ChangeStateAlertError,
     setSelectedProject,
     updateProjects,
+    fetchTasksByUser,
   } = useBoundStore((state) => state, shallow);
   const { users } = useSuggestionUsers();
 
@@ -110,6 +111,7 @@ const CreateTaskForm = ({ onCreate, placeholderTaskName = '', projectId }) => {
         return;
       } else {
         await addTask(data, projectId);
+        // await fetchTasksByUser(User?.uid);
         await fetchTasksById(projectId);
 
         const promises = data.members_id.map((member) => {

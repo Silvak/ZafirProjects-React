@@ -58,6 +58,8 @@ const TaskItem = ({ task, isMobile, isKanbanView, projectId }) => {
     ChangeStateAlert,
     removeTask,
     fetchTasksById,
+    fetchTasksByUser,
+    User,
   } = useBoundStore((state) => state, shallow);
 
   const handleMoreIcon = (task) => {

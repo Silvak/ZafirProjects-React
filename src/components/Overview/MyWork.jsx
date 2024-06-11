@@ -36,18 +36,18 @@ function MyWorkGlance() {
     setFilterOption(event.target.value);
   };
 
-  useEffect(() => {
-    if (User) {
-      const fetchData = async () => {
-        try {
-          await fetchTasksByUser(User.uid);
-        } catch (error) {
-          console.error('Error fetching tasks', error);
-        }
-      };
-      fetchData();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (User) {
+  //     const fetchData = async () => {
+  //       try {
+  //         await fetchTasksByUser(User.uid);
+  //       } catch (error) {
+  //         console.error("Error fetching tasks", error);
+  //       }
+  //     };
+  //     fetchData();
+  //   }
+  // }, []);
 
   const filteredTasks = Array.isArray(myTasks)
     ? myTasks.filter((task) => {
@@ -133,7 +133,7 @@ function MyWorkGlance() {
           <Typography
             sx={{
               fontSize: '20px',
-              fontWeight: '500',
+              fontWeight: 600,
               fontFamily: 'Poppins',
               color: 'black',
             }}

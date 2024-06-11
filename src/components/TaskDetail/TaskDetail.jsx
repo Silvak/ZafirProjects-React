@@ -20,6 +20,7 @@ const TaskDetail = ({
     useBoundStore((state) => state, shallow);
 
   useEffect(() => {
+    setLoading(true);
     fetchTaskDetailsById(task._id, false);
     fetchSubtasksById(task._id);
     setTimeout(() => {
@@ -74,14 +75,18 @@ const TaskDetail = ({
                   overflowY: isMobile ? 'none' : 'scroll',
                 }}
               >
-                <TaskDetailHeader taskId={task._id} taskTitle={task.name} />
+                <TaskDetailHeader
+                  isSubtask={isSubtask}
+                  taskId={task._id}
+                  taskTitle={task.name}
+                />
                 <TaskDetailContent
                   task={task}
                   projectId={projectId}
                   isSubtask={isSubtask}
                   setFilterSubtask={setFilterSubtask}
                 />
-                <TaskDetailSubstasks taskId={task._id} />
+                {/* <TaskDetailSubstasks taskId={task._id} /> */}
               </Grid>
               <Grid item xs={12} md={5}>
                 <ChatMessage />
@@ -102,13 +107,14 @@ const TaskDetail = ({
                 <TaskDetailHeader
                   taskId={singleTask._id}
                   taskTitle={task?.name || singleTask?.taskName}
+                  isSubtask={isSubtask}
                 />
                 <TaskDetailContent
                   setFilterSubtask={setFilterSubtask}
                   task={singleTask}
                   projectId={projectId}
                 />
-                <TaskDetailSubstasks taskId={singleTask._id} />
+                {!isSubtask && <TaskDetailSubstasks taskId={singleTask._id} />}
               </Grid>
               <Grid item xs={12} md={5}>
                 <ChatMessage />

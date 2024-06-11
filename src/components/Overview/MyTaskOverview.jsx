@@ -22,7 +22,10 @@ const filtersData = [
 ];
 
 function MyTask() {
-  const { myTasks, selectedProject } = useBoundStore((state) => state, shallow);
+  const { myTasks, selectedProject, User, fetchTasksById } = useBoundStore(
+    (state) => state,
+    shallow
+  );
   const theme = createTheme();
   const [filterOption, setFilterOption] = useState('All');
 
@@ -32,18 +35,19 @@ function MyTask() {
     setFilterOption(event.target.value);
   };
 
-  // useEffect(() => {
-  //   if (selectedProject) {
-  //     const fetchData = async () => {
-  //       try {
-  //         await fetchTasksById(selectedProject._id);
-  //       } catch (error) {
-  //         console.error('Error fetching tasks', error);
-  //       }
-  //     };
-  //     fetchData();
-  //   }
-  // }, [selectedProject, fetchTasksById]);
+  useEffect(() => {
+    if (User) {
+      const fetchData = async () => {
+        try {
+          await fetchTasksById(selectedProject._id);
+          // await fetchTasksByUser(User.uid);
+        } catch (error) {
+          console.error('Error fetching tasks', error);
+        }
+      };
+      fetchData();
+    }
+  }, []);
 
   const filteredTasks = Array.isArray(myTasks)
     ? myTasks.filter((task) => {
@@ -82,16 +86,21 @@ function MyTask() {
           sx={{
             display: isMobile ? 'inline-table' : 'flex',
             justifyContent: 'space-between',
-            padding: '10px 20px',
+            padding: '0px 20px',
             marginBottom: '8px',
             alignItems: 'center',
           }}
         >
           <Grid item>
-            <Typography sx={{ fontSize: '20px', fontWeight: 500 }}>
+            <Typography
+              sx={{ fontSize: '20px', fontWeight: 600, color: '#1D1F24' }}
+            >
               My Tasks -{' '}
               {selectedProject ? (
-                <span style={{ color: 'black' }}> {selectedProject.name}</span>
+                <span style={{ color: '#6B6E75' }}>
+                  {' '}
+                  {selectedProject.name}
+                </span>
               ) : (
                 ''
               )}
@@ -100,7 +109,7 @@ function MyTask() {
 
           {/* Select Filter */}
           <Grid item>
-            <Tooltip title="Filter">
+            <Tooltip title='Filter'>
               <select
                 value={filterOption}
                 onChange={handleFilter}

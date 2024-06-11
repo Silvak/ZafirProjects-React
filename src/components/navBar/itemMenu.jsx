@@ -39,12 +39,12 @@ function initializeItems(selectedProject) {
           icon: <BiGroup />,
           submenu: [],
         },
+        {
+          title: 'report',
+          url: `/project/${selectedProject?._id}/report`,
+          submenu: [],
+        },
       ],
-    },
-    {
-      title: 'report',
-      url: `/project/${selectedProject?._id}/report`,
-      submenu: [],
     },
   ];
 }
@@ -123,9 +123,9 @@ function ItemMenu(props) {
       }}
     >
       {itemsActual?.map((element, index) => (
-        <>
+        <div key={crypto.randomUUID()}>
           {element.submenu.length > 0 ? (
-            <>
+            <div key={crypto.randomUUID()}>
               <ListItemButton
                 key={`list-item-buttom-${crypto.randomUUID()}`}
                 onClick={() => handleClick(index)}
@@ -153,11 +153,16 @@ function ItemMenu(props) {
                 timeout='auto'
                 unmountOnExit
               >
-                {element.submenu.map((link) => (
-                  <ItemNav to={link.url} title={link.title} sx={{ pl: 8 }} />
+                {element.submenu.map((link, key) => (
+                  <ItemNav
+                    key={link.url + key}
+                    to={link.url}
+                    title={link.title}
+                    sx={{ pl: 8 }}
+                  />
                 ))}
               </Collapse>
-            </>
+            </div>
           ) : (
             <ItemNav
               key={`item-nav-${crypto.randomUUID()}`}
@@ -166,7 +171,7 @@ function ItemMenu(props) {
               icon={element.icon}
             />
           )}
-        </>
+        </div>
       ))}
     </List>
   );

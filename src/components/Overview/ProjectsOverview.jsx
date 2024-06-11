@@ -12,10 +12,50 @@ import { NavLink } from 'react-router-dom';
 import ProjectItemsOverview from './ProjectItemsOverview';
 import { useProjectsOverview } from '@/hooks/useProjectsOverview';
 import EditProjectForm from '@/components/forms/EditProjectForm';
+import ConfirmForm from '../forms/ConfirmForm';
+import { useBoundStore } from '../../stores';
+import { shallow } from 'zustand/shallow';
 
 function ProjectsOverview() {
-  const { projectsData, handleEdit, handleDelete, isMobile, theme } =
-    useProjectsOverview();
+  const { projectsData, handleEdit, isMobile, theme } = useProjectsOverview();
+  const {
+    updateProjects,
+    User,
+    ChangeStateModal,
+    ChangeTitleAlert,
+    ChangeStateAlert,
+    ChangeTitleModal,
+    ChangeContentModal,
+    deleteProject,
+  } = useBoundStore((state) => state, shallow);
+
+  const handleConfirmDelete = async (projectToDelete) => {
+    try {
+      await deleteProject(projectToDelete?._id);
+      await updateProjects(User?.uid);
+      ChangeStateModal(false);
+      ChangeTitleAlert('Project successfully removed');
+      ChangeStateAlert(true);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    ChangeStateModal(false);
+  };
+
+  const handleDeleteProject = (projectToDelete) => {
+    ChangeTitleModal('');
+    ChangeContentModal(
+      <ConfirmForm
+        handleCancelDelete={handleCancelDelete}
+        handleConfirmDelete={handleConfirmDelete}
+        itemToDelete={projectToDelete}
+      />
+    );
+    ChangeStateModal(true);
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -34,12 +74,18 @@ function ProjectsOverview() {
           sx={{
             display: isMobile ? 'flex' : 'flex',
             justifyContent: 'space-between',
+            alignItems: 'center',
             padding: '0px 20px 20px 20px',
           }}
         >
           <Grid item>
             <Typography
-              sx={{ fontSize: '20px', fontWeight: 500, fontFamily: 'Poppins' }}
+              sx={{
+                fontSize: '20px',
+                fontWeight: 600,
+                color: '#1D1F24',
+                paddingLeft: '8px',
+              }}
             >
               Projects
             </Typography>
@@ -54,10 +100,11 @@ function ProjectsOverview() {
                 alignItems: 'center',
                 fontWeight: 600,
                 color: '#7662EA',
+                fontSize: '13px',
               }}
             >
               View all
-              <EastIcon xs sx={{ marginLeft: '6px' }} />
+              <EastIcon xs sx={{ marginLeft: '6px', fontSize: '16px' }} />
             </NavLink>
           </Grid>
         </Grid>
@@ -100,7 +147,7 @@ function ProjectsOverview() {
               ) : (
                 projectsData.map((project) => (
                   <ProjectItemsOverview
-                    handleDelete={handleDelete}
+                    handleDelete={handleDeleteProject}
                     handleEdit={() =>
                       handleEdit(<EditProjectForm project={project} />)
                     }
