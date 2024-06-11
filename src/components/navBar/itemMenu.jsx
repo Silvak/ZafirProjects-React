@@ -39,12 +39,12 @@ function initializeItems(selectedProject) {
           icon: <BiGroup />,
           submenu: [],
         },
+        {
+          title: 'report',
+          url: `/project/${selectedProject?._id}/report`,
+          submenu: [],
+        },
       ],
-    },
-    {
-      title: 'report',
-      url: `/project/${selectedProject?._id}/report`,
-      submenu: [],
     },
   ];
 }
@@ -150,7 +150,7 @@ function ItemMenu(props) {
               <Collapse
                 key={`collapse-${crypto.randomUUID()}`}
                 in={openIndex === index && props.open}
-                timeout="auto"
+                timeout='auto'
                 unmountOnExit
               >
                 {element.submenu.map((link, key) => (
