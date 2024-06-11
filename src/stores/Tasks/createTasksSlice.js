@@ -12,6 +12,7 @@ export const createTasksSlice = (set, get) => ({
       console.error('Error creating task', error);
     }
   },
+
   setTasks: (id, status) =>
     set((state) => ({
       tasks: state.tasks.map((task) => {
@@ -21,6 +22,7 @@ export const createTasksSlice = (set, get) => ({
         return task;
       }),
     })),
+
   removeTask: async (taskId) => {
     try {
       const taskDeleted = await axiosInstance.delete(`/tasksList/${taskId}`);
@@ -32,26 +34,27 @@ export const createTasksSlice = (set, get) => ({
     // }))
   },
 
-  updateTask: async ({ taskId, newData, projectId }) => {
+  updateTask: async ({ taskId, newData, projectId, userId }) => {
     // console.log('FROM SLICE', newData);
     try {
       const res = await axiosInstance.put(`/tasksList/${taskId}`, newData);
       if (res.status === 200) {
-        await get().fetchTasksById(projectId);
+        // await get().fetchTasksById(projectId);
+        await get().fetchTasksByUser(userId);
       }
       return res.data;
     } catch (e) {
       console.log(e);
     }
   },
-  fetchTasks: async () => {
-    try {
-      const { data } = await axiosInstance.get('/tasksList');
-      set({ tasks: data });
-    } catch (error) {
-      console.error('Error fetching tasks', error);
-    }
-  },
+  // fetchTasks: async () => {
+  //   try {
+  //     const { data } = await axiosInstance.get('/tasksList');
+  //     set({ tasks: data });
+  //   } catch (error) {
+  //     console.error('Error fetching tasks', error);
+  //   }
+  // },
 
   fetchTaskDetailsById: async (taskId, isSubtask) => {
     try {

@@ -1,8 +1,16 @@
 import * as React from 'react';
-import { Box, Button, Modal, Typography, IconButton } from '@mui/material';
+import {
+  Box,
+  Button,
+  Modal,
+  Typography,
+  IconButton,
+  Tooltip,
+} from '@mui/material';
 import { useBoundStore } from '@/stores/index';
 import { shallow } from 'zustand/shallow';
 import CloseIcon from '@mui/icons-material/Close';
+import SubdirectoryArrowLeftIcon from '@mui/icons-material/SubdirectoryArrowLeft';
 
 const modalStyle = {
   padding: '10px',
@@ -13,12 +21,18 @@ const ModalGlobal = () => {
   const {
     stateModal,
     titleModal,
+    titleWithBackButton,
+    ChangeTitleWithBackButton,
     ChangeStateModal,
     contentModal,
     isVisibleButton,
+    contentTitle,
+    ChangeContentTitle,
   } = useBoundStore((state) => state, shallow);
 
   const handleClose = () => {
+    ChangeTitleWithBackButton(null);
+    ChangeContentTitle('');
     ChangeStateModal(false);
   };
 
@@ -51,8 +65,6 @@ const ModalGlobal = () => {
             margin: 'auto',
           }}
         >
-          {' '}
-          {/* width off */}
           {titleModal && (
             <Typography
               variant="h4"
@@ -78,8 +90,9 @@ const ModalGlobal = () => {
                   border: 'none',
                 }}
               >
-                {titleModal}
-                {/* Close Modal */}
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  {titleWithBackButton || titleModal}
+                </div>
                 {isVisibleButton && (
                   <IconButton
                     sx={{

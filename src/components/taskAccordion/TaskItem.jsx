@@ -58,6 +58,8 @@ const TaskItem = ({ task, isMobile, isKanbanView, projectId }) => {
     ChangeStateAlert,
     removeTask,
     fetchTasksById,
+    fetchTasksByUser,
+    User,
   } = useBoundStore((state) => state, shallow);
 
   const handleMoreIcon = (task) => {
@@ -72,7 +74,8 @@ const TaskItem = ({ task, isMobile, isKanbanView, projectId }) => {
 
   const handleConfirmDelete = async (taskToDelete) => {
     await removeTask(taskToDelete._id);
-    await fetchTasksById(projectId);
+    // await fetchTasksById(projectId);
+    await fetchTasksByUser(User.uid);
     ChangeStateModal(false);
     ChangeTitleAlert('Task successfully removed');
     ChangeStateAlert(true);
@@ -150,8 +153,8 @@ const TaskItem = ({ task, isMobile, isKanbanView, projectId }) => {
           </div>
         ))}
       <Typography
-        variant='h6'
-        fontWeight='bold'
+        variant="h6"
+        fontWeight="bold"
         noWrap
         style={{
           fontSize: '14px',
@@ -166,12 +169,12 @@ const TaskItem = ({ task, isMobile, isKanbanView, projectId }) => {
         container
         spacing={0}
         columns={isMobile || isKanbanView ? 6 : 12}
-        alignItems='center'
+        alignItems="center"
         padding={0}
       >
         <Grid item xs={12} sm={!isKanbanView ? 2 : 1}>
           <Typography
-            variant='h6'
+            variant="h6"
             noWrap
             style={{
               fontSize: '12px',
@@ -201,8 +204,8 @@ const TaskItem = ({ task, isMobile, isKanbanView, projectId }) => {
         {!isKanbanView && (
           <Grid item xs={12} sm={2}>
             <Typography
-              variant='body1'
-              color='textSecondary'
+              variant="body1"
+              color="textSecondary"
               noWrap
               style={{ fontSize: '14px', fontWeight: 'bold' }}
               sx={{ ml: '3rem' }}
@@ -235,7 +238,7 @@ const TaskItem = ({ task, isMobile, isKanbanView, projectId }) => {
             <div style={{ display: 'flex' }}>
               <PeopleAltOutlinedIcon sx={{ mr: '5px', color: 'gray' }} />
               <Typography
-                variant='body1'
+                variant="body1"
                 noWrap
                 style={{
                   fontSize: '14px',
@@ -265,7 +268,7 @@ const TaskItem = ({ task, isMobile, isKanbanView, projectId }) => {
                 onClick={handleClipIcon}
               />
               <Typography
-                variant='body1'
+                variant="body1"
                 noWrap
                 style={{
                   fontSize: '14px',
@@ -325,8 +328,8 @@ const TaskItem = ({ task, isMobile, isKanbanView, projectId }) => {
               }}
             />
             <Typography
-              variant='body1'
-              color='textSecondary'
+              variant="body1"
+              color="textSecondary"
               noWrap
               style={{ fontSize: '14px', fontWeight: 'bold' }}
             >
@@ -345,8 +348,8 @@ const TaskItem = ({ task, isMobile, isKanbanView, projectId }) => {
           }}
         >
           <Typography
-            variant='body1'
-            color='textSecondary'
+            variant="body1"
+            color="textSecondary"
             noWrap
             sx={{
               fontWeight: 'bold',

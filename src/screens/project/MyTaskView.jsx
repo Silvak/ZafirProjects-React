@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import CreateTaskForm from "@/components/forms/createTaskForm";
-import TaskHeader from "@/components/taskAccordion/taskHeader";
-import MyTaskList from "../../components/MyTaskSections/MyTaskList";
-import { useBoundStore } from "@/stores/index";
-import { shallow } from "zustand/shallow";
-import Grid from "@mui/material/Grid";
+import React, { useEffect, useState } from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import CreateTaskForm from '@/components/forms/createTaskForm';
+import TaskHeader from '@/components/taskAccordion/taskHeader';
+import MyTaskList from '../../components/MyTaskSections/MyTaskList';
+import { useBoundStore } from '@/stores/index';
+import { shallow } from 'zustand/shallow';
+import Grid from '@mui/material/Grid';
 
-import { useParams } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 
 const TaskList = ({ view }) => {
   //   const [view, setView] = useState("Format List");
@@ -16,12 +16,14 @@ const TaskList = ({ view }) => {
   const params = useParams();
 
   const {
-    myTasks,
+    userTasks,
     ChangeStateModal,
     ChangeContentModal,
     ChangeTitleModal,
     fetchTasksById,
     selectedProject,
+    fetchTasksByUser,
+    User,
   } = useBoundStore((state) => state, shallow);
 
   const [pendingTasks, setPendingTasks] = useState([]);
@@ -29,19 +31,26 @@ const TaskList = ({ view }) => {
   const [workingTasks, setWorkingTasks] = useState([]);
 
   useEffect(() => {
-    if (Array.isArray(myTasks)) {
-      setPendingTasks(myTasks.filter((task) => task.state === "Pending"));
-      setCompletedTasks(myTasks.filter((task) => task.state === "Completed"));
-      setWorkingTasks(myTasks.filter((task) => task.state === "In Progress"));
+    const fetchData = async () => {
+      await fetchTasksByUser(User.uid);
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (Array.isArray(userTasks)) {
+      setPendingTasks(userTasks.filter((task) => task.state === 'Pending'));
+      setCompletedTasks(userTasks.filter((task) => task.state === 'Completed'));
+      setWorkingTasks(userTasks.filter((task) => task.state === 'In Progress'));
     }
-  }, [myTasks]);
+  }, [userTasks]);
 
   const handleButton = (buttonName) => {
     setView(buttonName);
   };
 
   const handleAddTask = (title, description) => {
-    ChangeTitleModal("Create Task");
+    ChangeTitleModal('Create Task');
     ChangeContentModal(
       <CreateTaskForm placeholderTaskName="task 1" projectId={params.id} />
     );
@@ -50,8 +59,8 @@ const TaskList = ({ view }) => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div sx={{ minWidth: "250px" }}>
-        {view !== "View Kanban" ? (
+      <div sx={{ minWidth: '250px' }}>
+        {view !== 'View Kanban' ? (
           <>
             <Grid container spacing={2}>
               <Grid item xs={12}>

@@ -45,6 +45,8 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
     ChangeStateAlert,
     removeTask,
     fetchTasksById,
+    fetchTasksByUser,
+    User
   } = useBoundStore((state) => state, shallow);
 
   const handleMoreIcon = (task) => {
@@ -59,7 +61,8 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
 
   const handleConfirmDelete = async (taskToDelete) => {
     await removeTask(taskToDelete._id);
-    await fetchTasksById(projectId);
+    // await fetchTasksById(projectId);
+    await fetchTasksByUser(User.uid);
     ChangeStateModal(false);
     ChangeTitleAlert("Task successfully removed");
     ChangeStateAlert(true);
