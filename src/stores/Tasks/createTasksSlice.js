@@ -38,10 +38,10 @@ export const createTasksSlice = (set, get) => ({
     // console.log('FROM SLICE', newData);
     try {
       const res = await axiosInstance.put(`/tasksList/${taskId}`, newData);
-      if (res.status === 200) {
-        // await get().fetchTasksById(projectId);
-        await get().fetchTasksByUser(userId);
-      }
+      // if (res.status === 200) {
+      // await get().fetchTasksById(projectId);
+      //   await get().fetchTasksByUser(userId);
+      // }
       return res.data;
     } catch (e) {
       console.log(e);
