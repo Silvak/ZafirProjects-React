@@ -11,8 +11,9 @@ import AddIcon from "@mui/icons-material/Add";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MyTaskItems from "./MyTaskItems";
-import CustomAccordion from "./customAccordion";
-import { useDrop } from "react-dnd";
+// import CustomAccordion from "./customAccordion";
+import CustomTaskAccordion from "./CustomTaskAccordion";
+
 import { useBoundStore } from "../../stores";
 import { shallow } from "zustand/shallow";
 import { useParams } from "react-router-dom";
@@ -57,10 +58,9 @@ function MyTaskAccordion({ title, state, tasks, view }) {
       <div
         style={{
           textAlign: isMobile ? "left" : "",
-          opacity,
         }}
       >
-        <CustomAccordion
+        <CustomTaskAccordion
           expanded={expanded}
           elevation={4}
           className="custom-accordion"
@@ -122,18 +122,6 @@ function MyTaskAccordion({ title, state, tasks, view }) {
                   {tasks?.length.toString()}
                 </div>
               )}
-
-              <AddIcon
-                sx={{
-                  color: "#8C7BEE",
-                  cursor: "pointer",
-                  borderRadius: "8px",
-                  backgroundColor: "#ECE9FF",
-                  height: "24px",
-                  width: "24px",
-                }}
-                onClick={() => handleAddTask()}
-              />
             </div>
           </AccordionSummary>
 
@@ -142,7 +130,9 @@ function MyTaskAccordion({ title, state, tasks, view }) {
               display: "flex",
               flexDirection: "column",
               padding: "0",
-              gap: "20px",
+              gap: !isKanbanView ? "5px" : "20px",
+              backgroundColor: !isKanbanView && "#FFFFFF",
+              borderRadius: "1rem",
             }}
           >
             {tasks?.map((task) => (
@@ -155,7 +145,7 @@ function MyTaskAccordion({ title, state, tasks, view }) {
               />
             ))}
           </AccordionDetails>
-        </CustomAccordion>
+        </CustomTaskAccordion>
       </div>
     </ThemeProvider>
   );

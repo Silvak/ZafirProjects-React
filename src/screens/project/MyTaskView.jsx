@@ -10,8 +10,8 @@ import Grid from "@mui/material/Grid";
 
 import { useParams } from "react-router-dom";
 
-const App = () => {
-  const [view, setView] = useState("Format List");
+const TaskList = ({ view }) => {
+  //   const [view, setView] = useState("Format List");
 
   const params = useParams();
 
@@ -51,15 +51,6 @@ const App = () => {
   return (
     <DndProvider backend={HTML5Backend}>
       <div sx={{ minWidth: "250px" }}>
-        <TaskHeader
-          title={
-            selectedProject?.name
-              ? `${selectedProject.name} Tasks`
-              : "No projects"
-          }
-          handleAddTask={handleAddTask}
-          handleButton={handleButton}
-        />
         {view !== "View Kanban" ? (
           <>
             <Grid container spacing={2}>
@@ -69,7 +60,6 @@ const App = () => {
                   tasks={workingTasks}
                   view={view}
                   state="In Progress"
-                  handleAddTask={() => handleAddTask()}
                 />
               </Grid>
 
@@ -79,7 +69,6 @@ const App = () => {
                   tasks={pendingTasks}
                   view={view}
                   state="Pending"
-                  handleAddTask={() => handleAddTask()}
                 />
               </Grid>
 
@@ -89,7 +78,6 @@ const App = () => {
                   tasks={completedTasks}
                   view={view}
                   state="Completed"
-                  handleAddTask={() => handleAddTask()}
                 />
               </Grid>
             </Grid>
@@ -103,7 +91,6 @@ const App = () => {
                   tasks={workingTasks}
                   view={view}
                   state="In Progress"
-                  handleAddTask={() => handleAddTask()}
                 />
               </Grid>
 
@@ -113,7 +100,6 @@ const App = () => {
                   tasks={pendingTasks}
                   view={view}
                   state="Pending"
-                  handleAddTask={() => handleAddTask()}
                 />
               </Grid>
 
@@ -123,7 +109,6 @@ const App = () => {
                   tasks={completedTasks}
                   view={view}
                   state="Completed"
-                  handleAddTask={() => handleAddTask()}
                 />
               </Grid>
             </Grid>
@@ -134,4 +119,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default TaskList;

@@ -61,6 +61,7 @@ declare module "@/components/TasksViews/GanttView";
 declare module "@/components/MyTaskSections/MyTaskList";
 declare module "@/components/MyTaskSections/MyTaskItems";
 declare module "@/components/MyTaskSections/MyTaskAccordion";
+declare module "@/components/MyTaskSections/CustomTaskAccordion";
 
 declare module "@/context/AppContextProvider";
 declare module "@/stores/index";
