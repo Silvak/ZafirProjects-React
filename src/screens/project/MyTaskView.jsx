@@ -22,11 +22,20 @@ const TaskList = ({ view }) => {
     ChangeTitleModal,
     fetchTasksById,
     selectedProject,
+    fetchTasksByUser,
+    User,
   } = useBoundStore((state) => state, shallow);
 
   const [pendingTasks, setPendingTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
   const [workingTasks, setWorkingTasks] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchTasksByUser(User.uid);
+    };
+    fetchData();
+  }, []);
 
   useEffect(() => {
     if (Array.isArray(userTasks)) {
