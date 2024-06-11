@@ -10,6 +10,7 @@ import {
 import { useBoundStore } from '@/stores/index';
 import { shallow } from 'zustand/shallow';
 import CloseIcon from '@mui/icons-material/Close';
+import SubdirectoryArrowLeftIcon from '@mui/icons-material/SubdirectoryArrowLeft';
 
 const modalStyle = {
   padding: '10px',
@@ -20,6 +21,8 @@ const ModalGlobal = () => {
   const {
     stateModal,
     titleModal,
+    titleWithBackButton,
+    ChangeTitleWithBackButton,
     ChangeStateModal,
     contentModal,
     isVisibleButton,
@@ -28,6 +31,7 @@ const ModalGlobal = () => {
   } = useBoundStore((state) => state, shallow);
 
   const handleClose = () => {
+    ChangeTitleWithBackButton(null);
     ChangeContentTitle('');
     ChangeStateModal(false);
   };
@@ -61,8 +65,6 @@ const ModalGlobal = () => {
             margin: 'auto',
           }}
         >
-          {' '}
-          {/* width off */}
           {titleModal && (
             <Typography
               variant="h4"
@@ -89,24 +91,8 @@ const ModalGlobal = () => {
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <span>{titleModal} </span>
-                  <span style={{ marginLeft: '4px' }}>
-                    {contentTitle && `-`}{' '}
-                  </span>
-                  {contentTitle && (
-                    <Typography
-                      variant="h3"
-                      color="primary"
-                      style={{ marginLeft: '4px', cursor: 'default' }}
-                    >
-                      <Tooltip title={contentTitle} placement="bottom">
-                        {contentTitle.slice(0, 36)}
-                        {contentTitle.length > 36 ? '...' : ''}
-                      </Tooltip>
-                    </Typography>
-                  )}
+                  {titleWithBackButton || titleModal}
                 </div>
-                {/* Close Modal */}
                 {isVisibleButton && (
                   <IconButton
                     sx={{

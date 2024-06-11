@@ -55,6 +55,7 @@ const TaskDetailContent = ({
   const [formData, setFormData] = useState(initialFormData);
 
   const {
+    User,
     updateTask,
     updateSubtask,
     selectedProject,
@@ -122,6 +123,7 @@ const TaskDetailContent = ({
             taskId: task._id,
             newData: newValues,
             projectId: projectId,
+            userId: User.uid,
           });
         } else {
           const updatedSubtasks = await updateSubtask({

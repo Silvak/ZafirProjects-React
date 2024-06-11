@@ -6,6 +6,7 @@ import {
   CircularProgress,
   Tooltip,
   TableHead,
+  Typography,
 } from '@mui/material';
 import { RxEyeOpen, RxTrash } from 'react-icons/rx';
 import { useBoundStore } from '../../stores';
@@ -30,7 +31,6 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const [filterSubtask, setFilterSubtask] = useState([]);
   const [cleanForm, setCleanForm] = useState(false);
-  const [customTask, setCustomTask] = useState(null);
 
   const {
     subtasks,
@@ -43,6 +43,7 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
     ChangeStateAlert,
     removeSubtask,
     ChangeContentTitle,
+    ChangeTitleWithBackButton,
   } = useBoundStore((state) => state, shallow);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -57,10 +58,10 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
   const fetchData = async () => {
     try {
       if (taskId) {
-        await fetchSubtasksById(taskId);
+        const updatedSubtasks = await fetchSubtasksById(taskId);
+        setFilterSubtask(updatedSubtasks);
       }
-      const result = subtasks.filter((sub) => sub.taskId._id === taskId);
-      setFilterSubtask(result);
+      // const result = subtasks.filter((sub) => sub.taskId._id === taskId);
     } catch (error) {
       console.error('Error fetching tasks', error);
     }
@@ -84,11 +85,38 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
   };
 
   const handleViewSubstask = (subtask) => {
-    setCustomTask(subtask.taskId);
     setCleanForm(true);
     const titleTask = subtask?.taskId?.taskName;
-    ChangeContentTitle(titleTask);
-    ChangeTitleModal('Substask Detail');
+
+    ChangeTitleWithBackButton(
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <Tooltip title="Back to task details" placement="bottom">
+          <Button
+            onClick={() => handleBack(subtask)}
+            style={{ marginRight: '5px' }}
+            disableRipple
+          >
+            <SubdirectoryArrowLeftIcon />
+          </Button>
+        </Tooltip>
+        <span style={{ marginRight: '5px' }}>Task:</span>
+        {/* Typogra */}
+        <Typography
+          variant="p"
+          color="primary"
+          sx={{ cursor: titleTask.length > 48 ? 'default' : 'inherit' }}
+        >
+          <Tooltip
+            title={titleTask.length > 48 ? titleTask : ''}
+            placement="bottom"
+          >
+            {titleTask.slice(0, 48)}
+            {titleTask.length > 48 ? '...' : ''}
+          </Tooltip>
+        </Typography>
+      </div>
+    );
+
     ChangeContentModal(
       <TaskDetail
         task={subtask}
@@ -100,14 +128,22 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
     ChangeStateModal(true);
   };
 
-  const handleBack = () => {
-    ChangeContentTitle('');
-    ChangeTitleModal('Task Detail');
-    ChangeContentModal(<TaskDetail task={customTask} isSubtask={false} />);
-    ChangeIsVisibleButton(true);
-    ChangeStateModal(true);
-    setCleanForm(false);
+  const handleBack = async (subtask) => {
+    if (subtask && subtask.taskId) {
+      const { taskId } = subtask;
+      clear();
+      ChangeTitleModal('Task Detail');
+      ChangeContentModal(<TaskDetail task={taskId} isSubtask={false} />);
+      ChangeIsVisibleButton(true);
+      ChangeStateModal(true);
+      setCleanForm(false);
+    }
   };
+
+  function clear() {
+    ChangeTitleWithBackButton(null);
+    ChangeContentTitle('');
+  }
 
   return (
     <>
@@ -144,7 +180,10 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
                     }}
                   >
                     <td style={{ maxWidth: '10rem', paddingInline: 4 }}>
-                      <Tooltip title={item.name} placement="bottom-end">
+                      <Tooltip
+                        title={item.name ? item.name : ''}
+                        placement="bottom-end"
+                      >
                         <strong style={{ fontSize: '14px', cursor: 'default' }}>
                           {item.name.slice(0, 10)}
                           {item.name.length > 10 ? '...' : ''}
@@ -154,9 +193,9 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
                     <td>
                       <div>
                         {item.members_id ? (
-                          item.members_id.map((member) => (
+                          item.members_id.map((member, key) => (
                             <div
-                              key={member._id}
+                              key={key}
                               style={{
                                 width: '7rem',
                                 overflow: 'hidden',
