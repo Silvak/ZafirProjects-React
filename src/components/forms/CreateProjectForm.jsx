@@ -98,7 +98,7 @@ function CreateProjectForm() {
         setIsLoading(false);
         return;
       } else {
-        await addProject(User._id, data);
+        await addProject(User?.uid, data);
         await updateProjects(User?.uid);
         ChangeStateAlert(true);
         ChangeTitleAlert('Project created successfully');
@@ -149,7 +149,7 @@ function CreateProjectForm() {
       {/* row - colum */}
       <Paper
         elevation={1}
-        component='form'
+        component="form"
         onSubmit={handleSubmit}
         sx={{
           maxWidth: isMobile ? '90vw' : 'fit-content',
@@ -173,10 +173,10 @@ function CreateProjectForm() {
             Enter a project name
           </Typography>
           <TextField
-            size='small'
+            size="small"
             value={formData.name}
-            placeholder='Project name...'
-            name='name'
+            placeholder="Project name..."
+            name="name"
             onChange={handleChange}
             sx={{
               width: '100%',
@@ -200,9 +200,9 @@ function CreateProjectForm() {
               Start date
             </Typography>
             <TextField
-              size='small'
-              name='start'
-              type='date'
+              size="small"
+              name="start"
+              type="date"
               value={formData.start}
               onChange={handleChange}
               sx={{
@@ -215,9 +215,9 @@ function CreateProjectForm() {
               End date
             </Typography>
             <TextField
-              size='small'
-              name='end'
-              type='date'
+              size="small"
+              name="end"
+              type="date"
               value={formData.end}
               onChange={handleChange}
               sx={{
@@ -237,11 +237,11 @@ function CreateProjectForm() {
             Add a description...
           </Typography>
           <TextField
-            size='small'
-            name='description'
+            size="small"
+            name="description"
             onChange={handleChange}
             value={formData.description}
-            placeholder='...'
+            placeholder="..."
             sx={{
               width: '100%',
             }}
@@ -260,8 +260,8 @@ function CreateProjectForm() {
               Leader
             </Typography>
             <TextField
-              size='small'
-              name='leaders'
+              size="small"
+              name="leaders"
               value={formData.leaders.name}
               onChange={(e) => {
                 handleChange(e);
@@ -277,7 +277,7 @@ function CreateProjectForm() {
           </Grid>
 
           <SuggestionList
-            type='leader'
+            type="leader"
             usersList={filteredLeaders}
             onClick={handleSuggestionClick}
           />
@@ -296,8 +296,8 @@ function CreateProjectForm() {
               Add members
             </Typography>
             <TextField
-              size='small'
-              name='members_id'
+              size="small"
+              name="members_id"
               value={member}
               onChange={(e) => {
                 setMember(e.target.value);
@@ -306,14 +306,14 @@ function CreateProjectForm() {
                   type: 'member',
                 });
               }}
-              placeholder='Search a member'
+              placeholder="Search a member"
               sx={{
                 width: '100%',
               }}
             />
           </Grid>
           <SuggestionList
-            type='member'
+            type="member"
             usersList={filteredMembers}
             onClick={handleSuggestionClick}
           />
@@ -350,7 +350,7 @@ function CreateProjectForm() {
           }}
         >
           <Button
-            title='Cancel'
+            title="Cancel"
             onClick={handleClose}
             sx={{
               textTransform: 'none',
@@ -368,7 +368,7 @@ function CreateProjectForm() {
             Cancel
           </Button>
           <Button
-            title='Save'
+            title="Save"
             onClick={handleSubmit}
             sx={{
               textTransform: 'none',

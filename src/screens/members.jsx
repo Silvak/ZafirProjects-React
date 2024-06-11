@@ -15,14 +15,14 @@ import useFormatText from '@/hooks/useFormatText';
 import CreateMember from '@/components/forms/CreateMemberForm';
 import ConfirmForm from '../components/forms/ConfirmForm';
 
-const columns = [
-  { id: 'photo', label: '' },
-  { id: 'name', label: 'Name' },
-  { id: 'project', label: 'Project' },
-  { id: 'rol', label: 'Rol' },
-  { id: 'leadOwner', label: 'Lead Owner' },
-  { id: 'action', label: '' },
-];
+// const columns = [
+//   { id: 'photo', label: '' },
+//   { id: 'name', label: 'Name' },
+//   { id: 'project', label: 'Project' },
+//   { id: 'rol', label: 'Rol' },
+//   { id: 'leadOwner', label: 'Lead Owner' },
+//   { id: 'action', label: '' },
+// ];
 
 const MembersTable = () => {
   const [selectedRows, setSelectedRows] = useState([]);
@@ -151,7 +151,7 @@ const MembersTable = () => {
             </span>
           </h6>
           <Button
-            variant='contained'
+            variant="contained"
             disableRipple
             onClick={() => handleButtonMore(filteredSearchData)}
             sx={{
@@ -174,13 +174,13 @@ const MembersTable = () => {
               marginInline: 'auto',
             }}
           >
-            <Table stickyHeader aria-label='sticky table'>
+            <Table stickyHeader aria-label="sticky table">
               <TableHeader
                 isMobile={isMobile}
                 selectedRows={selectedRows}
                 setSelectedRows={setSelectedRows}
                 membersData={allMemberData}
-                columns={columns}
+                // columns={columns}
                 searchTerm={searchTerm}
                 setSearchTerm={setSearchTerm}
                 filteredSearchData={filteredSearchData}
@@ -204,7 +204,7 @@ const MembersTable = () => {
                         handleDeleteClick={handleDeleteClick}
                         row={row}
                         isSelected={isSelected}
-                        columns={columns}
+                        // columns={columns}
                         setAllMemberData={setAllMemberData}
                         allMemberData={filteredSearchData}
                       />
