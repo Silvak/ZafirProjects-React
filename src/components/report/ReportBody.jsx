@@ -56,6 +56,8 @@ function ComponentBody() {
   useEffect(() => {
     const fetchProjectTasks = async () => {
       setLoading(true); // Inicia el estado de carga
+      setLoadingUsers(true);
+
       if (projectsData?.length > 0) {
         let tempArray = [];
         let taskCount = 0;
@@ -122,7 +124,10 @@ function ComponentBody() {
 
         setUserTasks(userTaskListSorted);
       }
-      setLoading(false); // Finaliza el estado de carga
+      setLoading(false);
+      setTimeout(() => {
+        setLoadingUsers(false);
+      }, 5000);
     };
 
     fetchProjectTasks();
@@ -130,7 +135,6 @@ function ComponentBody() {
 
   useEffect(() => {
     const getUserNames = async (userTaskListSorted) => {
-      setLoadingUsers(true);
       const promises = userTaskListSorted.map(async (user) => {
         try {
           const response = await axiosInstance.get(`/user/${user._id}`);
@@ -147,7 +151,6 @@ function ComponentBody() {
 
       const usersWithData = await Promise.all(promises);
       setUsersWithData(usersWithData); // Actualizar el estado con los usuarios y sus nombres
-      setLoadingUsers(false);
     };
 
     if (userTasks.length > 0) {

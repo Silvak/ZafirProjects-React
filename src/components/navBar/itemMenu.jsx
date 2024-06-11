@@ -112,6 +112,7 @@ function ItemMenu(props) {
 
   return (
     <List
+      key={crypto.randomUUID()}
       sx={{
         display: 'flex',
         flexDirection: 'column',
@@ -150,11 +151,16 @@ function ItemMenu(props) {
               <Collapse
                 key={`collapse-${crypto.randomUUID()}`}
                 in={openIndex === index && props.open}
-                timeout='auto'
+                timeout="auto"
                 unmountOnExit
               >
-                {element.submenu.map((link) => (
-                  <ItemNav to={link.url} title={link.title} sx={{ pl: 8 }} />
+                {element.submenu.map((link, key) => (
+                  <ItemNav
+                    key={link.url + key}
+                    to={link.url}
+                    title={link.title}
+                    sx={{ pl: 8 }}
+                  />
                 ))}
               </Collapse>
             </>
