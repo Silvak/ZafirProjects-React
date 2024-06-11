@@ -9,12 +9,21 @@ import Button from '@mui/material/Button';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import SearchIcon from '@mui/icons-material/Search';
 
+const columns = [
+  { id: 'photo', label: '' },
+  { id: 'name', label: 'Name' },
+  { id: 'project', label: 'Project' },
+  { id: 'rol', label: 'Rol' },
+  { id: 'leadOwner', label: 'Lead Owner' },
+  { id: 'action', label: '' },
+];
+
 const TableHeader = ({
   isMobile,
   selectedRows,
   setSelectedRows,
   membersData,
-  columns,
+  // columns,
   filteredSearchData,
   searchTerm,
   setSearchTerm,
