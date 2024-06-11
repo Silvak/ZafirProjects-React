@@ -1,4 +1,10 @@
+import TaskList from "../../screens/project/MyTaskView";
+
 const TrelloView = () => {
-  return <div>Trello</div>;
+  return (
+    <div>
+      <TaskList view="View Kanban" />
+    </div>
+  );
 };
 export default TrelloView;
