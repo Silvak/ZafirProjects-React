@@ -59,6 +59,7 @@ export const createTasksSlice = (set, get) => ({
   fetchTaskDetailsById: async (taskId, isSubtask) => {
     try {
       const { data } = await axiosInstance.get(`/tasksList/${taskId}`);
+
       set({ singleTask: data });
     } catch (error) {
       console.error('Error fetching task detail', error);
