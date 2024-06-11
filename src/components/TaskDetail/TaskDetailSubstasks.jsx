@@ -103,7 +103,7 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
         {/* Typogra */}
         <Typography
           variant="p"
-          color="primary"
+          color="#6B6E75"
           sx={{ cursor: titleTask.length > 48 ? 'default' : 'inherit' }}
         >
           <Tooltip

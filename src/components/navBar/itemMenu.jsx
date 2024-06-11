@@ -112,7 +112,6 @@ function ItemMenu(props) {
 
   return (
     <List
-      key={crypto.randomUUID()}
       sx={{
         display: 'flex',
         flexDirection: 'column',
@@ -124,9 +123,9 @@ function ItemMenu(props) {
       }}
     >
       {itemsActual?.map((element, index) => (
-        <>
+        <div key={crypto.randomUUID()}>
           {element.submenu.length > 0 ? (
-            <>
+            <div key={crypto.randomUUID()}>
               <ListItemButton
                 key={`list-item-buttom-${crypto.randomUUID()}`}
                 onClick={() => handleClick(index)}
@@ -163,7 +162,7 @@ function ItemMenu(props) {
                   />
                 ))}
               </Collapse>
-            </>
+            </div>
           ) : (
             <ItemNav
               key={`item-nav-${crypto.randomUUID()}`}
@@ -172,7 +171,7 @@ function ItemMenu(props) {
               icon={element.icon}
             />
           )}
-        </>
+        </div>
       ))}
     </List>
   );
