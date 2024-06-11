@@ -219,7 +219,9 @@ const TableRowComponent = ({
                       fontWeight: 'normal',
                     }}
                   >
-                    <strong>{column.label !== 'Name' && column.label} </strong>
+                    <p style={{ fontWeight: 700 }}>
+                      {column.label !== 'Name' && column.label}{' '}
+                    </p>
                     {column.label !== 'Name' && column.id !== 'action' ? (
                       <React.Fragment>
                         {column.id === 'photo' ? (
