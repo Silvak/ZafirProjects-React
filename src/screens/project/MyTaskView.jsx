@@ -17,6 +17,7 @@ const TaskList = ({ view }) => {
 
   const {
     userTasks,
+    myTasks,
     ChangeStateModal,
     ChangeContentModal,
     ChangeTitleModal,
@@ -32,18 +33,18 @@ const TaskList = ({ view }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await fetchTasksByUser(User.uid);
+      await fetchTasksById(selectedProject._id);
     };
     fetchData();
   }, []);
 
   useEffect(() => {
-    if (Array.isArray(userTasks)) {
-      setPendingTasks(userTasks.filter((task) => task.state === 'Pending'));
-      setCompletedTasks(userTasks.filter((task) => task.state === 'Completed'));
-      setWorkingTasks(userTasks.filter((task) => task.state === 'In Progress'));
+    if (Array.isArray(myTasks)) {
+      setPendingTasks(myTasks.filter((task) => task.state === 'Pending'));
+      setCompletedTasks(myTasks.filter((task) => task.state === 'Completed'));
+      setWorkingTasks(myTasks.filter((task) => task.state === 'In Progress'));
     }
-  }, [userTasks]);
+  }, [myTasks]);
 
   const handleButton = (buttonName) => {
     setView(buttonName);
