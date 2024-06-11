@@ -49,25 +49,23 @@ export default function UserProfileButton() {
   };
 
   return (
-    <span className="PROFILE">
-      <Tooltip title="Account settings">
+    <span className='PROFILE'>
+      <Tooltip title='Account settings'>
         <Box
           sx={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             backgroundColor: '#ffffff',
-            padding: 1,
+            padding: 2,
             borderRadius: 3.5,
-            paddingLeft: 2,
-            paddingRight: 2,
-            maxHeight: '52px',
+            maxHeight: '60px',
             minWidth: 'max-content',
             cursor: 'pointer',
           }}
-          id="fade-button"
+          id='fade-button'
           aria-controls={open ? 'fade-menu' : undefined}
-          aria-haspopup="true"
+          aria-haspopup='true'
           aria-expanded={open ? 'true' : undefined}
           onClick={handleOpenUserMenu}
         >
@@ -98,13 +96,13 @@ export default function UserProfileButton() {
 
           <Box sx={{ px: 2, display: 'flex', flexDirection: 'column' }}>
             <Typography
-              level="title-sm"
-              variant="h7"
+              level='title-sm'
+              variant='h7'
               color={theme.palette.text.fourth}
             >
               {User?.name}
             </Typography>
-            <Typography level="body-xs">{User?.rol}</Typography>
+            <Typography level='body-xs'>{User?.rol}</Typography>
           </Box>
           {open ? (
             <KeyboardArrowUpIcon sx={{ marginLeft: 2 }} />
@@ -116,7 +114,7 @@ export default function UserProfileButton() {
 
       <Menu
         anchorEl={anchorEl}
-        id="account-menu"
+        id='account-menu'
         open={open}
         onClose={handleClose}
         onClick={handleClose}
@@ -150,22 +148,22 @@ export default function UserProfileButton() {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem key="profile" onClick={handleClose}>
+        <MenuItem key='profile' onClick={handleClose}>
           <Avatar /> Profile
         </MenuItem>
-        <MenuItem key="account" onClick={handleClose}>
+        <MenuItem key='account' onClick={handleClose}>
           <Avatar /> My account
         </MenuItem>
         <Divider />
-        <MenuItem key="settings" onClick={handleClose}>
+        <MenuItem key='settings' onClick={handleClose}>
           <ListItemIcon>
-            <Settings fontSize="small" />
+            <Settings fontSize='small' />
           </ListItemIcon>
           Settings
         </MenuItem>
-        <MenuItem key="logout" onClick={handleLogout}>
+        <MenuItem key='logout' onClick={handleLogout}>
           <ListItemIcon>
-            <Logout fontSize="small" />
+            <Logout fontSize='small' />
           </ListItemIcon>
           Logout
         </MenuItem>

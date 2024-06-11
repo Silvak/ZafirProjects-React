@@ -57,11 +57,13 @@ const TaskHeader = ({ title, handleButton, handleAddTask }) => {
             backgroundColor: 'white',
           }}
         >
-          <Link to={`list`}>
+          <Link to={`list`} style={{ height: '100%' }}>
             <FormatListBulletedRoundedIcon
               sx={{
                 backgroundColor:
-                  selectedIcon === 'Format List' ? 'rgb(118, 98, 234)' : '',
+                  selectedIcon === 'Format List'
+                    ? 'rgb(118, 98, 234)'
+                    : 'transparent',
                 color: selectedIcon === 'Format List' ? 'white' : 'gray',
                 borderRadius: '8px',
                 padding: '4px',
@@ -72,7 +74,7 @@ const TaskHeader = ({ title, handleButton, handleAddTask }) => {
               onClick={() => handleIconButtonClick('Format List')}
             />
           </Link>
-          <Link to={`trello`}>
+          <Link to={`trello`} style={{ height: '100%' }}>
             <ViewKanbanOutlinedIcon
               sx={{
                 backgroundColor:
@@ -88,7 +90,7 @@ const TaskHeader = ({ title, handleButton, handleAddTask }) => {
               onClick={() => handleIconButtonClick('View Kanban')}
             />
           </Link>
-          <Link to={`gantt`}>
+          <Link to={`gantt`} style={{ height: '100%' }}>
             <CalendarTodayIcon
               sx={{
                 backgroundColor:
