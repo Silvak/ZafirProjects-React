@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Box,
   Typography,
@@ -8,38 +8,38 @@ import {
   createTheme,
   useMediaQuery,
   Tooltip,
-} from '@mui/material';
+} from "@mui/material";
 import {
   AttachFile as AttachFileIcon,
   Circle,
   MarkUnreadChatAltOutlined as MarkUnreadChatAltOutlinedIcon,
-} from '@mui/icons-material';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
+} from "@mui/icons-material";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 
-import { priorityColors, statusColors } from '@/utils/colors';
+import { priorityColors, statusColors } from "@/utils/colors";
 
 function MyTaskItems({ tasks }) {
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
   const formatDate = (dateString) => {
     const today = new Date();
     const date = new Date(dateString);
-    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    const options = { year: "numeric", month: "short", day: "numeric" };
 
     if (
       date.getDate() === today.getDate() &&
       date.getMonth() === today.getMonth() &&
       date.getFullYear() === today.getFullYear()
     ) {
-      return 'Today';
+      return "Today";
     } else {
-      return date.toLocaleDateString('en-US', options);
+      return date.toLocaleDateString("en-US", options);
     }
   };
 
   const handleClipIcon = () => {
-    console.log('toqueé el icono del clip');
+    console.log("toqueé el icono del clip");
   };
 
   const theme = createTheme();
@@ -48,386 +48,167 @@ function MyTaskItems({ tasks }) {
       <div>
         <Box
           sx={{
-            display: !isMobile ? 'flex' : 'inherit',
-            flexDirection: 'column',
-            padding: '0',
+            display: !isMobile ? "flex" : "inherit",
+            flexDirection: "column",
+            padding: "8px",
           }}
         >
-          {!isMobile ? (
-            tasks.map((task, index) => (
-              <Box
-                key={index}
-                elevation={0}
-                sx={{
-                  opacity: task.state === 'Completed' ? 0.5 : 1,
-                  borderRadius: '18px',
-                  width: '99%',
-                  marginLeft: 'auto',
-                  marginRight: 'auto',
-                  overflowY: 'auto',
-                }}
-              >
-                <Typography
-                  variant="h6"
-                  fontWeight="bold"
-                  noWrap
-                  style={{ fontSize: '14px', marginTop: '16px' }}
-                >
+          {tasks.map((task, index) => (
+            <Box
+              key={index}
+              elevation={0}
+              sx={{
+                opacity: task.state === "Completed" ? 1 : 1, // item opacity
+                borderRadius: "12px",
+                padding: "8px",
+                ":hover": { background: "#F6F7FA", cursor: "pointer" },
+              }}
+            >
+              <Typography variant="h6" fontWeight="bold" noWrap>
+                <span style={{ fontSize: "14px", color: "#1D1F24" }}>
                   {task.taskName}
-                </Typography>
-                <Box
-                  container
-                  alignItems="center"
-                  padding={2}
-                  sx={{ display: 'flex', justifyContent: 'space-between' }}
-                >
-                  <Box item sx={{ width: '80px' }}>
+                </span>
+              </Typography>
+              <Box
+                container
+                alignItems="center"
+                sx={{ display: "flex", justifyContent: "space-between" }}
+              >
+                {!isMobile && (
+                  <Box item sx={{ width: "80px" }}>
                     <Typography
                       variant="h6"
                       noWrap
-                      sx={{
-                        p: 0.2,
-                      }}
                       style={{
-                        fontSize: '12px',
-                        width: '80px',
-                        fontWeight: 'bold',
-                        paddingInline: '8px',
-                        borderRadius: '6px',
+                        fontSize: "12px",
+                        fontWeight: 600,
+                        padding: "2px 6px",
+                        height: "20px",
+                        borderRadius: "100px",
                         ...priorityColors[task.priority],
                       }}
                     >
                       <Circle
-                        sx={{ fontSize: '10px', marginRight: '2px' }}
+                        sx={{ fontSize: "10px", marginRight: "4px" }}
                       ></Circle>
                       {task.priority}
                     </Typography>
                   </Box>
+                )}
 
-                  <Box item>
-                    <div
-                      style={{
-                        display: 'flex',
-                        color: 'darkslategray',
-                        alignItems: 'center',
-                        // marginLeft: 50,
-                      }}
-                    >
-                      {/* <div style={{ display: 'flex' }}>
-                        <MarkUnreadChatAltOutlinedIcon
-                          sx={{ mr: '5px', color: 'gray' }}
-                        />
-                        <Typography
-                          variant="body1"
-                          noWrap
-                          style={{
-                            fontSize: '14px',
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          {'5'}
-                        </Typography>
-                      </div> */}
-
-                      <div style={{ display: 'flex' }}>
-                        <PeopleAltOutlinedIcon
-                          sx={{ mr: '5px', color: 'gray' }}
-                        />
-                        <Typography
-                          variant="body1"
-                          noWrap
-                          style={{
-                            fontSize: '14px',
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          {task?.members_id?.length}
-                        </Typography>
-                      </div>
-                      <div
-                        style={{
-                          display: 'flex',
-                          marginLeft: 30,
-                        }}
-                      >
-                        <AttachFileIcon
-                          style={{ cursor: 'pointer', color: 'gray' }}
-                          onClick={handleClipIcon}
-                        />
-                        <Typography
-                          variant="body1"
-                          noWrap
-                          style={{
-                            fontSize: '14px',
-                            fontWeight: 'bold',
-                            marginRight: '1rem',
-                          }}
-                        >
-                          {' '}
-                          {'1'}
-                        </Typography>
-                      </div>
-                    </div>
-                  </Box>
-                  <Box
-                    item
-                    sx={{
-                      mt: 0,
-                      // marginInline: 2,
-                      // minWidth: "max-content",
-                      width: '200px',
+                <Box item>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
                     }}
                   >
-                    <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        marginLeft: 80,
-                      }}
-                    >
-                      <CalendarTodayIcon
-                        style={{
-                          color: 'gray',
+                    <div style={{ display: "flex" }}>
+                      <PeopleAltOutlinedIcon
+                        sx={{
+                          mr: "5px",
+                          color: "#A3A5AB",
+                          fontSize: "18px",
                         }}
                       />
                       <Typography
                         variant="body1"
-                        color="textSecondary"
                         noWrap
-                        style={{ fontSize: '14px', fontWeight: 'bold' }}
+                        style={{
+                          fontSize: "12px",
+                          fontWeight: "bold",
+                        }}
                       >
-                        {formatDate(task.start)}
+                        {task?.members_id?.length}
                       </Typography>
                     </div>
-                  </Box>
-                  <Box
-                    item
-                    sx={{
-                      mt: 0,
-                      // marginInline: 5,
-                      width: '140px',
-                      display: 'flex',
-                      justifyContent: 'end',
-                      borderRadius: '6px', // *
-                    }}
-                  >
-                    <Typography
-                      variant="body1"
-                      color="textSecondary"
-                      noWrap
-                      sx={{
-                        width: '140px',
-                        fontWeight: 'bold',
-                        fontSize: '14px',
-                        borderRadius: '8px',
-                        padding: '4px 8px',
-                        textAlign: 'center',
-                        alignItems: 'center',
-                        ...statusColors[task.state],
-                      }}
-                    >
-                      {task.state}
-                    </Typography>
-                  </Box>
-                </Box>
-              </Box>
-            ))
-          ) : (
-            /////// MOBILE VIEW
-            <Box sx={{ minWidth: '208px' }}>
-              {tasks.map((task, index) => (
-                <Box
-                  item
-                  key={index}
-                  elevation={0}
-                  sx={{
-                    opacity: task.state === 'Completed' ? 0.5 : 1,
-                    overflowY: 'auto',
-                    borderBottom: '1px solid #E0E3E8',
-                    marginBottom: '5px',
-                    padding: 1,
-                    display: 'flex',
-                    flexDirection: 'column',
-                  }}
-                >
-                  <Typography
-                    variant="h6"
-                    fontWeight="bold"
-                    noWrap
-                    style={{ fontSize: '15px', marginTop: '16px' }}
-                  >
-                    {task.taskName}
-                  </Typography>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      marginTop: '10px',
-                      marginBottom: '20px',
-                    }}
-                  >
-                    <Typography
-                      variant="h6"
-                      noWrap
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        fontSize: '14px',
-                        width: '179px',
-                        fontWeight: 'bold',
-                        paddingInline: '8px',
-                        borderRadius: '6px',
-                        padding: '4px',
-                        ...priorityColors[task.priority],
-                      }}
-                    >
-                      <Circle
-                        sx={{ fontSize: '10px', marginRight: '4px' }}
-                      ></Circle>
-                      {task.priority}
-                      <Circle
-                        sx={{ fontSize: '10px', marginLeft: '4px' }}
-                      ></Circle>
-                    </Typography>
-                  </Box>
 
-                  <Box item>
-                    <div
-                      style={{
-                        display: 'flex',
-                        color: 'darkslategray',
-                        alignItems: 'center',
-                        marginLeft: 50,
-                      }}
-                    >
-                      <div style={{ display: 'flex' }}>
-                        <MarkUnreadChatAltOutlinedIcon
-                          sx={{ mr: '5px', color: 'gray' }}
-                        />
-                        <Typography
-                          variant="body1"
-                          noWrap
-                          style={{
-                            fontSize: '14px',
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          {'5'}
-                        </Typography>
-                      </div>
-
+                    {!isMobile && (
                       <div
                         style={{
-                          display: 'flex',
-                          marginLeft: 30,
+                          display: "flex",
+                          marginLeft: 10,
                         }}
                       >
                         <AttachFileIcon
-                          style={{ cursor: 'pointer', color: 'gray' }}
+                          style={{
+                            cursor: "pointer",
+                            color: "#A3A5AB",
+                            fontSize: "18px",
+                          }}
                           onClick={handleClipIcon}
                         />
                         <Typography
                           variant="body1"
                           noWrap
                           style={{
-                            fontSize: '14px',
-                            fontWeight: 'bold',
-                            marginRight: '1rem',
+                            fontSize: "12px",
+                            fontWeight: "bold",
+                            marginRight: "1rem",
                           }}
                         >
-                          {' '}
-                          {'1'}
+                          {"1"}
                         </Typography>
                       </div>
-                    </div>
-                  </Box>
-
-                  {/* Calendar and Status */}
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      marginTop: '10px',
-                    }}
-                  >
-                    <Box
-                      item
-                      sx={{
-                        mt: 0,
-                        marginInline: 2,
-                        minWidth: 'max-content',
-                        marginTop: '10px',
-                        marginBottom: '10px',
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <CalendarTodayIcon
-                          style={{
-                            color: 'gray',
-                          }}
-                        />
-                        <Typography
-                          variant="body1"
-                          color="textSecondary"
-                          noWrap
-                          style={{
-                            fontSize: '14px',
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          {formatDate(task.start)}
-                        </Typography>
-                      </div>
-                    </Box>
-                  </Box>
-
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      marginTop: '10px',
-                    }}
-                  >
-                    <Box
-                      item
-                      sx={{
-                        mt: 0,
-                        marginInline: 2,
-                        minWidth: 'min-content',
-                        width: '100%',
-                        display: 'flex',
-                        justifyContent: 'center',
-                      }}
-                    >
-                      <Typography
-                        variant="body1"
-                        color="textSecondary"
-                        noWrap
-                        sx={{
-                          fontWeight: 'bold',
-                          fontSize: '14px',
-                          borderRadius: '8px',
-                          padding: '4px 8px',
-                          textAlign: 'center',
-                          alignItems: 'center',
-                          ...statusColors[task.state],
-                          width: '100%',
-                        }}
-                      >
-                        {task.state}
-                      </Typography>
-                    </Box>
-                  </Box>
+                    )}
+                  </div>
                 </Box>
-              ))}
+
+                <Box
+                  item
+                  sx={{
+                    mt: 0,
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <CalendarTodayIcon
+                      style={{
+                        color: "#A3A5AB",
+                        fontSize: "18px",
+                      }}
+                    />
+                    <Typography
+                      variant="body1"
+                      color="textSecondary"
+                      noWrap
+                      style={{
+                        fontSize: "12px",
+                        fontWeight: 400,
+                        marginTop: "2px",
+                        marginLeft: "10px",
+                      }}
+                    >
+                      {formatDate(task.start)}
+                    </Typography>
+                  </div>
+                </Box>
+
+                <Box item>
+                  <Typography
+                    variant="body1"
+                    color="textSecondary"
+                    noWrap
+                    sx={{
+                      fontWeight: 600,
+                      fontSize: "12px",
+                      borderRadius: "8px",
+                      padding: "4px 8px",
+                      textAlign: "center",
+                      alignItems: "center",
+                      ...statusColors[task.state],
+                    }}
+                  >
+                    {task.state}
+                  </Typography>
+                </Box>
+              </Box>
             </Box>
-          )}
+          ))}
         </Box>
       </div>
     </ThemeProvider>
@@ -435,3 +216,22 @@ function MyTaskItems({ tasks }) {
 }
 
 export default MyTaskItems;
+
+/* 
+//messa
+div style={{ display: "flex" }}>
+ <MarkUnreadChatAltOutlinedIcon
+   sx={{ mr: "5px", color: "gray" }}
+ />
+ <Typography
+   variant="body1"
+   noWrap
+   style={{
+     fontSize: "14px",
+     fontWeight: "bold",
+   }}
+ >
+   {"5"}
+ </Typography>
+/div> 
+*/

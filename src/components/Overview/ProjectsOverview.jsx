@@ -1,4 +1,4 @@
-import EastIcon from '@mui/icons-material/East';
+import EastIcon from "@mui/icons-material/East";
 import {
   Box,
   Grid,
@@ -7,11 +7,11 @@ import {
   TableRow,
   ThemeProvider,
   Typography,
-} from '@mui/material';
-import { NavLink } from 'react-router-dom';
-import ProjectItemsOverview from './ProjectItemsOverview';
-import { useProjectsOverview } from '@/hooks/useProjectsOverview';
-import EditProjectForm from '@/components/forms/EditProjectForm';
+} from "@mui/material";
+import { NavLink } from "react-router-dom";
+import ProjectItemsOverview from "./ProjectItemsOverview";
+import { useProjectsOverview } from "@/hooks/useProjectsOverview";
+import EditProjectForm from "@/components/forms/EditProjectForm";
 
 function ProjectsOverview() {
   const { projectsData, handleEdit, handleDelete, isMobile, theme } =
@@ -21,25 +21,31 @@ function ProjectsOverview() {
     <ThemeProvider theme={theme}>
       <Box
         sx={{
-          backgroundColor: '#ffffff',
-          width: '100%',
-          height: '100%',
-          borderRadius: '20px',
-          padding: '20px 0px',
-          maxHeight: '572px',
-          overflow: 'hidden',
+          backgroundColor: "#ffffff",
+          width: "100%",
+          height: "100%",
+          borderRadius: "20px",
+          padding: "20px 0px",
+          maxHeight: "572px",
+          overflow: "hidden",
         }}
       >
         <Grid
           sx={{
-            display: isMobile ? 'flex' : 'flex',
-            justifyContent: 'space-between',
-            padding: '0px 20px 20px 20px',
+            display: isMobile ? "flex" : "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            padding: "0px 20px 20px 20px",
           }}
         >
           <Grid item>
             <Typography
-              sx={{ fontSize: '20px', fontWeight: 500, fontFamily: 'Poppins' }}
+              sx={{
+                fontSize: "20px",
+                fontWeight: 600,
+                color: "#1D1F24",
+                paddingLeft: "8px",
+              }}
             >
               Projects
             </Typography>
@@ -47,52 +53,53 @@ function ProjectsOverview() {
 
           <Grid item>
             <NavLink
-              to='/projects'
+              to="/projects"
               style={{
-                textDecoration: 'none',
-                display: 'flex',
-                alignItems: 'center',
+                textDecoration: "none",
+                display: "flex",
+                alignItems: "center",
                 fontWeight: 600,
-                color: '#7662EA',
+                color: "#7662EA",
+                fontSize: "13px",
               }}
             >
               View all
-              <EastIcon xs sx={{ marginLeft: '6px' }} />
+              <EastIcon xs sx={{ marginLeft: "6px", fontSize: "16px" }} />
             </NavLink>
           </Grid>
         </Grid>
 
         <Table
           sx={{
-            background: '#FFFFFF',
-            display: 'block',
-            padding: '0px 20px',
-            borderBottom: 'none',
-            width: '100%',
-            overflowX: 'hidden',
-            height: '482px',
+            background: "#FFFFFF",
+            display: "block",
+            padding: "0px 20px",
+            borderBottom: "none",
+            width: "100%",
+            overflowX: "hidden",
+            height: "482px",
           }}
         >
-          <TableBody sx={{ display: 'grid' }}>
+          <TableBody sx={{ display: "grid" }}>
             <TableRow
               sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                overflowX: 'auto',
-                borderBottom: 'none',
-                '&>*': {
-                  borderBottom: 'none',
-                  width: '100%',
+                display: "flex",
+                flexDirection: "column",
+                overflowX: "auto",
+                borderBottom: "none",
+                "&>*": {
+                  borderBottom: "none",
+                  width: "100%",
                 },
-                gap: '20px',
+                gap: "20px",
               }}
             >
               {projectsData.length === 0 ? (
                 <strong
                   style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    width: '100%',
+                    display: "flex",
+                    justifyContent: "center",
+                    width: "100%",
                   }}
                 >
                   No Projects
