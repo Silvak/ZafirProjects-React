@@ -2,7 +2,7 @@ export const statusColors = {
   'In Progress': { backgroundColor: '#BED8F5', color: '#2676CF' },
   Issues: { backgroundColor: '#F8D1CB', color: '#D3544B' },
   Review: { backgroundColor: '#F6E5C6', color: '#E19E41' },
-  Completed: { backgroundColor: '#00fc6d', color: '#00913f' },
+  Completed: { backgroundColor: '#E5F3DD', color: '#429482' },
   Pending: { backgroundColor: '#E0E5E9', color: '#7E838A' },
   // Backlog: { backgroundColor: "#F0E1F1", color: "#8E44AD" },
   Working: { backgroundColor: '#E8F4E6', color: '#4C7C4A' },
