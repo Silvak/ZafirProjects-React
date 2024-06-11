@@ -22,7 +22,10 @@ const filtersData = [
 ];
 
 function MyTask() {
-  const { myTasks, selectedProject } = useBoundStore((state) => state, shallow);
+  const { myTasks, selectedProject, User, fetchTasksById } = useBoundStore(
+    (state) => state,
+    shallow
+  );
   const theme = createTheme();
   const [filterOption, setFilterOption] = useState('All');
 
@@ -32,18 +35,19 @@ function MyTask() {
     setFilterOption(event.target.value);
   };
 
-  // useEffect(() => {
-  //   if (selectedProject) {
-  //     const fetchData = async () => {
-  //       try {
-  //         await fetchTasksById(selectedProject._id);
-  //       } catch (error) {
-  //         console.error('Error fetching tasks', error);
-  //       }
-  //     };
-  //     fetchData();
-  //   }
-  // }, [selectedProject, fetchTasksById]);
+  useEffect(() => {
+    if (User) {
+      const fetchData = async () => {
+        try {
+          await fetchTasksById(selectedProject._id);
+          // await fetchTasksByUser(User.uid);
+        } catch (error) {
+          console.error('Error fetching tasks', error);
+        }
+      };
+      fetchData();
+    }
+  }, []);
 
   const filteredTasks = Array.isArray(myTasks)
     ? myTasks.filter((task) => {
