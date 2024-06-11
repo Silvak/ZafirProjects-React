@@ -1,17 +1,13 @@
-import * as React from 'react';
-import { useEffect } from 'react';
-import { Grid, CardMedia, CircularProgress, Toolbar } from '@mui/material';
-import { Route, Routes } from 'react-router-dom';
-import Navbar from '@/components/navBar/navBar';
-import NavbarDrawer from '@/components/navBar/navBarDrawer';
 import AlertGlobal from '@/components/alert/alert';
 import AlertGlobalError from '@/components/alert/alertError';
 import ModalGlobal from '@/components/modal/modal';
-import { storeUser } from '@/stores/user/storeUser';
+import NavbarDrawer from '@/components/navBar/navBarDrawer';
 import { useBoundStore } from '@/stores/index';
+import { CardMedia, CircularProgress, Grid } from '@mui/material';
+import * as React from 'react';
+import { useEffect } from 'react';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { shallow } from 'zustand/shallow';
-
-import { useNavigate } from 'react-router-dom';
 
 const Home = React.lazy(() => import('@/screens/home'));
 const NotFoundPage = React.lazy(() => import('@/screens/notFoundPage'));
@@ -34,18 +30,27 @@ const GanttView = React.lazy(() => import('@/components/TasksViews/GanttView'));
 
 export default function Navigator() {
   const { Authenticated } = useBoundStore((state: any) => state, shallow);
-  // const { Authenticated } = storeUser();
-  const navigate = useNavigate();
 
   let Logo = '';
 
-  // useEffect(() => {
-  //   if (!Authenticated) {
-  //     navigate('/sign-in');
-  //   } else {
-  //     navigate('/');
-  //   }
-  // }, [Authenticated]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Verificar si esta es la primera vez que se carga la aplicación
+    const firstVisit = sessionStorage.getItem('firstVisit');
+
+    if (!firstVisit && Authenticated) {
+      // Si es la primera vez, redirigir a la raíz y marcar que es la primera vez
+      sessionStorage.setItem('firstVisit', 'true');
+      navigate('/');
+    } else if (firstVisit && !Authenticated) {
+      sessionStorage.removeItem('firstVisit');
+      navigate('/sign-in');
+    } else if (!firstVisit && !Authenticated) {
+      sessionStorage.removeItem('firstVisit');
+      navigate('/sign-in');
+    }
+  }, [Authenticated]);
 
   return (
     <React.Suspense
