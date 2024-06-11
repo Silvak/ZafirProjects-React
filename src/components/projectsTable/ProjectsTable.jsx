@@ -26,6 +26,7 @@ const ProjectsTable = () => {
         borderRadius: '20px',
         display: 'block',
         padding: '20px',
+        width: '100%',
       }}
     >
       <ProjectsTableHeader totalProjects={totalProjects} />

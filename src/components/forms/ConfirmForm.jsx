@@ -18,7 +18,9 @@ function ConfirmForm({
         >
           Are you sure you want to delete to{' '}
           <strong style={{ color: 'black', width: 'max-content' }}>
-            {itemToDelete._id.name || itemToDelete.taskName}
+            {itemToDelete._id.name ||
+              itemToDelete.taskName ||
+              itemToDelete.name}
           </strong>{' '}
           ?
         </Typography>
