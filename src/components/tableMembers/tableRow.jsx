@@ -19,12 +19,21 @@ import useFormatText from '@/hooks/useFormatText';
 import EditMember from '@/components/forms/EditMemberForm';
 import './styles.css';
 
+const columns = [
+  { id: 'photo', label: '' },
+  { id: 'name', label: 'Name' },
+  { id: 'project', label: 'Project' },
+  { id: 'rol', label: 'Rol' },
+  { id: 'leadOwner', label: 'Lead Owner' },
+  { id: 'action', label: '' },
+];
+
 const TableRowComponent = ({
   isMobile,
   handleDeleteClick,
   row,
   isSelected,
-  columns,
+  // columns,
   setAllMemberData,
   allMemberData,
 }) => {

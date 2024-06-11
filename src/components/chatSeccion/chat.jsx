@@ -58,10 +58,10 @@ const ChatMessage = () => {
   };
 
   const handleClip = () => {
-    alert('presioné el icono de clip');
+    console.log('presioné el icono de clip');
   };
   const handleEmoji = () => {
-    alert('presioné el icono de emoji');
+    console.log('presioné el icono de emoji');
   };
 
   return (
@@ -81,77 +81,81 @@ const ChatMessage = () => {
           boxShadow: 'none',
         }}
       >
-        {mockConversation.map((msg, index) => (
-          <Box
-            key={index}
-            display="grid"
-            gridTemplateColumns="1fr 11fr"
-            alignItems="center"
-            mb={2}
-          >
-            <Box>
-              {msg.sender !== 'You' && (
-                <Avatar
-                  alt={msg.sender}
-                  src={msg.pic}
-                  sx={{ ml: 3, mb: '90%' }}
-                />
-              )}
-            </Box>
-            <Box>
-              <Typography
-                sx={{
-                  fontWeight: 'bold',
-                  marginLeft: msg.sender !== 'You' ? '0.8rem' : '95%',
-                  marginBottom: '-0.5rem',
-                }}
-              >
-                {msg.sender}
-              </Typography>
-              <div>
-                {msg.message.map((dialog, dialogIndex) => (
-                  <Paper
-                    key={dialogIndex}
-                    variant="body1"
-                    sx={{
-                      border: '1px solid lightgray',
-                      padding: 1,
-                      borderRadius: 2,
-                      borderBottomRightRadius: msg.sender === 'You' ? 0 : '',
-                      borderTopLeftRadius: msg.sender !== 'You' ? 0 : '',
-                      marginBlock: 1,
-                      backgroundColor:
-                        msg.sender === 'You' ? '#7662EA' : 'white',
-                      color: msg.sender === 'You' ? 'white' : 'black',
-                      marginLeft:
-                        msg.sender === 'You'
-                          ? 'auto'
-                          : !msg.pic
-                          ? '3.5rem'
-                          : '8px',
-                      maxWidth: 'fit-content',
-                    }}
-                  >
-                    {dialog}
-                  </Paper>
-                ))}
+        {mockConversation &&
+          mockConversation.map((msg, index) => (
+            <Box
+              key={index}
+              display="grid"
+              gridTemplateColumns="1fr 11fr"
+              alignItems="center"
+              mb={2}
+            >
+              <Box>
+                {msg.sender !== 'You' && (
+                  <Avatar
+                    alt={msg.sender}
+                    src={msg.pic}
+                    sx={{ ml: 3, mb: '90%' }}
+                  />
+                )}
+              </Box>
+              <Box>
                 <Typography
-                  variant="span"
-                  color="textSecondary"
                   sx={{
-                    marginTop: '0.5rem',
-                    display: 'block',
-                    width: 'max-content',
-                    marginLeft: msg.sender !== 'You' ? '0.8rem' : 'auto',
-                    color: 'gray',
+                    fontWeight: 'bold',
+                    marginLeft: msg.sender !== 'You' ? '0.8rem' : '95%',
+                    marginBottom: '-0.5rem',
                   }}
                 >
-                  {formatTimestamp(msg.timestamp)}
+                  {msg.sender}
                 </Typography>
-              </div>
+                <div>
+                  {msg &&
+                    msg.message &&
+                    msg.message.map((dialog, dialogIndex) => (
+                      <Paper
+                        key={dialogIndex}
+                        variant="body1"
+                        sx={{
+                          border: '1px solid lightgray',
+                          padding: 1,
+                          borderRadius: 2,
+                          borderBottomRightRadius:
+                            msg.sender === 'You' ? 0 : '',
+                          borderTopLeftRadius: msg.sender !== 'You' ? 0 : '',
+                          marginBlock: 1,
+                          backgroundColor:
+                            msg.sender === 'You' ? '#7662EA' : 'white',
+                          color: msg.sender === 'You' ? 'white' : 'black',
+                          marginLeft:
+                            msg.sender === 'You'
+                              ? 'auto'
+                              : !msg.pic
+                              ? '3.5rem'
+                              : '8px',
+                          maxWidth: 'fit-content',
+                        }}
+                      >
+                        {dialog}
+                      </Paper>
+                    ))}
+                  <Typography
+                    variant="span"
+                    color="textSecondary"
+                    sx={{
+                      marginTop: '0.5rem',
+                      display: 'block',
+                      width: 'max-content',
+                      marginLeft: msg.sender !== 'You' ? '0.8rem' : 'auto',
+                      color: 'gray',
+                    }}
+                  >
+                    {formatTimestamp(msg.timestamp)}
+                  </Typography>
+                </div>
+              </Box>
             </Box>
-          </Box>
-        ))}
+          ))}
 
         <Box display="flex" alignItems="center" mt={2} p={1}>
           <OutlinedInput
