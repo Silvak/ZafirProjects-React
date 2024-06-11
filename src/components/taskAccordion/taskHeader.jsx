@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   CalendarToday as CalendarTodayIcon,
   FormatListBulletedRounded as FormatListBulletedRoundedIcon,
   ViewKanbanOutlined as ViewKanbanOutlinedIcon,
-} from "@mui/icons-material";
+} from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -15,22 +15,23 @@ import {
   Typography,
   createTheme,
   useMediaQuery,
-} from "@mui/material";
-import Header from "@/components/Header/Header";
-import FilterSelect from "@/components/Selects/FilterSelect";
+} from '@mui/material';
+import Header from '@/components/Header/Header';
+import FilterSelect from '@/components/Selects/FilterSelect';
+import { Link } from 'react-router-dom';
 
 const filtersData = [
-  { id: 1, label: "All Tasks", value: "All Tasks" },
-  { id: 2, label: "In Progress", value: "In Progress" },
-  { id: 3, label: "Pending", value: "Pending" },
-  { id: 4, label: "Completed", value: "Completed" },
+  { id: 1, label: 'All Tasks', value: 'All Tasks' },
+  { id: 2, label: 'In Progress', value: 'In Progress' },
+  { id: 3, label: 'Pending', value: 'Pending' },
+  { id: 4, label: 'Completed', value: 'Completed' },
 ];
 
 const TaskHeader = ({ title, handleButton, handleAddTask }) => {
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const theme = createTheme();
-  const [selectedValue, setSelectedValue] = useState("All Tasks");
-  const [selectedIcon, setSelectedIcon] = useState("Format List");
+  const [selectedValue, setSelectedValue] = useState('All Tasks');
+  const [selectedIcon, setSelectedIcon] = useState('Format List');
 
   const handleSelectChange = (event) => {
     setSelectedValue(event.target.value);
@@ -45,66 +46,72 @@ const TaskHeader = ({ title, handleButton, handleAddTask }) => {
     <ThemeProvider theme={theme}>
       <Header title={title}>
         <ButtonGroup
-          variant="outlined"
-          aria-label="Loading button group"
+          variant='outlined'
+          aria-label='Loading button group'
           sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-around",
-            fontWeight: "normal",
-            borderRadius: "10px",
-            backgroundColor: "white",
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-around',
+            fontWeight: 'normal',
+            borderRadius: '10px',
+            backgroundColor: 'white',
           }}
         >
-          <FormatListBulletedRoundedIcon
-            sx={{
-              backgroundColor:
-                selectedIcon === "Format List" ? "rgb(118, 98, 234)" : "",
-              color: selectedIcon === "Format List" ? "white" : "gray",
-              borderRadius: "8px",
-              padding: "4px",
-              cursor: "pointer",
-              height: "30px",
-              width: "30px",
-            }}
-            onClick={() => handleIconButtonClick("Format List")}
-          />
-          <ViewKanbanOutlinedIcon
-            sx={{
-              backgroundColor:
-                selectedIcon === "View Kanban" ? "rgb(118, 98, 234)" : "",
-              color: selectedIcon === "View Kanban" ? "white" : "gray",
-              borderRadius: "8px",
-              padding: "4px",
-              display: isMobile ? "none" : "",
-              cursor: "pointer",
-              height: "30px",
-              width: "30px",
-            }}
-            onClick={() => handleIconButtonClick("View Kanban")}
-          />
-          <CalendarTodayIcon
-            sx={{
-              backgroundColor:
-                selectedIcon === "Calendar" ? "rgb(118, 98, 234)" : "",
-              color: selectedIcon === "Calendar" ? "white" : "gray",
-              borderRadius: "8px",
-              padding: "4px",
-              height: "30px",
-              cursor: "pointer",
-              width: "30px",
-            }}
-            onClick={() => handleIconButtonClick("Calendar")}
-          />
+          <Link to={`list`}>
+            <FormatListBulletedRoundedIcon
+              sx={{
+                backgroundColor:
+                  selectedIcon === 'Format List' ? 'rgb(118, 98, 234)' : '',
+                color: selectedIcon === 'Format List' ? 'white' : 'gray',
+                borderRadius: '8px',
+                padding: '4px',
+                cursor: 'pointer',
+                height: '30px',
+                width: '30px',
+              }}
+              onClick={() => handleIconButtonClick('Format List')}
+            />
+          </Link>
+          <Link to={`trello`}>
+            <ViewKanbanOutlinedIcon
+              sx={{
+                backgroundColor:
+                  selectedIcon === 'View Kanban' ? 'rgb(118, 98, 234)' : '',
+                color: selectedIcon === 'View Kanban' ? 'white' : 'gray',
+                borderRadius: '8px',
+                padding: '4px',
+                display: isMobile ? 'none' : '',
+                cursor: 'pointer',
+                height: '30px',
+                width: '30px',
+              }}
+              onClick={() => handleIconButtonClick('View Kanban')}
+            />
+          </Link>
+          <Link to={`gantt`}>
+            <CalendarTodayIcon
+              sx={{
+                backgroundColor:
+                  selectedIcon === 'Calendar' ? 'rgb(118, 98, 234)' : '',
+                color: selectedIcon === 'Calendar' ? 'white' : 'gray',
+                borderRadius: '8px',
+                padding: '4px',
+                height: '30px',
+                cursor: 'pointer',
+                width: '30px',
+              }}
+              onClick={() => handleIconButtonClick('Calendar')}
+            />
+          </Link>
         </ButtonGroup>
         {/* <FilterSelect data={filtersData} padding="10px" /> */}
         <Button
-          variant="contained"
+          variant='contained'
           sx={{
-            fontSize: "12px",
-            fontWeight: "bold",
-            borderRadius: "12px",
-            background: "rgb(118, 98, 234)",
+            fontSize: '12px',
+            fontWeight: 'bold',
+            borderRadius: '12px',
+            background: 'rgb(118, 98, 234)',
           }}
           onClick={handleAddTask}
         >

@@ -31,21 +31,12 @@ function initializeItems(selectedProject) {
       submenu: [
         {
           title: 'My project',
-          url: `/project/${selectedProject?._id}`,
-        },
-        {
-          title: 'Project Tasks',
           url: `/project/${selectedProject?._id}/tasks`,
         },
         {
           title: 'members',
           url: '/members',
           icon: <BiGroup />,
-          submenu: [],
-        },
-        {
-          title: 'gantt',
-          url: `/project/${selectedProject?._id}/gantt`,
           submenu: [],
         },
       ],

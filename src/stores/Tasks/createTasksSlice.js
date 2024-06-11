@@ -2,6 +2,7 @@ import { axiosInstance } from '../../config/apiConfig';
 
 export const createTasksSlice = (set, get) => ({
   tasks: [],
+  userTasks: [],
   singleTask: null,
 
   addTask: async (taskData, projectId) => {
@@ -76,5 +77,16 @@ export const createTasksSlice = (set, get) => ({
     // } catch (error) {
     //   console.error('Error fetching task detail', error);
     // }
+  },
+  fetchTasksByUser: async (userId) => {
+    try {
+      const { data } = await axiosInstance.get(`/tasksList/user/${userId}`);
+      if (data) {
+        set({ userTasks: data });
+      }
+      return data;
+    } catch (error) {
+      console.error('Error fetching tasks', error);
+    }
   },
 });

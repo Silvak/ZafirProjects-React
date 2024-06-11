@@ -22,7 +22,6 @@ function ProjectsOverview() {
       <Box
         sx={{
           backgroundColor: '#ffffff',
-          height: 'auto',
           width: '100%',
           height: '100%',
           borderRadius: '20px',
@@ -48,7 +47,7 @@ function ProjectsOverview() {
 
           <Grid item>
             <NavLink
-              to="/projects"
+              to='/projects'
               style={{
                 textDecoration: 'none',
                 display: 'flex',
@@ -105,7 +104,7 @@ function ProjectsOverview() {
                     handleEdit={() =>
                       handleEdit(<EditProjectForm project={project} />)
                     }
-                    {...project}
+                    project={project}
                     key={project._id}
                   />
                 ))
