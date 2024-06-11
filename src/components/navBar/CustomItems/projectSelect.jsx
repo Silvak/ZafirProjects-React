@@ -85,7 +85,7 @@ function ProjectSelect(props) {
               sx={{ m: 0, p: 0 }}
             >
               <ItemNav
-                to={`/project/${submenuItem._id}`}
+                to={`/project/${submenuItem._id}/tasks`}
                 title={submenuItem.name.slice(0, 20) + '...'}
                 //icon={submenuItem.icon}
               />
