@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import {
   Typography,
   Grid,
@@ -7,16 +7,16 @@ import {
   createTheme,
   useMediaQuery,
   Tooltip,
-} from '@mui/material';
-import { useBoundStore } from '../../stores/index';
-import { shallow } from 'zustand/shallow';
-import { isInThisWeek, isInThisMonth, isToday } from '../../hooks/useDates';
+} from "@mui/material";
+import { useBoundStore } from "../../stores/index";
+import { shallow } from "zustand/shallow";
+import { isInThisWeek, isInThisMonth, isToday } from "../../hooks/useDates";
 
 const filtersData = [
-  { id: 1, label: 'All', value: 'All' },
-  { id: 2, label: 'This month', value: 'This Month' },
-  { id: 3, label: 'This week', value: 'This Week' },
-  { id: 4, label: 'Today', value: 'Today' },
+  { id: 1, label: "All", value: "All" },
+  { id: 2, label: "This month", value: "This Month" },
+  { id: 3, label: "This week", value: "This Week" },
+  { id: 4, label: "Today", value: "Today" },
 ];
 
 function MyWorkGlance() {
@@ -29,8 +29,8 @@ function MyWorkGlance() {
     User,
     userTasks,
   } = useBoundStore((state) => state, shallow);
-  const [filterOption, setFilterOption] = useState('All');
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+  const [filterOption, setFilterOption] = useState("All");
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
   const handleFilter = (event) => {
     setFilterOption(event.target.value);
@@ -42,7 +42,7 @@ function MyWorkGlance() {
         try {
           await fetchTasksByUser(User.uid);
         } catch (error) {
-          console.error('Error fetching tasks', error);
+          console.error("Error fetching tasks", error);
         }
       };
       fetchData();
@@ -53,13 +53,13 @@ function MyWorkGlance() {
     ? myTasks.filter((task) => {
         const taskDate = new Date(task.start);
         switch (filterOption) {
-          case 'This Week':
+          case "This Week":
             return isInThisWeek(taskDate);
-          case 'This Month':
+          case "This Month":
             return isInThisMonth(taskDate);
-          case 'Today':
+          case "Today":
             return isToday(taskDate);
-          case 'All':
+          case "All":
           default:
             return true;
         }
@@ -67,45 +67,45 @@ function MyWorkGlance() {
     : [];
 
   const inProgressTasks = filteredTasks.filter(
-    (task) => task.state === 'In Progress'
+    (task) => task.state === "In Progress"
   );
-  const pendingTasks = filteredTasks.filter((task) => task.state === 'Pending');
-  const issuesTasks = filteredTasks.filter((task) => task.state === 'Issues');
-  const reviewTasks = filteredTasks.filter((task) => task.state === 'Review');
+  const pendingTasks = filteredTasks.filter((task) => task.state === "Pending");
+  const issuesTasks = filteredTasks.filter((task) => task.state === "Issues");
+  const reviewTasks = filteredTasks.filter((task) => task.state === "Review");
   const completedTasks = filteredTasks.filter(
-    (task) => task.state === 'Completed'
+    (task) => task.state === "Completed"
   );
 
   const renderData = {
     progress: {
       inProgressTasks,
-      title: 'In Progress',
+      title: "In Progress",
       total: inProgressTasks.length,
-      color: '#459CED',
+      color: "#459CED",
     },
     pending: {
       pendingTasks,
-      title: 'Pending',
+      title: "Pending",
       total: pendingTasks.length,
-      color: '#6B6E75',
+      color: "#6B6E75",
     },
     issues: {
       issuesTasks,
-      title: 'Issues',
+      title: "Issues",
       total: issuesTasks.length,
-      color: '#EBA741',
+      color: "#EBA741",
     },
     review: {
       reviewTasks,
-      title: 'Review',
+      title: "Review",
       total: reviewTasks.length,
-      color: '#E55D57',
+      color: "#E55D57",
     },
     completed: {
       completedTasks,
-      title: 'Completed',
+      title: "Completed",
       total: completedTasks.length,
-      color: '#429482',
+      color: "#429482",
     },
   };
 
@@ -113,29 +113,29 @@ function MyWorkGlance() {
     <ThemeProvider theme={theme}>
       <Box
         sx={{
-          backgroundColor: '#ffffff',
-          borderRadius: '20px',
-          padding: '20px',
-          overflowX: 'auto',
-          minHeight: '180px',
+          backgroundColor: "#ffffff",
+          borderRadius: "20px",
+          padding: "20px",
+          overflowX: "auto",
+          minHeight: "180px",
         }}
       >
         <Grid
           item
           sx={{
-            display: isMobile ? 'inline-table' : 'flex',
-            marginBottom: '20px',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            overflowX: 'hidden',
+            display: isMobile ? "inline-table" : "flex",
+            marginBottom: "20px",
+            alignItems: "center",
+            justifyContent: "space-between",
+            overflowX: "hidden",
           }}
         >
           <Typography
             sx={{
-              fontSize: '20px',
-              fontWeight: '500',
-              fontFamily: 'Poppins',
-              color: 'black',
+              fontSize: "20px",
+              fontWeight: 600,
+              fontFamily: "Poppins",
+              color: "black",
             }}
           >
             My Work Glance
@@ -147,12 +147,12 @@ function MyWorkGlance() {
                 onChange={handleFilter}
                 style={{
                   // border: 'none',
-                  background: 'white',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  padding: '8px 16px',
-                  height: '40px',
-                  border: '1px solid #E0E3E8',
+                  background: "white",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  padding: "8px 16px",
+                  height: "40px",
+                  border: "1px solid #E0E3E8",
                 }}
               >
                 {filtersData.map((filter) => (
@@ -166,9 +166,9 @@ function MyWorkGlance() {
         </Grid>
         <Box
           sx={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-            gap: '20px',
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+            gap: "20px",
           }}
         >
           <InfoCard data={renderData.progress} />
@@ -187,39 +187,39 @@ function InfoCard({ data }) {
     <Grid
       item
       sx={{
-        border: '1px solid #E0E3E8',
-        borderRadius: '12px',
-        padding: '10px',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'flex-start',
-        height: '91px',
+        border: "1px solid #E0E3E8",
+        borderRadius: "12px",
+        padding: "10px",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "flex-start",
+        height: "91px",
       }}
     >
-      <div style={{ display: 'flex', marginLeft: '16px' }}>
+      <div style={{ display: "flex", marginLeft: "16px" }}>
         <div
           style={{
-            borderRadius: '4px',
-            width: '8px',
-            height: '33px',
+            borderRadius: "4px",
+            width: "8px",
+            height: "33px",
             backgroundColor: data.color,
-            marginBottom: '5px',
+            marginBottom: "5px",
           }}
         />
         <Typography
           variant="h5"
           sx={{
             marginLeft: 1.5,
-            marginBottom: '5px',
-            fontWeight: 'bold',
-            color: 'black',
+            marginBottom: "5px",
+            fontWeight: "bold",
+            color: "black",
           }}
         >
           {data.total}
         </Typography>
       </div>
-      <Typography sx={{ marginLeft: '38px' }}>{data.title}</Typography>
+      <Typography sx={{ marginLeft: "38px" }}>{data.title}</Typography>
     </Grid>
   );
 }
