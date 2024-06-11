@@ -64,6 +64,7 @@ const TaskDetailContent = ({
     ChangeStateAlertError,
     ChangeTitleAlertError,
     ChangeStateModal,
+    fetchTasksById,
   } = useBoundStore((state) => state, shallow);
 
   useEffect(() => {
@@ -123,7 +124,7 @@ const TaskDetailContent = ({
             taskId: task._id,
             newData: newValues,
             projectId: projectId,
-            userId: User.uid,
+            // userId: User.uid,
           });
         } else {
           const updatedSubtasks = await updateSubtask({
@@ -134,6 +135,7 @@ const TaskDetailContent = ({
           });
           setFilterSubtask(updatedSubtasks);
         }
+        await fetchTasksById(selectedProject._id);
         setIsEditing(false);
         ChangeTitleAlert('Data has been updated successfully');
         ChangeStateAlert(true);
