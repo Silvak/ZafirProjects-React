@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  TableHead,
   TableRow,
   TableCell,
   Grid,
@@ -20,7 +19,6 @@ import EditMember from '@/components/forms/EditMemberForm';
 import './styles.css';
 
 const columns = [
-  { id: 'photo', label: '' },
   { id: 'name', label: 'Name' },
   { id: 'project', label: 'Project' },
   { id: 'rol', label: 'Rol' },
@@ -33,7 +31,6 @@ const TableRowComponent = ({
   handleDeleteClick,
   row,
   isSelected,
-  // columns,
   setAllMemberData,
   allMemberData,
 }) => {
@@ -57,163 +54,155 @@ const TableRowComponent = ({
   };
 
   return (
-    <React.Fragment key={row}>
+    <React.Fragment key={row._id._id}>
       <TableRow hover={!isMobile}>
         {!isMobile && (
           <TableCell className="checkbox-contact">
-            <Checkbox
-              // checked={isItemSelected}
-              // onChange={() => handleCheckboxClick(row.name)}
-              sx={{ color: 'lightgray' }}
-            />
+            <Checkbox sx={{ color: 'lightgray' }} />
           </TableCell>
         )}
 
-        {columns.map((column, index) => {
-          let cellContent = row[column.id];
+        {columns.length > 0 &&
+          row &&
+          columns.map((column) => {
+            let cellContent = row._id[column.id];
 
-          return (
-            <TableCell
-              key={index}
-              align="left"
-              style={{
-                fontWeight: 'bold',
-                width: 'auto',
-                fontSize: '14px',
-                padding: !isMobile ? '0px' : '12px',
-                backgroundColor:
-                  column.id === 'lead_status' ? 'cyan' : 'inherit',
-              }}
-            >
-              {column.id === 'action' && !isMobile && (
-                <div style={{ marginTop: '20%' }}>
-                  <Tooltip title="Delete member">
-                    <DeleteIcon
-                      style={{
-                        marginLeft: '24px',
-                        cursor: 'pointer',
-                        color: deleteClicked ? 'blue' : 'inherit',
-                        transition: 'color 0.2s ease-in-out',
-                      }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setDeleteClicked(true);
-                        setTimeout(() => {
-                          setDeleteClicked(false);
-                          handleDeleteClick(row);
-                        }, 200);
-                      }}
-                    />
-                  </Tooltip>
-                  <Tooltip title="Edit member">
-                    <EditIcon
-                      style={{
-                        cursor: 'pointer',
-                        marginLeft: '10px',
-                        color: editClicked ? 'blue' : 'inherit',
-                        transition: 'color 0.2s ease-in-out',
-                      }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setEditClicked(true);
-                        setTimeout(() => {
-                          setEditClicked(false);
-                          openModal(row);
-                        }, 200);
-                      }}
-                    />
-                  </Tooltip>
-                </div>
-              )}
-              {!isMobile &&
-              (column.id === 'name' || column.id === 'leadOwner') ? (
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                  }}
-                >
-                  {column.id === 'name' &&
-                    (row._id ? (
-                      <Avatar
-                        sx={{
-                          borderRadius: '50%',
-                          bgcolor: `${row && row._id?.colorbg}`,
-                          color: `${row && row._id?.colorText}`,
+            return (
+              <TableCell
+                key={column.id}
+                align="left"
+                style={{
+                  fontWeight: 'bold',
+                  width: 'auto',
+                  fontSize: '14px',
+                  padding: !isMobile ? '0px' : '12px',
+                  backgroundColor:
+                    column.id === 'lead_status' ? 'cyan' : 'inherit',
+                }}
+              >
+                {column.id === 'action' && !isMobile && (
+                  <div style={{ marginTop: '20%' }}>
+                    <Tooltip title="Delete member">
+                      <DeleteIcon
+                        style={{
+                          marginLeft: '24px',
+                          cursor: 'pointer',
+                          color: deleteClicked ? 'blue' : 'inherit',
+                          transition: 'color 0.2s ease-in-out',
                         }}
-                      >
-                        {row && row._id && row._id?.name.split(' ')[0][0]}
-                        {row && row._id && row._id.name.split(' ').length > 1
-                          ? row._id?.name.split(' ')[1][0]
-                          : ''}
-                      </Avatar>
-                    ) : (
-                      <CircularProgress
-                        style={{ color: '#C02327' }}
-                        sx={{ m: 2 }}
-                        size="32px"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setDeleteClicked(true);
+                          setTimeout(() => {
+                            setDeleteClicked(false);
+                            handleDeleteClick(row);
+                          }, 200);
+                        }}
                       />
-                    ))}
+                    </Tooltip>
+                    <Tooltip title="Edit member">
+                      <EditIcon
+                        style={{
+                          cursor: 'pointer',
+                          marginLeft: '10px',
+                          color: editClicked ? 'blue' : 'inherit',
+                          transition: 'color 0.2s ease-in-out',
+                        }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setEditClicked(true);
+                          setTimeout(() => {
+                            setEditClicked(false);
+                            openModal(row);
+                          }, 200);
+                        }}
+                      />
+                    </Tooltip>
+                  </div>
+                )}
+                {!isMobile &&
+                (column.id === 'name' || column.id === 'leadOwner') ? (
                   <div
                     style={{
                       display: 'flex',
-                      flexDirection: 'column',
-                      marginLeft: '10px',
+                      alignItems: 'center',
                     }}
                   >
-                    <div style={{ flex: 1 }}>
-                      {column.id === 'name' ? (
-                        useFormatText(row._id.name)
+                    {column.id === 'name' &&
+                      (row._id ? (
+                        <Avatar
+                          sx={{
+                            borderRadius: '50%',
+                            bgcolor: `${row && row._id?.colorbg}`,
+                            color: `${row && row._id?.colorText}`,
+                          }}
+                        >
+                          {row._id.name && row._id.name.split(' ')[0]?.[0]}
+                          {row._id.name &&
+                            row._id.name.split(' ').length > 1 &&
+                            row._id.name.split(' ')[1]?.[0]}
+                        </Avatar>
                       ) : (
-                        // <span style={{ marginLeft: 12 }}>
-                        //   {useFormatText(row['leadOwner'])}
-                        // </span>
-                        <Tooltip title={row?.leadOwner}>
-                          <div style={{ marginLeft: 20 }}>
-                            <Avatar
-                              sx={{
-                                borderRadius: '50%',
-                                bgcolor: 'lightgray',
-                                color: 'white',
-                                border: '1px solid darkgray',
-                              }}
-                            >
-                              {row && row.leadOwner
-                                ? row.leadOwner.split(' ')[0][0]
-                                : ''}
-                              {row &&
-                              row.leadOwner &&
-                              row.leadOwner.split(' ').length > 0
-                                ? row.leadOwner.split(' ')[1][0]
-                                : ''}
-                            </Avatar>
-                          </div>
-                        </Tooltip>
+                        <CircularProgress
+                          style={{ color: '#C02327' }}
+                          sx={{ m: 2 }}
+                          size="32px"
+                        />
+                      ))}
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        marginLeft: '10px',
+                      }}
+                    >
+                      <div style={{ flex: 1 }}>
+                        {column.id === 'name' ? (
+                          useFormatText(row._id.name)
+                        ) : (
+                          <Tooltip title={row?.leadOwner}>
+                            <div style={{ marginLeft: 20 }}>
+                              <Avatar
+                                sx={{
+                                  borderRadius: '50%',
+                                  bgcolor: 'lightgray',
+                                  color: 'white',
+                                  border: '1px solid darkgray',
+                                }}
+                              >
+                                {row.leadOwner &&
+                                  row.leadOwner.split(' ')[0]?.[0]}
+                                {row.leadOwner &&
+                                  row.leadOwner.split(' ').length > 0 &&
+                                  row.leadOwner.split(' ')[1]?.[0]}
+                              </Avatar>
+                            </div>
+                          </Tooltip>
+                        )}
+                      </div>
+                      {column.id === 'name' && (
+                        <div style={{ flex: 1, color: 'gray' }}>
+                          {row._id.email}
+                        </div>
                       )}
                     </div>
-                    {column.id === 'name' && (
-                      <div style={{ flex: 1, color: 'gray' }}>
-                        {row._id.email}
-                      </div>
-                    )}
                   </div>
-                </div>
-              ) : !isMobile &&
-                column.id !== 'photo' &&
-                column.id !== 'email' ? (
-                column.id === 'rol' ? (
-                  <span style={{ marginLeft: 5 }}>{row.rolToProject}</span>
+                ) : !isMobile &&
+                  column.id !== 'photo' &&
+                  column.id !== 'email' ? (
+                  column.id === 'rol' ? (
+                    <span style={{ marginLeft: 5 }}>{row.rolToProject}</span>
+                  ) : (
+                    <span style={{ marginLeft: 10 }}>
+                      {useFormatText(cellContent)}
+                    </span>
+                  )
                 ) : (
-                  <span style={{ marginLeft: 10 }}>
-                    {useFormatText(cellContent)}
-                  </span>
-                )
-              ) : (
-                column.id === 'name' && ''
-              )}
-            </TableCell>
-          );
-        })}
+                  column.id === 'name' && ''
+                )}
+              </TableCell>
+            );
+          })}
       </TableRow>
       {isExpanded && (
         <TableRow>
