@@ -19,6 +19,7 @@ import EditMember from '@/components/forms/EditMemberForm';
 import './styles.css';
 
 const columns = [
+  { id: 'photo', label: '' },
   { id: 'name', label: 'Name' },
   { id: 'project', label: 'Project' },
   { id: 'rol', label: 'Rol' },
@@ -54,7 +55,7 @@ const TableRowComponent = ({
   };
 
   return (
-    <React.Fragment key={row._id._id}>
+    <React.Fragment key={row?._id?._id}>
       <TableRow hover={!isMobile}>
         {!isMobile && (
           <TableCell className="checkbox-contact">
@@ -65,7 +66,7 @@ const TableRowComponent = ({
         {columns.length > 0 &&
           row &&
           columns.map((column) => {
-            let cellContent = row._id[column.id];
+            let cellContent = row[column.id];
 
             return (
               <TableCell
@@ -76,8 +77,6 @@ const TableRowComponent = ({
                   width: 'auto',
                   fontSize: '14px',
                   padding: !isMobile ? '0px' : '12px',
-                  backgroundColor:
-                    column.id === 'lead_status' ? 'cyan' : 'inherit',
                 }}
               >
                 {column.id === 'action' && !isMobile && (
