@@ -12,6 +12,7 @@ import { shallow } from 'zustand/shallow';
 import CustomAvatar from '../CustomAvatar/CustomAvatar';
 import { useProjectsOverview } from '../../hooks/useProjectsOverview';
 import EditProjectForm from '../forms/EditProjectForm';
+import ConfirmForm from '../forms/ConfirmForm';
 
 const BoxFlex = ({ children, sx }) => {
   return (
@@ -31,18 +32,56 @@ const BoxFlex = ({ children, sx }) => {
 };
 
 const ProjectsTableItem = ({ project }) => {
-  const { fixStart } = fixDate(project?.start);
-
-  const { selectedProjectById, updateProjects, User, setSelectedProject } =
-    useBoundStore((state) => state, shallow);
-  const { handleEdit, handleDelete } = useProjectsOverview();
+  const {
+    selectedProjectById,
+    updateProjects,
+    User,
+    setSelectedProject,
+    ChangeStateModal,
+    ChangeTitleAlert,
+    ChangeStateAlert,
+    ChangeTitleModal,
+    ChangeContentModal,
+    deleteProject,
+  } = useBoundStore((state) => state, shallow);
+  const { handleEdit } = useProjectsOverview();
 
   const handleSelectProject = async (project) => {
     setSelectedProject(project);
     await updateProjects(User?.uid);
   };
 
+  const { fixStart } = fixDate(project?.start);
   const leader = project?.leaders;
+  const percentage = 0;
+
+  const handleConfirmDelete = async (projectToDelete) => {
+    try {
+      await deleteProject(projectToDelete?._id);
+      await updateProjects(User?.uid);
+      ChangeStateModal(false);
+      ChangeTitleAlert('Project successfully removed');
+      ChangeStateAlert(true);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    ChangeStateModal(false);
+  };
+
+  const handleDeleteProject = (projectToDelete) => {
+    ChangeTitleModal('');
+    ChangeContentModal(
+      <ConfirmForm
+        handleCancelDelete={handleCancelDelete}
+        handleConfirmDelete={handleConfirmDelete}
+        itemToDelete={projectToDelete}
+      />
+    );
+    ChangeStateModal(true);
+  };
 
   return (
     <TableCell
@@ -50,22 +89,16 @@ const ProjectsTableItem = ({ project }) => {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        // '&:hover': {
-        //   backgroundColor: 'rgba(0, 0, 0, 0.1)',
-        //   cursor: 'pointer',
-        // },
       }}
     >
       <BoxFlex sx={{ flex: 2 }}>
-        <Box sx={{ marginLeft: '20px' }}>
-          <Link
-            to={`/project/${project?._id}`}
-            style={{ color: 'inherit', textDecoration: 'none' }}
-            onClick={() => handleSelectProject(project)}
-          >
-            <h2 className={css.projectName}>{project?.name}</h2>
-          </Link>
-        </Box>
+        <Link
+          to={`/project/${project?._id}`}
+          style={{ color: 'inherit', textDecoration: 'none' }}
+          onClick={() => handleSelectProject(project)}
+        >
+          <h2 className={css.projectName}>{project?.name}</h2>
+        </Link>
       </BoxFlex>
       <BoxFlex>
         <CustomAvatar
@@ -88,8 +121,28 @@ const ProjectsTableItem = ({ project }) => {
         />
         <BsTrash3
           style={{ cursor: 'pointer' }}
-          onClick={() => handleDelete(project?._id)}
+          onClick={() => handleDeleteProject(project)}
         />
+      </BoxFlex>
+
+      <BoxFlex>
+        <div
+          style={{
+            width: '86px',
+            height: '8px',
+            backgroundColor: '#ECEFF3',
+            borderRadius: '4px',
+          }}
+        >
+          <div
+            style={{
+              width: `${percentage}%`,
+              height: '100%',
+              backgroundColor: '#00913f',
+              borderRadius: 'inherit',
+            }}
+          />
+        </div>
       </BoxFlex>
 
       {/* <BoxFlex>

@@ -2,6 +2,7 @@ import { createTheme, useMediaQuery } from '@mui/material';
 import { useBoundStore } from '../stores';
 import { shallow } from 'zustand/shallow';
 import { useEffect } from 'react';
+import ConfirmForm from '../components/forms/ConfirmForm';
 
 export function useProjectsOverview() {
   const theme = createTheme();
@@ -16,6 +17,8 @@ export function useProjectsOverview() {
     ChangeStateModal,
     ChangeContentModal,
     ChangeTitleModal,
+    ChangeTitleAlert,
+    ChangeStateAlert,
   } = useBoundStore((state) => state, shallow);
 
   const handleEdit = (element) => {
@@ -24,23 +27,9 @@ export function useProjectsOverview() {
     ChangeStateModal(true);
   };
 
-  const handleDelete = async (id) => {
-    try {
-      await deleteProject(id);
-      await updateProjects(User?.uid);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // useEffect(() => {
-  //   fetchProjects();
-  // }, []);
-
   return {
     projectsData,
     handleEdit,
-    handleDelete,
     isMobile,
     theme,
   };
