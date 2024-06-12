@@ -2,15 +2,14 @@ import React, { useEffect, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import CreateTaskForm from "@/components/forms/createTaskForm";
-import TaskHeader from "@/components/taskAccordion/taskHeader";
-import MyTaskList from "../../components/TaskProjectSections/MyTaskList";
+import MyTaskViewList from "../../components/MyTasksView/MyTaskViewList";
 import { useBoundStore } from "@/stores/index";
 import { shallow } from "zustand/shallow";
 import Grid from "@mui/material/Grid";
 
 import { useParams } from "react-router-dom";
 
-const TaskList = ({ view }) => {
+const MainTasksView = ({ view }) => {
   //   const [view, setView] = useState("Format List");
 
   const params = useParams();
@@ -67,7 +66,7 @@ const TaskList = ({ view }) => {
           <>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <MyTaskList
+                <MyTaskViewList
                   title="In progress"
                   tasks={workingTasks}
                   view={view}
@@ -76,7 +75,7 @@ const TaskList = ({ view }) => {
               </Grid>
 
               <Grid item xs={12}>
-                <MyTaskList
+                <MyTaskViewList
                   title="Pending"
                   tasks={pendingTasks}
                   view={view}
@@ -85,7 +84,7 @@ const TaskList = ({ view }) => {
               </Grid>
 
               <Grid item xs={12}>
-                <MyTaskList
+                <MyTaskViewList
                   title="Completed"
                   tasks={completedTasks}
                   view={view}
@@ -98,7 +97,7 @@ const TaskList = ({ view }) => {
           <>
             <Grid container spacing={2}>
               <Grid item xs={12} lg={4}>
-                <MyTaskList
+                <MyTaskViewList
                   title="In progress"
                   tasks={workingTasks}
                   view={view}
@@ -107,7 +106,7 @@ const TaskList = ({ view }) => {
               </Grid>
 
               <Grid item xs={12} lg={4}>
-                <MyTaskList
+                <MyTaskViewList
                   title="Pending"
                   tasks={pendingTasks}
                   view={view}
@@ -116,7 +115,7 @@ const TaskList = ({ view }) => {
               </Grid>
 
               <Grid item xs={12} lg={4}>
-                <MyTaskList
+                <MyTaskViewList
                   title="Completed"
                   tasks={completedTasks}
                   view={view}
@@ -131,4 +130,4 @@ const TaskList = ({ view }) => {
   );
 };
 
-export default TaskList;
+export default MainTasksView;
