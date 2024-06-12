@@ -11,7 +11,7 @@ import AddIcon from "@mui/icons-material/Add";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MyTaskItems from "./MyTaskItems";
-// import CustomAccordion from "./customAccordion";
+import { useDrop } from "react-dnd";
 import CustomTaskAccordion from "./CustomTaskAccordion";
 
 import { useBoundStore } from "../../stores";
@@ -19,11 +19,36 @@ import { shallow } from "zustand/shallow";
 import { useParams } from "react-router-dom";
 
 function MyTaskAccordion({ title, state, tasks, view }) {
+  const { updateTask, updateProjects, User } = useBoundStore(
+    (state) => state,
+    shallow
+  );
   const theme = createTheme();
   const [expanded, setExpanded] = useState(false);
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const isKanbanView = view === "View Kanban";
   const params = useParams();
+
+  const addTaskToList = async (taskId) => {
+    await updateTask({
+      taskId: taskId,
+      newData: { state },
+      projectId: params.id,
+      userId: User?.uid,
+    });
+    await updateProjects(User?.uid);
+  };
+
+  const [{ opacity, dropTarget, isOver }, drop] = useDrop({
+    accept: ["task"], // Specifies the type of item that can be dropped
+    drop: (dropResult) => {
+      // Receive information about the destination in `dropResult`
+      const taskId = dropResult.id;
+      if (taskId) {
+        addTaskToList(taskId);
+      }
+    },
+  });
 
   const ExpandIcon = ({ expanded }) => {
     return (
@@ -59,6 +84,7 @@ function MyTaskAccordion({ title, state, tasks, view }) {
         style={{
           textAlign: isMobile ? "left" : "",
         }}
+        ref={drop}
       >
         <CustomTaskAccordion
           expanded={expanded}
@@ -130,8 +156,8 @@ function MyTaskAccordion({ title, state, tasks, view }) {
               display: "flex",
               flexDirection: "column",
               padding: "0",
-              gap: !isKanbanView ? "5px" : "20px",
-              backgroundColor: !isKanbanView && "#FFFFFF",
+              gap: !isKanbanView ? "5px" : "40px",
+              backgroundColor: !isKanbanView && "#F6F7FA",
               borderRadius: "1rem",
             }}
           >
