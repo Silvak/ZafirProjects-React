@@ -62,6 +62,11 @@ declare module "@/components/MyTaskSections/MyTaskList";
 declare module "@/components/MyTaskSections/MyTaskItems";
 declare module "@/components/MyTaskSections/MyTaskAccordion";
 declare module "@/components/MyTaskSections/CustomTaskAccordion";
+declare module "@/components/taskAccordion/individualTaskAccordion/inCustomAccordion";
+declare module "@/components/taskAccordion/individualTaskAccordion/inTaskAccordion";
+declare module "@/components/taskAccordion/individualTaskAccordion/inTaskHeader";
+declare module "@/components/taskAccordion/individualTaskAccordion/inTaskItem";
+declare module "@/components/taskAccordion/individualTaskAccordion/inTaskList";
 
 declare module "@/context/AppContextProvider";
 declare module "@/stores/index";
@@ -90,6 +95,7 @@ declare module "@/screens/project/layout";
 declare module "@/screens/project/gantt";
 declare module "@/screens/project/tasks";
 declare module "@/screens/project/MyTaskView";
+declare module "@/screens/project/individualTasks";
 
 declare module "@/hooks/usePagination";
 declare module "@/hooks/useSignUp";

@@ -1,54 +1,55 @@
-import AlertGlobal from '@/components/alert/alert';
-import AlertGlobalError from '@/components/alert/alertError';
-import ModalGlobal from '@/components/modal/modal';
-import NavbarDrawer from '@/components/navBar/navBarDrawer';
-import { useBoundStore } from '@/stores/index';
-import { CardMedia, CircularProgress, Grid } from '@mui/material';
-import * as React from 'react';
-import { useEffect } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
-import { shallow } from 'zustand/shallow';
+import AlertGlobal from "@/components/alert/alert";
+import AlertGlobalError from "@/components/alert/alertError";
+import ModalGlobal from "@/components/modal/modal";
+import NavbarDrawer from "@/components/navBar/navBarDrawer";
+import { useBoundStore } from "@/stores/index";
+import { CardMedia, CircularProgress, Grid } from "@mui/material";
+import * as React from "react";
+import { useEffect } from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
+import { shallow } from "zustand/shallow";
 
-const Home = React.lazy(() => import('@/screens/home'));
-const NotFoundPage = React.lazy(() => import('@/screens/notFoundPage'));
+const Home = React.lazy(() => import("@/screens/home"));
+const NotFoundPage = React.lazy(() => import("@/screens/notFoundPage"));
 
-const MyTask = React.lazy(() => import('@/screens/project/myTask'));
-const Members = React.lazy(() => import('@/screens/members'));
-const SignIn = React.lazy(() => import('@/screens/signIn'));
-const SignUp = React.lazy(() => import('@/screens/signUp')); //"@/screens/project/Layout"
-const Projects = React.lazy(() => import('@/screens/project/projects'));
-const Layout = React.lazy(() => import('@/screens/project/layout'));
-const Report = React.lazy(() => import('@/screens/project/report'));
-const Gantt = React.lazy(() => import('@/screens/project/gantt'));
-const Tasks = React.lazy(() => import('@/screens/project/tasks'));
+const MyTask = React.lazy(() => import("@/screens/project/myTask"));
+const Members = React.lazy(() => import("@/screens/members"));
+const SignIn = React.lazy(() => import("@/screens/signIn"));
+const SignUp = React.lazy(() => import("@/screens/signUp")); //"@/screens/project/Layout"
+const Projects = React.lazy(() => import("@/screens/project/projects"));
+const Layout = React.lazy(() => import("@/screens/project/layout"));
+const Report = React.lazy(() => import("@/screens/project/report"));
+const Gantt = React.lazy(() => import("@/screens/project/gantt"));
+const Tasks = React.lazy(() => import("@/screens/project/tasks"));
+const IndividualTasks = React.lazy(() => import("@/screens/individualTasks"));
 
-const ListView = React.lazy(() => import('@/components/TasksViews/ListView'));
+const ListView = React.lazy(() => import("@/components/TasksViews/ListView"));
 const TrelloView = React.lazy(
-  () => import('@/components/TasksViews/TrelloView')
+  () => import("@/components/TasksViews/TrelloView")
 );
-const GanttView = React.lazy(() => import('@/components/TasksViews/GanttView'));
+const GanttView = React.lazy(() => import("@/components/TasksViews/GanttView"));
 
 export default function Navigator() {
   const { Authenticated } = useBoundStore((state: any) => state, shallow);
 
-  let Logo = '';
+  let Logo = "";
 
   const navigate = useNavigate();
 
   useEffect(() => {
     // Verificar si esta es la primera vez que se carga la aplicación
-    const firstVisit = sessionStorage.getItem('firstVisit');
+    const firstVisit = sessionStorage.getItem("firstVisit");
 
     if (!firstVisit && Authenticated) {
       // Si es la primera vez, redirigir a la raíz y marcar que es la primera vez
-      sessionStorage.setItem('firstVisit', 'true');
-      navigate('/');
+      sessionStorage.setItem("firstVisit", "true");
+      navigate("/");
     } else if (firstVisit && !Authenticated) {
-      sessionStorage.removeItem('firstVisit');
-      navigate('/sign-in');
+      sessionStorage.removeItem("firstVisit");
+      navigate("/sign-in");
     } else if (!firstVisit && !Authenticated) {
-      sessionStorage.removeItem('firstVisit');
-      navigate('/sign-in');
+      sessionStorage.removeItem("firstVisit");
+      navigate("/sign-in");
     }
   }, [Authenticated]);
 
@@ -62,9 +63,9 @@ export default function Navigator() {
           alignItems='center'
           justifyContent='center'
           sx={{
-            backgroundColor: 'common.tree',
-            width: '100%',
-            height: '100vh',
+            backgroundColor: "common.tree",
+            width: "100%",
+            height: "100vh",
           }}
         >
           <CardMedia
@@ -72,12 +73,12 @@ export default function Navigator() {
             image={Logo}
             alt='Logo'
             sx={{
-              width: { xs: 150, sm: 150, md: 200, lg: '497px', xl: 300 },
-              objectFit: 'cover',
+              width: { xs: 150, sm: 150, md: 200, lg: "497px", xl: 300 },
+              objectFit: "cover",
             }}
           />
           <CircularProgress
-            style={{ color: '#C02327' }}
+            style={{ color: "#C02327" }}
             sx={{ m: 2 }}
             size='68px'
           />
@@ -91,6 +92,8 @@ export default function Navigator() {
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/projects' element={<Projects />} />
+            <Route path='/individual-tasks/:id' element={<IndividualTasks />} />
+
             <Route path='/project/:id' element={<Layout />}>
               <Route path='tasks' element={<Tasks />}>
                 <Route index element={<ListView />} />
