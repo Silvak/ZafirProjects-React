@@ -33,7 +33,9 @@ const TaskList = ({ view }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await fetchTasksById(selectedProject._id);
+      if (selectedProject && selectedProject._id) {
+        await fetchTasksById(selectedProject._id);
+      }
     };
     fetchData();
   }, []);
