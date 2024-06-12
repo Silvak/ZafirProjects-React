@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   TableRow,
   TableCell,
@@ -6,25 +6,25 @@ import {
   Avatar,
   Tooltip,
   CircularProgress,
-} from '@mui/material';
-import Checkbox from '@mui/material/Checkbox';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import Typography from '@mui/material/Typography';
-import avatar from '@/assets/Img/png/defaultUser.png';
-import { useBoundStore } from '@/stores/index';
-import { shallow } from 'zustand/shallow';
-import useFormatText from '@/hooks/useFormatText';
-import EditMember from '@/components/forms/EditMemberForm';
-import './styles.css';
+} from "@mui/material";
+import Checkbox from "@mui/material/Checkbox";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import Typography from "@mui/material/Typography";
+import avatar from "@/assets/Img/png/defaultUser.png";
+import { useBoundStore } from "@/stores/index";
+import { shallow } from "zustand/shallow";
+import useFormatText from "@/hooks/useFormatText";
+import EditMember from "@/components/forms/EditMemberForm";
+import "./styles.css";
 
 const columns = [
-  { id: 'photo', label: '' },
-  { id: 'name', label: 'Name' },
-  { id: 'project', label: 'Project' },
-  { id: 'rol', label: 'Rol' },
-  { id: 'leadOwner', label: 'Lead Owner' },
-  { id: 'action', label: '' },
+  // { id: "photo", label: "" },
+  { id: "name", label: "Name" },
+  { id: "project", label: "Project" },
+  { id: "rol", label: "Rol" },
+  { id: "leadOwner", label: "Lead Owner" },
+  { id: "action", label: "" },
 ];
 
 const TableRowComponent = ({
@@ -43,7 +43,7 @@ const TableRowComponent = ({
     useBoundStore((state) => state, shallow);
 
   const openModal = (row) => {
-    ChangeTitleModal('');
+    ChangeTitleModal("");
     ChangeContentModal(
       <EditMember
         row={row}
@@ -59,7 +59,7 @@ const TableRowComponent = ({
       <TableRow hover={!isMobile}>
         {!isMobile && (
           <TableCell className="checkbox-contact">
-            <Checkbox sx={{ color: 'lightgray' }} />
+            <Checkbox sx={{ color: "lightgray" }} />
           </TableCell>
         )}
 
@@ -73,21 +73,21 @@ const TableRowComponent = ({
                 key={column.id}
                 align="left"
                 style={{
-                  fontWeight: 'bold',
-                  width: 'auto',
-                  fontSize: '14px',
-                  padding: !isMobile ? '0px' : '12px',
+                  fontWeight: "normal",
+                  width: "auto",
+                  fontSize: "14px",
+                  padding: !isMobile ? "0px" : "12px",
                 }}
               >
-                {column.id === 'action' && !isMobile && (
-                  <div style={{ marginTop: '20%' }}>
+                {column.id === "action" && !isMobile && (
+                  <div style={{ marginTop: "20%" }}>
                     <Tooltip title="Delete member">
                       <DeleteIcon
                         style={{
-                          marginLeft: '24px',
-                          cursor: 'pointer',
-                          color: deleteClicked ? 'blue' : 'inherit',
-                          transition: 'color 0.2s ease-in-out',
+                          marginLeft: "24px",
+                          cursor: "pointer",
+                          color: deleteClicked ? "blue" : "inherit",
+                          transition: "color 0.2s ease-in-out",
                         }}
                         onClick={(e) => {
                           e.stopPropagation();
@@ -102,10 +102,10 @@ const TableRowComponent = ({
                     <Tooltip title="Edit member">
                       <EditIcon
                         style={{
-                          cursor: 'pointer',
-                          marginLeft: '10px',
-                          color: editClicked ? 'blue' : 'inherit',
-                          transition: 'color 0.2s ease-in-out',
+                          cursor: "pointer",
+                          marginLeft: "10px",
+                          color: editClicked ? "blue" : "inherit",
+                          transition: "color 0.2s ease-in-out",
                         }}
                         onClick={(e) => {
                           e.stopPropagation();
@@ -120,84 +120,135 @@ const TableRowComponent = ({
                   </div>
                 )}
                 {!isMobile &&
-                (column.id === 'name' || column.id === 'leadOwner') ? (
+                (column.id === "name" || column.id === "leadOwner") ? (
                   <div
                     style={{
-                      display: 'flex',
-                      alignItems: 'center',
+                      display: "flex",
+                      alignItems: "center",
                     }}
                   >
-                    {column.id === 'name' &&
+                    {column.id === "name" &&
                       (row._id ? (
                         <Avatar
                           sx={{
-                            borderRadius: '50%',
+                            borderRadius: "50%",
                             bgcolor: `${row && row._id?.colorbg}`,
                             color: `${row && row._id?.colorText}`,
                           }}
                         >
-                          {row._id.name && row._id.name.split(' ')[0]?.[0]}
+                          {row._id.name && row._id.name.split(" ")[0]?.[0]}
                           {row._id.name &&
-                            row._id.name.split(' ').length > 1 &&
-                            row._id.name.split(' ')[1]?.[0]}
+                            row._id.name.split(" ").length > 1 &&
+                            row._id.name.split(" ")[1]?.[0]}
                         </Avatar>
                       ) : (
                         <CircularProgress
-                          style={{ color: '#C02327' }}
+                          style={{ color: "#C02327" }}
                           sx={{ m: 2 }}
                           size="32px"
                         />
                       ))}
                     <div
                       style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        marginLeft: '10px',
+                        display: "flex",
+                        flexDirection: "column",
+                        marginLeft: "10px",
                       }}
                     >
-                      <div style={{ flex: 1 }}>
-                        {column.id === 'name' ? (
+                      <div
+                        style={{
+                          flex: 1,
+                          color: "#1D1F24",
+                          fontWeight: 500,
+                          fontFamily: "Poppins",
+                          fontSize: 14,
+                        }}
+                      >
+                        {column.id === "name" ? (
                           useFormatText(row._id.name)
                         ) : (
                           <Tooltip title={row?.leadOwner}>
-                            <div style={{ marginLeft: 20 }}>
+                            <div
+                              style={{
+                                // marginLeft: 20,
+                                display: "flex", //
+                                alignItems: "center", //
+                                gap: 10, //
+                              }}
+                            >
                               <Avatar
                                 sx={{
-                                  borderRadius: '50%',
-                                  bgcolor: 'lightgray',
-                                  color: 'white',
-                                  border: '1px solid darkgray',
+                                  borderRadius: "50%",
+                                  bgcolor: "lightgray",
+                                  color: "white",
+                                  border: "1px solid darkgray",
                                 }}
                               >
                                 {row.leadOwner &&
-                                  row.leadOwner.split(' ')[0]?.[0]}
+                                  row.leadOwner.split(" ")[0]?.[0]}
                                 {row.leadOwner &&
-                                  row.leadOwner.split(' ').length > 0 &&
-                                  row.leadOwner.split(' ')[1]?.[0]}
+                                  row.leadOwner.split(" ").length > 0 &&
+                                  row.leadOwner.split(" ")[1]?.[0]}
                               </Avatar>
+                              <span
+                                style={{
+                                  color: "#1D1F24",
+                                  fontWeight: 500,
+                                  fontFamily: "Poppins",
+                                  fontSize: 14,
+                                }}
+                              >
+                                {row.leadOwner}
+                              </span>
                             </div>
                           </Tooltip>
                         )}
                       </div>
-                      {column.id === 'name' && (
-                        <div style={{ flex: 1, color: 'gray' }}>
+                      {column.id === "name" && (
+                        <div
+                          style={{
+                            flex: 1,
+                            color: "gray",
+                            fontFamily: "Poppins",
+                            fontWeight: "400px",
+                            fontSize: "12px",
+                          }}
+                        >
                           {row._id.email}
                         </div>
                       )}
                     </div>
                   </div>
                 ) : !isMobile &&
-                  column.id !== 'photo' &&
-                  column.id !== 'email' ? (
-                  column.id === 'rol' ? (
-                    <span style={{ marginLeft: 5 }}>{row.rolToProject}</span>
+                  column.id !== "photo" &&
+                  column.id !== "email" ? (
+                  column.id === "rol" ? (
+                    <span
+                      style={{
+                        marginLeft: 5,
+                        color: "grey",
+                        fontWeight: 500,
+                        fontFamily: "Poppins",
+                        fontSize: 14,
+                      }}
+                    >
+                      {row.rolToProject}
+                    </span>
                   ) : (
-                    <span style={{ marginLeft: 10 }}>
+                    <span
+                      style={{
+                        marginLeft: 10,
+                        color: "#1D1F24",
+                        fontWeight: 500,
+                        fontFamily: "Poppins",
+                        fontSize: 14,
+                      }}
+                    >
                       {useFormatText(cellContent)}
                     </span>
                   )
                 ) : (
-                  column.id === 'name' && ''
+                  column.id === "name" && ""
                 )}
               </TableCell>
             );
@@ -205,38 +256,36 @@ const TableRowComponent = ({
       </TableRow>
       {isExpanded && (
         <TableRow>
-          <TableCell colSpan={6}>
+          <TableCell colSpan={5}>
             <Grid container spacing={1}>
               {columns.map((column, index) => (
-                <Grid item xs={12} sm={6} key={index}>
+                <Grid item xs={10} sm={5} key={index}>
                   <Typography
                     variant="body2"
                     component="div"
                     style={{
-                      textAlign: 'center',
-                      marginRight: '20%',
-                      fontWeight: 'normal',
+                      textAlign: "center",
+                      marginRight: "20%",
+                      fontWeight: "normal",
                     }}
                   >
                     <p style={{ fontWeight: 700 }}>
-                      {column.label !== 'Name' && column.label}{' '}
+                      {column.label !== "Name" && column.label}{" "}
                     </p>
-                    {column.label !== 'Name' && column.id !== 'action' ? (
+                    {column.label !== "Name" && column.id !== "action" ? (
                       <React.Fragment>
-                        {column.id === 'photo' ? (
-                          <img src={avatar} width="56px" alt="Photo" />
-                        ) : column.label !== 'Rol' ? (
-                          <span style={{ fontWeight: 'normal' }}>
-                            {': ' + row[column.id]}
+                        {column.label !== "Rol" ? (
+                          <span style={{ fontWeight: "normal" }}>
+                            {": " + row[column.id]}
                           </span>
                         ) : (
-                          <span style={{ fontWeight: 'normal' }}>
-                            {': ' + row.rolToProject}
+                          <span style={{ fontWeight: "normal" }}>
+                            {": " + row.rolToProject}
                           </span>
                         )}
                       </React.Fragment>
                     ) : (
-                      ''
+                      ""
                     )}
                   </Typography>
                 </Grid>
