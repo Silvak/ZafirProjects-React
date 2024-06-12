@@ -1,14 +1,21 @@
-import { Container, Box, Typography } from '@mui/material';
-import ProjectsTable from '@/components/projectsTable/ProjectsTable';
+import { Container, Box, Typography } from "@mui/material";
+import ProjectsTable from "@/components/projectsTable/ProjectsTable";
+import LayoutPage from "@/layout/layoutPage";
 
 const projects = () => {
   return (
-    <Box sx={{ padding: '50px 0', width: '100%' }}>
-      <Typography variant='h2' sx={{ mb: '70px' }}>
-        All Projects
-      </Typography>
+    <LayoutPage
+      head={
+        <Typography
+          variant='p'
+          style={{ fontSize: "24px", color: "#1D1F24", fontWeight: 600 }}
+        >
+          All Projects
+        </Typography>
+      }
+    >
       <ProjectsTable />
-    </Box>
+    </LayoutPage>
   );
 };
 export default projects;

@@ -34,17 +34,16 @@ function initializeItems(selectedProject) {
           url: `/project/${selectedProject?._id}/tasks`,
         },
         {
-          title: "members",
-          url: "/members",
-          icon: <BiGroup />,
-          submenu: [],
-        },
-        {
           title: "report",
           url: `/project/${selectedProject?._id}/report`,
-          submenu: [],
         },
       ],
+    },
+    {
+      title: "Members",
+      url: `/members`,
+      icon: <BiGroup />,
+      submenu: [],
     },
   ];
 }
