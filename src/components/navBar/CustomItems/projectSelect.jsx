@@ -28,7 +28,6 @@ function ProjectSelect(props) {
 
   const handleSelectProject = async (project) => {
     await setSelectedProject(project);
-    setOpen(false);
   };
 
   useEffect(() => {
@@ -43,13 +42,13 @@ function ProjectSelect(props) {
 
   useEffect(() => {
     if (projectsData.length > 0) {
-      setNavItemTitle(selectedProject.name.slice(0, 12) + '...');
+      setNavItemTitle(selectedProject?.name.slice(0, 12) + '...');
       setTooltipTitle(selectedProject?.name);
     } else {
       setNavItemTitle('No project selected');
       setTooltipTitle('Select a Project');
     }
-  }, [projectsData]);
+  }, [projectsData, selectedProject]);
 
   return (
     <List
