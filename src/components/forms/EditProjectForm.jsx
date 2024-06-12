@@ -136,40 +136,6 @@ function EditProjectForm({ project }) {
           />
         </Grid>
 
-        {/* leader */}
-        <Box sx={{ position: 'relative' }}>
-          <Grid
-            item
-            sx={{
-              marginBottom: '20px',
-            }}
-          >
-            <Typography fontFamily={'Poppins'} color={'#6B6E75'}>
-              Leader
-            </Typography>
-            <TextField
-              size='small'
-              name='leaders'
-              value={formData.leaders.name}
-              onChange={(e) => {
-                handleChange(e);
-                handleSuggestionChange({
-                  inputValue: e.target.value,
-                  type: 'leader',
-                });
-              }}
-              sx={{
-                width: '100%',
-              }}
-            />
-          </Grid>
-          <SuggestionList
-            type='leader'
-            usersList={filteredLeaders}
-            onClick={handleSuggestionClick}
-          />
-        </Box>
-
         {/* members */}
         <Box sx={{ position: 'relative' }}>
           <Grid
@@ -190,7 +156,6 @@ function EditProjectForm({ project }) {
                 setMember(e.target.value);
                 handleSuggestionChange({
                   inputValue: e.target.value,
-                  type: 'member',
                 });
               }}
               placeholder='Search a member'

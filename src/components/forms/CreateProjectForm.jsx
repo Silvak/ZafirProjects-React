@@ -52,32 +52,17 @@ function CreateProjectForm() {
     start: '',
     end: '',
     description: '',
-    leaders: '',
   });
 
-  const handleSuggestionChange = ({ inputValue, type }) => {
-    // for input leader
-    if (type === 'leader') {
-      if (inputValue === '') {
-        setFilteredLeaders([]);
-      } else {
-        const result = getUniqueUsers(users);
-        const filter = result.filter((user) => {
-          return user.name.toUpperCase().startsWith(inputValue.toUpperCase());
-        });
-        setFilteredLeaders(filter);
-      }
-    } // for input member
-    else if (type === 'member') {
-      if (inputValue === '') {
-        setFilteredMembers([]);
-      } else {
-        const result = getUniqueUsers(users);
-        const filter = result.filter((user) => {
-          return user.name.toUpperCase().startsWith(inputValue.toUpperCase());
-        });
-        setFilteredMembers(filter);
-      }
+  const handleSuggestionChange = ({ inputValue }) => {
+    if (inputValue === '') {
+      setFilteredMembers([]);
+    } else {
+      const result = getUniqueUsers(users);
+      const filter = result.filter((user) => {
+        return user.name.toUpperCase().startsWith(inputValue.toUpperCase());
+      });
+      setFilteredMembers(filter);
     }
   };
 
@@ -88,7 +73,7 @@ function CreateProjectForm() {
     try {
       const data = {
         ...formData,
-        leaders: formData.leaders._id,
+        leaders: User.uid,
         members_id: members,
       };
       //validamos que no se envie vacio
@@ -149,7 +134,7 @@ function CreateProjectForm() {
       {/* row - colum */}
       <Paper
         elevation={1}
-        component="form"
+        component='form'
         onSubmit={handleSubmit}
         sx={{
           maxWidth: isMobile ? '90vw' : 'fit-content',
@@ -173,10 +158,10 @@ function CreateProjectForm() {
             Enter a project name
           </Typography>
           <TextField
-            size="small"
+            size='small'
             value={formData.name}
-            placeholder="Project name..."
-            name="name"
+            placeholder='Project name...'
+            name='name'
             onChange={handleChange}
             sx={{
               width: '100%',
@@ -200,9 +185,9 @@ function CreateProjectForm() {
               Start date
             </Typography>
             <TextField
-              size="small"
-              name="start"
-              type="date"
+              size='small'
+              name='start'
+              type='date'
               value={formData.start}
               onChange={handleChange}
               sx={{
@@ -215,9 +200,9 @@ function CreateProjectForm() {
               End date
             </Typography>
             <TextField
-              size="small"
-              name="end"
-              type="date"
+              size='small'
+              name='end'
+              type='date'
               value={formData.end}
               onChange={handleChange}
               sx={{
@@ -237,51 +222,16 @@ function CreateProjectForm() {
             Add a description...
           </Typography>
           <TextField
-            size="small"
-            name="description"
+            size='small'
+            name='description'
             onChange={handleChange}
             value={formData.description}
-            placeholder="..."
+            placeholder='...'
             sx={{
               width: '100%',
             }}
           />
         </Grid>
-
-        {/* leader */}
-        <Box sx={{ position: 'relative' }}>
-          <Grid
-            item
-            sx={{
-              marginBottom: '20px',
-            }}
-          >
-            <Typography fontFamily={'Poppins'} color={'#6B6E75'}>
-              Leader
-            </Typography>
-            <TextField
-              size="small"
-              name="leaders"
-              value={formData.leaders.name}
-              onChange={(e) => {
-                handleChange(e);
-                handleSuggestionChange({
-                  inputValue: e.target.value,
-                  type: 'leader',
-                });
-              }}
-              sx={{
-                width: '100%',
-              }}
-            />
-          </Grid>
-
-          <SuggestionList
-            type="leader"
-            usersList={filteredLeaders}
-            onClick={handleSuggestionClick}
-          />
-        </Box>
 
         {/* members */}
         <Box sx={{ position: 'relative' }}>
@@ -296,24 +246,23 @@ function CreateProjectForm() {
               Add members
             </Typography>
             <TextField
-              size="small"
-              name="members_id"
+              size='small'
+              name='members_id'
               value={member}
               onChange={(e) => {
                 setMember(e.target.value);
                 handleSuggestionChange({
                   inputValue: e.target.value,
-                  type: 'member',
                 });
               }}
-              placeholder="Search a member"
+              placeholder='Search a member'
               sx={{
                 width: '100%',
               }}
             />
           </Grid>
           <SuggestionList
-            type="member"
+            type='member'
             usersList={filteredMembers}
             onClick={handleSuggestionClick}
           />
@@ -350,7 +299,7 @@ function CreateProjectForm() {
           }}
         >
           <Button
-            title="Cancel"
+            title='Cancel'
             onClick={handleClose}
             sx={{
               textTransform: 'none',
@@ -368,7 +317,7 @@ function CreateProjectForm() {
             Cancel
           </Button>
           <Button
-            title="Save"
+            title='Save'
             onClick={handleSubmit}
             sx={{
               textTransform: 'none',
