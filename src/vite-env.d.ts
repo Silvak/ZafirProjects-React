@@ -95,7 +95,7 @@ declare module "@/screens/project/layout";
 declare module "@/screens/project/gantt";
 declare module "@/screens/project/tasks";
 declare module "@/screens/project/MyTaskView";
-declare module "@/screens/project/individualTasks";
+declare module "@/screens/individualTasks";
 
 declare module "@/hooks/usePagination";
 declare module "@/hooks/useSignUp";
