@@ -252,23 +252,21 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
                         alignItems: 'center',
                       }}
                     >
-                      <Tooltip title="Show subtask details" placement="top">
-                        <Button
-                          color="inherit"
-                          disableRipple
-                          onClick={() => handleViewSubstask(item)}
-                        >
-                          <RxEyeOpen size={25} />
-                        </Button>
-                      </Tooltip>
-                      <Tooltip title="Delete subtask" placement="top">
-                        <Button
-                          color="inherit"
-                          onClick={() => handleRemoveSubTask(item)}
-                        >
-                          <RxTrash size={25} />
-                        </Button>
-                      </Tooltip>
+                      <Button
+                        title="Show subtask details"
+                        color="inherit"
+                        disableRipple
+                        onClick={() => handleViewSubstask(item)}
+                      >
+                        <RxEyeOpen size={25} />
+                      </Button>
+                      <Button
+                        title="Delete subtask"
+                        color="inherit"
+                        onClick={() => handleRemoveSubTask(item)}
+                      >
+                        <RxTrash size={25} />
+                      </Button>
                     </td>
                   </tr>
                 ))

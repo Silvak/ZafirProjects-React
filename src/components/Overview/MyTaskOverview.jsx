@@ -39,7 +39,9 @@ function MyTask() {
     if (User) {
       const fetchData = async () => {
         try {
-          await fetchTasksById(selectedProject._id);
+          if (selectedProject && selectedProject._id) {
+            await fetchTasksById(selectedProject._id);
+          }
           // await fetchTasksByUser(User.uid);
         } catch (error) {
           console.error('Error fetching tasks', error);
@@ -109,7 +111,7 @@ function MyTask() {
 
           {/* Select Filter */}
           <Grid item>
-            <Tooltip title='Filter'>
+            <Tooltip title="Filter">
               <select
                 value={filterOption}
                 onChange={handleFilter}
