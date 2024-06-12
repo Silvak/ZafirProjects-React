@@ -8,19 +8,7 @@ import * as React from "react";
 import { useEffect } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { shallow } from "zustand/shallow";
-import AlertGlobal from "@/components/alert/alert";
-import AlertGlobalError from "@/components/alert/alertError";
-import ModalGlobal from "@/components/modal/modal";
-import NavbarDrawer from "@/components/navBar/navBarDrawer";
-import { useBoundStore } from "@/stores/index";
-import { CardMedia, CircularProgress, Grid } from "@mui/material";
-import * as React from "react";
-import { useEffect } from "react";
-import { Route, Routes, useNavigate } from "react-router-dom";
-import { shallow } from "zustand/shallow";
 
-const Home = React.lazy(() => import("@/screens/home"));
-const NotFoundPage = React.lazy(() => import("@/screens/notFoundPage"));
 const Home = React.lazy(() => import("@/screens/home"));
 const NotFoundPage = React.lazy(() => import("@/screens/notFoundPage"));
 
@@ -39,25 +27,20 @@ const Gantt = React.lazy(() => import("@/screens/project/gantt"));
 const Tasks = React.lazy(() => import("@/screens/project/tasks"));
 
 const ListView = React.lazy(() => import("@/components/TasksViews/ListView"));
-const ListView = React.lazy(() => import("@/components/TasksViews/ListView"));
 const TrelloView = React.lazy(
   () => import("@/components/TasksViews/TrelloView")
-  () => import("@/components/TasksViews/TrelloView")
 );
-const GanttView = React.lazy(() => import("@/components/TasksViews/GanttView"));
 const GanttView = React.lazy(() => import("@/components/TasksViews/GanttView"));
 
 export default function Navigator() {
   const { Authenticated } = useBoundStore((state: any) => state, shallow);
 
   let Logo = "";
-  let Logo = "";
 
   const navigate = useNavigate();
 
   useEffect(() => {
     // Verificar si esta es la primera vez que se carga la aplicación
-    const firstVisit = sessionStorage.getItem("firstVisit");
     const firstVisit = sessionStorage.getItem("firstVisit");
 
     if (!firstVisit && Authenticated) {
@@ -92,9 +75,6 @@ export default function Navigator() {
             backgroundColor: "common.tree",
             width: "100%",
             height: "100vh",
-            backgroundColor: "common.tree",
-            width: "100%",
-            height: "100vh",
           }}
         >
           <CardMedia
@@ -104,12 +84,9 @@ export default function Navigator() {
             sx={{
               width: { xs: 150, sm: 150, md: 200, lg: "497px", xl: 300 },
               objectFit: "cover",
-              width: { xs: 150, sm: 150, md: 200, lg: "497px", xl: 300 },
-              objectFit: "cover",
             }}
           />
           <CircularProgress
-            style={{ color: "#C02327" }}
             style={{ color: "#C02327" }}
             sx={{ m: 2 }}
             size="68px"

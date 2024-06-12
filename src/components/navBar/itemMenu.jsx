@@ -9,23 +9,10 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { BiGroup } from "react-icons/bi";
 import { useBoundStore } from "../../stores";
 import { shallow } from "zustand/shallow";
-import { useState, useEffect } from "react";
-import { List, ListItemButton, Collapse } from "@mui/material";
-import ItemNav from "@/components/navBar/itemNav";
-import BrokenImageOutlinedIcon from "@mui/icons-material/BrokenImageOutlined";
-import FolderCopyOutlinedIcon from "@mui/icons-material/FolderCopyOutlined";
-import TaskOutlinedIcon from "@mui/icons-material/TaskOutlined";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import { BiGroup } from "react-icons/bi";
-import { useBoundStore } from "../../stores";
-import { shallow } from "zustand/shallow";
 
 function initializeItems(selectedProject) {
   return [
     {
-      title: "overview",
-      url: "/",
       title: "overview",
       url: "/",
       icon: <BrokenImageOutlinedIcon />,
@@ -40,12 +27,9 @@ function initializeItems(selectedProject) {
     {
       title: "project",
       url: "/",
-      title: "project",
-      url: "/",
       icon: <FolderCopyOutlinedIcon />,
       submenu: [
         {
-          title: "My project",
           title: "My project",
           url: `/project/${selectedProject?._id}/tasks`,
         },
@@ -63,7 +47,7 @@ function initializeItems(selectedProject) {
     },
     {
       title: "Members",
-      url: `/members`,
+      url: "/members",
       icon: <BiGroup />,
       submenu: [],
     },
