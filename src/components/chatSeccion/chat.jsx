@@ -68,10 +68,10 @@ const ChatMessage = () => {
     <ThemeProvider theme={theme}>
       <Paper
         style={{
-          paddingInline: '1rem',
-          paddingBlock: '0.5rem',
+          padding: '2rem',
           width: '100%',
-          maxHeight: '85vh',
+          height: '68vh',
+          maxHeight: '80vh',
           margin: '0',
           background: 'white',
           overflowY: 'auto',
@@ -156,35 +156,39 @@ const ChatMessage = () => {
               </Box>
             </Box>
           ))}
-
-        <Box display="flex" alignItems="center" mt={2} p={1}>
-          <OutlinedInput
-            placeholder="Write your messages..."
-            fullWidth
-            value={newMessage}
-            onChange={handleInputChange}
-            onKeyDown={handleKeyPress}
-            sx={{
-              borderRadius: '16px',
-              backgroundColor: 'rgba(0, 0, 0, 0.05)',
-            }}
-            startAdornment={
-              <InputAdornment position="start">
-                <IconButton onClick={handleEmoji}>
-                  <SentimentSatisfiedOutlinedIcon sx={{ color: 'gray' }} />
-                </IconButton>
-              </InputAdornment>
-            }
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton onClick={handleClip}>
-                  <AttachFileIcon sx={{ color: 'gray' }} />
-                </IconButton>
-              </InputAdornment>
-            }
-          />
-        </Box>
       </Paper>
+      <Box
+        display="flex"
+        alignItems="end"
+        p={1}
+        style={{ postion: 'fixed', top: '100%', paddingTop: '30px' }}
+      >
+        <OutlinedInput
+          placeholder="Write your messages..."
+          fullWidth
+          value={newMessage}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyPress}
+          sx={{
+            borderRadius: '16px',
+            backgroundColor: 'rgba(0, 0, 0, 0.05)',
+          }}
+          startAdornment={
+            <InputAdornment position="start">
+              <IconButton onClick={handleEmoji}>
+                <SentimentSatisfiedOutlinedIcon sx={{ color: 'gray' }} />
+              </IconButton>
+            </InputAdornment>
+          }
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton onClick={handleClip}>
+                <AttachFileIcon sx={{ color: 'gray' }} />
+              </IconButton>
+            </InputAdornment>
+          }
+        />
+      </Box>
     </ThemeProvider>
   );
 };
