@@ -64,7 +64,7 @@ function CreateMember() {
         name: member.name,
         id: member._id,
         rolToProject: formData.rol,
-        projectId: selectedProject._id,
+        projectId: selectedProject?._id,
       };
     });
 

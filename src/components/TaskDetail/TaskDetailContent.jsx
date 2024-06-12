@@ -135,7 +135,9 @@ const TaskDetailContent = ({
           });
           setFilterSubtask(updatedSubtasks);
         }
-        await fetchTasksById(selectedProject._id);
+        if (selectedProject && selectedProject._id) {
+          await fetchTasksById(selectedProject?._id);
+        }
         setIsEditing(false);
         ChangeTitleAlert('Data has been updated successfully');
         ChangeStateAlert(true);

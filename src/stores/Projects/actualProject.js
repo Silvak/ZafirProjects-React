@@ -48,7 +48,7 @@ export const actualProject = (set, get) => ({
     try {
       const { data } = await axiosInstance.get(`/projects/user/${idUser}`);
       set({ projectsData: data });
-      const id = get().selectedProject._id;
+      const id = get().selectedProject?._id;
       if (id) {
         await get().selectedProjectById(id);
         await get().fetchTasksById(id);
