@@ -90,7 +90,12 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
     const titleTask = subtask?.taskId?.taskName;
 
     ChangeTitleWithBackButton(
-      <div style={{ display: 'flex', alignItems: 'center' }}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
         <Tooltip title="Back to task details" placement="bottom">
           <Button
             onClick={() => handleBack(subtask)}
@@ -100,19 +105,19 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
             <KeyboardBackspaceOutlinedIcon fontSize="large" />
           </Button>
         </Tooltip>
-        <span style={{ marginRight: '5px' }}>Task:</span>
+        <span style={{ marginRight: '15px', color: '#6B6E75' }}>Task:</span>
         {/* Typogra */}
         <Typography
           variant="p"
           color="#6B6E75"
-          sx={{ cursor: titleTask.length > 48 ? 'default' : 'inherit' }}
+          sx={{ cursor: titleTask.length > 68 ? 'default' : 'inherit' }}
         >
           <Tooltip
-            title={titleTask.length > 48 ? titleTask : ''}
+            title={titleTask.length > 68 ? titleTask : ''}
             placement="bottom"
           >
-            {titleTask.slice(0, 48)}
-            {titleTask.length > 48 ? '...' : ''}
+            {titleTask.slice(0, 68)}
+            {titleTask.length > 68 ? '...' : ''}
           </Tooltip>
         </Typography>
       </div>
@@ -149,11 +154,14 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
   return (
     <>
       {!cleanForm ? (
-        <Box sx={{ padding: '50px 0' }}>
+        <Box sx={{ padding: '10px 0' }} style={{ width: '100%' }}>
           <p className={css.title}>Subtasks</p>
           <TableHead
             className={css.table}
-            style={{ padding: isMobile ? '5px' : '20px', maxHeight: '650px' }}
+            style={{
+              padding: isMobile ? '5px' : '20px',
+              maxHeight: '65vh',
+            }}
           >
             <thead>
               <tr>
@@ -162,7 +170,16 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
                     key={item.id}
                     className={css.headText}
                     style={{
-                      marginLeft: item.label === 'Status' ? '1.5rem' : 0,
+                      paddingLeft:
+                        item.label === 'Assignee'
+                          ? '0.8rem'
+                          : item.label === 'Status'
+                          ? '2.8rem'
+                          : item.label === 'Date'
+                          ? '2.2rem'
+                          : item.label === 'Actions'
+                          ? '1.5rem'
+                          : 0,
                     }}
                   >
                     {item.label}
@@ -180,14 +197,25 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
                       minWidth: 'max-content',
                     }}
                   >
-                    <td style={{ maxWidth: '10rem', paddingInline: 4 }}>
+                    <td
+                      style={{
+                        paddingInline: 4,
+                        minWidth: 'max-content',
+                        width: '20rem',
+                      }}
+                    >
                       <Tooltip
                         title={item.name ? item.name : ''}
                         placement="bottom-end"
                       >
-                        <strong style={{ fontSize: '14px', cursor: 'default' }}>
-                          {item.name.slice(0, 10)}
-                          {item.name.length > 10 ? '...' : ''}
+                        <strong
+                          style={{
+                            fontSize: '14px',
+                            cursor: 'default',
+                          }}
+                        >
+                          {item.name.slice(0, 18)}
+                          {item.name.length > 18 ? '...' : ''}
                         </strong>
                       </Tooltip>
                     </td>
@@ -198,9 +226,8 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
                             <div
                               key={key}
                               style={{
-                                width: '7rem',
+                                width: '10rem',
                                 overflow: 'hidden',
-                                minWidth: 'max-content',
                               }}
                             >
                               <strong
@@ -210,15 +237,15 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
                                 }}
                               >
                                 <Tooltip title={member?.name} placement="right">
-                                  {member.name.slice(0, 12)}
-                                  {member.name.length > 12 ? '...' : ''}
+                                  {member.name.slice(0, 16)}
+                                  {member.name.length > 16 ? '...' : ''}
                                 </Tooltip>
                               </strong>
                               <br />
                               <Tooltip title={member.email} placement="right">
                                 <small style={{ cursor: 'default' }}>
-                                  {member?.email?.length > 12
-                                    ? member.email.slice(0, 12) + '...'
+                                  {member?.email?.length > 16
+                                    ? member.email.slice(0, 16) + '...'
                                     : member.email}
                                 </small>
                               </Tooltip>
@@ -237,9 +264,6 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
                       <div
                         style={{
                           ...statusColors[item.status],
-                          padding: '5px 10px',
-                          borderRadius: '5px',
-                          textAlign: 'center',
                         }}
                       >
                         {item.state}
@@ -247,10 +271,10 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
                     </td>
                     <td>{moment(item.start).format('DD/MM/YYYY')}</td>
                     <td
-                      className={css.icon}
                       style={{
                         display: 'flex',
                         alignItems: 'center',
+                        padding: 0,
                       }}
                     >
                       <Button
@@ -287,7 +311,7 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
               display: 'flex',
               width: '100%',
               justifyContent: 'center',
-              marginBlock: '2rem',
+              marginTop: '2rem',
             }}
           >
             <Button
