@@ -7,18 +7,13 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import React, { useState } from "react";
-import AddIcon from "@mui/icons-material/Add";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import MyTaskItems from "./MyTaskItems";
-// import CustomAccordion from "./customAccordion";
-import CustomTaskAccordion from "./CustomTaskAccordion";
-
-import { useBoundStore } from "../../stores";
-import { shallow } from "zustand/shallow";
 import { useParams } from "react-router-dom";
+import MyCustomAccordion from "./MyCustomAccordion";
+import MyTaskViewItems from "./MyTaskViewItems";
 
-function MyTaskAccordion({ title, state, tasks, view }) {
+function MyTaskViewAccordion({ title, tasks, view }) {
   const theme = createTheme();
   const [expanded, setExpanded] = useState(false);
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
@@ -60,7 +55,7 @@ function MyTaskAccordion({ title, state, tasks, view }) {
           textAlign: isMobile ? "left" : "",
         }}
       >
-        <CustomTaskAccordion
+        <MyCustomAccordion
           expanded={expanded}
           elevation={4}
           className="custom-accordion"
@@ -136,7 +131,7 @@ function MyTaskAccordion({ title, state, tasks, view }) {
             }}
           >
             {tasks?.map((task) => (
-              <MyTaskItems
+              <MyTaskViewItems
                 key={task.id}
                 task={task}
                 isMobile={isMobile}
@@ -145,9 +140,9 @@ function MyTaskAccordion({ title, state, tasks, view }) {
               />
             ))}
           </AccordionDetails>
-        </CustomTaskAccordion>
+        </MyCustomAccordion>
       </div>
     </ThemeProvider>
   );
 }
-export default MyTaskAccordion;
+export default MyTaskViewAccordion;

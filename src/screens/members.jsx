@@ -28,6 +28,7 @@ import LayoutPage from "@/layout/layoutPage";
 const MembersTable = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const isMobile = useMediaQuery("(max-width:600px)");
+  const isMobile = useMediaQuery("(max-width:600px)");
   const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } =
     usePagination({});
   const {
@@ -44,6 +45,8 @@ const MembersTable = () => {
   const [allMemberData, setAllMemberData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedOption, setSelectedOption] = useState("All");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedOption, setSelectedOption] = useState("All");
   const [memberToDelete, setMemberToDelete] = useState(null);
 
   useEffect(() => {
@@ -51,6 +54,7 @@ const MembersTable = () => {
       const projectMembers = selectedProject.members_id.map((member) => ({
         ...member,
         project: selectedProject?.name,
+        leadOwner: selectedProject?.leaders?.name || "",
         leadOwner: selectedProject?.leaders?.name || "",
         projectId: selectedProject?.id,
       }));
@@ -75,6 +79,7 @@ const MembersTable = () => {
 
   const handleButtonMore = (allMemberData) => {
     ChangeTitleModal("Create new member");
+    ChangeTitleModal("Create new member");
     ChangeContentModal(
       <CreateMember
         setAllMemberData={setAllMemberData}
@@ -86,6 +91,7 @@ const MembersTable = () => {
 
   const handleDeleteClick = async (memberToDelete) => {
     setMemberToDelete(memberToDelete);
+    ChangeTitleModal("");
     ChangeTitleModal("");
     ChangeContentModal(
       <ConfirmForm
@@ -105,6 +111,7 @@ const MembersTable = () => {
       );
       await updateProjects(User?.uid);
       ChangeStateModal(false);
+      ChangeTitleAlert("Member successfully removed");
       ChangeTitleAlert("Member successfully removed");
       ChangeStateAlert(true);
     } catch (error) {
@@ -143,8 +150,10 @@ const MembersTable = () => {
           >
             Team
             <span style={{ fontWeight: "bold" }}>
+            <span style={{ fontWeight: "bold" }}>
               {selectedProject
                 ? ` of ${useFormatText(selectedProject.name)}`
+                : ""}
                 : ""}
             </span>
           </h6>
@@ -153,6 +162,10 @@ const MembersTable = () => {
             disableRipple
             onClick={() => handleButtonMore(filteredSearchData)}
             sx={{
+              padding: "0.6rem",
+              height: "min-content",
+              borderRadius: "12px",
+              color: "white",
               padding: "0.6rem",
               height: "min-content",
               borderRadius: "12px",
