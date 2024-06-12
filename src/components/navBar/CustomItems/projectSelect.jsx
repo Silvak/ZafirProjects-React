@@ -9,6 +9,9 @@ import { shallow } from 'zustand/shallow';
 
 function ProjectSelect(props) {
   const [open, setOpen] = useState(false);
+  const [navItemTitle, setNavItemTitle] = useState('No project selected');
+  const [tooltipTitle, setTooltipTitle] = useState('Select a Project');
+
   const {
     fetchProjects,
     projectsData,
@@ -16,10 +19,6 @@ function ProjectSelect(props) {
     setSelectedProject,
     User,
   } = useBoundStore((state) => state, shallow);
-
-  useEffect(() => {
-    fetchProjects(User?.uid);
-  }, []);
 
   const handleClick = () => {
     if (props.open) {
@@ -29,14 +28,28 @@ function ProjectSelect(props) {
 
   const handleSelectProject = async (project) => {
     await setSelectedProject(project);
-    setOpen(false);
   };
+
+  useEffect(() => {
+    fetchProjects(User?.uid);
+  }, []);
 
   useEffect(() => {
     if (props.open === false) {
       setOpen(false);
     }
   }, [props.open]);
+
+  useEffect(() => {
+    if (projectsData.length > 0) {
+      setNavItemTitle(selectedProject?.name.slice(0, 12) + '...');
+      setTooltipTitle(selectedProject?.name);
+    } else {
+      setNavItemTitle('No project selected');
+      setTooltipTitle('Select a Project');
+    }
+  }, [projectsData, selectedProject]);
+
   return (
     <List
       sx={{
@@ -49,57 +62,49 @@ function ProjectSelect(props) {
         marginTop: '22px',
       }}
     >
-      {/* btn project */}
-      {selectedProject && (
-        <Tooltip title={selectedProject.name} placement="right">
+      <Tooltip title={tooltipTitle} placement='right'>
+        <ListItemButton
+          onClick={handleClick}
+          sx={{
+            m: 0,
+            p: 0,
+            border: '1px solid #E0E3E8',
+            borderRadius: '12px',
+          }}
+          disableRipple
+        >
+          <ItemNav
+            to='#'
+            title={navItemTitle}
+            icon={<CloudCircleIcon />}
+            arrow={open ? <ExpandLessIcon /> : <KeyboardArrowDownIcon />}
+            bgColor={'#F6F7FA'}
+          />
+        </ListItemButton>
+      </Tooltip>
+
+      <Collapse in={open} timeout='auto' unmountOnExit>
+        {projectsData?.slice(0, 3).map((submenuItem) => (
           <ListItemButton
-            onClick={handleClick}
-            sx={{
-              m: 0,
-              p: 0,
-              border: '1px solid #E0E3E8',
-              borderRadius: '12px',
-            }}
-            disableRipple
+            key={submenuItem.id}
+            onClick={() => handleSelectProject(submenuItem)}
+            sx={{ m: 0, p: 0 }}
           >
             <ItemNav
-              to="#"
-              title={
-                selectedProject && selectedProject.name.slice(0, 12) + '...'
-              }
-              icon={<CloudCircleIcon />}
-              arrow={open ? <ExpandLessIcon /> : <KeyboardArrowDownIcon />}
-              bgColor={'#F6F7FA'}
-            />
-          </ListItemButton>
-        </Tooltip>
-      )}
-
-      {/* submenu */}
-      {selectedProject && (
-        <Collapse in={open} timeout="auto" unmountOnExit>
-          {projectsData?.slice(0, 3).map((submenuItem) => (
-            <ListItemButton
-              key={submenuItem.id}
-              onClick={() => handleSelectProject(submenuItem)}
-              sx={{ m: 0, p: 0 }}
-            >
-              <ItemNav
-                to={`/project/${submenuItem._id}/tasks`}
-                title={submenuItem.name.slice(0, 20) + '...'}
-                //icon={submenuItem.icon}
-              />
-            </ListItemButton>
-          ))}
-          <ListItemButton sx={{ m: 0, p: 0 }}>
-            <ItemNav
-              to={`/projects`}
-              title={'View more'}
+              to={`/project/${submenuItem._id}/tasks`}
+              title={submenuItem.name.slice(0, 20) + '...'}
               //icon={submenuItem.icon}
             />
           </ListItemButton>
-        </Collapse>
-      )}
+        ))}
+        <ListItemButton sx={{ m: 0, p: 0 }}>
+          <ItemNav
+            to={`/projects`}
+            title={'View more'}
+            //icon={submenuItem.icon}
+          />
+        </ListItemButton>
+      </Collapse>
     </List>
   );
 }
