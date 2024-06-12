@@ -15,7 +15,8 @@ import { statusColors } from '../../utils/colors';
 import TaskDetail from './TaskDetail';
 import css from './style.module.css';
 import SubTaskForm from '../forms/subtaskForm';
-import SubdirectoryArrowLeftIcon from '@mui/icons-material/SubdirectoryArrowLeft';
+import KeyboardBackspaceOutlinedIcon from '@mui/icons-material/KeyboardBackspaceOutlined';
+// import SubdirectoryArrowLeftIcon from '@mui/icons-material/SubdirectoryArrowLeft';
 import moment from 'moment';
 import Modal from '../modal/modalSubtask';
 
@@ -96,7 +97,7 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
             style={{ marginRight: '5px' }}
             disableRipple
           >
-            <SubdirectoryArrowLeftIcon />
+            <KeyboardBackspaceOutlinedIcon fontSize="large" />
           </Button>
         </Tooltip>
         <span style={{ marginRight: '5px' }}>Task:</span>
