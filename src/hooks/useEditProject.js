@@ -10,7 +10,6 @@ const INITIAL_FORM_DATA = {
   start: '',
   end: '',
   description: '',
-  leaders: '',
 };
 
 export function useEditProject(project) {
@@ -72,29 +71,15 @@ export function useEditProject(project) {
     };
   }, []);
 
-  const handleSuggestionChange = ({ inputValue, type }) => {
-    // for input leader
-    if (type === 'leader') {
-      if (inputValue === '') {
-        setFilteredLeaders([]);
-      } else {
-        const result = getUniqueUsers(users);
-        const filter = result.filter((user) => {
-          return user.name.toUpperCase().startsWith(inputValue.toUpperCase());
-        });
-        setFilteredLeaders(filter);
-      }
-    } // for input member
-    else if (type === 'member') {
-      if (inputValue === '') {
-        setFilteredMembers([]);
-      } else {
-        const result = getUniqueUsers(users);
-        const filter = result.filter((user) => {
-          return user.name.toUpperCase().startsWith(inputValue.toUpperCase());
-        });
-        setFilteredMembers(filter);
-      }
+  const handleSuggestionChange = ({ inputValue }) => {
+    if (inputValue === '') {
+      setFilteredMembers([]);
+    } else {
+      const result = getUniqueUsers(users);
+      const filter = result.filter((user) => {
+        return user.name.toUpperCase().startsWith(inputValue.toUpperCase());
+      });
+      setFilteredMembers(filter);
     }
   };
 
@@ -105,13 +90,10 @@ export function useEditProject(project) {
     try {
       const newValues = {
         ...formData,
-        leaders: formData.leaders._id,
         members_id: members,
       };
-
       const isEqual = {
         ...originalValues,
-        leaders: formData.leaders._id,
         members_id: project['members_id'],
       };
       // verificar si hay cambios
@@ -151,21 +133,16 @@ export function useEditProject(project) {
     ChangeStateModal(false);
   };
 
-  const handleSuggestionClick = (user, type) => {
-    if (type === 'leader') {
-      setFormData({ ...formData, leaders: user });
-      setFilteredLeaders([]);
+  const handleSuggestionClick = (user) => {
+    const alreadyExist = members.find(
+      (member) => member._id._id.toString() === user._id.toString()
+    );
+    if (alreadyExist === undefined) {
+      setMembers((prev) => [...prev, { _id: { ...user } }]);
+      setFilteredMembers([]);
+      setMember('');
     } else {
-      const alreadyExist = members.find(
-        (member) => member._id._id.toString() === user._id.toString()
-      );
-      if (alreadyExist === undefined) {
-        setMembers((prev) => [...prev, { _id: { ...user } }]);
-        setFilteredMembers([]);
-        setMember('');
-      } else {
-        return;
-      }
+      return;
     }
   };
 
