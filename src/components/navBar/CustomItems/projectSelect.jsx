@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import { List, ListItemButton, Collapse, Tooltip } from '@mui/material';
-import CloudCircleIcon from '@mui/icons-material/CloudCircle';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import ItemNav from '@/components/navBar/itemNav';
-import { useBoundStore } from '../../../stores';
-import { shallow } from 'zustand/shallow';
+import { useState, useEffect } from "react";
+import { List, ListItemButton, Collapse, Tooltip } from "@mui/material";
+import CloudCircleIcon from "@mui/icons-material/CloudCircle";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import ItemNav from "@/components/navBar/itemNav";
+import { useBoundStore } from "../../../stores";
+import { shallow } from "zustand/shallow";
 
 function ProjectSelect(props) {
   const [open, setOpen] = useState(false);
@@ -37,39 +37,40 @@ function ProjectSelect(props) {
       setOpen(false);
     }
   }, [props.open]);
+
   return (
     <List
       sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '8px',
+        display: "flex",
+        flexDirection: "column",
+        gap: "8px",
         py: 0,
-        px: { xs: '8px', sm: '12px' },
-        width: '100%',
-        marginTop: '22px',
+        px: { xs: "8px", sm: "12px" },
+        width: "100%",
+        marginTop: "22px",
       }}
     >
       {/* btn project */}
       {selectedProject && (
-        <Tooltip title={selectedProject.name} placement="right">
+        <Tooltip title={selectedProject.name} placement='right'>
           <ListItemButton
             onClick={handleClick}
             sx={{
               m: 0,
               p: 0,
-              border: '1px solid #E0E3E8',
-              borderRadius: '12px',
+              border: "1px solid #E0E3E8",
+              borderRadius: "12px",
             }}
             disableRipple
           >
             <ItemNav
-              to="#"
+              to='#'
               title={
-                selectedProject && selectedProject.name.slice(0, 12) + '...'
+                selectedProject && selectedProject.name.slice(0, 12) + "..."
               }
               icon={<CloudCircleIcon />}
               arrow={open ? <ExpandLessIcon /> : <KeyboardArrowDownIcon />}
-              bgColor={'#F6F7FA'}
+              bgColor={"#F6F7FA"}
             />
           </ListItemButton>
         </Tooltip>
@@ -77,7 +78,7 @@ function ProjectSelect(props) {
 
       {/* submenu */}
       {selectedProject && (
-        <Collapse in={open} timeout="auto" unmountOnExit>
+        <Collapse in={open} timeout='auto' unmountOnExit>
           {projectsData?.slice(0, 3).map((submenuItem) => (
             <ListItemButton
               key={submenuItem.id}
@@ -86,7 +87,7 @@ function ProjectSelect(props) {
             >
               <ItemNav
                 to={`/project/${submenuItem._id}/tasks`}
-                title={submenuItem.name.slice(0, 20) + '...'}
+                title={submenuItem.name.slice(0, 20) + "..."}
                 //icon={submenuItem.icon}
               />
             </ListItemButton>
@@ -94,7 +95,7 @@ function ProjectSelect(props) {
           <ListItemButton sx={{ m: 0, p: 0 }}>
             <ItemNav
               to={`/projects`}
-              title={'View more'}
+              title={"View more"}
               //icon={submenuItem.icon}
             />
           </ListItemButton>

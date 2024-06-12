@@ -170,28 +170,44 @@ export default function NavbarDrawer(props) {
       <CssBaseline />
 
       {/* NavBar */}
-      <CustomAppBar position="fixed" open={stateOpen}>
-        <Toolbar disableKeyboardFocus sx={{ height: "100%" }}>
+      <CustomAppBar position='fixed' open={stateOpen}>
+        <Toolbar
+          disableKeyboardFocus
+          sx={{
+            height: "100%",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
-              placeholder="Search…"
+              placeholder='Search…'
               inputProps={{ "aria-label": "search" }}
             />
           </Search>
 
           {/* Notification button */}
-          <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+
+          <Box
+            sx={{
+              display: {
+                xs: "none",
+                md: "flex",
+                alignItems: "center",
+                gap: "24px",
+              },
+            }}
+          >
             <IconButton
-              size="large"
-              aria-label="show 5 new notifications"
-              color="inherit"
-              sx={{ marginRight: 2 }}
+              size='large'
+              aria-label='show 5 new notifications'
+              color='inherit'
+              sx={{ height: "56px", width: "56px" }}
             >
-              <Badge badgeContent={5} color="error">
+              <Badge badgeContent={5} color='error'>
                 <NotificationsOutlinedIcon />
               </Badge>
             </IconButton>
@@ -203,11 +219,11 @@ export default function NavbarDrawer(props) {
           {/* Mobile Profile Button */}
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton
-              size="large"
-              aria-label="show more"
-              aria-haspopup="true"
+              size='large'
+              aria-label='show more'
+              aria-haspopup='true'
               onClick={handleMobileMenuOpen}
-              color="inherit"
+              color='inherit'
             >
               <MoreIcon />
             </IconButton>
@@ -216,7 +232,7 @@ export default function NavbarDrawer(props) {
       </CustomAppBar>
 
       {/* Sidebar Drawer */}
-      <Drawer variant="permanent" open={stateOpen}>
+      <Drawer variant='permanent' open={stateOpen}>
         {/* Draw Header Logo & toggle open */}
         <DrawerHeader
           sx={{
@@ -241,7 +257,7 @@ export default function NavbarDrawer(props) {
       </Drawer>
 
       {/* content */}
-      <Box component="main" sx={{ flexGrow: 1, p: 0 }}>
+      <Box component='main' sx={{ flexGrow: 1, p: 0, m: 0 }}>
         <DrawerHeader />
         {props.children}
       </Box>
