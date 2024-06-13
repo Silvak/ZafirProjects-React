@@ -3,12 +3,11 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import CreateTaskForm from "@/components/forms/createTaskForm";
 import TaskHeader from "@/components/taskAccordion/taskHeader";
-import MyTaskList from "../../components/TaskProjectSections/MyTaskList";
 import { useBoundStore } from "@/stores/index";
 import { shallow } from "zustand/shallow";
 import Grid from "@mui/material/Grid";
-
 import { useParams } from "react-router-dom";
+import MyTaskList from "../../components/TaskProjectSections/MyTaskList";
 
 const TaskList = ({ view }) => {
   //   const [view, setView] = useState("Format List");
@@ -45,6 +44,9 @@ const TaskList = ({ view }) => {
       setPendingTasks(myTasks.filter((task) => task.state === "Pending"));
       setCompletedTasks(myTasks.filter((task) => task.state === "Completed"));
       setWorkingTasks(myTasks.filter((task) => task.state === "In Progress"));
+      setPendingTasks(myTasks.filter((task) => task.state === "Pending"));
+      setCompletedTasks(myTasks.filter((task) => task.state === "Completed"));
+      setWorkingTasks(myTasks.filter((task) => task.state === "In Progress"));
     }
   }, [myTasks]);
 
@@ -53,6 +55,7 @@ const TaskList = ({ view }) => {
   };
 
   const handleAddTask = (title, description) => {
+    ChangeTitleModal("Create Task");
     ChangeTitleModal("Create Task");
     ChangeContentModal(
       <CreateTaskForm placeholderTaskName="task 1" projectId={params.id} />

@@ -1,4 +1,4 @@
-import { Grid, Paper, Typography } from "@mui/material";
+import { Grid, Paper, Tooltip, Typography } from "@mui/material";
 import { useDrag, useDrop } from "react-dnd";
 
 //icons
@@ -13,7 +13,8 @@ import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import CircleIcon from "@mui/icons-material/Circle";
-import { Divider } from "@mui/material";
+import { Avatar, Divider } from "@mui/material";
+import AvatarGroup from "@mui/material/AvatarGroup";
 import { useBoundStore } from "../../stores";
 import { shallow } from "zustand/shallow";
 
@@ -21,7 +22,7 @@ import TaskDetail from "../TaskDetail/TaskDetail";
 import { statusColors, priorityColors } from "../../utils/colors";
 import ConfirmForm from "../forms/ConfirmForm";
 
-function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
+const InTaskItem = ({ task, isMobile, isKanbanView, projectId }) => {
   const formatDate = (dateString) => {
     const today = new Date();
     const date = new Date(dateString);
@@ -37,6 +38,7 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
       return date.toLocaleDateString("en-US", options);
     }
   };
+
   const [{ opacity }, dragRef] = useDrag(
     () => ({
       type: "task",
@@ -73,7 +75,6 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
   const handleConfirmDelete = async (taskToDelete) => {
     await removeTask(taskToDelete._id);
     await fetchTasksById(projectId);
-    // await fetchTasksByUser(User.uid);
     ChangeStateModal(false);
     ChangeTitleAlert("Task successfully removed");
     ChangeStateAlert(true);
@@ -135,12 +136,24 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
                 onClick={() => handleMoreIcon(task)}
               />
             </div>
-            <Divider sx={{ mb: 2 }} />
+            <Divider sx={{ mb: 2 }}></Divider>
+            {/* {task.screen && (
+              <img
+                src={task.screen}
+                alt="Task Screen"
+                style={{
+                  width: "100%",
+                  marginBottom: "10px",
+                  border: "3px solid #F6F7FA",
+                  borderRadius: 8,
+                }}
+              />
+            )} */}
           </div>
         ))}
       <Typography
-        variant="h6"
-        fontWeight="bold"
+        variant='h6'
+        fontWeight='bold'
         noWrap
         style={{
           fontSize: "14px",
@@ -155,12 +168,12 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
         container
         spacing={0}
         columns={isMobile || isKanbanView ? 6 : 12}
-        alignItems="center"
+        alignItems='center'
         padding={0}
       >
         <Grid item xs={12} sm={!isKanbanView ? 2 : 1}>
           <Typography
-            variant="h6"
+            variant='h6'
             noWrap
             style={{
               fontSize: "12px",
@@ -168,16 +181,16 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
               fontWeight: "bold",
               paddingInline: "4px",
               paddingBlock: "2px",
-              borderRadius: "10px",
+              borderRadius: "6px",
               margin: isMobile ? "10px 0" : "0",
               ...priorityColors[task.priority],
             }}
           >
-            <Circle sx={{ fontSize: "10px", marginRight: "2px" }} />
+            <Circle sx={{ fontSize: "10px", marginRight: "2px" }}></Circle>
             {task.priority}
           </Typography>
         </Grid>
-        {/* {isKanbanView && (
+        {isKanbanView && (
           <CircleIcon
             style={{
               fontSize: "6px",
@@ -186,12 +199,12 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
               marginInline: "1rem",
             }}
           />
-        )} */}
+        )}
         {!isKanbanView && (
           <Grid item xs={12} sm={2}>
             <Typography
-              variant="body1"
-              color="textSecondary"
+              variant='body1'
+              color='textSecondary'
               noWrap
               style={{ fontSize: "14px", fontWeight: "bold" }}
               sx={{ ml: "3rem" }}
@@ -200,7 +213,19 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
             </Typography>
           </Grid>
         )}
-
+        {/* {!isKanbanView && (
+          <Grid item xs={12} sm={1} sx={{ marginRight: "3rem" }}>
+            <AvatarGroup max={3} style={{ marginRight: isMobile ? "30%" : "" }}>
+              {task.assignees.map((assignee, index) => (
+                <
+                  key={index}
+                  alt={assignee.name}
+                  src={assignee.profile}
+                />
+              ))}
+            </AvatarGroup>
+          </Grid>
+        )} */}
         <Grid item xs={12} sm={2}>
           <div
             style={{
@@ -210,9 +235,9 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
             }}
           >
             <div style={{ display: "flex" }}>
-              <PeopleAltOutlinedIcon sx={{ mr: "5px", color: "gray", ml: 5 }} />
+              <PeopleAltOutlinedIcon sx={{ mr: "5px", color: "gray" }} />
               <Typography
-                variant="body1"
+                variant='body1'
                 noWrap
                 style={{
                   fontSize: "14px",
@@ -222,7 +247,7 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
                 {task?.members_id?.length}
               </Typography>
             </div>
-            {/* {isKanbanView && (
+            {isKanbanView && (
               <CircleIcon
                 style={{
                   fontSize: "6px",
@@ -230,7 +255,7 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
                   marginInline: "1rem",
                 }}
               />
-            )} */}
+            )}
             <div
               style={{
                 display: "flex",
@@ -242,7 +267,7 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
                 onClick={handleClipIcon}
               />
               <Typography
-                variant="body1"
+                variant='body1'
                 noWrap
                 style={{
                   fontSize: "14px",
@@ -257,152 +282,87 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
                     style={{
                       fontSize: "6px",
                       color: "lightgray",
-                      marginLeft: "2rem",
+                      marginInline: "2rem",
                     }}
                   />
                 )}
               </Typography>
             </div>
-            {isKanbanView && (
-              <Grid item xs={12} sm={1}>
-                <BsTrash3
-                  style={{ cursor: "pointer" }}
-                  onClick={() => {
-                    handleDeleteTask(task);
-                  }}
-                />
-              </Grid>
-            )}
+            {/* {isMobile ||
+              (isKanbanView && (
+                <Grid item xs={12} sm={1}>
+                  <AvatarGroup max={2}>
+                    {task.assignees.map((assignee, index) => (
+                      <Avatar
+                        key={index}
+                        alt={assignee.name}
+                        src={assignee.profile}
+                      />
+                    ))}
+                  </AvatarGroup>
+                </Grid>
+              ))} */}
           </div>
         </Grid>
-        {isKanbanView ? (
-          <div style={{ display: "flex", gap: "2em", alignItems: "center" }}>
-            <Grid
-              item
-              xs={12}
-              sm={1}
-              sx={{
-                mt: isKanbanView ? 4 : 0,
-
-                minWidth: "min-content",
+        <Grid
+          item
+          xs={12}
+          sm={isKanbanView ? 3 : 2}
+          sx={{
+            mt: isKanbanView ? "20px" : isMobile ? "5px" : "0",
+            minWidth: "max-content",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <CalendarTodayIcon
+              style={{
+                marginTop: isMobile ? "5px" : "",
+                marginRight: isMobile ? "" : "5px",
+                color: "gray",
               }}
+            />
+            <Typography
+              variant='body1'
+              color='textSecondary'
+              noWrap
+              style={{ fontSize: "14px", fontWeight: "bold" }}
             >
-              <Typography
-                variant="body1"
-                color="textSecondary"
-                noWrap
-                sx={{
-                  fontWeight: "bold",
-                  fontSize: "14px",
-                  borderRadius: "8px",
-                  padding: "4px 8px",
-                  textAlign: "center",
-                  alignItems: "center",
-                  ...statusColors[task.state],
-                }}
-              >
-                {task.state}
-              </Typography>
-            </Grid>
-
-            <Grid
-              item
-              xs={12}
-              sm={isKanbanView ? 3 : 2}
-              sx={{
-                mt: isKanbanView ? "20px" : isMobile ? "5px" : "0",
-                minWidth: "max-content",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                <CalendarTodayIcon
-                  style={{
-                    marginTop: isMobile ? "5px" : "",
-                    marginRight: isMobile ? "" : "5px",
-                    color: "gray",
-                  }}
-                />
-                <Typography
-                  variant="body1"
-                  color="textSecondary"
-                  noWrap
-                  style={{ fontSize: "14px", fontWeight: "bold" }}
-                >
-                  {formatDate(task.start)}
-                </Typography>
-              </div>
-            </Grid>
+              {formatDate(task.start)}
+            </Typography>
           </div>
-        ) : (
-          <div style={{ display: "flex", gap: "3em", alignItems: "center" }}>
-            <Grid
-              item
-              xs={12}
-              sm={isKanbanView ? 3 : 2}
-              sx={{
-                mt: isKanbanView ? "20px" : isMobile ? "5px" : "0",
-                minWidth: "max-content",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                <CalendarTodayIcon
-                  style={{
-                    marginTop: isMobile ? "5px" : "",
-                    marginRight: isMobile ? "" : "5px",
-                    color: "gray",
-                  }}
-                />
-                <Typography
-                  variant="body1"
-                  color="textSecondary"
-                  noWrap
-                  style={{ fontSize: "14px", fontWeight: "bold" }}
-                >
-                  {formatDate(task.start)}
-                </Typography>
-              </div>
-            </Grid>
-
-            <Grid
-              item
-              xs={12}
-              sm={1}
-              sx={{
-                mt: isKanbanView ? 4 : 0,
-
-                minWidth: "min-content",
-              }}
-            >
-              <Typography
-                variant="body1"
-                color="textSecondary"
-                noWrap
-                sx={{
-                  fontWeight: "bold",
-                  fontSize: "14px",
-                  borderRadius: "8px",
-                  padding: "4px 8px",
-                  textAlign: "center",
-                  alignItems: "center",
-                  ...statusColors[task.state],
-                }}
-              >
-                {task.state}
-              </Typography>
-            </Grid>
-          </div>
-        )}
-
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          sm={1}
+          sx={{
+            mt: isKanbanView ? 4 : 0,
+            marginInline: 2,
+            minWidth: "min-content",
+          }}
+        >
+          <Typography
+            variant='body1'
+            color='textSecondary'
+            noWrap
+            sx={{
+              fontWeight: "bold",
+              fontSize: "14px",
+              borderRadius: "8px",
+              padding: "4px 8px",
+              textAlign: "center",
+              alignItems: "center",
+              ...statusColors[task.state],
+            }}
+          >
+            {task.state}
+          </Typography>
+        </Grid>
         <Grid item xs={12} sm={1}>
           {!isKanbanView && (
             <MoreHorizIcon
@@ -416,19 +376,16 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
             />
           )}
         </Grid>
-        {!isKanbanView && (
-          <Grid item xs={12} sm={1}>
-            <BsTrash3
-              style={{ cursor: "pointer" }}
-              onClick={() => {
-                handleDeleteTask(task);
-              }}
-            />
-          </Grid>
-        )}
+        <Grid item xs={12} sm={1}>
+          <BsTrash3
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              handleDeleteTask(task);
+            }}
+          />
+        </Grid>
       </Grid>
     </Paper>
   );
-}
-
-export default MyTaskItems;
+};
+export default InTaskItem;

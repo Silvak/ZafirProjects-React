@@ -6,13 +6,14 @@ function Layout() {
   const location = useLocation().pathname;
   //const projectName = location.split("/")[2];
   return (
-    <Box>
-      {/* title & actions */}
-
-      {/* Content */}
-      <Box sx={{ padding: "40px 20px" }}>
-        <Outlet />
-      </Box>
+    <Box
+      sx={{
+        padding: "36px 24px",
+        m: 0,
+        flexDirection: "column",
+      }}
+    >
+      <Outlet />
     </Box>
   );
 }

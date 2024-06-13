@@ -10,15 +10,14 @@ import React, { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import MyTaskItems from "./MyTaskItems";
+import InTaskItem from "./inTaskItem";
+import InCustomAccordion from "./inCustomAccordion";
 import { useDrop } from "react-dnd";
-import CustomTaskAccordion from "./CustomTaskAccordion";
-
 import { useBoundStore } from "../../stores";
 import { shallow } from "zustand/shallow";
 import { useParams } from "react-router-dom";
 
-function MyTaskAccordion({ title, state, tasks, view }) {
+const InTaskAccordion = ({ title, state, tasks, handleAddTask, view }) => {
   const { updateTask, updateProjects, User } = useBoundStore(
     (state) => state,
     shallow
@@ -26,7 +25,7 @@ function MyTaskAccordion({ title, state, tasks, view }) {
   const theme = createTheme();
   const [expanded, setExpanded] = useState(false);
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
-  const isKanbanView = view === "View Kanban";
+  const isKanbanView = view == "View Kanban";
   const params = useParams();
 
   const addTaskToList = async (taskId) => {
@@ -52,7 +51,6 @@ function MyTaskAccordion({ title, state, tasks, view }) {
 
   const ExpandIcon = ({ expanded }) => {
     return (
-      // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
       <div
         style={{
           display: "flex",
@@ -78,18 +76,20 @@ function MyTaskAccordion({ title, state, tasks, view }) {
       </div>
     );
   };
+
   return (
     <ThemeProvider theme={theme}>
       <div
         style={{
           textAlign: isMobile ? "left" : "",
+          opacity,
         }}
         ref={drop}
       >
-        <CustomTaskAccordion
+        <InCustomAccordion
           expanded={expanded}
           elevation={4}
-          className="custom-accordion"
+          className='custom-accordion'
           style={{
             backgroundColor: "#F6F7FA",
             borderRadius: "20px",
@@ -99,8 +99,8 @@ function MyTaskAccordion({ title, state, tasks, view }) {
           }}
         >
           <AccordionSummary
-            aria-controls="panel1a-content"
-            id="panel1a-header"
+            aria-controls='panel1a-content'
+            id='panel1a-header'
             sx={{
               display: "flex",
               alignItems: "center",
@@ -108,7 +108,6 @@ function MyTaskAccordion({ title, state, tasks, view }) {
               height: "30px",
             }}
           >
-            {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
             <div
               style={{
                 display: "flex",
@@ -119,7 +118,7 @@ function MyTaskAccordion({ title, state, tasks, view }) {
               <ExpandIcon expanded={expanded} />
 
               <Typography
-                variant="p"
+                variant='p'
                 sx={{
                   fontSize: "20px",
                   fontWeight: 600,
@@ -148,6 +147,18 @@ function MyTaskAccordion({ title, state, tasks, view }) {
                   {tasks?.length.toString()}
                 </div>
               )}
+
+              <AddIcon
+                sx={{
+                  color: "#8C7BEE",
+                  cursor: "pointer",
+                  borderRadius: "8px",
+                  backgroundColor: "#ECE9FF",
+                  height: "24px",
+                  width: "24px",
+                }}
+                onClick={() => handleAddTask()}
+              />
             </div>
           </AccordionSummary>
 
@@ -156,24 +167,24 @@ function MyTaskAccordion({ title, state, tasks, view }) {
               display: "flex",
               flexDirection: "column",
               padding: "0",
-              gap: !isKanbanView ? "5px" : "40px",
-              backgroundColor: !isKanbanView && "#F6F7FA",
-              borderRadius: "1rem",
+              gap: "20px",
             }}
           >
             {tasks?.map((task) => (
-              <MyTaskItems
+              <InTaskItem
                 key={task.id}
                 task={task}
                 isMobile={isMobile}
                 isKanbanView={isKanbanView}
+                onDragStart={addTaskToList}
                 projectId={params.id}
               />
             ))}
           </AccordionDetails>
-        </CustomTaskAccordion>
+        </InCustomAccordion>
       </div>
     </ThemeProvider>
   );
-}
-export default MyTaskAccordion;
+};
+
+export default InTaskAccordion;

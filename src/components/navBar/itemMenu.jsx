@@ -30,6 +30,11 @@ function initializeItems(selectedProject) {
       icon: <FolderCopyOutlinedIcon />,
       submenu: [
         {
+          title: "Tasks Browser",
+          url: "/TasksBrowser",
+          // url: `/project/${selectedProject?._id}/TasksBrowser`,
+        },
+        {
           title: "My project",
           url: `/project/${selectedProject?._id}/tasks`,
         },
@@ -42,9 +47,14 @@ function initializeItems(selectedProject) {
         {
           title: "report",
           url: `/project/${selectedProject?._id}/report`,
-          submenu: [],
         },
       ],
+    },
+    {
+      title: "Members",
+      url: "/members",
+      icon: <BiGroup />,
+      submenu: [],
     },
   ];
 }
@@ -116,7 +126,13 @@ function ItemMenu(props) {
         display: "flex",
         flexDirection: "column",
         gap: "8px",
+        display: "flex",
+        flexDirection: "column",
+        gap: "8px",
         py: 0,
+        px: { xs: "8px", sm: "12px" },
+        width: "100%",
+        marginTop: "48px",
         px: { xs: "8px", sm: "12px" },
         width: "100%",
         marginTop: "48px",
