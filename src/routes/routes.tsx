@@ -115,6 +115,7 @@ export default function Navigator() {
               <Route path="gantt" element={<Gantt />} />
             </Route>
 
+            <Route path="/TasksBrowser" element={<Members />} />
             <Route path="/members" element={<Members />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>

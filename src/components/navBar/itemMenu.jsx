@@ -30,6 +30,11 @@ function initializeItems(selectedProject) {
       icon: <FolderCopyOutlinedIcon />,
       submenu: [
         {
+          title: "Tasks Browser",
+          url: "/TasksBrowser",
+          // url: `/project/${selectedProject?._id}/TasksBrowser`,
+        },
+        {
           title: "My project",
           url: `/project/${selectedProject?._id}/tasks`,
         },
