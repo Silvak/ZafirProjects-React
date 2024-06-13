@@ -2,11 +2,7 @@ import GanttChart from "@/components/ganttChart/GanttChart";
 
 // Screen Componente
 function Gantt() {
-  return (
-    <div>
-      <GanttChart />
-    </div>
-  );
+  return <GanttChart />;
 }
 
 export default Gantt;

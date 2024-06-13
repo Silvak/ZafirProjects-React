@@ -1,14 +1,14 @@
 import React from "react";
-import ReportComponent from "../../components/report/ReportComponent";
-import ReportBody from "../../components/report/ReportBody";
+import ReportComponent from "@/components/report/ReportComponent";
+import ReportBody from "@/components/report/ReportBody";
+import LayoutPage from "@/layout/layoutPage";
 
 const App = () => {
-
   return (
-    <div>
-    <ReportComponent />
-    <ReportBody />
-    </div>
+    <>
+      <ReportComponent />
+      <ReportBody />
+    </>
   );
 };
 

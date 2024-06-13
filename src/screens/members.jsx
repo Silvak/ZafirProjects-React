@@ -1,3 +1,4 @@
+import LayoutPage from "@/layout/layoutPage";
 import React, { useState, useEffect } from "react";
 import TableContainer from "@material-ui/core/TableContainer";
 import Table from "@material-ui/core/Table";

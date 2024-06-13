@@ -33,7 +33,6 @@ const TaskDetail = ({
       {loading ? (
         <Box
           sx={{
-            width: '95vw',
             height: '80vh',
             backgroundColor: 'white',
             display: 'grid',
@@ -41,6 +40,7 @@ const TaskDetail = ({
             borderEndEndRadius: '16px',
             placeContent: 'center',
           }}
+          style={{ width: '90vw', maxWidth: '1024px' }}
         >
           <Loader />
         </Box>
@@ -54,25 +54,27 @@ const TaskDetail = ({
             borderBottomRightRadius: '14px',
             borderBottomLeftRadius: '14px',
             width: '100%',
-            '& > .MuiGrid-item': {
-              padding: '0px',
-            },
-            '& > .MuiGrid-item:nth-of-type(1)': {
-              padding: `10px  ${isMobile ? '10px' : '30px'}`,
-            },
+            overflow: 'auto',
+            padding: 8,
+            // '& > .MuiGrid-item': {
+            //   padding: '0px',
+            // },
+            // '& > .MuiGrid-item:nth-of-type(1)': {
+            //   padding: `10px  ${isMobile ? '10px' : '30px'}`,
+            // },
           }}
           spacing={4}
         >
           {!singleTask ? (
             <>
-              <Grid
-                item
+              <div
                 xs={12}
                 md={7}
                 sx={{
                   color: '#1D1F24',
                   height: '100%',
-                  overflowY: isMobile ? 'none' : 'scroll',
+                  overflow: 'auto',
+                  padding: 8,
                 }}
               >
                 <TaskDetailHeader
@@ -86,15 +88,15 @@ const TaskDetail = ({
                   isSubtask={isSubtask}
                   setFilterSubtask={setFilterSubtask}
                 />
-                {/* <TaskDetailSubstasks taskId={task._id} /> */}
-              </Grid>
-              <Grid item xs={12} md={5}>
+                {!isSubtask && <TaskDetailSubstasks taskId={task._id} />}
+              </div>
+              {/* <Grid item xs={12} md={5}>
                 <ChatMessage />
-              </Grid>
+              </Grid> */}
             </>
           ) : (
             <>
-              <Grid
+              <div
                 item
                 xs={12}
                 md={7}
@@ -115,10 +117,10 @@ const TaskDetail = ({
                   projectId={projectId}
                 />
                 {!isSubtask && <TaskDetailSubstasks taskId={singleTask._id} />}
-              </Grid>
-              <Grid item xs={12} md={5}>
+              </div>
+              {/* <Grid item xs={12} md={5}>
                 <ChatMessage />
-              </Grid>
+              </Grid> */}
             </>
           )}
         </Grid>

@@ -47,10 +47,16 @@ export default function Navigator() {
       // Si es la primera vez, redirigir a la raíz y marcar que es la primera vez
       sessionStorage.setItem("firstVisit", "true");
       navigate("/");
+      sessionStorage.setItem("firstVisit", "true");
+      navigate("/");
     } else if (firstVisit && !Authenticated) {
       sessionStorage.removeItem("firstVisit");
       navigate("/sign-in");
+      sessionStorage.removeItem("firstVisit");
+      navigate("/sign-in");
     } else if (!firstVisit && !Authenticated) {
+      sessionStorage.removeItem("firstVisit");
+      navigate("/sign-in");
       sessionStorage.removeItem("firstVisit");
       navigate("/sign-in");
     }
@@ -109,6 +115,7 @@ export default function Navigator() {
               <Route path="gantt" element={<Gantt />} />
             </Route>
 
+            <Route path="/TasksBrowser" />
             <Route path="/members" element={<Members />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>

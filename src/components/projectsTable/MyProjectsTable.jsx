@@ -16,12 +16,15 @@ import usePagination from '@/hooks/usePagination';
 import { useBoundStore } from '../../stores';
 import { shallow } from 'zustand/shallow';
 
-const ProjectsTable = () => {
+const MyProjectsTable = () => {
   const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } =
     usePagination({});
-  const { memberProjects } = useBoundStore((state) => state, shallow);
+  const { leaderProjects, projectsData } = useBoundStore(
+    (state) => state,
+    shallow
+  );
 
-  const totalProjects = memberProjects?.length;
+  const totalProjects = leaderProjects?.length;
 
   return (
     <Accordion style={{ backgroundColor: 'white', borderRadius: '20px' }}>
@@ -30,7 +33,7 @@ const ProjectsTable = () => {
         aria-controls="panel1a-content"
         id="panel1a-header"
       >
-        <Typography variant="h6">Joined Projects</Typography>
+        <Typography variant="h6">My Projects</Typography>
       </AccordionSummary>
       <AccordionDetails>
         <Table
@@ -45,8 +48,8 @@ const ProjectsTable = () => {
         >
           <ProjectsTableHeader totalProjects={totalProjects} />
           <TableBody sx={{ display: 'grid' }}>
-            {memberProjects.length > 0 &&
-              memberProjects
+            {leaderProjects.length > 0 &&
+              leaderProjects
                 .slice(
                   (page - 1) * rowsPerPage,
                   (page - 1) * rowsPerPage + rowsPerPage
@@ -60,11 +63,11 @@ const ProjectsTable = () => {
             page={page}
             handleChangePage={handleChangePage}
             handleChangeRowsPerPage={handleChangeRowsPerPage}
-            data={memberProjects}
+            data={leaderProjects}
           />
         </Table>
       </AccordionDetails>
     </Accordion>
   );
 };
-export default ProjectsTable;
+export default MyProjectsTable;

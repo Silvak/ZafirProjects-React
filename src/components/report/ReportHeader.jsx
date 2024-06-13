@@ -14,9 +14,8 @@ function ReportHeader() {
         flexDirection: isSmallScreen ? "column" : "row",
         justifyContent: "space-between",
         alignItems: isSmallScreen ? "center" : "flex-start",
-        marginTop: "19px",
-        padding: "0 24px",
         gap: isSmallScreen ? "8px" : "0",
+        marginBottom: "56px",
       }}
     >
       <Typography

@@ -2,6 +2,8 @@ import { axiosInstance } from '@/config/apiConfig';
 
 export const actualProject = (set, get) => ({
   projectsData: [],
+  leaderProjects: [],
+  memberProjects: [],
   selectedProject: undefined,
   myTasks: [],
 
@@ -24,13 +26,25 @@ export const actualProject = (set, get) => ({
     try {
       const { data } = await axiosInstance.get(`/projects/user/${idUser}`);
       if (data) {
+        const leaderProjects = data.filter(
+          (project) => project.membershipType === 'leader'
+        );
+        const memberProjects = data.filter(
+          (project) => project.membershipType === 'member'
+        );
+
+        set({
+          projectsData: data,
+          leaderProjects,
+          memberProjects,
+        });
+
         const selectedProject = get().selectedProject;
         if (!selectedProject) {
-          set({ projectsData: data, selectedProject: data[0] });
-        } else {
-          set({ projectsData: data });
+          set({ selectedProject: data[0] });
         }
-        if (selectedProject && selectedProject?._id) {
+
+        if (selectedProject && selectedProject._id) {
           await get().fetchTasksById(selectedProject._id);
         }
       }
@@ -47,7 +61,20 @@ export const actualProject = (set, get) => ({
   updateProjects: async (idUser) => {
     try {
       const { data } = await axiosInstance.get(`/projects/user/${idUser}`);
-      set({ projectsData: data });
+
+      const leaderProjects = data.filter(
+        (project) => project.membershipType === 'leader'
+      );
+      const memberProjects = data.filter(
+        (project) => project.membershipType === 'member'
+      );
+
+      set({
+        projectsData: data,
+        leaderProjects,
+        memberProjects,
+      });
+
       const id = get().selectedProject?._id;
       if (id) {
         await get().selectedProjectById(id);
@@ -57,6 +84,7 @@ export const actualProject = (set, get) => ({
       console.error('Error actualizando proyectos:', error);
     }
   },
+
   selectedProjectById: async (id) => {
     try {
       const { data } = await axiosInstance.get(`/projects/${id}`);
@@ -67,28 +95,73 @@ export const actualProject = (set, get) => ({
       console.error('Error actualizando proyecto:', error);
     }
   },
+
   updateProject: async (id, newProject) => {
     try {
       const data = await axiosInstance.put(`/projects/${id}`, newProject);
+
+      const updatedProjects = [...get().projectsData];
+      const index = updatedProjects.findIndex((project) => project._id === id);
+      if (index !== -1) {
+        updatedProjects[index] = { ...updatedProjects[index], ...newProject };
+      }
+
+      const leaderProjects = updatedProjects.filter(
+        (project) => project.membershipType === 'leader'
+      );
+      const memberProjects = updatedProjects.filter(
+        (project) => project.membershipType === 'member'
+      );
+
+      set({
+        projectsData: updatedProjects,
+        leaderProjects,
+        memberProjects,
+      });
     } catch (error) {
       console.error('Error actualizando proyecto:', error);
     }
   },
+
   addProject: async (userId, newProject) => {
     try {
       const data = await axiosInstance.post(`/projects/${userId}`, newProject);
+      await get().updateProjects(userId);
     } catch (error) {
       console.error('Error creando proyecto:', error);
     }
   },
+
   deleteProject: async (id) => {
     try {
       const data = await axiosInstance.delete(`/projects/${id}`);
+
+      const updatedProjects = get().projectsData.filter(
+        (project) => project._id !== id
+      );
+      const leaderProjects = updatedProjects.filter(
+        (project) => project.membershipType === 'leader'
+      );
+      const memberProjects = updatedProjects.filter(
+        (project) => project.membershipType === 'member'
+      );
+
+      set({
+        projectsData: updatedProjects,
+        leaderProjects,
+        memberProjects,
+      });
     } catch (error) {
       console.error('Error eliminando proyecto:', error);
     }
   },
+
   clearProjects: () => {
-    set({ projectsData: [], selectedProject: undefined });
+    set({
+      projectsData: [],
+      leaderProjects: [],
+      memberProjects: [],
+      selectedProject: undefined,
+    });
   },
 });

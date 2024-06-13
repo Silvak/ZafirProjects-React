@@ -1,38 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Grid,
   Paper,
   Typography,
   CircularProgress,
   useMediaQuery,
-} from '@mui/material';
-import FirstRow from './content/FirstRow';
-import AvatarsGroup from './content/AvatarsGroup';
-import ReportTasks from './content/ReportTasks';
-import PieChart from './content/PieChart';
-import TaskByProject from './content/TaskByProject';
-import TaskByProjectRow from './content/TaskByProjectRow';
-import UpcomingTask from './content/UpcomingTask';
-import { useBoundStore } from '../../stores/index';
-import { shallow } from 'zustand/shallow';
-import { axiosInstance } from '@/config/apiConfig';
+} from "@mui/material";
+import FirstRow from "./content/FirstRow";
+import AvatarsGroup from "./content/AvatarsGroup";
+import ReportTasks from "./content/ReportTasks";
+import PieChart from "./content/PieChart";
+import TaskByProject from "./content/TaskByProject";
+import TaskByProjectRow from "./content/TaskByProjectRow";
+import UpcomingTask from "./content/UpcomingTask";
+import { useBoundStore } from "../../stores/index";
+import { shallow } from "zustand/shallow";
+import { axiosInstance } from "@/config/apiConfig";
 
 function Loading() {
   return (
     <div
       style={{
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
         paddingBlock: 12,
       }}
     >
       <CircularProgress
-        style={{ color: '#C02327' }}
+        style={{ color: "#C02327" }}
         sx={{ m: 2 }}
-        size="32px"
+        size='32px'
       />
       <span>..loading</span>
     </div>
@@ -40,7 +40,7 @@ function Loading() {
 }
 
 function ComponentBody() {
-  const isMobile = useMediaQuery('(max-width:600px)');
+  const isMobile = useMediaQuery("(max-width:600px)");
   const [projectSelected, setProjectSelected] = useState(null);
 
   const { projectsData } = useBoundStore((state) => state, shallow);
@@ -70,7 +70,7 @@ function ComponentBody() {
 
           if (data?.length > 0) {
             const completedCount = data.filter(
-              (task) => task.state === 'Completed'
+              (task) => task.state === "Completed"
             ).length;
 
             const reduceProject = {
@@ -159,17 +159,17 @@ function ComponentBody() {
   }, [userTasks]);
 
   return (
-    <Grid container spacing={4} sx={{ mt: 2, paddingX: 2 }}>
+    <Grid container spacing={4} sx={{}}>
       {/* Primera fila */}
       <Grid item xs={12}>
         <Paper style={paperStyle}>
           <Typography sx={titleStyle}>Project report glance</Typography>
           <div
             style={{
-              display: 'flex',
-              flexDirection: isMobile ? 'column' : 'row',
-              justifyContent: isMobile ? 'center' : 'space-between',
-              alignItems: 'center',
+              display: "flex",
+              flexDirection: isMobile ? "column" : "row",
+              justifyContent: isMobile ? "center" : "space-between",
+              alignItems: "center",
             }}
           >
             <>
@@ -252,20 +252,20 @@ function ComponentBody() {
 }
 
 const paperStyle = {
-  borderRadius: '12px',
-  backgroundColor: '#ffffff',
-  border: '1px solid #E0E3E8',
+  borderRadius: "12px",
+  backgroundColor: "#ffffff",
+  border: "1px solid #E0E3E8",
 };
 
 const titleStyle = {
-  fontFamily: 'Poppins',
-  fontSize: '20px',
+  fontFamily: "Poppins",
+  fontSize: "20px",
   fontWeight: 600,
-  lineHeight: '30px',
-  letterSpacing: '0.01em',
-  textAlign: 'left',
-  color: '#1D1F24',
-  padding: '22px',
+  lineHeight: "30px",
+  letterSpacing: "0.01em",
+  textAlign: "left",
+  color: "#1D1F24",
+  padding: "22px",
 };
 
 export default ComponentBody;
