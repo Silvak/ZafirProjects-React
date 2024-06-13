@@ -1,13 +1,18 @@
 import { Container, Box, Typography, Grid, Button } from '@mui/material';
 import ProjectsTable from '@/components/projectsTable/ProjectsTable';
+import MyProjectsTable from '../../components/projectsTable/MyProjectsTable';
 import { useBoundStore } from '../../stores';
 import AddIcon from '@mui/icons-material/Add';
 import { shallow } from 'zustand/shallow';
 import CreateProjectForm from '@/components/forms/CreateProjectForm';
 
 const projects = () => {
-  const { ChangeStateModal, ChangeContentModal, ChangeTitleModal } =
-    useBoundStore((state) => state, shallow);
+  const {
+    ChangeStateModal,
+    ChangeContentModal,
+    ChangeTitleModal,
+    projectsData,
+  } = useBoundStore((state) => state, shallow);
 
   const handleCreate = () => {
     ChangeTitleModal('Add Project');
@@ -30,7 +35,9 @@ const projects = () => {
           mb: '70px',
         }}
       >
-        <Typography variant="h2">All Projects</Typography>
+        <Typography variant="h2">
+          All Projects: {projectsData.length}
+        </Typography>
         <Grid>
           <Button
             onClick={handleCreate}
@@ -52,7 +59,10 @@ const projects = () => {
           </Button>
         </Grid>
       </Box>
-      <ProjectsTable />
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+        <MyProjectsTable />
+        <ProjectsTable />
+      </Box>
     </Box>
   );
 };

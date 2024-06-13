@@ -93,7 +93,7 @@ const ProjectsTableItem = ({ project }) => {
     >
       <BoxFlex sx={{ flex: 2 }}>
         <Link
-          to={`/project/${project?._id}`}
+          to={`/project/${project?._id}/MyTasks`}
           style={{ color: 'inherit', textDecoration: 'none' }}
           onClick={() => handleSelectProject(project)}
         >
@@ -103,15 +103,15 @@ const ProjectsTableItem = ({ project }) => {
       <BoxFlex>
         <CustomAvatar
           member={leader}
-          bgColor={leader.colorBg}
-          textColor={leader.colorText}
+          bgColor={leader?.colorBg}
+          textColor={leader?.colorText}
           deleteMode={false}
         />
-        <p className={css.username}>{leader.name}</p>
+        <p className={css.username}>{leader?.name}</p>
       </BoxFlex>
       <BoxFlex>
-        <MdCalendarMonth color='#6B6E75' size='20px' />
-        <p className='date'>{fixStart}</p>
+        <MdCalendarMonth color="#6B6E75" size="20px" />
+        <p className="date">{fixStart}</p>
       </BoxFlex>
 
       <BoxFlex sx={{ gap: '20px' }}>
