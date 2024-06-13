@@ -15,12 +15,18 @@
 
 .headText {
   color: #6b6e75;
+  border-bottom: 1px solid var(--borderColor);
 }
 
 .table,
 th,
 td {
   padding: 15px 20px;
+  text-align: left;
+}
+
+.table th {
+  padding-block: 15px;
   text-align: left;
 }
 

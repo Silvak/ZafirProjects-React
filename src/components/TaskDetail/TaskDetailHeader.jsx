@@ -8,6 +8,7 @@ const TaskDetailHeader = ({ taskId, taskTitle, isSubtask }) => {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
+        width: '100%',
       }}
     >
       <h2
@@ -16,9 +17,10 @@ const TaskDetailHeader = ({ taskId, taskTitle, isSubtask }) => {
           fontWeight: 'bold',
           textBalance: 'balance',
           paddingRight: 8,
+          maxWidth: '80%',
         }}
       >
-        {isSubtask && <span>Subtask: </span>}
+        {isSubtask && <span style={{ color: 'black' }}>Subtask: </span>}
         {taskTitle}
       </h2>
       <Box
@@ -29,7 +31,10 @@ const TaskDetailHeader = ({ taskId, taskTitle, isSubtask }) => {
         }}
       >
         <span
-          style={{ fontSize: 'clamp(10px,2vw, 12px)', textAlign: 'center' }}
+          style={{
+            fontSize: 'clamp(10px,2vw, 12px)',
+            textAlign: 'center',
+          }}
         >
           {taskId}
         </span>

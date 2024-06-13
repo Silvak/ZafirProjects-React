@@ -1,4 +1,4 @@
-import { Box, TableCell } from '@mui/material';
+import { Box, TableCell, Toolbar } from '@mui/material';
 import { fixDate } from '@/utils/fixDate';
 import { BsPen, BsTrash3 } from 'react-icons/bs';
 //styles
@@ -91,27 +91,35 @@ const ProjectsTableItem = ({ project }) => {
         alignItems: 'center',
       }}
     >
-      <BoxFlex sx={{ flex: 2 }}>
+      <BoxFlex sx={{ flex: 1 }}>
         <Link
-          to={`/project/${project?._id}`}
-          style={{ color: 'inherit', textDecoration: 'none' }}
+          to={`/project/${project?._id}/MyTasks`}
+          style={{ color: 'inherit', textDecoration: 'none', width: '20rem' }}
           onClick={() => handleSelectProject(project)}
         >
-          <h2 className={css.projectName}>{project?.name}</h2>
+          <Toolbar title={project?.name} placement="right">
+            <h2 className={css.projectName}>
+              {project?.name.slice(0, 30)}
+              {project?.name.length > 30 ? '...' : ''}
+            </h2>
+          </Toolbar>
         </Link>
       </BoxFlex>
-      <BoxFlex>
+      <BoxFlex sx={{ minWidth: 'max-content' }}>
         <CustomAvatar
           member={leader}
-          bgColor={leader.colorBg}
-          textColor={leader.colorText}
+          bgColor={leader?.colorBg}
+          textColor={leader?.colorText}
           deleteMode={false}
         />
-        <p className={css.username}>{leader.name}</p>
+        <p className={css.username} style={{ width: '14rem' }}>
+          {leader?.name.slice(0, 24)}
+          {leader?.name.length > 24 ? '...' : ''}
+        </p>
       </BoxFlex>
       <BoxFlex>
-        <MdCalendarMonth color='#6B6E75' size='20px' />
-        <p className='date'>{fixStart}</p>
+        <MdCalendarMonth color="#6B6E75" size="20px" />
+        <p className="date">{fixStart}</p>
       </BoxFlex>
 
       <BoxFlex sx={{ gap: '20px' }}>
