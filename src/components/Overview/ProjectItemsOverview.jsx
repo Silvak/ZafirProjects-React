@@ -53,7 +53,9 @@ const ProjectItemsOverview = ({
           <RenderProjectItems category={category} />
         </div> */}
       <Link
-        to={`/project/${project?._id}/tasks`}
+        to={`/project/${project?._id}/${
+          project.membershipType === 'leader' ? 'tasks' : 'MyTasks'
+        }`}
         style={{ color: 'inherit', textDecoration: 'none' }}
         onClick={() => handleSelectProject(project)}
       >
