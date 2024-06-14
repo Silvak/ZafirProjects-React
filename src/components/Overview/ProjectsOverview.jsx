@@ -29,7 +29,6 @@ function ProjectsOverview() {
     ChangeContentModal,
     deleteProject,
   } = useBoundStore((state) => state, shallow);
-  console.log('selectedProject', selectedProject);
 
   const handleConfirmDelete = async (projectToDelete) => {
     try {
@@ -95,7 +94,7 @@ function ProjectsOverview() {
 
           <Grid item>
             <NavLink
-              to='/projects'
+              to="/projects"
               style={{
                 textDecoration: 'none',
                 display: 'flex',

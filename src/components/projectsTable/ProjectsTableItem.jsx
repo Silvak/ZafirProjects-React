@@ -117,12 +117,12 @@ const ProjectsTableItem = ({ project }) => {
           {leader?.name.length > 24 ? '...' : ''}
         </p>
       </BoxFlex>
-      <BoxFlex sx={{ mr: '30px' }}>
+      <BoxFlex sx={{ mr: 3 }}>
         <MdCalendarMonth color="#6B6E75" size="20px" />
         <p className="date">{fixStart}</p>
       </BoxFlex>
 
-      <BoxFlex sx={{ gap: 3 }}>
+      <BoxFlex sx={{ gap: 2, mr: 3 }}>
         <BsPen
           title="Edit project"
           style={{ cursor: 'pointer' }}
@@ -143,6 +143,7 @@ const ProjectsTableItem = ({ project }) => {
             height: '8px',
             backgroundColor: '#ECEFF3',
             borderRadius: '4px',
+            marginRight: 2,
           }}
         >
           <div

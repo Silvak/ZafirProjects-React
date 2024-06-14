@@ -24,7 +24,7 @@ const ProjectsTable = () => {
   const totalProjects = memberProjects?.length;
 
   return (
-    <Accordion style={{ backgroundColor: 'white', borderRadius: '20px' }}>
+    <Accordion style={{ backgroundColor: 'white', borderRadius: '12px' }}>
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"

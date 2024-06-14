@@ -63,15 +63,15 @@ const TasksBrowser = () => {
         <Accordion sx={{ minWidth: '250px' }}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
-            aria-controls='panel1a-content'
-            id='panel1a-header'
+            aria-controls="panel1a-content"
+            id="panel1a-header"
           >
             <Box sx={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-              <Typography variant='h6'>{task?.taskName}</Typography>
+              <Typography variant="h6">{task?.taskName}</Typography>
               <Box>
                 <Typography
-                  variant='body1'
-                  color='textSecondary'
+                  variant="body1"
+                  color="textSecondary"
                   noWrap
                   sx={{
                     fontWeight: 600,
@@ -103,20 +103,20 @@ const TasksBrowser = () => {
                       ':hover': { background: '#F6F7FA', cursor: 'pointer' },
                     }}
                   >
-                    <Typography variant='h6' fontWeight='bold' noWrap>
+                    <Typography variant="h6" fontWeight="bold" noWrap>
                       <span style={{ fontSize: '14px', color: '#1D1F24' }}>
                         {subtask.taskName}
                       </span>
                     </Typography>
                     <Box
                       container
-                      alignItems='center'
+                      alignItems="center"
                       sx={{ display: 'flex', justifyContent: 'space-between' }}
                     >
                       {!isMobile && (
                         <Box item sx={{ width: '80px' }}>
                           <Typography
-                            variant='h6'
+                            variant="h6"
                             noWrap
                             style={{
                               fontSize: '12px',
@@ -151,7 +151,7 @@ const TasksBrowser = () => {
                               }}
                             />
                             <Typography
-                              variant='body1'
+                              variant="body1"
                               noWrap
                               style={{
                                 fontSize: '12px',
@@ -178,7 +178,7 @@ const TasksBrowser = () => {
                                 onClick={handleClipIcon}
                               />
                               <Typography
-                                variant='body1'
+                                variant="body1"
                                 noWrap
                                 style={{
                                   fontSize: '12px',
@@ -212,8 +212,8 @@ const TasksBrowser = () => {
                             }}
                           />
                           <Typography
-                            variant='body1'
-                            color='textSecondary'
+                            variant="body1"
+                            color="textSecondary"
                             noWrap
                             style={{
                               fontSize: '12px',
@@ -229,8 +229,8 @@ const TasksBrowser = () => {
 
                       <Box item>
                         <Typography
-                          variant='body1'
-                          color='textSecondary'
+                          variant="body1"
+                          color="textSecondary"
                           noWrap
                           sx={{
                             fontWeight: 600,
