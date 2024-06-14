@@ -48,7 +48,6 @@ const ProjectsTableItem = ({ project }) => {
 
   const handleSelectProject = async (project) => {
     setSelectedProject(project);
-    await updateProjects(User?.uid);
   };
 
   const { fixStart } = fixDate(project?.start);

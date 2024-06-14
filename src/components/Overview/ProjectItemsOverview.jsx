@@ -19,7 +19,6 @@ const ProjectItemsOverview = ({
 
   const handleSelectProject = async (project) => {
     setSelectedProject(project);
-    await updateProjects(User?.uid);
   };
 
   return (
@@ -67,7 +66,7 @@ const ProjectItemsOverview = ({
             </h2>
           </div>
           <small
-            className='quantityTasks'
+            className="quantityTasks"
             style={{ color: '#6B6E75', fontSize: '12px' }}
           >
             {/* {quantityTasks} | {item} */}

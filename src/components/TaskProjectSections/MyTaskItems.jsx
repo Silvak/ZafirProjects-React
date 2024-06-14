@@ -66,8 +66,9 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
     ChangeContentModal(<TaskDetail task={task} projectId={projectId} />);
     ChangeIsVisibleButton(true);
   };
+
   const handleClipIcon = () => {
-    alert('toqueé el icono del clip');
+    console.log('toqueé el icono del clip');
   };
 
   const handleConfirmDelete = async (taskToDelete) => {
