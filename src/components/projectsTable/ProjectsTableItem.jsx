@@ -98,7 +98,9 @@ const ProjectsTableItem = ({ project }) => {
     >
       <BoxFlex sx={{ flex: 1 }}>
         <Link
-          to={`/project/${project?._id}/MyTasks`}
+          to={`/project/${project?._id}/${
+            project.membershipType === 'leader' ? 'tasks' : 'MyTasks'
+          }`}
           style={{ color: 'inherit', textDecoration: 'none', width: '20rem' }}
           onClick={() => handleSelectProject(project)}
         >
