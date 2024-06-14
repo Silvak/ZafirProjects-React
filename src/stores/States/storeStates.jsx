@@ -6,8 +6,8 @@ export const useStoreStates = persist(
     stateAccordion1: false,
     stateAccordion2: false,
     ChangeStateOpenDrawer: (value) => set({ stateOpenDrawer: value }),
-    setAccordion1: (value) => set({ stateAccordion1: value }),
-    setAccordion2: (value) => set({ stateAccordion2: value }),
+    setStateAccordion1: (value) => set({ stateAccordion1: value }),
+    setStateAccordion2: (value) => set({ stateAccordion2: value }),
   }),
   {
     name: 'states-storage',

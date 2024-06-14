@@ -89,6 +89,13 @@ const ProjectsTableItem = ({ project }) => {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
+        paddingRight: '10px',
+        paddingLeft: 0,
+        borderRadius: '12px',
+        ':hover': {
+          background: '#F6F7FA',
+          cursor: 'pointer',
+        },
       }}
     >
       <BoxFlex sx={{ flex: 1 }}>
@@ -111,6 +118,7 @@ const ProjectsTableItem = ({ project }) => {
           bgColor={leader?.colorBg}
           textColor={leader?.colorText}
           deleteMode={false}
+          size="38px"
         />
         <p className={css.username} style={{ width: '14rem' }}>
           {leader?.name.slice(0, 24)}

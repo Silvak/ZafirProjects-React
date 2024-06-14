@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import {
   Accordion,
   AccordionDetails,
@@ -7,33 +8,72 @@ import {
   Typography,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
 import ProjectsTableHeader from '@/components/projectsTable/ProjectsTableHeader';
 import ProjectsTableItem from '@/components/projectsTable/ProjectsTableItem';
 import TablePagination from '@/components/tableMembers/tablePagination';
-
 import usePagination from '@/hooks/usePagination';
 import { useBoundStore } from '../../stores';
 import { shallow } from 'zustand/shallow';
 
 const MyProjectsTable = () => {
+  const [dateMyProjects, setDateMyProjects] = useState('all');
+  const accordion = 1;
+
   const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } =
     usePagination({});
-  const { leaderProjects, projectsData } = useBoundStore(
-    (state) => state,
-    shallow
-  );
+  const { leaderProjects, projectsData, stateAccordion1, setStateAccordion1 } =
+    useBoundStore((state) => state, shallow);
 
+  const [filteredProjects, setFilteredProjects] = useState(leaderProjects);
   const totalProjects = leaderProjects?.length;
 
+  useEffect(() => {
+    const filterProjectsByDate = () => {
+      const now = new Date();
+      let filtered = leaderProjects;
+
+      if (dateMyProjects === 'today') {
+        filtered = leaderProjects.filter((project) => {
+          const projectDate = new Date(project.start);
+          return projectDate.toDateString() === now.toDateString();
+        });
+      } else if (dateMyProjects === 'week') {
+        const startOfWeek = new Date(now.setDate(now.getDate() - now.getDay()));
+        const endOfWeek = new Date(startOfWeek);
+        endOfWeek.setDate(endOfWeek.getDate() + 6);
+        filtered = leaderProjects.filter((project) => {
+          const projectDate = new Date(project.start);
+          return projectDate >= startOfWeek && projectDate <= endOfWeek;
+        });
+      } else if (dateMyProjects === 'month') {
+        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+        const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+        filtered = leaderProjects.filter((project) => {
+          const projectDate = new Date(project.start);
+          return projectDate >= startOfMonth && projectDate <= endOfMonth;
+        });
+      }
+
+      setFilteredProjects(filtered);
+    };
+
+    filterProjectsByDate();
+  }, [dateMyProjects, leaderProjects]);
+
   return (
-    <Accordion style={{ backgroundColor: 'white', borderRadius: '12px' }}>
+    <Accordion
+      style={{ backgroundColor: 'white', borderRadius: '12px' }}
+      expanded={stateAccordion1}
+    >
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
-        aria-controls="panel1a-content"
-        id="panel1a-header"
+        aria-controls={`panel${accordion}-content`}
+        id={`panel${accordion}-header`}
+        onClick={() => setStateAccordion1(!stateAccordion1)}
       >
-        <Typography variant="h6">My Projects</Typography>
+        <Typography variant="h6" fontWeight={600}>
+          My Projects
+        </Typography>
       </AccordionSummary>
       <AccordionDetails>
         <Table
@@ -46,10 +86,15 @@ const MyProjectsTable = () => {
             width: '100%',
           }}
         >
-          <ProjectsTableHeader totalProjects={totalProjects} />
+          <ProjectsTableHeader
+            totalProjects={filteredProjects.length}
+            dateMyProjects={dateMyProjects}
+            setDateMyProjects={setDateMyProjects}
+            accordion={accordion}
+          />
           <TableBody sx={{ display: 'grid' }}>
-            {leaderProjects.length > 0 &&
-              leaderProjects
+            {filteredProjects.length > 0 &&
+              filteredProjects
                 .slice(
                   (page - 1) * rowsPerPage,
                   (page - 1) * rowsPerPage + rowsPerPage
@@ -63,11 +108,12 @@ const MyProjectsTable = () => {
             page={page}
             handleChangePage={handleChangePage}
             handleChangeRowsPerPage={handleChangeRowsPerPage}
-            data={leaderProjects}
+            data={filteredProjects}
           />
         </Table>
       </AccordionDetails>
     </Accordion>
   );
 };
+
 export default MyProjectsTable;
