@@ -197,7 +197,7 @@ function MyTaskViewItems({ task, isMobile, isKanbanView, projectId }) {
               alignItems: 'center',
             }}
           >
-            <div style={{ display: 'flex' }}>
+            <div title="members" style={{ display: 'flex' }}>
               <PeopleAltOutlinedIcon sx={{ mr: '5px', color: 'gray' }} />
               <Typography
                 variant="body1"
@@ -223,12 +223,15 @@ function MyTaskViewItems({ task, isMobile, isKanbanView, projectId }) {
               style={{
                 display: 'flex',
                 marginLeft: !isKanbanView ? 3 : 0,
+                marginRight: '2rem',
               }}
             >
-              <AttachFileIcon
-                style={{ cursor: 'pointer', color: 'gray' }}
-                onClick={handleClipIcon}
-              />
+              <toolbar title="files" style={{ display: 'flex' }}>
+                <AttachFileIcon
+                  style={{ cursor: 'pointer', color: 'gray' }}
+                  onClick={handleClipIcon}
+                />
+              </toolbar>
               <Typography
                 variant="body1"
                 noWrap

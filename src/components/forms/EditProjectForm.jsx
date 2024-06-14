@@ -37,7 +37,7 @@ function EditProjectForm({ project }) {
       {/* row - colum */}
       <Paper
         elevation={1}
-        component='form'
+        component="form"
         onSubmit={handleSubmit}
         sx={{
           maxWidth: isMobile ? '90vw' : 'fit-content',
@@ -61,10 +61,10 @@ function EditProjectForm({ project }) {
             Enter a project name
           </Typography>
           <TextField
-            size='small'
+            size="small"
             value={formData.name}
-            placeholder='Project name...'
-            name='name'
+            placeholder="Project name..."
+            name="name"
             onChange={handleChange}
             sx={{
               width: '100%',
@@ -88,9 +88,9 @@ function EditProjectForm({ project }) {
               Start date
             </Typography>
             <TextField
-              size='small'
-              name='start'
-              type='date'
+              size="small"
+              name="start"
+              type="date"
               value={formData.start}
               onChange={handleChange}
               sx={{
@@ -103,9 +103,9 @@ function EditProjectForm({ project }) {
               End date
             </Typography>
             <TextField
-              size='small'
-              name='end'
-              type='date'
+              size="small"
+              name="end"
+              type="date"
               value={formData.end}
               onChange={handleChange}
               sx={{
@@ -125,11 +125,11 @@ function EditProjectForm({ project }) {
             Add a description...
           </Typography>
           <TextField
-            size='small'
-            name='description'
+            size="small"
+            name="description"
             onChange={handleChange}
             value={formData.description}
-            placeholder='...'
+            placeholder="..."
             sx={{
               width: '100%',
             }}
@@ -149,8 +149,8 @@ function EditProjectForm({ project }) {
               Add members
             </Typography>
             <TextField
-              size='small'
-              name='members_id'
+              size="small"
+              name="members_id"
               value={member}
               onChange={(e) => {
                 setMember(e.target.value);
@@ -158,14 +158,14 @@ function EditProjectForm({ project }) {
                   inputValue: e.target.value,
                 });
               }}
-              placeholder='Search a member'
+              placeholder="Search a member"
               sx={{
                 width: '100%',
               }}
             />
           </Grid>
           <SuggestionList
-            type='member'
+            type="member"
             usersList={filteredMembers}
             onClick={handleSuggestionClick}
           />
@@ -179,6 +179,8 @@ function EditProjectForm({ project }) {
               marginBottom: '20px',
               cursor: 'pointer',
               width: 'fit-content',
+              maxWidth: '40vw',
+              flexWrap: 'wrap',
             }}
           >
             {members.map((member) => (
@@ -203,7 +205,7 @@ function EditProjectForm({ project }) {
           }}
         >
           <Button
-            title='Cancel'
+            title="Cancel"
             onClick={handleClose}
             sx={{
               textTransform: 'none',
@@ -221,7 +223,7 @@ function EditProjectForm({ project }) {
             Cancel
           </Button>
           <Button
-            title='Save'
+            title="Save"
             onClick={handleSubmit}
             sx={{
               textTransform: 'none',

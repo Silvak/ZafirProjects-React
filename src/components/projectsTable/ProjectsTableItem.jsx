@@ -94,7 +94,6 @@ const ProjectsTableItem = ({ project }) => {
         borderRadius: '12px',
         ':hover': {
           background: '#F6F7FA',
-          cursor: 'pointer',
         },
       }}
     >

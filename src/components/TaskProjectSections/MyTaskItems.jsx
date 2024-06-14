@@ -236,7 +236,8 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                marginLeft: !isKanbanView ? 5 : 0,
+                marginLeft: !isKanbanView ? 3 : 0,
+                marginRight: '2rem',
               }}
             >
               <toolbar title="files" style={{ display: 'flex' }}>
