@@ -69,7 +69,7 @@ const InTaskItem = ({ task, isMobile, isKanbanView, projectId }) => {
     ChangeIsVisibleButton(true);
   };
   const handleClipIcon = () => {
-    alert('toqueé el icono del clip');
+    console.log('toqué el icono del clip');
   };
 
   const handleConfirmDelete = async (taskToDelete) => {
@@ -278,7 +278,7 @@ const InTaskItem = ({ task, isMobile, isKanbanView, projectId }) => {
                   marginRight: '1rem',
                 }}
               >
-                {task?.attachment.length}
+                {task?.attachment?.length}
                 {isKanbanView && (
                   <CircleIcon
                     style={{
@@ -330,7 +330,8 @@ const InTaskItem = ({ task, isMobile, isKanbanView, projectId }) => {
             />
             <Typography
               variant="body1"
-              color="textSecondary"
+              color="blue"
+              // color="textSecondary"
               noWrap
               style={{ fontSize: '14px', fontWeight: 'bold' }}
             >

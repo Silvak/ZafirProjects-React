@@ -164,42 +164,6 @@ const ProjectsTableItem = ({ project }) => {
           />
         </div>
       </BoxFlex>
-
-      {/* <BoxFlex>
-          <MdAttachFile color='#6B6E75' size='20px' />
-          <p> {attachments.length} files</p>1 files
-        </BoxFlex> */}
-      {/* <BoxFlex>
-        {status.name === "In progress" ? (
-          <div
-            style={{
-              width: "86px",
-              height: "8px",
-              backgroundColor: "#ECEFF3",
-              borderRadius: "4px",
-            }}
-          >
-            <div
-              style={{
-                width: `${status.percentage}%`,
-                height: "100%",
-                backgroundColor: "#00913f",
-                borderRadius: "inherit",
-              }}
-            />
-          </div>
-        ) : (
-          <div
-            style={{
-              backgroundColor: "#FFEBEA",
-              borderRadius: "10px",
-              padding: "10px",
-            }}
-          >
-            <span style={{ color: "#E55D57" }}>Issues</span>
-          </div>
-        )}
-      </BoxFlex> */}
     </TableCell>
   );
 };

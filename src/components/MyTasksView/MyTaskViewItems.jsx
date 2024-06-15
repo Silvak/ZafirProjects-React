@@ -56,7 +56,7 @@ function MyTaskViewItems({ task, isMobile, isKanbanView, projectId }) {
     ChangeIsVisibleButton(true);
   };
   const handleClipIcon = () => {
-    alert('toqueé el icono del clip');
+    console.log('toqué el icono del clip');
   };
 
   const handleConfirmDelete = async (taskToDelete) => {
@@ -134,10 +134,11 @@ function MyTaskViewItems({ task, isMobile, isKanbanView, projectId }) {
           fontSize: '14px',
           marginTop: '16px',
           cursor: 'pointer',
+          paddingBlock: 4,
         }}
         onClick={() => (isMobile ? handleMoreIcon(task) : undefined)}
       >
-        {task.taskName}
+        {isKanbanView ? task.description : task.taskName}
       </Typography>
       <Grid
         container
@@ -241,7 +242,7 @@ function MyTaskViewItems({ task, isMobile, isKanbanView, projectId }) {
                   marginRight: '1rem',
                 }}
               >
-                {task?.attachment.length}
+                {task?.attachment?.length}
                 {isKanbanView && (
                   <CircleIcon
                     style={{
@@ -273,7 +274,6 @@ function MyTaskViewItems({ task, isMobile, isKanbanView, projectId }) {
               sm={1}
               sx={{
                 mt: isKanbanView ? 4 : 0,
-
                 minWidth: 'min-content',
               }}
             >
@@ -343,6 +343,7 @@ function MyTaskViewItems({ task, isMobile, isKanbanView, projectId }) {
                 style={{
                   display: 'flex',
                   alignItems: 'center',
+                  minWidth: '8rem',
                 }}
               >
                 <CalendarTodayIcon

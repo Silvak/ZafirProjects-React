@@ -147,7 +147,7 @@ function CreateMember() {
           borderTopLeftRadius: '0px',
           borderTopRightRadius: '0px',
           paddingBottom: '25px',
-          marginBottom: 100,
+          marginBottom: 200,
         }}
       >
         <Box sx={{ position: 'relative' }}>
@@ -206,8 +206,9 @@ function CreateMember() {
               width: 'fit-content',
             }}
           >
-            {members.map((member) => (
+            {members.map((member, key) => (
               <CustomAvatar
+                key={member?._id}
                 bgColor={member.colorBg}
                 textColor={member.colorText}
                 member={member}
@@ -252,6 +253,8 @@ function CreateMember() {
                     marginTop: 6,
                     padding: 0,
                     boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.2)',
+                    zIndex: 999999,
+                    cursor: 'pointer',
                   },
                 },
               }}
@@ -261,7 +264,9 @@ function CreateMember() {
                   key={rol}
                   value={rol}
                   className="menu-item"
-                  style={{ backgroundColor: '#fff', cursor: 'pointer' }}
+                  style={{
+                    backgroundColor: '#fff',
+                  }}
                 >
                   {rol}
                 </MenuItem>
