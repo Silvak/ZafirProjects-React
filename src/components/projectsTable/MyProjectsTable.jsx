@@ -62,6 +62,7 @@ const MyProjectsTable = () => {
 
   return (
     <Accordion
+      elevation={1}
       style={{ backgroundColor: 'white', borderRadius: '12px' }}
       expanded={stateAccordion1}
     >

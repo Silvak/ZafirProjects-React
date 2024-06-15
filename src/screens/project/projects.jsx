@@ -30,7 +30,7 @@ const projects = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            mb: '70px',
+            mb: '0px',
           }}
         >
           <Typography variant="h2" style={{ fontSize: 30 }}>

@@ -31,7 +31,7 @@ const BoxFlex = ({ children, sx }) => {
   );
 };
 
-const ProjectsTableItem = ({ project }) => {
+const ProjectsTableItem = ({ project, isJoined }) => {
   const {
     selectedProjectById,
     updateProjects,
@@ -130,19 +130,21 @@ const ProjectsTableItem = ({ project }) => {
         <p className="date">{fixStart}</p>
       </BoxFlex>
 
-      <BoxFlex sx={{ gap: 2, mr: 3 }}>
-        <BsPen
-          title="Edit project"
-          style={{ cursor: 'pointer' }}
-          onClick={() => handleEdit(<EditProjectForm project={project} />)}
-        />
+      {!isJoined && (
+        <BoxFlex sx={{ gap: 2, mr: 3 }}>
+          <BsPen
+            title="Edit project"
+            style={{ cursor: 'pointer' }}
+            onClick={() => handleEdit(<EditProjectForm project={project} />)}
+          />
 
-        <BsTrash3
-          title="Delete project"
-          style={{ cursor: 'pointer' }}
-          onClick={() => handleDeleteProject(project)}
-        />
-      </BoxFlex>
+          <BsTrash3
+            title="Delete project"
+            style={{ cursor: 'pointer' }}
+            onClick={() => handleDeleteProject(project)}
+          />
+        </BoxFlex>
+      )}
 
       <BoxFlex>
         <div
