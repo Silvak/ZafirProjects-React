@@ -8,8 +8,8 @@ const TaskDetailHeader = ({ taskId, taskTitle, isSubtask }) => {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        width: '100%',
       }}
+      style={{ maxWidth: '68vw' }}
     >
       <h2
         style={{

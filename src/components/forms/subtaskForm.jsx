@@ -36,7 +36,6 @@ const SubTaskForm = ({ taskId, closeModal, setFilterSubtask }) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const {
     addSubtask,
-    fetchSubtasksById,
     ChangeTitleAlert,
     ChangeStateAlert,
     ChangeTitleAlertError,
@@ -87,9 +86,22 @@ const SubTaskForm = ({ taskId, closeModal, setFilterSubtask }) => {
       } else {
         const newSubtasks = await addSubtask(data, taskId);
         setFilterSubtask(newSubtasks);
+
+        // DESCOMENTAR ESTO SI QUEREMOS QUE TAMBIEN SE AGREGUEN LOS MIEMBROS AL PROYECTO
+        // const promises = newSubtasks[0]?.members_id?.map((member) => {
+        //   return axiosInstance.post(
+        //     `projects/${selectedProject._id}/add-member`,
+        //     {
+        //       memberId: member._id,
+        //       newRole: 'Member',
+        //     }
+        //   );
+        // });
+        // // Utilizamos promise.all porque es un array de miembros
+        // await Promise.all(promises);
+        closeModal();
         ChangeTitleAlert('Subtask created successfully');
         ChangeStateAlert(true);
-        closeModal();
       }
     } catch (error) {
       console.log(error);
