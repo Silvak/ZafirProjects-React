@@ -72,13 +72,15 @@ export const actualProject = (set, get) => ({
         projectsData: data,
         leaderProjects,
         memberProjects,
-        selectedProject: data[0],
       });
-
-      const id = get().selectedProject?._id;
-      if (id) {
-        await get().selectedProjectById(id);
-        await get().fetchTasksById(id);
+      if (get().selectedProject?._id) {
+        const id = get().selectedProject?._id;
+        if (id) {
+          await get().selectedProjectById(id);
+          await get().fetchTasksById(id);
+        }
+      } else if (data.length > 1) {
+        set({ selectedProject: data[0] });
       }
     } catch (error) {
       console.error('Error actualizando proyectos:', error);

@@ -69,7 +69,7 @@ const InTaskItem = ({ task, isMobile, isKanbanView, projectId }) => {
     ChangeIsVisibleButton(true);
   };
   const handleClipIcon = () => {
-    alert('toqueé el icono del clip');
+    console.log('toqué el icono del clip');
   };
 
   const handleConfirmDelete = async (taskToDelete) => {
@@ -257,18 +257,19 @@ const InTaskItem = ({ task, isMobile, isKanbanView, projectId }) => {
               />
             )}
             <div
+              title="files"
               style={{
                 display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
                 marginLeft: !isKanbanView ? 3 : 0,
                 marginRight: '2rem',
               }}
             >
-              <toolbar title="files" style={{ display: 'flex' }}>
-                <AttachFileIcon
-                  style={{ cursor: 'pointer', color: 'gray' }}
-                  onClick={handleClipIcon}
-                />
-              </toolbar>
+              <AttachFileIcon
+                style={{ cursor: 'pointer', color: 'gray' }}
+                onClick={handleClipIcon}
+              />
               <Typography
                 variant="body1"
                 noWrap
@@ -278,7 +279,7 @@ const InTaskItem = ({ task, isMobile, isKanbanView, projectId }) => {
                   marginRight: '1rem',
                 }}
               >
-                {task?.attachment.length}
+                {task?.attachment?.length}
                 {isKanbanView && (
                   <CircleIcon
                     style={{
@@ -330,7 +331,8 @@ const InTaskItem = ({ task, isMobile, isKanbanView, projectId }) => {
             />
             <Typography
               variant="body1"
-              color="textSecondary"
+              color="blue"
+              // color="textSecondary"
               noWrap
               style={{ fontSize: '14px', fontWeight: 'bold' }}
             >
