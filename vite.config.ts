@@ -27,14 +27,14 @@ export default defineConfig(({ command, mode }) => {
         protocolImports: true,
       }),
     ],
-    // build: {
-    //   rollupOptions: {
-    //     external: ['@mui/system/useMediaQuery', '@mui/system/RtlProvider'],
-    //     paths: {
-    //       '@mui/system': '@mui/material/system',
-    //     },
-    //   },
-    // },
+    build: {
+      rollupOptions: {
+        external: ['@mui/system/useMediaQuery', '@mui/system/RtlProvider'],
+        paths: {
+          '@mui/system': '@mui/material/system',
+        },
+      },
+    },
     resolve: {
       alias: [{ find: '@', replacement: path.resolve(__dirname, 'src') }],
     },
