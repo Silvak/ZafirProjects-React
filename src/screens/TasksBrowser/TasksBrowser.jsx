@@ -37,13 +37,14 @@ const TasksBrowser = () => {
     fetchTasksWithSubtasks,
   } = useBoundStore((state) => state, shallow);
 
-  const [lastTaskId, setLastTask] = useState(null);
+  const [lastTasksId, setLastTask] = useState([]);
+  const [openedAccordionIds, setOpenedAccordionIds] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   const filteredSearchData = myTasks.filter((task) =>
     task?.taskName?.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+
   useEffect(() => {
     if (User) {
       const fetchData = async () => {
@@ -51,7 +52,6 @@ const TasksBrowser = () => {
           if (selectedProject && selectedProject._id) {
             await fetchTasksById(selectedProject._id);
           }
-          // await fetchTasksByUser(User.uid);
         } catch (error) {
           console.error('Error fetching tasks', error);
         }
@@ -60,16 +60,14 @@ const TasksBrowser = () => {
     }
   }, []);
 
-  // useEffect(() => {
-  //   myTasks.forEach((task) => {
-  //     fetchTasksWithSubtasks(task._id);
-  //   });
-  // }, [myTasks, fetchTasksWithSubtasks]);
-
-  const handleViewSubtasks = (task) => {
-    if (lastTaskId !== task._id) {
-      fetchTasksWithSubtasks(task._id);
-      setLastTask(task._id);
+  const handleAccordionChange = (task) => (event, isExpanded) => {
+    if (isExpanded) {
+      if (!openedAccordionIds.includes(task._id)) {
+        fetchTasksWithSubtasks(task._id);
+        setOpenedAccordionIds((prev) => [...prev, task._id]);
+      }
+    } else {
+      setOpenedAccordionIds((prev) => prev.filter((id) => id !== task._id));
     }
   };
 
@@ -91,12 +89,16 @@ const TasksBrowser = () => {
     >
       <ThemeProvider theme={theme}>
         {filteredSearchData?.map((task, index) => (
-          <Accordion key={task.id} sx={{ minWidth: '250px' }}>
+          <Accordion
+            key={task.id}
+            sx={{ minWidth: '250px' }}
+            expanded={openedAccordionIds.includes(task._id)}
+            onChange={handleAccordionChange(task)}
+          >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"
               id="panel1a-header"
-              onClick={() => handleViewSubtasks(task)}
             >
               <Box sx={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
                 <Typography variant="h6">{task?.taskName}</Typography>
@@ -120,7 +122,6 @@ const TasksBrowser = () => {
                 </Box>
               </Box>
             </AccordionSummary>
-            {/* details */}
             <AccordionDetails>
               {subtasks?.length > 0 &&
                 subtasks
