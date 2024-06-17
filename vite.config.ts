@@ -7,9 +7,11 @@ import { nodePolyfills } from 'vite-plugin-node-polyfills';
 dotenv.config();
 
 export default defineConfig(({ command, mode }) => {
-  process.env = {...process.env, ...loadEnv(mode, process.cwd())};
+  process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
   return {
-    plugins: [react(),
+    plugins: [
+      react(),
+
       nodePolyfills({
         // To exclude specific polyfills, add them to this list.
         exclude: [
@@ -23,11 +25,15 @@ export default defineConfig(({ command, mode }) => {
         },
         // Whether to polyfill `node:` protocol imports.
         protocolImports: true,
-      }),],
+      }),
+    ],
+    build: {
+      rollupOptions: {
+        external: ['@mui/system/useMediaQuery', '@mui/system/RtlProvider'],
+      },
+    },
     resolve: {
-      alias: [
-        { find: '@', replacement: path.resolve(__dirname, 'src') },
-      ],
+      alias: [{ find: '@', replacement: path.resolve(__dirname, 'src') }],
     },
     server: {
       port: 3000,
@@ -35,8 +41,8 @@ export default defineConfig(({ command, mode }) => {
         '/server': {
           target: process.env.VITE_MORALIS_SERVER_URL,
           ws: false,
+        },
       },
-    }
-    }
+    },
   };
 });
