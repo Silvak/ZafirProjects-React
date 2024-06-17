@@ -29,7 +29,7 @@ export default defineConfig(({ command, mode }) => {
     ],
     build: {
       rollupOptions: {
-        external: ['@mui/system/useMediaQuery'],
+        external: ['@mui/system/useMediaQuery', '@mui/system/RtlProvider'],
       },
     },
     resolve: {
