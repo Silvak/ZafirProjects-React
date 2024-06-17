@@ -1,13 +1,16 @@
-import TasksBrowserSearch from './TasksBrowserSearch';
-import { Box, Typography } from '@mui/material';
+import TasksBrowserSearch from "./TasksBrowserSearch";
+import { Box, Typography } from "@mui/material";
 
-const TasksBrowserHeader = () => {
+const TasksBrowserHeader = ({ searchTerm, setSearchTerm }) => {
   return (
     <Box>
       <Box>
-        <Typography variant='h2'>Tasks</Typography>
+        <Typography variant="h2">Tasks</Typography>
       </Box>
-      <TasksBrowserSearch />
+      <TasksBrowserSearch
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+      />
     </Box>
   );
 };
