@@ -37,7 +37,6 @@ const TasksBrowser = () => {
     fetchTasksWithSubtasks,
   } = useBoundStore((state) => state, shallow);
 
-  const [lastTasksId, setLastTask] = useState([]);
   const [openedAccordionIds, setOpenedAccordionIds] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
