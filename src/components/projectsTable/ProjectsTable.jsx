@@ -63,6 +63,7 @@ const ProjectsTable = () => {
 
   return (
     <Accordion
+      elevation={1}
       style={{ backgroundColor: 'white', borderRadius: '12px' }}
       expanded={stateAccordion2}
     >
@@ -101,7 +102,11 @@ const ProjectsTable = () => {
                   (page - 1) * rowsPerPage + rowsPerPage
                 )
                 .map((project) => (
-                  <ProjectsTableItem key={project.id} project={project} />
+                  <ProjectsTableItem
+                    key={project.id}
+                    project={project}
+                    isJoined={true}
+                  />
                 ))}
           </TableBody>
           <TablePagination

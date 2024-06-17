@@ -68,7 +68,7 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
   };
 
   const handleClipIcon = () => {
-    console.log('toqueé el icono del clip');
+    console.log('toqué el icono del clip');
   };
 
   const handleConfirmDelete = async (taskToDelete) => {
@@ -140,28 +140,29 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
           </div>
         ))}
       <Typography
-        variant='h6'
-        fontWeight='bold'
+        variant="h6"
+        fontWeight="bold"
         noWrap
         style={{
           fontSize: '14px',
           marginTop: '16px',
           cursor: 'pointer',
+          paddingBlock: 4,
         }}
         onClick={() => (isMobile ? handleMoreIcon(task) : undefined)}
       >
-        {task.taskName}
+        {isKanbanView ? task.description : task.taskName}
       </Typography>
       <Grid
         container
         spacing={0}
         columns={isMobile || isKanbanView ? 6 : 12}
-        alignItems='center'
+        alignItems="center"
         padding={0}
       >
         <Grid item xs={12} sm={!isKanbanView ? 2 : 1}>
           <Typography
-            variant='h6'
+            variant="h6"
             noWrap
             style={{
               fontSize: '12px',
@@ -191,8 +192,8 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
         {!isKanbanView && (
           <Grid item xs={12} sm={2}>
             <Typography
-              variant='body1'
-              color='textSecondary'
+              variant="body1"
+              color="textSecondary"
               noWrap
               style={{ fontSize: '14px', fontWeight: 'bold' }}
               sx={{ ml: '3rem' }}
@@ -210,10 +211,10 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
               alignItems: 'center',
             }}
           >
-            <div title='members' style={{ display: 'flex', marginRight: 4 }}>
+            <div title="members" style={{ display: 'flex', marginRight: 4 }}>
               <PeopleAltOutlinedIcon sx={{ mr: '5px', color: 'gray', ml: 5 }} />
               <Typography
-                variant='body1'
+                variant="body1"
                 noWrap
                 style={{
                   fontSize: '14px',
@@ -233,6 +234,7 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
               />
             )} */}
             <div
+              title="files"
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -241,14 +243,12 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
                 marginRight: '2rem',
               }}
             >
-              <toolbar title='files' style={{ display: 'flex' }}>
-                <AttachFileIcon
-                  style={{ cursor: 'pointer', color: 'gray' }}
-                  onClick={handleClipIcon}
-                />
-              </toolbar>
+              <AttachFileIcon
+                style={{ cursor: 'pointer', color: 'gray' }}
+                onClick={handleClipIcon}
+              />
               <Typography
-                variant='body1'
+                variant="body1"
                 noWrap
                 style={{
                   fontSize: '14px',
@@ -262,14 +262,19 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
                     style={{
                       fontSize: '6px',
                       color: 'lightgray',
-                      marginLeft: '2rem',
+                      marginLeft: '1rem',
                     }}
                   />
                 )}
               </Typography>
             </div>
             {isKanbanView && (
-              <Grid item xs={12} sm={1}>
+              <Grid
+                item
+                xs={12}
+                sm={1}
+                style={{ marginLeft: '-2rem', paddingTop: 3 }}
+              >
                 <BsTrash3
                   style={{ cursor: 'pointer' }}
                   onClick={() => {
@@ -293,8 +298,8 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
               }}
             >
               <Typography
-                variant='body1'
-                color='textSecondary'
+                variant="body1"
+                color="textSecondary"
                 noWrap
                 sx={{
                   fontWeight: 'bold',
@@ -333,8 +338,8 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
                   }}
                 />
                 <Typography
-                  variant='body1'
-                  color='textSecondary'
+                  variant="body1"
+                  color="textSecondary"
                   noWrap
                   style={{ fontSize: '14px', fontWeight: 'bold' }}
                 >
@@ -358,6 +363,7 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
                 style={{
                   display: 'flex',
                   alignItems: 'center',
+                  minWidth: '8rem',
                 }}
               >
                 <CalendarTodayIcon
@@ -368,8 +374,8 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
                   }}
                 />
                 <Typography
-                  variant='body1'
-                  color='textSecondary'
+                  variant="body1"
+                  color="textSecondary"
                   noWrap
                   style={{ fontSize: '14px', fontWeight: 'bold' }}
                 >
@@ -389,8 +395,8 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
               }}
             >
               <Typography
-                variant='body1'
-                color='textSecondary'
+                variant="body1"
+                color="textSecondary"
                 noWrap
                 sx={{
                   fontWeight: 'bold',

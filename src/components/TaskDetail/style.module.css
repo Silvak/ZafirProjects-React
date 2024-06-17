@@ -8,20 +8,21 @@
   border: 1px solid var(--borderColor);
   border-radius: 8px;
   border-collapse: separate;
-  width: 100%;
+  /* width: 100%; */
   overflow-x: auto;
   display: block;
+  width: min-content;
 }
 
 .headText {
+  max-width: min-content;
   color: #6b6e75;
-  border-bottom: 1px solid var(--borderColor);
 }
 
 .table,
 th,
 td {
-  padding: 15px 20px;
+  padding: 10px 12px;
   text-align: left;
 }
 

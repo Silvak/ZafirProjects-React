@@ -31,7 +31,7 @@ const BoxFlex = ({ children, sx }) => {
   );
 };
 
-const ProjectsTableItem = ({ project }) => {
+const ProjectsTableItem = ({ project, isJoined }) => {
   const {
     selectedProjectById,
     updateProjects,
@@ -130,19 +130,21 @@ const ProjectsTableItem = ({ project }) => {
         <p className="date">{fixStart}</p>
       </BoxFlex>
 
-      <BoxFlex sx={{ gap: 2, mr: 3 }}>
-        <BsPen
-          title="Edit project"
-          style={{ cursor: 'pointer' }}
-          onClick={() => handleEdit(<EditProjectForm project={project} />)}
-        />
+      {!isJoined && (
+        <BoxFlex sx={{ gap: 2, mr: 3 }}>
+          <BsPen
+            title="Edit project"
+            style={{ cursor: 'pointer' }}
+            onClick={() => handleEdit(<EditProjectForm project={project} />)}
+          />
 
-        <BsTrash3
-          title="Delete project"
-          style={{ cursor: 'pointer' }}
-          onClick={() => handleDeleteProject(project)}
-        />
-      </BoxFlex>
+          <BsTrash3
+            title="Delete project"
+            style={{ cursor: 'pointer' }}
+            onClick={() => handleDeleteProject(project)}
+          />
+        </BoxFlex>
+      )}
 
       <BoxFlex>
         <div
@@ -164,42 +166,6 @@ const ProjectsTableItem = ({ project }) => {
           />
         </div>
       </BoxFlex>
-
-      {/* <BoxFlex>
-          <MdAttachFile color='#6B6E75' size='20px' />
-          <p> {attachments.length} files</p>1 files
-        </BoxFlex> */}
-      {/* <BoxFlex>
-        {status.name === "In progress" ? (
-          <div
-            style={{
-              width: "86px",
-              height: "8px",
-              backgroundColor: "#ECEFF3",
-              borderRadius: "4px",
-            }}
-          >
-            <div
-              style={{
-                width: `${status.percentage}%`,
-                height: "100%",
-                backgroundColor: "#00913f",
-                borderRadius: "inherit",
-              }}
-            />
-          </div>
-        ) : (
-          <div
-            style={{
-              backgroundColor: "#FFEBEA",
-              borderRadius: "10px",
-              padding: "10px",
-            }}
-          >
-            <span style={{ color: "#E55D57" }}>Issues</span>
-          </div>
-        )}
-      </BoxFlex> */}
     </TableCell>
   );
 };

@@ -8,14 +8,14 @@ import {
   ListItemIcon,
   Menu,
   MenuItem,
-} from "@mui/material";
-import { useState, useContext } from "react";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { Logout, Settings } from "@mui/icons-material";
-import { useBoundStore } from "@/stores/index";
-import { shallow } from "zustand/shallow";
-import { UserContext } from "../../../context/User/UserContext";
+} from '@mui/material';
+import { useState, useContext } from 'react';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { Logout, Settings } from '@mui/icons-material';
+import { useBoundStore } from '@/stores/index';
+import { shallow } from 'zustand/shallow';
+import { UserContext } from '../../../context/User/UserContext';
 //import CustomAvatar from "../../CustomAvatar/CustomAvatar";
 
 export default function UserProfileButton() {
@@ -41,24 +41,24 @@ export default function UserProfileButton() {
   };
 
   return (
-    <div className='PROFILE'>
-      <Tooltip title='Account settings'>
+    <div className="PROFILE">
+      <Tooltip title="Account settings">
         <Box
           sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            backgroundColor: "#ffffff",
-            padding: "6px 14px",
-            borderRadius: "12px",
-            maxHeight: "58px",
-            minWidth: "max-content",
-            cursor: "pointer",
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            backgroundColor: '#ffffff',
+            padding: '6px 14px',
+            borderRadius: '12px',
+            maxHeight: '58px',
+            minWidth: 'max-content',
+            cursor: 'pointer',
           }}
-          id='fade-button'
-          aria-controls={open ? "fade-menu" : undefined}
-          aria-haspopup='true'
-          aria-expanded={open ? "true" : undefined}
+          id="fade-button"
+          aria-controls={open ? 'fade-menu' : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? 'true' : undefined}
           onClick={handleOpenUserMenu}
         >
           {/* <CustomAvatar
@@ -70,17 +70,17 @@ export default function UserProfileButton() {
           /> */}
           <Avatar
             sx={{
-              borderRadius: "50%",
+              borderRadius: '50%',
               bgcolor: `${User?.colorbg}`,
               color: `${User?.colorText}`,
-              width: "32px",
-              height: "32px",
+              width: '32px',
+              height: '32px',
             }}
           >
-            {User && User.name && User?.name.split(" ")[0][0]}
-            {User && User.name && User.name.split(" ").length > 1
-              ? User?.name.split(" ")[1][0]
-              : ""}
+            {User && User.name && User?.name.split(' ')[0][0]}
+            {User && User.name && User.name.split(' ').length > 1
+              ? User?.name.split(' ')[1][0]
+              : ''}
           </Avatar>
           {/* <Avatar
             src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
@@ -88,18 +88,18 @@ export default function UserProfileButton() {
             sx={{ borderRadius: '50%' }}
           /> */}
 
-          <Box sx={{ px: "10px", display: "flex", flexDirection: "column" }}>
+          <Box sx={{ px: '10px', display: 'flex', flexDirection: 'column' }}>
             <Typography
-              level='title-sm'
-              variant='p'
-              style={{ fontSize: "14px", fontWeight: 600 }}
+              level="title-sm"
+              variant="p"
+              style={{ fontSize: '14px', fontWeight: 600 }}
               color={theme.palette.text.fourth}
             >
               {User?.name}
             </Typography>
             <Typography
-              level='body-xs'
-              style={{ fontSize: "14px", color: "#6B6E75" }}
+              level="body-xs"
+              style={{ fontSize: '14px', color: '#6B6E75' }}
             >
               {User?.rol}
             </Typography>
@@ -114,56 +114,72 @@ export default function UserProfileButton() {
 
       <Menu
         anchorEl={anchorEl}
-        id='account-menu'
+        id="account-menu"
         open={open}
         onClose={handleClose}
         onClick={handleClose}
         PaperProps={{
           elevation: 0,
           sx: {
-            background: "white",
-            overflow: "visible",
-            filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.04))",
+            background: 'white',
+            overflow: 'visible',
+            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.04))',
             mt: 1.5,
-            "& .MuiAvatar-root": {
+            '& .MuiAvatar-root': {
               width: 32,
               height: 32,
               ml: -0.5,
               mr: 1,
             },
-            "&::before": {
+            '&::before': {
               content: '""',
-              display: "block",
-              position: "absolute",
+              display: 'block',
+              position: 'absolute',
               top: 0,
               right: 14,
               width: 10,
               height: 10,
-              background: "white",
-              transform: "translateY(-50%) rotate(45deg)",
+              background: 'white',
+              transform: 'translateY(-50%) rotate(45deg)',
               zIndex: 0,
             },
           },
         }}
-        transformOrigin={{ horizontal: "right", vertical: "top" }}
-        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem key='profile' onClick={handleClose}>
+        <MenuItem
+          key="profile"
+          onClick={handleClose}
+          sx={{ '&:hover': { backgroundColor: '#f5f5f5' } }}
+        >
           <Avatar /> Profile
         </MenuItem>
-        <MenuItem key='account' onClick={handleClose}>
+        <MenuItem
+          key="account"
+          onClick={handleClose}
+          sx={{ '&:hover': { backgroundColor: '#f5f5f5' } }}
+        >
           <Avatar /> My account
         </MenuItem>
         <Divider />
-        <MenuItem key='settings' onClick={handleClose}>
+        <MenuItem
+          key="settings"
+          onClick={handleClose}
+          sx={{ '&:hover': { backgroundColor: '#f5f5f5' } }}
+        >
           <ListItemIcon>
-            <Settings fontSize='small' />
+            <Settings fontSize="small" />
           </ListItemIcon>
           Settings
         </MenuItem>
-        <MenuItem key='logout' onClick={handleLogout}>
+        <MenuItem
+          key="logout"
+          onClick={handleLogout}
+          sx={{ '&:hover': { backgroundColor: '#f5f5f5' } }}
+        >
           <ListItemIcon>
-            <Logout fontSize='small' />
+            <Logout fontSize="small" />
           </ListItemIcon>
           Logout
         </MenuItem>

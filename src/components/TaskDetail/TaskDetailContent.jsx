@@ -161,7 +161,14 @@ const TaskDetailContent = ({
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid container spacing={3} style={{ width: '80vw', maxWidth: '1024px' }}>
+      <Grid
+        container
+        spacing={3}
+        style={{
+          width: '70vw',
+          maxWidth: '1024px',
+        }}
+      >
         <Grid item xs={12}>
           <Box sx={{ position: 'relative' }}>
             <TextField

@@ -40,7 +40,10 @@ const TaskDetail = ({
             borderEndEndRadius: '16px',
             placeContent: 'center',
           }}
-          style={{ width: '90vw', maxWidth: '1024px' }}
+          style={{
+            width: '80vw',
+            maxWidth: '1024px',
+          }}
         >
           <Loader />
         </Box>
@@ -50,18 +53,14 @@ const TaskDetail = ({
           sx={{
             background: '#FFFF',
             margin: 0,
+            width: '80vw',
             height: '80vh',
             borderBottomRightRadius: '14px',
             borderBottomLeftRadius: '14px',
-            width: '100%',
             overflow: 'auto',
-            padding: 8,
-            // '& > .MuiGrid-item': {
-            //   padding: '0px',
-            // },
-            // '& > .MuiGrid-item:nth-of-type(1)': {
-            //   padding: `10px  ${isMobile ? '10px' : '30px'}`,
-            // },
+            padding: 4,
+            justifyContent: 'center',
+            borderBottom: '20px solid white',
           }}
           spacing={4}
         >

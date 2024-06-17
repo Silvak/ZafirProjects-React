@@ -17,13 +17,6 @@ const ProjectsTableHeader = ({
   setDateMyProjects,
   accordion,
 }) => {
-  if (accordion === 2) {
-    console.log(dateProjects);
-  } else {
-    console.log(dateMyProjects);
-  }
-  console.log(accordion);
-
   return (
     <Toolbar
       sx={{
