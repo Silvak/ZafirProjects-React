@@ -8,8 +8,6 @@ function ConfirmForm({
   const item =
     itemToDelete._id.name || itemToDelete.taskName || itemToDelete.name;
 
-  console.log(item);
-
   return (
     <div style={{ maxWidth: '32vw', minWidth: 'max-content' }}>
       <Paper
@@ -28,7 +26,7 @@ function ConfirmForm({
           }}
         >
           Are you sure you want to delete to{' '}
-          <strong style={{ color: 'black' }}>{item}</strong> ?
+          <strong style={{ color: 'black' }}>{item}</strong>?
         </Typography>
         <div
           style={{

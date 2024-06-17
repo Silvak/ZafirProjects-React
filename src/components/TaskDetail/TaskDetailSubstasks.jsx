@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import {
   Box,
   Button,
-  useMediaQuery,
+  // useMediaQuery,
   CircularProgress,
   Tooltip,
   TableHead,
@@ -16,7 +16,7 @@ import TaskDetail from './TaskDetail';
 import css from './style.module.css';
 import SubTaskForm from '../forms/subtaskForm';
 import KeyboardBackspaceOutlinedIcon from '@mui/icons-material/KeyboardBackspaceOutlined';
-// import SubdirectoryArrowLeftIcon from '@mui/icons-material/SubdirectoryArrowLeft';
+import ConfirmForm from '../forms/ConfirmForm';
 import moment from 'moment';
 import Modal from '../modal/modalSubtask';
 
@@ -29,12 +29,11 @@ const tableHeadData = [
 ];
 
 const TaskDetailSubstasks = ({ taskId, task }) => {
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+  // const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const [filterSubtask, setFilterSubtask] = useState([]);
   const [cleanForm, setCleanForm] = useState(false);
 
   const {
-    subtasks,
     fetchSubtasksById,
     ChangeStateModal,
     ChangeTitleModal,
@@ -48,6 +47,8 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
   } = useBoundStore((state) => state, shallow);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModal2Open, setIsModal2Open] = useState(false);
+  const [subtaskToDelete, setsubtaskToDelete] = useState(null);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -62,27 +63,48 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
         const updatedSubtasks = await fetchSubtasksById(taskId);
         setFilterSubtask(updatedSubtasks);
       }
-      // const result = subtasks.filter((sub) => sub.taskId._id === taskId);
     } catch (error) {
       console.error('Error fetching tasks', error);
     }
   };
 
-  // const handleAddTask = () => {
-  //   // ChangeStateModal(true);
-  //   ChangeTitleModal('Add SubTask');
-  //   ChangeContentModal(<SubTaskForm taskId={taskId} projectId={taskId} />);
-  // };
-
   const handleAddTask = () => {
     openModal();
   };
 
-  const handleRemoveSubTask = async (subtask) => {
-    const updatedSubtasks = await removeSubtask(subtask);
-    setFilterSubtask(updatedSubtasks);
-    ChangeTitleAlert('Subtask deleted');
-    ChangeStateAlert(true);
+  const handleRemoveSubTask = (subtask) => {
+    setsubtaskToDelete(subtask);
+    setIsModal2Open(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      const updatedSubtasks = await removeSubtask(subtaskToDelete);
+      setFilterSubtask(updatedSubtasks);
+
+      // DESCOMENTAR ESTO SI QUEREMOS QUE TAMBIEN SE ELIMINEN LOS MIEMBROS DEL PROYECTO
+      // const promises = newSubtasks[0]?.members_id?.map((member) => {
+      //   return axiosInstance.post(
+      //     `/projects/${selectedProject.id}/remove-member`,
+      //     {
+      //       memberId: member._id,
+      //     }
+      //   );
+      // });
+
+      // // Utilizamos promise.all porque es un array de miembros
+      // await Promise.all(promises);
+
+      setIsModal2Open(false);
+      ChangeTitleAlert('Subtask deleted');
+      ChangeStateAlert(true);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setIsModal2Open(false);
   };
 
   const handleViewSubstask = (subtask) => {
@@ -154,32 +176,41 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
   return (
     <>
       {!cleanForm ? (
-        <Box sx={{ padding: '10px 0' }} style={{ width: '100%' }}>
+        <Box sx={{ padding: '10px 0' }} style={{ width: '70vw' }}>
           <p className={css.title}>Subtasks</p>
           <TableHead
             className={css.table}
             style={{
-              padding: isMobile ? '5px' : '20px',
               maxHeight: '65vh',
             }}
           >
             <thead>
-              <tr>
+              <tr
+                style={{
+                  width: '66vw',
+                  borderBottom:
+                    filterSubtask.length > 0 ? '1px solid #e0e3e8' : 'none',
+                }}
+              >
                 {tableHeadData.map((item) => (
                   <th
                     key={item.id}
                     className={css.headText}
                     style={{
-                      paddingLeft:
-                        item.label === 'Assignee'
-                          ? '0.8rem'
+                      minWidth: '10rem',
+                      marginLeft:
+                        item.label === 'Name'
+                          ? '0rem'
                           : item.label === 'Status'
-                          ? '2.8rem'
+                          ? '0rem'
                           : item.label === 'Date'
-                          ? '2.2rem'
+                          ? '0rem'
                           : item.label === 'Actions'
-                          ? '1.5rem'
+                          ? '0rem'
+                          : item.label === 'Assignee'
+                          ? '-0.5rem'
                           : 0,
+                      marginRight: item.label === 'Actions' ? '-0.5rem' : 0,
                     }}
                   >
                     {item.label}
@@ -263,7 +294,12 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
                     <td>
                       <div
                         style={{
-                          ...statusColors[item.status],
+                          ...statusColors[item.state],
+                          padding: '2px 8px',
+                          width: 'max-content',
+                          borderRadius: 8,
+                          fontWeight: 500,
+                          marginLeft: -10,
                         }}
                       >
                         {item.state}
@@ -346,13 +382,23 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
         // </div>
         ''
       )}
-      <Modal isOpen={isModalOpen} onClose={closeModal}>
-        <SubTaskForm
-          taskId={taskId}
-          projectId={taskId}
-          closeModal={closeModal}
-          setFilterSubtask={setFilterSubtask}
-        />
+      <Modal isOpen={isModalOpen || isModal2Open} onClose={closeModal}>
+        {isModalOpen ? (
+          <SubTaskForm
+            taskId={taskId}
+            projectId={taskId}
+            closeModal={closeModal}
+            setFilterSubtask={setFilterSubtask}
+          />
+        ) : (
+          isModal2Open && (
+            <ConfirmForm
+              handleCancelDelete={handleCancelDelete}
+              handleConfirmDelete={handleConfirmDelete}
+              itemToDelete={subtaskToDelete}
+            />
+          )
+        )}
       </Modal>
     </>
   );
