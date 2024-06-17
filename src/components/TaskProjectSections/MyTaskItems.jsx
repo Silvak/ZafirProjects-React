@@ -140,8 +140,8 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
           </div>
         ))}
       <Typography
-        variant='h6'
-        fontWeight='bold'
+        variant="h6"
+        fontWeight="bold"
         noWrap
         style={{
           fontSize: '14px',
@@ -157,12 +157,12 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
         container
         spacing={0}
         columns={isMobile || isKanbanView ? 6 : 12}
-        alignItems='center'
+        alignItems="center"
         padding={0}
       >
         <Grid item xs={12} sm={!isKanbanView ? 2 : 1}>
           <Typography
-            variant='h6'
+            variant="h6"
             noWrap
             style={{
               fontSize: '12px',
@@ -192,8 +192,8 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
         {!isKanbanView && (
           <Grid item xs={12} sm={2}>
             <Typography
-              variant='body1'
-              color='textSecondary'
+              variant="body1"
+              color="textSecondary"
               noWrap
               style={{ fontSize: '14px', fontWeight: 'bold' }}
               sx={{ ml: '3rem' }}
@@ -211,10 +211,10 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
               alignItems: 'center',
             }}
           >
-            <div title='members' style={{ display: 'flex', marginRight: 4 }}>
+            <div title="members" style={{ display: 'flex', marginRight: 4 }}>
               <PeopleAltOutlinedIcon sx={{ mr: '5px', color: 'gray', ml: 5 }} />
               <Typography
-                variant='body1'
+                variant="body1"
                 noWrap
                 style={{
                   fontSize: '14px',
@@ -234,6 +234,7 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
               />
             )} */}
             <div
+              title="files"
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -242,14 +243,12 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
                 marginRight: '2rem',
               }}
             >
-              <toolbar title='files' style={{ display: 'flex' }}>
-                <AttachFileIcon
-                  style={{ cursor: 'pointer', color: 'gray' }}
-                  onClick={handleClipIcon}
-                />
-              </toolbar>
+              <AttachFileIcon
+                style={{ cursor: 'pointer', color: 'gray' }}
+                onClick={handleClipIcon}
+              />
               <Typography
-                variant='body1'
+                variant="body1"
                 noWrap
                 style={{
                   fontSize: '14px',
@@ -299,8 +298,8 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
               }}
             >
               <Typography
-                variant='body1'
-                color='textSecondary'
+                variant="body1"
+                color="textSecondary"
                 noWrap
                 sx={{
                   fontWeight: 'bold',
@@ -339,8 +338,8 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
                   }}
                 />
                 <Typography
-                  variant='body1'
-                  color='textSecondary'
+                  variant="body1"
+                  color="textSecondary"
                   noWrap
                   style={{ fontSize: '14px', fontWeight: 'bold' }}
                 >
@@ -375,8 +374,8 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
                   }}
                 />
                 <Typography
-                  variant='body1'
-                  color='textSecondary'
+                  variant="body1"
+                  color="textSecondary"
                   noWrap
                   style={{ fontSize: '14px', fontWeight: 'bold' }}
                 >
@@ -396,8 +395,8 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
               }}
             >
               <Typography
-                variant='body1'
-                color='textSecondary'
+                variant="body1"
+                color="textSecondary"
                 noWrap
                 sx={{
                   fontWeight: 'bold',

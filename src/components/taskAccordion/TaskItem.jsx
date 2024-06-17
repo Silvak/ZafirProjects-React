@@ -257,18 +257,19 @@ const TaskItem = ({ task, isMobile, isKanbanView, projectId }) => {
               />
             )}
             <div
+              title="files"
               style={{
                 display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
                 marginLeft: !isKanbanView ? 3 : 0,
                 marginRight: '2rem',
               }}
             >
-              <toolbar title="files" style={{ display: 'flex' }}>
-                <AttachFileIcon
-                  style={{ cursor: 'pointer', color: 'gray' }}
-                  onClick={handleClipIcon}
-                />
-              </toolbar>
+              <AttachFileIcon
+                style={{ cursor: 'pointer', color: 'gray' }}
+                onClick={handleClipIcon}
+              />
               <Typography
                 variant="body1"
                 noWrap
