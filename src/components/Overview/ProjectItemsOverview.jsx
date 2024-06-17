@@ -78,40 +78,43 @@ const ProjectItemsOverview = ({
           </small>
         </Box>
       </Link>
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginLeft: isMobile ? 'unset' : 'auto',
-          gap: '16px',
-        }}
-      >
-        <div
-          style={{
+
+      {project?.membershipType !== 'member' && (
+        <Box
+          sx={{
             display: 'flex',
-            color: '#6B6E75',
+            alignItems: 'center',
             justifyContent: 'center',
-            borderRadius: '12px',
-            width: isMobile ? 'auto' : '',
+            marginLeft: isMobile ? 'unset' : 'auto',
+            gap: '16px',
           }}
-          onClick={handleEdit}
         >
-          <BsPen />
-        </div>
-        <div
-          style={{
-            display: 'flex',
-            color: '#6B6E75',
-            justifyContent: isMobile ? 'center' : '',
-            borderRadius: '12px',
-            width: isMobile ? 'auto' : '',
-          }}
-          onClick={() => handleDelete(project)}
-        >
-          <BsTrash3 />
-        </div>
-      </Box>
+          <div
+            style={{
+              display: 'flex',
+              color: '#6B6E75',
+              justifyContent: 'center',
+              borderRadius: '12px',
+              width: isMobile ? 'auto' : '',
+            }}
+            onClick={handleEdit}
+          >
+            <BsPen />
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              color: '#6B6E75',
+              justifyContent: isMobile ? 'center' : '',
+              borderRadius: '12px',
+              width: isMobile ? 'auto' : '',
+            }}
+            onClick={() => handleDelete(project)}
+          >
+            <BsTrash3 />
+          </div>
+        </Box>
+      )}
     </TableCell>
   );
 };

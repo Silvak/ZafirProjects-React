@@ -146,16 +146,20 @@ function ProjectsOverview() {
                   No Projects
                 </strong>
               ) : (
-                projectsData.map((project) => (
-                  <ProjectItemsOverview
-                    handleDelete={handleDeleteProject}
-                    handleEdit={() =>
-                      handleEdit(<EditProjectForm project={project} />)
-                    }
-                    project={project}
-                    key={project._id}
-                  />
-                ))
+                projectsData
+                  .sort((a, b) =>
+                    a.membershipType.localeCompare(b.membershipType)
+                  )
+                  .map((project) => (
+                    <ProjectItemsOverview
+                      handleDelete={handleDeleteProject}
+                      handleEdit={() =>
+                        handleEdit(<EditProjectForm project={project} />)
+                      }
+                      project={project}
+                      key={project._id}
+                    />
+                  ))
               )}
             </TableRow>
           </TableBody>
