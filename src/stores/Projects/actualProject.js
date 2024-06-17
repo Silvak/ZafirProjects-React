@@ -32,7 +32,6 @@ export const actualProject = (set, get) => ({
         const memberProjects = data.filter(
           (project) => project.membershipType === 'member'
         );
-
         set({
           projectsData: data,
           leaderProjects,
@@ -73,6 +72,7 @@ export const actualProject = (set, get) => ({
         projectsData: data,
         leaderProjects,
         memberProjects,
+        selectedProject: data[0],
       });
 
       const id = get().selectedProject?._id;
@@ -135,7 +135,6 @@ export const actualProject = (set, get) => ({
   deleteProject: async (id) => {
     try {
       const data = await axiosInstance.delete(`/projects/${id}`);
-
       const updatedProjects = get().projectsData.filter(
         (project) => project._id !== id
       );

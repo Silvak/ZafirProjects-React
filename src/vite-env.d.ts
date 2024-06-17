@@ -68,6 +68,8 @@ declare module '@/components/taskAccordion/individualTaskAccordion/inTaskAccordi
 declare module '@/components/taskAccordion/individualTaskAccordion/inTaskHeader';
 declare module '@/components/taskAccordion/individualTaskAccordion/inTaskItem';
 declare module '@/components/taskAccordion/individualTaskAccordion/inTaskList';
+declare module '@/components/TasksBrowser/TasksBrowserSearch';
+declare module '@/components/TasksBrowser/TasksBrowserHeader';
 
 declare module '@/context/AppContextProvider';
 declare module '@/stores/index';
@@ -98,6 +100,7 @@ declare module '@/screens/project/tasks';
 declare module '@/screens/project/MyTaskView';
 declare module '@/screens/MyTasks/MyTaskMain';
 declare module '@/screens/MyTasks/MainTasksView';
+declare module '@/screens/TasksBrowser/TasksBrowser';
 
 declare module '@/hooks/usePagination';
 declare module '@/hooks/useSignUp';

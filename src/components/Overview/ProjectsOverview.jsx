@@ -19,6 +19,7 @@ import { shallow } from 'zustand/shallow';
 function ProjectsOverview() {
   const { projectsData, handleEdit, isMobile, theme } = useProjectsOverview();
   const {
+    selectedProject,
     updateProjects,
     User,
     ChangeStateModal,
@@ -28,6 +29,7 @@ function ProjectsOverview() {
     ChangeContentModal,
     deleteProject,
   } = useBoundStore((state) => state, shallow);
+  console.log('selectedProject', selectedProject);
 
   const handleConfirmDelete = async (projectToDelete) => {
     try {
