@@ -68,7 +68,7 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
   };
 
   const handleClipIcon = () => {
-    console.log('toqueé el icono del clip');
+    console.log('toqué el icono del clip');
   };
 
   const handleConfirmDelete = async (taskToDelete) => {
@@ -147,10 +147,11 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
           fontSize: '14px',
           marginTop: '16px',
           cursor: 'pointer',
+          paddingBlock: 4,
         }}
         onClick={() => (isMobile ? handleMoreIcon(task) : undefined)}
       >
-        {task.taskName}
+        {isKanbanView ? task.description : task.taskName}
       </Typography>
       <Grid
         container
@@ -262,14 +263,19 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
                     style={{
                       fontSize: '6px',
                       color: 'lightgray',
-                      marginLeft: '2rem',
+                      marginLeft: '1rem',
                     }}
                   />
                 )}
               </Typography>
             </div>
             {isKanbanView && (
-              <Grid item xs={12} sm={1}>
+              <Grid
+                item
+                xs={12}
+                sm={1}
+                style={{ marginLeft: '-2rem', paddingTop: 3 }}
+              >
                 <BsTrash3
                   style={{ cursor: 'pointer' }}
                   onClick={() => {
@@ -358,6 +364,7 @@ function MyTaskItems({ task, isMobile, isKanbanView, projectId }) {
                 style={{
                   display: 'flex',
                   alignItems: 'center',
+                  minWidth: '8rem',
                 }}
               >
                 <CalendarTodayIcon

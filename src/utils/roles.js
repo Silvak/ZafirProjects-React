@@ -1,6 +1,7 @@
 const roles = [
   'Admin',
-  'Manager',
+  'Project Manager',
+  'Leader',
   'Developer',
   'Designer',
   'Tester',

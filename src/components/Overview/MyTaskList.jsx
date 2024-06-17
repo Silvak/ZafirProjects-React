@@ -1,6 +1,6 @@
-import MyTaskItems from "./MyTaskItems";
-import { useState, useEffect } from "react";
-import CircularProgress from "@mui/material/CircularProgress";
+import MyTaskItems from './MyTaskItems';
+import { useState, useEffect } from 'react';
+import CircularProgress from '@mui/material/CircularProgress';
 
 function MyTaskList({ tasks, handleAddTask }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -14,22 +14,22 @@ function MyTaskList({ tasks, handleAddTask }) {
   }, []);
 
   return (
-    <div style={{ padding: "0px  8px" }}>
+    <div style={{ padding: '0px  8px' }}>
       {tasks.length > 0 ? (
         <MyTaskItems tasks={tasks} handleAddTask={handleAddTask} />
       ) : isLoading ? (
         <div
           style={{
-            width: "100%",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
             paddingTop: 12,
           }}
         >
           <CircularProgress
-            style={{ color: "#C02327" }}
+            style={{ color: '#C02327' }}
             sx={{ m: 2 }}
             size="32px"
           />
@@ -38,10 +38,11 @@ function MyTaskList({ tasks, handleAddTask }) {
       ) : (
         <p
           style={{
-            display: "flex",
-            justifyContent: "center",
-            fontWeight: 700,
-            fontSize: "1.2rem",
+            display: 'flex',
+            justifyContent: 'center',
+            fontWeight: 600,
+            fontSize: '1.2rem',
+            marginTop: '4rem',
           }}
         >
           No tasks to show
