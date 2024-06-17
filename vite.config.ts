@@ -27,8 +27,10 @@ export default defineConfig(({ command, mode }) => {
         protocolImports: true,
       }),
     ],
-    rollupOptions: {
-      external: ['@mui/system/useMediaQuery'],
+    build: {
+      rollupOptions: {
+        external: ['@mui/system/useMediaQuery'],
+      },
     },
     resolve: {
       alias: [{ find: '@', replacement: path.resolve(__dirname, 'src') }],
