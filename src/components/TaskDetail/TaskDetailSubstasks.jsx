@@ -207,9 +207,10 @@ const TaskDetailSubstasks = ({ taskId, task }) => {
                           ? '0rem'
                           : item.label === 'Actions'
                           ? '0rem'
+                          : item.label === 'Assignee'
+                          ? '-0.5rem'
                           : 0,
                       marginRight: item.label === 'Actions' ? '-0.5rem' : 0,
-                      marginLeft: item.label === 'Assignee' ? '-0.5rem' : 0,
                     }}
                   >
                     {item.label}
