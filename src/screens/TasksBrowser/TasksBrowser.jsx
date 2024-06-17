@@ -1,7 +1,7 @@
-import TasksBrowserHeader from "@/components/TasksBrowser/TasksBrowserHeader";
-import LayoutPage from "../../layout/layoutPage";
+import TasksBrowserHeader from '@/components/TasksBrowser/TasksBrowserHeader';
+import LayoutPage from '../../layout/layoutPage';
 
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
   Accordion,
   AccordionDetails,
@@ -11,20 +11,21 @@ import {
   useMediaQuery,
   ThemeProvider,
   createTheme,
-} from "@mui/material";
+  Skeleton,
+} from '@mui/material';
 import {
   AttachFile as AttachFileIcon,
   Circle,
   MarkUnreadChatAltOutlined as MarkUnreadChatAltOutlinedIcon,
-} from "@mui/icons-material";
-import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
+} from '@mui/icons-material';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 
-import { formatDate } from "../../utils/fixDate";
-import { priorityColors, statusColors } from "../../utils/colors";
-import { useBoundStore } from "../../stores";
-import { shallow } from "zustand/shallow";
-import { useEffect, useState } from "react";
+import { formatDate } from '../../utils/fixDate';
+import { priorityColors, statusColors } from '../../utils/colors';
+import { useBoundStore } from '../../stores';
+import { shallow } from 'zustand/shallow';
+import { useEffect, useState } from 'react';
 
 const TasksBrowser = () => {
   const {
@@ -36,8 +37,8 @@ const TasksBrowser = () => {
     fetchTasksWithSubtasks,
   } = useBoundStore((state) => state, shallow);
 
-  const [allTasksData, setAllTasksData] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [lastTaskId, setLastTask] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const filteredSearchData = myTasks.filter((task) =>
     task?.taskName?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -52,24 +53,31 @@ const TasksBrowser = () => {
           }
           // await fetchTasksByUser(User.uid);
         } catch (error) {
-          console.error("Error fetching tasks", error);
+          console.error('Error fetching tasks', error);
         }
       };
       fetchData();
     }
   }, []);
 
-  useEffect(() => {
-    myTasks.forEach((task) => {
-      fetchTasksWithSubtasks(task._id);
-    });
-  }, [myTasks, fetchTasksWithSubtasks]);
+  // useEffect(() => {
+  //   myTasks.forEach((task) => {
+  //     fetchTasksWithSubtasks(task._id);
+  //   });
+  // }, [myTasks, fetchTasksWithSubtasks]);
 
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+  const handleViewSubtasks = (task) => {
+    if (lastTaskId !== task._id) {
+      fetchTasksWithSubtasks(task._id);
+      setLastTask(task._id);
+    }
+  };
+
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const theme = createTheme();
 
   const handleClipIcon = () => {
-    console.log("toqueé el icono del clip");
+    console.log('toqué el icono del clip en TasksBrowser');
   };
 
   return (
@@ -82,14 +90,15 @@ const TasksBrowser = () => {
       }
     >
       <ThemeProvider theme={theme}>
-        {filteredSearchData.map((task, index) => (
-          <Accordion key={task.id} sx={{ minWidth: "250px" }}>
+        {filteredSearchData?.map((task, index) => (
+          <Accordion key={task.id} sx={{ minWidth: '250px' }}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"
               id="panel1a-header"
+              onClick={() => handleViewSubtasks(task)}
             >
-              <Box sx={{ display: "flex", alignItems: "center", gap: "20px" }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
                 <Typography variant="h6">{task?.taskName}</Typography>
                 <Box>
                   <Typography
@@ -98,11 +107,11 @@ const TasksBrowser = () => {
                     noWrap
                     sx={{
                       fontWeight: 600,
-                      fontSize: "12px",
-                      borderRadius: "8px",
-                      padding: "4px 8px",
-                      textAlign: "center",
-                      alignItems: "center",
+                      fontSize: '12px',
+                      borderRadius: '8px',
+                      padding: '4px 8px',
+                      textAlign: 'center',
+                      alignItems: 'center',
                       ...statusColors[task?.state],
                     }}
                   >
@@ -113,7 +122,7 @@ const TasksBrowser = () => {
             </AccordionSummary>
             {/* details */}
             <AccordionDetails>
-              {subtasks.length > 0 &&
+              {subtasks?.length > 0 &&
                 subtasks
                   .filter((subtask) => subtask.taskId === task._id)
                   .map((subtask) => (
@@ -121,14 +130,14 @@ const TasksBrowser = () => {
                       key={subtask._id}
                       elevation={0}
                       sx={{
-                        opacity: subtask.state === "Completed" ? 1 : 1, // item opacity
-                        borderRadius: "12px",
-                        padding: "8px",
-                        ":hover": { background: "#F6F7FA", cursor: "pointer" },
+                        opacity: subtask.state === 'Completed' ? 1 : 1, // item opacity
+                        borderRadius: '12px',
+                        padding: '8px',
+                        ':hover': { background: '#F6F7FA', cursor: 'pointer' },
                       }}
                     >
                       <Typography variant="h6" fontWeight="bold" noWrap>
-                        <span style={{ fontSize: "14px", color: "#1D1F24" }}>
+                        <span style={{ fontSize: '14px', color: '#1D1F24' }}>
                           {subtask.name}
                         </span>
                       </Typography>
@@ -136,26 +145,26 @@ const TasksBrowser = () => {
                         container
                         alignItems="center"
                         sx={{
-                          display: "flex",
-                          justifyContent: "space-between",
+                          display: 'flex',
+                          justifyContent: 'space-between',
                         }}
                       >
                         {!isMobile && (
-                          <Box item sx={{ width: "80px" }}>
+                          <Box item sx={{ width: '80px' }}>
                             <Typography
                               variant="h6"
                               noWrap
                               style={{
-                                fontSize: "12px",
+                                fontSize: '12px',
                                 fontWeight: 600,
-                                padding: "2px 6px",
-                                height: "20px",
-                                borderRadius: "100px",
+                                padding: '2px 6px',
+                                height: '20px',
+                                borderRadius: '100px',
                                 ...priorityColors[subtask.priority],
                               }}
                             >
                               <Circle
-                                sx={{ fontSize: "10px", marginRight: "4px" }}
+                                sx={{ fontSize: '10px', marginRight: '4px' }}
                               />
                               {subtask.priority}
                             </Typography>
@@ -165,42 +174,42 @@ const TasksBrowser = () => {
                         <Box item>
                           <div
                             style={{
-                              display: "flex",
-                              alignItems: "center",
+                              display: 'flex',
+                              alignItems: 'center',
                             }}
                           >
-                            <div style={{ display: "flex" }}>
+                            <div style={{ display: 'flex' }}>
                               <PeopleAltOutlinedIcon
                                 sx={{
-                                  mr: "5px",
-                                  color: "#A3A5AB",
-                                  fontSize: "18px",
+                                  mr: '5px',
+                                  color: '#A3A5AB',
+                                  fontSize: '18px',
                                 }}
                               />
                               <Typography
                                 variant="body1"
                                 noWrap
                                 style={{
-                                  fontSize: "12px",
-                                  fontWeight: "bold",
+                                  fontSize: '12px',
+                                  fontWeight: 'bold',
                                 }}
                               >
                                 {subtask?.members_id?.length}
                               </Typography>
                             </div>
 
-                            {!isMobile && (
+                            {/* {!isMobile && (
                               <div
                                 style={{
-                                  display: "flex",
+                                  display: 'flex',
                                   marginLeft: 10,
                                 }}
                               >
                                 <AttachFileIcon
                                   style={{
-                                    cursor: "pointer",
-                                    color: "#A3A5AB",
-                                    fontSize: "18px",
+                                    cursor: 'pointer',
+                                    color: '#A3A5AB',
+                                    fontSize: '18px',
                                   }}
                                   onClick={handleClipIcon}
                                 />
@@ -208,15 +217,15 @@ const TasksBrowser = () => {
                                   variant="body1"
                                   noWrap
                                   style={{
-                                    fontSize: "12px",
-                                    fontWeight: "bold",
-                                    marginRight: "1rem",
+                                    fontSize: '12px',
+                                    fontWeight: 'bold',
+                                    marginRight: '1rem',
                                   }}
                                 >
-                                  {"1"}
+                                  {subtask?.attachment?.length || 'x'}
                                 </Typography>
                               </div>
-                            )}
+                            )} */}
                           </div>
                         </Box>
 
@@ -228,14 +237,14 @@ const TasksBrowser = () => {
                         >
                           <div
                             style={{
-                              display: "flex",
-                              alignItems: "center",
+                              display: 'flex',
+                              alignItems: 'center',
                             }}
                           >
                             <CalendarTodayIcon
                               style={{
-                                color: "#A3A5AB",
-                                fontSize: "18px",
+                                color: '#A3A5AB',
+                                fontSize: '18px',
                               }}
                             />
                             <Typography
@@ -243,10 +252,10 @@ const TasksBrowser = () => {
                               color="textSecondary"
                               noWrap
                               style={{
-                                fontSize: "12px",
+                                fontSize: '12px',
                                 fontWeight: 400,
-                                marginTop: "2px",
-                                marginLeft: "10px",
+                                marginTop: '2px',
+                                marginLeft: '10px',
                               }}
                             >
                               {formatDate(subtask.start)}
@@ -261,11 +270,11 @@ const TasksBrowser = () => {
                             noWrap
                             sx={{
                               fontWeight: 600,
-                              fontSize: "12px",
-                              borderRadius: "8px",
-                              padding: "4px 8px",
-                              textAlign: "center",
-                              alignItems: "center",
+                              fontSize: '12px',
+                              borderRadius: '8px',
+                              padding: '4px 8px',
+                              textAlign: 'center',
+                              alignItems: 'center',
                               ...statusColors[subtask.state],
                             }}
                           >
