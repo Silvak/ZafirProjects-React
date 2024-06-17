@@ -40,9 +40,11 @@ const TasksBrowser = () => {
   const [openedAccordionIds, setOpenedAccordionIds] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const filteredSearchData = myTasks.filter((task) =>
-    task?.taskName?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredSearchData = myTasks
+    .filter((task) =>
+      task?.taskName?.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .sort((a, b) => a.taskName.localeCompare(b.taskName)); //la ordenamos alfabéticamente
 
   useEffect(() => {
     if (User) {
@@ -61,6 +63,7 @@ const TasksBrowser = () => {
 
   const handleAccordionChange = (task) => (event, isExpanded) => {
     if (isExpanded) {
+      //solo haremos el fetch si estoy abriendo un determinado acordión
       if (!openedAccordionIds.includes(task._id)) {
         fetchTasksWithSubtasks(task._id);
         setOpenedAccordionIds((prev) => [...prev, task._id]);
