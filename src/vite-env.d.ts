@@ -80,6 +80,7 @@ declare module '@/stores/useGetWalletTokenBalances/useGetWalletTokenBalances';
 declare module '@/stores/Tasks/createTasksSlice';
 declare module '@/stores/Tasks/createSubtasksSlice';
 declare module '@/stores/user/storeUser';
+declare module '@/stores/Actions/navbar/storeNav';
 declare module '@/stores/Projects/actualProject';
 
 declare module '@/routes/routes';

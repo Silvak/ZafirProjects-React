@@ -50,12 +50,13 @@ function initializeItems(selectedProject) {
         },
       ],
     },
-    {
-      title: 'Members',
-      url: '/members',
-      icon: <BiGroup />,
-      submenu: [],
-    },
+    // ,
+    // {
+    //   title: 'Members',
+    //   url: '/members',
+    //   icon: <BiGroup />,
+    //   submenu: [],
+    // },
   ];
 }
 

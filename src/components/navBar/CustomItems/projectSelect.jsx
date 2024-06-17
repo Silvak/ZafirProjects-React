@@ -63,7 +63,7 @@ function ProjectSelect(props) {
         marginTop: '22px',
       }}
     >
-      <Tooltip title={tooltipTitle} placement='right'>
+      <Tooltip title={tooltipTitle} placement="right">
         <ListItemButton
           onClick={handleClick}
           sx={{
@@ -75,7 +75,7 @@ function ProjectSelect(props) {
           disableRipple
         >
           <ItemNav
-            to='#'
+            to="#"
             title={navItemTitle}
             icon={<CloudCircleIcon />}
             arrow={open ? <ExpandLessIcon /> : <KeyboardArrowDownIcon />}
@@ -84,7 +84,7 @@ function ProjectSelect(props) {
         </ListItemButton>
       </Tooltip>
 
-      <Collapse in={open} timeout='auto' unmountOnExit>
+      <Collapse in={open} timeout="auto" unmountOnExit>
         {projectsData?.slice(0, 3).map((submenuItem) => (
           <ListItemButton
             key={submenuItem.id}

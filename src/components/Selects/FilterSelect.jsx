@@ -2,10 +2,11 @@ import { Tooltip } from '@mui/material';
 import { useState } from 'react';
 import { isInThisWeek, isInThisMonth, isToday } from '../../hooks/useDates';
 
-const FilterSelect = ({ data, padding }) => {
+const FilterSelect = ({ data, padding, value, setter }) => {
   const [filter, setFilter] = useState('');
 
   const handleFilterChange = (event) => {
+    setter(event.target.value);
     setFilter(event.target.value);
   };
 

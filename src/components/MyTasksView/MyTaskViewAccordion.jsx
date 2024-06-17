@@ -5,19 +5,19 @@ import {
   Typography,
   createTheme,
   useMediaQuery,
-} from "@mui/material";
-import React, { useState } from "react";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { useParams } from "react-router-dom";
-import MyCustomAccordion from "./MyCustomAccordion";
-import MyTaskViewItems from "./MyTaskViewItems";
+} from '@mui/material';
+import React, { useState } from 'react';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { useParams } from 'react-router-dom';
+import MyCustomAccordion from './MyCustomAccordion';
+import MyTaskViewItems from './MyTaskViewItems';
 
 function MyTaskViewAccordion({ title, tasks, view }) {
   const theme = createTheme();
   const [expanded, setExpanded] = useState(false);
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
-  const isKanbanView = view === "View Kanban";
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+  const isKanbanView = view === 'View Kanban';
   const params = useParams();
 
   const ExpandIcon = ({ expanded }) => {
@@ -25,23 +25,23 @@ function MyTaskViewAccordion({ title, tasks, view }) {
       // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
       <div
         style={{
-          display: "flex",
-          alignItems: "center",
-          cursor: "pointer",
-          color: "#424242",
+          display: 'flex',
+          alignItems: 'center',
+          cursor: 'pointer',
+          color: '#424242',
         }}
         onClick={() => setExpanded(!expanded)}
       >
         {expanded ? (
           <ExpandLessIcon
             style={{
-              fontSize: "1.6rem",
+              fontSize: '1.6rem',
             }}
           />
         ) : (
           <ExpandMoreIcon
             style={{
-              fontSize: "1.6rem",
+              fontSize: '1.6rem',
             }}
           />
         )}
@@ -52,7 +52,7 @@ function MyTaskViewAccordion({ title, tasks, view }) {
     <ThemeProvider theme={theme}>
       <div
         style={{
-          textAlign: isMobile ? "left" : "",
+          textAlign: isMobile ? 'left' : '',
         }}
       >
         <MyCustomAccordion
@@ -60,28 +60,28 @@ function MyTaskViewAccordion({ title, tasks, view }) {
           elevation={4}
           className="custom-accordion"
           style={{
-            backgroundColor: "#F6F7FA",
-            borderRadius: "20px",
-            padding: "10px 20PX",
-            boxShadow: "none",
-            border: "1px solid #E0E3E8",
+            backgroundColor: '#F6F7FA',
+            borderRadius: '20px',
+            padding: '10px 20PX',
+            boxShadow: 'none',
+            border: '1px solid #E0E3E8',
           }}
         >
           <AccordionSummary
             aria-controls="panel1a-content"
             id="panel1a-header"
             sx={{
-              display: "flex",
-              alignItems: "center",
+              display: 'flex',
+              alignItems: 'center',
               padding: 0,
-              height: "30px",
+              height: '30px',
             }}
           >
             {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
             <div
               style={{
-                display: "flex",
-                alignItems: "center",
+                display: 'flex',
+                alignItems: 'center',
               }}
               onClick={() => setExpanded(!expanded)}
             >
@@ -90,10 +90,10 @@ function MyTaskViewAccordion({ title, tasks, view }) {
               <Typography
                 variant="p"
                 sx={{
-                  fontSize: "20px",
+                  fontSize: '20px',
                   fontWeight: 600,
-                  marginInline: "1rem",
-                  color: "#1D1F24",
+                  marginInline: '1rem',
+                  color: '#1D1F24',
                 }}
               >
                 {title}
@@ -102,16 +102,16 @@ function MyTaskViewAccordion({ title, tasks, view }) {
               {tasks?.length > 0 && (
                 <div
                   style={{
-                    fontSize: "13px",
+                    fontSize: '13px',
                     fontWeight: 400,
-                    marginRight: "10px",
-                    borderRadius: "8px",
-                    height: "24px",
-                    width: "24px",
-                    textAlign: "center",
-                    lineHeight: "24px",
-                    backgroundColor: "#7662EA",
-                    color: "#FFFFFF",
+                    marginRight: '10px',
+                    borderRadius: '8px',
+                    height: '24px',
+                    width: '24px',
+                    textAlign: 'center',
+                    lineHeight: '24px',
+                    backgroundColor: '#7662EA',
+                    color: '#FFFFFF',
                   }}
                 >
                   {tasks?.length.toString()}
@@ -122,12 +122,12 @@ function MyTaskViewAccordion({ title, tasks, view }) {
 
           <AccordionDetails
             sx={{
-              display: "flex",
-              flexDirection: "column",
-              padding: "0",
-              gap: !isKanbanView ? "5px" : "20px",
-              backgroundColor: !isKanbanView && "#FFFFFF",
-              borderRadius: "1rem",
+              display: 'flex',
+              flexDirection: 'column',
+              padding: '0',
+              gap: !isKanbanView ? '5px' : '20px',
+              backgroundColor: !isKanbanView && '#FFFFFF',
+              borderRadius: '1rem',
             }}
           >
             {tasks?.map((task) => (

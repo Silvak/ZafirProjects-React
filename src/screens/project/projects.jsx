@@ -33,7 +33,8 @@ const projects = () => {
             mb: '70px',
           }}
         >
-          <Typography variant='h2'>
+          <Typography variant="h2" style={{ fontSize: 30 }}>
+            {' '}
             All Projects: {projectsData.length}
           </Typography>
           <Grid>

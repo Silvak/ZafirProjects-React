@@ -48,7 +48,6 @@ const ProjectsTableItem = ({ project }) => {
 
   const handleSelectProject = async (project) => {
     setSelectedProject(project);
-    await updateProjects(User?.uid);
   };
 
   const { fixStart } = fixDate(project?.start);
@@ -89,11 +88,19 @@ const ProjectsTableItem = ({ project }) => {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
+        paddingRight: '10px',
+        paddingLeft: 0,
+        borderRadius: '12px',
+        ':hover': {
+          background: '#F6F7FA',
+        },
       }}
     >
       <BoxFlex sx={{ flex: 1 }}>
         <Link
-          to={`/project/${project?._id}/MyTasks`}
+          to={`/project/${project?._id}/${
+            project.membershipType === 'leader' ? 'tasks' : 'MyTasks'
+          }`}
           style={{ color: 'inherit', textDecoration: 'none', width: '20rem' }}
           onClick={() => handleSelectProject(project)}
         >
@@ -111,18 +118,19 @@ const ProjectsTableItem = ({ project }) => {
           bgColor={leader?.colorBg}
           textColor={leader?.colorText}
           deleteMode={false}
+          size="38px"
         />
         <p className={css.username} style={{ width: '14rem' }}>
           {leader?.name.slice(0, 24)}
           {leader?.name.length > 24 ? '...' : ''}
         </p>
       </BoxFlex>
-      <BoxFlex sx={{ mr: '30px' }}>
+      <BoxFlex sx={{ mr: 3 }}>
         <MdCalendarMonth color="#6B6E75" size="20px" />
         <p className="date">{fixStart}</p>
       </BoxFlex>
 
-      <BoxFlex sx={{ gap: 3 }}>
+      <BoxFlex sx={{ gap: 2, mr: 3 }}>
         <BsPen
           title="Edit project"
           style={{ cursor: 'pointer' }}
@@ -143,6 +151,7 @@ const ProjectsTableItem = ({ project }) => {
             height: '8px',
             backgroundColor: '#ECEFF3',
             borderRadius: '4px',
+            marginRight: 2,
           }}
         >
           <div

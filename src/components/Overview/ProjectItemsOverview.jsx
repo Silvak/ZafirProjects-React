@@ -19,7 +19,6 @@ const ProjectItemsOverview = ({
 
   const handleSelectProject = async (project) => {
     setSelectedProject(project);
-    await updateProjects(User?.uid);
   };
 
   return (
@@ -54,7 +53,9 @@ const ProjectItemsOverview = ({
           <RenderProjectItems category={category} />
         </div> */}
       <Link
-        to={`/project/${project?._id}/tasks`}
+        to={`/project/${project?._id}/${
+          project.membershipType === 'leader' ? 'tasks' : 'MyTasks'
+        }`}
         style={{ color: 'inherit', textDecoration: 'none' }}
         onClick={() => handleSelectProject(project)}
       >
@@ -67,7 +68,7 @@ const ProjectItemsOverview = ({
             </h2>
           </div>
           <small
-            className='quantityTasks'
+            className="quantityTasks"
             style={{ color: '#6B6E75', fontSize: '12px' }}
           >
             {/* {quantityTasks} | {item} */}
