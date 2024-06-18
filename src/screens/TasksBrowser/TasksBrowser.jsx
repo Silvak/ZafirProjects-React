@@ -1,7 +1,7 @@
-import TasksBrowserHeader from '@/components/TasksBrowser/TasksBrowserHeader';
-import LayoutPage from '../../layout/layoutPage';
-import useFormatText from '@/hooks/useFormatText';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import TasksBrowserHeader from "@/components/TasksBrowser/TasksBrowserHeader";
+import LayoutPage from "../../layout/layoutPage";
+import useFormatText from "@/hooks/useFormatText";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   Accordion,
   AccordionDetails,
@@ -12,22 +12,22 @@ import {
   ThemeProvider,
   createTheme,
   Skeleton,
-} from '@mui/material';
-import { Circle } from '@mui/icons-material';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
+} from "@mui/material";
+import { Circle } from "@mui/icons-material";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 
-import { formatDate } from '../../utils/fixDate';
-import { priorityColors, statusColors } from '../../utils/colors';
-import { useBoundStore } from '../../stores';
-import { shallow } from 'zustand/shallow';
-import { useEffect, useState } from 'react';
+import { formatDate } from "../../utils/fixDate";
+import { priorityColors, statusColors } from "../../utils/colors";
+import { useBoundStore } from "../../stores";
+import { shallow } from "zustand/shallow";
+import { useEffect, useState } from "react";
 
 const TasksBrowser = () => {
   const { task_subtasks, selectedProject, fetchTasksWithSubtasks } =
     useBoundStore((state) => state, shallow);
 
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
 
   const filteredSearchData = task_subtasks
@@ -37,14 +37,14 @@ const TasksBrowser = () => {
     .sort((a, b) => a.taskName.localeCompare(b.taskName));
 
   useEffect(() => {
+    setLoading(true);
     const fetchData = async () => {
-      setLoading(true);
       try {
         if (selectedProject && selectedProject._id) {
           await fetchTasksWithSubtasks(selectedProject._id);
         }
       } catch (error) {
-        console.error('Error fetching tasks', error);
+        console.error("Error fetching tasks", error);
       } finally {
         setLoading(false);
       }
@@ -52,7 +52,7 @@ const TasksBrowser = () => {
     fetchData();
   }, [selectedProject]);
 
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const theme = createTheme();
 
   return (
@@ -66,21 +66,48 @@ const TasksBrowser = () => {
     >
       <ThemeProvider theme={theme}>
         {loading ? (
-          <Box sx={{ width: '100%' }}>
+          <Box sx={{ width: "100%" }}>
             {[...Array(task_subtasks.length)].map((_, index) => (
-              <Skeleton key={index} height={80} sx={{ mb: '-30px' }} />
+              <Skeleton key={index} height={80} sx={{ mb: "-30px" }} />
             ))}
           </Box>
         ) : (
           filteredSearchData?.map((task) => (
-            <Accordion key={task._id} sx={{ minWidth: '250px' }}>
+            <Accordion
+              key={task._id}
+              className="custom-accordion"
+              elevation={4}
+              key={task.id}
+              style={{
+                backgroundColor: "#F6F7FA",
+                borderRadius: "20px",
+                padding: "10px 20PX",
+                boxShadow: "none",
+                border: "1px solid #E0E3E8",
+              }}
+              sx={{
+                borderRadius: "16px",
+                "&.MuiAccordion-root": {
+                  border: "none",
+                  "&:first-of-type": {
+                    borderTopLeftRadius: "16px",
+                    borderTopRightRadius: "16px",
+                  },
+                  "&:last-of-type": {
+                    borderBottomLeftRadius: "16px",
+                    borderBottomRightRadius: "16px",
+                  },
+                },
+                marginBottom: "12px",
+              }}
+            >
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1a-content"
                 id="panel1a-header"
               >
                 <Box
-                  sx={{ display: 'flex', alignItems: 'center', gap: '20px' }}
+                  sx={{ display: "flex", alignItems: "center", gap: "20px" }}
                 >
                   <Typography variant="h6">
                     {useFormatText(task?.taskName)}
@@ -92,11 +119,11 @@ const TasksBrowser = () => {
                       noWrap
                       sx={{
                         fontWeight: 600,
-                        fontSize: '12px',
-                        borderRadius: '8px',
-                        padding: '4px 8px',
-                        textAlign: 'center',
-                        alignItems: 'center',
+                        fontSize: "12px",
+                        borderRadius: "8px",
+                        padding: "4px 8px",
+                        textAlign: "center",
+                        alignItems: "center",
                         ...statusColors[task?.state],
                       }}
                     >
@@ -112,14 +139,14 @@ const TasksBrowser = () => {
                       key={subtask._id}
                       elevation={0}
                       sx={{
-                        opacity: subtask.state === 'Completed' ? 1 : 1, // item opacity
-                        borderRadius: '12px',
-                        padding: '8px',
-                        ':hover': { background: '#F6F7FA', cursor: 'default' },
+                        opacity: subtask.state === "Completed" ? 1 : 1, // item opacity
+                        borderRadius: "12px",
+                        padding: "8px",
+                        ":hover": { background: "#F6F7FA", cursor: "default" },
                       }}
                     >
                       <Typography variant="h6" fontWeight="bold" noWrap>
-                        <span style={{ fontSize: '14px', color: '#1D1F24' }}>
+                        <span style={{ fontSize: "14px", color: "#1D1F24" }}>
                           {subtask.name}
                         </span>
                       </Typography>
@@ -127,26 +154,26 @@ const TasksBrowser = () => {
                         container
                         alignItems="center"
                         sx={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
+                          display: "flex",
+                          justifyContent: "space-between",
                         }}
                       >
                         {!isMobile && (
-                          <Box item sx={{ width: '80px' }}>
+                          <Box item sx={{ width: "80px" }}>
                             <Typography
                               variant="h6"
                               noWrap
                               style={{
-                                fontSize: '12px',
+                                fontSize: "12px",
                                 fontWeight: 600,
-                                padding: '2px 6px',
-                                height: '20px',
-                                borderRadius: '100px',
+                                padding: "2px 6px",
+                                height: "20px",
+                                borderRadius: "100px",
                                 ...priorityColors[subtask.priority],
                               }}
                             >
                               <Circle
-                                sx={{ fontSize: '10px', marginRight: '4px' }}
+                                sx={{ fontSize: "10px", marginRight: "4px" }}
                               />
                               {subtask.priority}
                             </Typography>
@@ -156,24 +183,24 @@ const TasksBrowser = () => {
                         <Box item>
                           <div
                             style={{
-                              display: 'flex',
-                              alignItems: 'center',
+                              display: "flex",
+                              alignItems: "center",
                             }}
                           >
-                            <div style={{ display: 'flex' }}>
+                            <div style={{ display: "flex" }}>
                               <PeopleAltOutlinedIcon
                                 sx={{
-                                  mr: '5px',
-                                  color: '#A3A5AB',
-                                  fontSize: '18px',
+                                  mr: "5px",
+                                  color: "#A3A5AB",
+                                  fontSize: "18px",
                                 }}
                               />
                               <Typography
                                 variant="body1"
                                 noWrap
                                 style={{
-                                  fontSize: '12px',
-                                  fontWeight: 'bold',
+                                  fontSize: "12px",
+                                  fontWeight: "bold",
                                 }}
                               >
                                 {subtask?.members_id?.length}
@@ -190,14 +217,14 @@ const TasksBrowser = () => {
                         >
                           <div
                             style={{
-                              display: 'flex',
-                              alignItems: 'center',
+                              display: "flex",
+                              alignItems: "center",
                             }}
                           >
                             <CalendarTodayIcon
                               style={{
-                                color: '#A3A5AB',
-                                fontSize: '18px',
+                                color: "#A3A5AB",
+                                fontSize: "18px",
                               }}
                             />
                             <Typography
@@ -205,10 +232,10 @@ const TasksBrowser = () => {
                               color="textSecondary"
                               noWrap
                               style={{
-                                fontSize: '12px',
+                                fontSize: "12px",
                                 fontWeight: 400,
-                                marginTop: '2px',
-                                marginLeft: '10px',
+                                marginTop: "2px",
+                                marginLeft: "10px",
                               }}
                             >
                               {formatDate(subtask.start)}
@@ -223,11 +250,11 @@ const TasksBrowser = () => {
                             noWrap
                             sx={{
                               fontWeight: 600,
-                              fontSize: '12px',
-                              borderRadius: '8px',
-                              padding: '4px 8px',
-                              textAlign: 'center',
-                              alignItems: 'center',
+                              fontSize: "12px",
+                              borderRadius: "8px",
+                              padding: "4px 8px",
+                              textAlign: "center",
+                              alignItems: "center",
                               ...statusColors[subtask.state],
                             }}
                           >
