@@ -1,4 +1,4 @@
-import { Box, TableCell, Tooltip } from '@mui/material';
+import { Box, TableCell, Toolbar } from '@mui/material';
 import { fixDate } from '@/utils/fixDate';
 import { BsPen, BsTrash3 } from 'react-icons/bs';
 //styles
@@ -104,12 +104,12 @@ const ProjectsTableItem = ({ project, isJoined }) => {
           style={{ color: 'inherit', textDecoration: 'none', width: '20rem' }}
           onClick={() => handleSelectProject(project)}
         >
-          <Tooltip title={project?.description} placement="bottom-start">
+          <Toolbar title={project?.description} placement="right">
             <h2 className={css.projectName}>
               {project?.name.slice(0, 30)}
               {project?.name.length > 30 ? '...' : ''}
             </h2>
-          </Tooltip>
+          </Toolbar>
         </Link>
       </BoxFlex>
       <BoxFlex sx={{ minWidth: 'max-content' }}>
