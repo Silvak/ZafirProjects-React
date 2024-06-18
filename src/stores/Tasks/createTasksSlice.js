@@ -1,41 +1,18 @@
-import { axiosInstance } from "../../config/apiConfig";
+import { axiosInstance } from '../../config/apiConfig';
 
 export const createTasksSlice = (set, get) => ({
   tasks: [],
   userTasks: [],
   singleTask: null,
-  subtasks: [],
+  task_subtasks: [],
 
   addTask: async (taskData, projectId) => {
     try {
       await axiosInstance.post(`/tasksList/project/${projectId}`, taskData);
     } catch (error) {
-      console.error("Error creating task", error);
+      console.error('Error creating task', error);
     }
   },
-
-  fetchTasksWithSubtasks: async (taskId) => {
-    try {
-      const { data } = await axiosInstance.get(`/tasksList/subtasks/${taskId}`);
-      if (data.subtasks.length > 0) {
-        set((state) => ({
-          subtasks: [
-            ...state.subtasks,
-            ...data.subtasks.filter(
-              (subtask) =>
-                !state.subtasks.some(
-                  (existingSubtask) => existingSubtask._id === subtask._id
-                )
-            ),
-          ],
-        }));
-      }
-    } catch (error) {
-      console.error("Error fetching task with subtasks", error);
-    }
-  },
-
-  setSubtasksForTasks: (newSubtasks) => set({ subtasks: newSubtasks }),
 
   fetchSubTasksByProjectId: async (projectId) => {
     try {
@@ -44,7 +21,21 @@ export const createTasksSlice = (set, get) => ({
       );
       set({ subtasks: data });
     } catch (error) {
-      console.error("Error fetching SubTasks", error);
+      console.error('Error fetching SubTasks', error);
+    }
+  },
+
+  setSubtasksForTasks: (newSubtasks) => set({ task_subtasks: newSubtasks }),
+
+  fetchTasksWithSubtasks: async (projectId) => {
+    get().setSubtasksForTasks([]);
+    try {
+      const { data } = await axiosInstance.get(
+        `/tasksList/subtasks/${projectId}`
+      );
+      set({ task_subtasks: data });
+    } catch (error) {
+      console.error('Error fetching SubTasks', error);
     }
   },
 
@@ -62,7 +53,7 @@ export const createTasksSlice = (set, get) => ({
     try {
       const taskDeleted = await axiosInstance.delete(`/tasksList/${taskId}`);
     } catch (error) {
-      console.error("Error deleting task", error);
+      console.error('Error deleting task', error);
     }
     // set((state) => ({
     //   tasks: state.tasks.filter((task) => task.id !== taskIdToDelete),
@@ -97,7 +88,7 @@ export const createTasksSlice = (set, get) => ({
 
       set({ singleTask: data });
     } catch (error) {
-      console.error("Error fetching task detail", error);
+      console.error('Error fetching task detail', error);
     }
     // try {
     //   let result = null;
@@ -125,7 +116,7 @@ export const createTasksSlice = (set, get) => ({
       }
       return data;
     } catch (error) {
-      console.error("Error fetching tasks", error);
+      console.error('Error fetching tasks', error);
     }
   },
 });
