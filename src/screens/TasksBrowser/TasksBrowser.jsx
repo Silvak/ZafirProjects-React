@@ -1,6 +1,6 @@
 import TasksBrowserHeader from '@/components/TasksBrowser/TasksBrowserHeader';
 import LayoutPage from '../../layout/layoutPage';
-
+import useFormatText from '@/hooks/useFormatText';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
   Accordion,
@@ -13,11 +13,7 @@ import {
   createTheme,
   Skeleton,
 } from '@mui/material';
-import {
-  AttachFile as AttachFileIcon,
-  Circle,
-  MarkUnreadChatAltOutlined as MarkUnreadChatAltOutlinedIcon,
-} from '@mui/icons-material';
+import { Circle } from '@mui/icons-material';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 
@@ -28,57 +24,36 @@ import { shallow } from 'zustand/shallow';
 import { useEffect, useState } from 'react';
 
 const TasksBrowser = () => {
-  const {
-    myTasks,
-    subtasks,
-    selectedProject,
-    User,
-    fetchTasksById,
-    fetchTasksWithSubtasks,
-  } = useBoundStore((state) => state, shallow);
+  const { task_subtasks, selectedProject, fetchTasksWithSubtasks } =
+    useBoundStore((state) => state, shallow);
 
-  const [openedAccordionIds, setOpenedAccordionIds] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(true);
 
-  const filteredSearchData = myTasks
+  const filteredSearchData = task_subtasks
     .filter((task) =>
       task?.taskName?.toLowerCase().includes(searchTerm.toLowerCase())
     )
-    .sort((a, b) => a.taskName.localeCompare(b.taskName)); //la ordenamos alfabéticamente
+    .sort((a, b) => a.taskName.trim().localeCompare(b.taskName.trim()));
 
   useEffect(() => {
-    if (User) {
-      const fetchData = async () => {
-        try {
-          if (selectedProject && selectedProject._id) {
-            await fetchTasksById(selectedProject._id);
-          }
-        } catch (error) {
-          console.error('Error fetching tasks', error);
+    setLoading(true);
+    const fetchData = async () => {
+      try {
+        if (selectedProject && selectedProject._id) {
+          await fetchTasksWithSubtasks(selectedProject._id);
         }
-      };
-      fetchData();
-    }
-  }, []);
-
-  const handleAccordionChange = (task) => (event, isExpanded) => {
-    if (isExpanded) {
-      //solo haremos el fetch si estoy abriendo un determinado acordión
-      if (!openedAccordionIds.includes(task._id)) {
-        fetchTasksWithSubtasks(task._id);
-        setOpenedAccordionIds((prev) => [...prev, task._id]);
+      } catch (error) {
+        console.error('Error fetching tasks', error);
+      } finally {
+        setLoading(false);
       }
-    } else {
-      setOpenedAccordionIds((prev) => prev.filter((id) => id !== task._id));
-    }
-  };
+    };
+    fetchData();
+  }, [selectedProject]);
 
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const theme = createTheme();
-
-  const handleClipIcon = () => {
-    console.log('toqué el icono del clip en TasksBrowser');
-  };
 
   return (
     <LayoutPage
@@ -90,45 +65,75 @@ const TasksBrowser = () => {
       }
     >
       <ThemeProvider theme={theme}>
-        {filteredSearchData?.map((task, index) => (
-          <Accordion
-            key={task.id}
-            sx={{ minWidth: '250px' }}
-            expanded={openedAccordionIds.includes(task._id)}
-            onChange={handleAccordionChange(task)}
-          >
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
+        {loading ? (
+          <Box sx={{ width: '100%' }}>
+            {[...Array(task_subtasks.length)].map((_, index) => (
+              <Skeleton key={index} height={80} sx={{ mb: '-30px' }} />
+            ))}
+          </Box>
+        ) : (
+          filteredSearchData?.map((task) => (
+            <Accordion
+              key={task._id}
+              className="custom-accordion"
+              elevation={4}
+              style={{
+                backgroundColor: '#F6F7FA',
+                borderRadius: '20px',
+                padding: '10px 20PX',
+                boxShadow: 'none',
+                border: '1px solid #E0E3E8',
+              }}
+              sx={{
+                borderRadius: '16px',
+                '&.MuiAccordion-root': {
+                  border: 'none',
+                  '&:first-of-type': {
+                    borderTopLeftRadius: '16px',
+                    borderTopRightRadius: '16px',
+                  },
+                  '&:last-of-type': {
+                    borderBottomLeftRadius: '16px',
+                    borderBottomRightRadius: '16px',
+                  },
+                },
+                marginBottom: '12px',
+              }}
             >
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-                <Typography variant="h6">{task?.taskName}</Typography>
-                <Box>
-                  <Typography
-                    variant="body1"
-                    color="textSecondary"
-                    noWrap
-                    sx={{
-                      fontWeight: 600,
-                      fontSize: '12px',
-                      borderRadius: '8px',
-                      padding: '4px 8px',
-                      textAlign: 'center',
-                      alignItems: 'center',
-                      ...statusColors[task?.state],
-                    }}
-                  >
-                    {task?.state}
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <Box
+                  sx={{ display: 'flex', alignItems: 'center', gap: '20px' }}
+                >
+                  <Typography variant="h6">
+                    {useFormatText(task?.taskName)}
                   </Typography>
+                  <Box>
+                    <Typography
+                      variant="body1"
+                      color="textSecondary"
+                      noWrap
+                      sx={{
+                        fontWeight: 600,
+                        fontSize: '12px',
+                        borderRadius: '8px',
+                        padding: '4px 8px',
+                        textAlign: 'center',
+                        alignItems: 'center',
+                        ...statusColors[task?.state],
+                      }}
+                    >
+                      {task?.state}
+                    </Typography>
+                  </Box>
                 </Box>
-              </Box>
-            </AccordionSummary>
-            <AccordionDetails>
-              {subtasks?.length > 0 &&
-                subtasks
-                  .filter((subtask) => subtask.taskId === task._id)
-                  .map((subtask) => (
+              </AccordionSummary>
+              <AccordionDetails>
+                {task?.subtasks?.length > 0 &&
+                  task.subtasks.map((subtask) => (
                     <Box
                       key={subtask._id}
                       elevation={0}
@@ -136,7 +141,7 @@ const TasksBrowser = () => {
                         opacity: subtask.state === 'Completed' ? 1 : 1, // item opacity
                         borderRadius: '12px',
                         padding: '8px',
-                        ':hover': { background: '#F6F7FA', cursor: 'pointer' },
+                        ':hover': { background: '#F6F7FA', cursor: 'default' },
                       }}
                     >
                       <Typography variant="h6" fontWeight="bold" noWrap>
@@ -200,35 +205,6 @@ const TasksBrowser = () => {
                                 {subtask?.members_id?.length}
                               </Typography>
                             </div>
-
-                            {/* {!isMobile && (
-                              <div
-                                style={{
-                                  display: 'flex',
-                                  marginLeft: 10,
-                                }}
-                              >
-                                <AttachFileIcon
-                                  style={{
-                                    cursor: 'pointer',
-                                    color: '#A3A5AB',
-                                    fontSize: '18px',
-                                  }}
-                                  onClick={handleClipIcon}
-                                />
-                                <Typography
-                                  variant="body1"
-                                  noWrap
-                                  style={{
-                                    fontSize: '12px',
-                                    fontWeight: 'bold',
-                                    marginRight: '1rem',
-                                  }}
-                                >
-                                  {subtask?.attachment?.length || 'x'}
-                                </Typography>
-                              </div>
-                            )} */}
                           </div>
                         </Box>
 
@@ -287,11 +263,13 @@ const TasksBrowser = () => {
                       </Box>
                     </Box>
                   ))}
-            </AccordionDetails>
-          </Accordion>
-        ))}
+              </AccordionDetails>
+            </Accordion>
+          ))
+        )}
       </ThemeProvider>
     </LayoutPage>
   );
 };
+
 export default TasksBrowser;
