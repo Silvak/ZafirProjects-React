@@ -74,3 +74,7 @@ main {
   color: blue;
   background: rgb(233, 233, 233) !important;
 }
+
+.css-1slmsqf-MuiPaper-root-MuiAccordion-root::before {
+  position: inherit !important;
+}
