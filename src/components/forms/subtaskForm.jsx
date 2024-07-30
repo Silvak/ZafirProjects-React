@@ -12,28 +12,28 @@ import {
   createTheme,
   useMediaQuery,
   IconButton,
-} from '@mui/material';
-import { useState } from 'react';
-import { shallow } from 'zustand/shallow';
-import useSuggestionUsers from '../../hooks/useSuggestionUsers';
-import { useBoundStore } from '../../stores';
-import getUniqueUsers from '../../utils/getUniqueUsers';
-import SuggestionList from '../SuggestionList/SuggestionList';
-import CustomAvatar from '../CustomAvatar/CustomAvatar';
-import CloseIcon from '@mui/icons-material/Close';
+} from "@mui/material";
+import { useState } from "react";
+import { shallow } from "zustand/shallow";
+import useSuggestionUsers from "../../hooks/useSuggestionUsers";
+import { useBoundStore } from "../../stores";
+import getUniqueUsers from "../../utils/getUniqueUsers";
+import SuggestionList from "../SuggestionList/SuggestionList";
+import CustomAvatar from "../CustomAvatar/CustomAvatar";
+import CloseIcon from "@mui/icons-material/Close";
 
 const INITIAL_FORM_DATA = {
-  subTaskName: '',
-  description: '',
-  start: '',
-  end: '',
-  state: '',
-  priority: '',
+  subTaskName: "",
+  description: "",
+  start: "",
+  end: "",
+  state: "",
+  priority: "",
 };
 
 const SubTaskForm = ({ taskId, closeModal, setFilterSubtask }) => {
   const theme = createTheme();
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const {
     addSubtask,
     ChangeTitleAlert,
@@ -48,16 +48,16 @@ const SubTaskForm = ({ taskId, closeModal, setFilterSubtask }) => {
   const [filteredLeaders, setFilteredLeaders] = useState([]);
   const [filteredMembers, setFilteredMembers] = useState([]);
   //  nombre del miembro
-  const [member, setMember] = useState('');
+  const [member, setMember] = useState("");
   // miembros a renderizar
   const [members, setMembers] = useState([]);
   const [formData, setformData] = useState(INITIAL_FORM_DATA);
 
   // '/project/:taskId'
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date().toISOString().split("T")[0];
 
   const handleSuggestionChange = ({ inputValue }) => {
-    if (inputValue === '') {
+    if (inputValue === "") {
       setFilteredMembers([]);
     } else {
       const result = getUniqueUsers(users);
@@ -79,9 +79,9 @@ const SubTaskForm = ({ taskId, closeModal, setFilterSubtask }) => {
       };
 
       // validamos que no se envie vacio
-      if (Object.values(data).includes('')) {
+      if (Object.values(data).includes("")) {
         ChangeStateAlertError(true);
-        ChangeTitleAlertError('All fields are required');
+        ChangeTitleAlertError("All fields are required");
         return;
       } else {
         const newSubtasks = await addSubtask(data, taskId);
@@ -100,7 +100,7 @@ const SubTaskForm = ({ taskId, closeModal, setFilterSubtask }) => {
         // // Utilizamos promise.all porque es un array de miembros
         // await Promise.all(promises);
         closeModal();
-        ChangeTitleAlert('Subtask created successfully');
+        ChangeTitleAlert("Subtask created successfully");
         ChangeStateAlert(true);
       }
     } catch (error) {
@@ -120,7 +120,7 @@ const SubTaskForm = ({ taskId, closeModal, setFilterSubtask }) => {
   };
 
   const handleSuggestionClick = (user, type) => {
-    if (type === 'leader') {
+    if (type === "leader") {
       setformData({ ...formData, leaders: user });
       setFilteredLeaders([]);
     } else {
@@ -130,7 +130,7 @@ const SubTaskForm = ({ taskId, closeModal, setFilterSubtask }) => {
       if (alreadyExist === undefined) {
         setMembers((prev) => [...prev, user]);
         setFilteredMembers([]);
-        setMember('');
+        setMember("");
       } else {
         return;
       }
@@ -152,41 +152,41 @@ const SubTaskForm = ({ taskId, closeModal, setFilterSubtask }) => {
         component="form"
         onSubmit={handleSubmit}
         sx={{
-          maxWidth: isMobile ? '90vw' : 'fit-content',
-          padding: '30px',
-          paddingBlock: '24px',
-          maxHeight: '90vh',
-          height: isMobile ? '90vh' : '',
-          borderTopLeftRadius: '0px',
-          borderTopRightRadius: '0px',
-          overflowY: 'auto',
-          borderRadius: '16px',
+          maxWidth: isMobile ? "90vw" : "fit-content",
+          padding: "30px",
+          paddingBlock: "24px",
+          maxHeight: "90vh",
+          height: isMobile ? "90vh" : "",
+          borderTopLeftRadius: "0px",
+          borderTopRightRadius: "0px",
+          overflowY: "auto",
+          borderRadius: "16px",
         }}
       >
         <Grid item>
           <div
             style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
             }}
           >
             <Typography
               variant="h4"
               sx={{
-                color: 'black',
-                fontWeight: 'bold',
-                fontSize: '1.5rem',
-                marginBottom: '2rem',
+                color: "black",
+                fontWeight: "bold",
+                fontSize: "1.5rem",
+                marginBottom: "2rem",
               }}
             >
               Create Subtask
             </Typography>
             <IconButton
               sx={{
-                mb: '2rem',
-                color: '#7661EA',
-                mr: '-1rem',
+                mb: "2rem",
+                color: "#7661EA",
+                mr: "-1rem",
               }}
               disableRipple
               title="Close"
@@ -196,7 +196,7 @@ const SubTaskForm = ({ taskId, closeModal, setFilterSubtask }) => {
               <CloseIcon />
             </IconButton>
           </div>
-          <Typography fontFamily={'Poppins'} color={'#6B6E75'}>
+          <Typography fontFamily={"Poppins"} color={"#6B6E75"}>
             Enter a SubTask name
           </Typography>
           <TextField
@@ -206,52 +206,52 @@ const SubTaskForm = ({ taskId, closeModal, setFilterSubtask }) => {
             name="subTaskName"
             onChange={handleChange}
             sx={{
-              width: '100%',
-              mb: '1.2rem',
+              width: "100%",
+              mb: "1.2rem",
             }}
           />
         </Grid>
         {/* flex */}
         <div
           style={{
-            display: 'flex',
-            marginBottom: '20px',
+            display: "flex",
+            marginBottom: "20px",
           }}
         >
           <Grid
             item
             sx={{
-              marginRight: '12px',
+              marginRight: "12px",
             }}
           >
-            <Typography fontFamily={'Poppins'} color={'#6B6E75'}>
+            <Typography fontFamily={"Poppins"} color={"#6B6E75"}>
               Start date
             </Typography>
             <TextField
               size="small"
               name="start"
               type="date"
-              InputProps={{ inputProps: { min: today } }}
+              // InputProps={{ inputProps: { min: today } }}
               value={formData.start}
               onChange={handleChange}
               sx={{
-                width: '100%',
+                width: "100%",
               }}
             />
           </Grid>
           <Grid item>
-            <Typography fontFamily={'Poppins'} color={'#6B6E75'}>
+            <Typography fontFamily={"Poppins"} color={"#6B6E75"}>
               End date
             </Typography>
             <TextField
               size="small"
               name="end"
               type="date"
-              InputProps={{ inputProps: { min: formData.start || today } }}
+              InputProps={{ inputProps: { min: formData.start } }}
               value={formData.end}
               onChange={handleChange}
               sx={{
-                width: '100%',
+                width: "100%",
               }}
             />
           </Grid>
@@ -260,10 +260,10 @@ const SubTaskForm = ({ taskId, closeModal, setFilterSubtask }) => {
         <Grid
           item
           sx={{
-            marginBottom: '20px',
+            marginBottom: "20px",
           }}
         >
-          <Typography fontFamily={'Poppins'} color={'#6B6E75'}>
+          <Typography fontFamily={"Poppins"} color={"#6B6E75"}>
             Add a description...
           </Typography>
           <TextField
@@ -273,21 +273,21 @@ const SubTaskForm = ({ taskId, closeModal, setFilterSubtask }) => {
             value={formData.description}
             placeholder="..."
             sx={{
-              width: '100%',
+              width: "100%",
             }}
           />
         </Grid>
 
         {/* members */}
-        <Box sx={{ position: 'relative' }}>
+        <Box sx={{ position: "relative" }}>
           <Grid
             item
             sx={{
               // width: "444px",
-              marginBottom: '20px',
+              marginBottom: "20px",
             }}
           >
-            <Typography fontFamily={'Poppins'} color={'#6B6E75'}>
+            <Typography fontFamily={"Poppins"} color={"#6B6E75"}>
               Add members
             </Typography>
             <TextField
@@ -302,7 +302,7 @@ const SubTaskForm = ({ taskId, closeModal, setFilterSubtask }) => {
               }}
               placeholder="Search a member"
               sx={{
-                width: '100%',
+                width: "100%",
               }}
             />
           </Grid>
@@ -315,11 +315,11 @@ const SubTaskForm = ({ taskId, closeModal, setFilterSubtask }) => {
         <Grid item xs={12}>
           <Box
             sx={{
-              display: 'flex',
-              gap: '8px',
-              marginBottom: '20px',
-              cursor: 'pointer',
-              width: 'fit-content',
+              display: "flex",
+              gap: "8px",
+              marginBottom: "20px",
+              cursor: "pointer",
+              width: "fit-content",
             }}
           >
             {members.map((member, key) => (
@@ -337,18 +337,18 @@ const SubTaskForm = ({ taskId, closeModal, setFilterSubtask }) => {
         </Grid>
         {/* selects */}
         <Grid item xs={12}>
-          <Typography sx={{ fontSize: '0.85rem' }}>Priority</Typography>
+          <Typography sx={{ fontSize: "0.85rem" }}>Priority</Typography>
           <FormControl fullWidth>
             <Select
               required
               value={formData.priority}
               variant="outlined"
               size="small"
-              sx={{ fontSize: '14px', marginBottom: 2 }}
+              sx={{ fontSize: "14px", marginBottom: 2 }}
               name="priority"
               onChange={handleChange}
               displayEmpty
-              renderValue={(selected) => (selected ? selected : 'Type: All')}
+              renderValue={(selected) => (selected ? selected : "Type: All")}
             >
               <CustomMenuItem value="High">High</CustomMenuItem>
               <CustomMenuItem value="Medium">Medium</CustomMenuItem>
@@ -358,18 +358,18 @@ const SubTaskForm = ({ taskId, closeModal, setFilterSubtask }) => {
         </Grid>
 
         <Grid item xs={12}>
-          <Typography sx={{ fontSize: '0.85rem' }}>State</Typography>
+          <Typography sx={{ fontSize: "0.85rem" }}>State</Typography>
           <FormControl fullWidth>
             <Select
               required
               value={formData.state}
               variant="outlined"
               size="small"
-              sx={{ fontSize: '14px' }}
+              sx={{ fontSize: "14px" }}
               name="state"
               onChange={handleChange}
               displayEmpty
-              renderValue={(selected) => (selected ? selected : 'Type: All')}
+              renderValue={(selected) => (selected ? selected : "Type: All")}
             >
               <CustomMenuItem value="In Progress">In Progress</CustomMenuItem>
               <CustomMenuItem value="Pending">Pending</CustomMenuItem>
@@ -383,25 +383,25 @@ const SubTaskForm = ({ taskId, closeModal, setFilterSubtask }) => {
         {/* buttons */}
         <Grid
           sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            marginTop: '40px',
+            display: "flex",
+            justifyContent: "space-between",
+            marginTop: "40px",
           }}
         >
           <Button
             title="Cancel"
             onClick={handleClose}
             sx={{
-              textTransform: 'none',
-              color: 'black',
-              backgroundColor: 'white',
-              height: '40px',
-              width: '75px',
-              borderRadius: '8px',
-              fontSize: '13px',
+              textTransform: "none",
+              color: "black",
+              backgroundColor: "white",
+              height: "40px",
+              width: "75px",
+              borderRadius: "8px",
+              fontSize: "13px",
               fontWeight: 500,
-              fontFamily: 'Poppins',
-              border: '1px solid #D3D5DA',
+              fontFamily: "Poppins",
+              border: "1px solid #D3D5DA",
             }}
           >
             Cancel
@@ -410,19 +410,19 @@ const SubTaskForm = ({ taskId, closeModal, setFilterSubtask }) => {
             title="Save"
             onClick={handleSubmit}
             sx={{
-              textTransform: 'none',
-              color: 'white',
-              backgroundColor: '#7662EA',
-              height: '40px',
-              width: '84px',
-              borderRadius: '8px',
-              fontSize: '13px',
+              textTransform: "none",
+              color: "white",
+              backgroundColor: "#7662EA",
+              height: "40px",
+              width: "84px",
+              borderRadius: "8px",
+              fontSize: "13px",
               fontWeight: 500,
-              fontFamily: 'Poppins',
-              '&:hover': { backgroundColor: 'black' },
+              fontFamily: "Poppins",
+              "&:hover": { backgroundColor: "black" },
             }}
           >
-            {isLoading ? 'Saving...' : 'Save'}
+            {isLoading ? "Saving..." : "Save"}
           </Button>
         </Grid>
       </Paper>
@@ -434,7 +434,7 @@ export default SubTaskForm;
 
 const CustomMenuItem = ({ children, selected, ...props }) => {
   return (
-    <MenuItem className="menu-item " sx={{ height: 'min-content' }} {...props}>
+    <MenuItem className="menu-item " sx={{ height: "min-content" }} {...props}>
       {children}
     </MenuItem>
   );
