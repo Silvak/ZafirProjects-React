@@ -86,7 +86,9 @@ const TableRowComponent = ({
                         style={{
                           marginLeft: "24px",
                           cursor: "pointer",
-                          color: deleteClicked ? "blue" : "inherit",
+                          color: deleteClicked
+                            ? "rgb(118, 98, 234)"
+                            : "inherit",
                           transition: "color 0.2s ease-in-out",
                         }}
                         onClick={(e) => {
@@ -104,7 +106,7 @@ const TableRowComponent = ({
                         style={{
                           cursor: "pointer",
                           marginLeft: "10px",
-                          color: editClicked ? "blue" : "inherit",
+                          color: editClicked ? "rgb(118, 98, 234)" : "inherit",
                           transition: "color 0.2s ease-in-out",
                         }}
                         onClick={(e) => {

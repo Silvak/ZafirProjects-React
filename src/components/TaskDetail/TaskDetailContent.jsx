@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Grid,
   IconButton,
@@ -12,18 +12,18 @@ import {
   ThemeProvider,
   Box,
   createTheme,
-} from '@mui/material';
-import { EditOutlined as EditOutlinedIcon } from '@mui/icons-material';
-import 'react-datepicker/dist/react-datepicker.css';
-import { useBoundStore } from '../../stores';
-import { shallow } from 'zustand/shallow';
-import useSuggestionUsers from '../../hooks/useSuggestionUsers';
-import './dataPicker.css';
-import css from './style.module.css';
-import { format } from 'date-fns';
-import CustomAvatar from '@/components/CustomAvatar/CustomAvatar';
-import SuggestionList from '../SuggestionList/SuggestionList';
-import getUniqueUsers from '../../utils/getUniqueUsers';
+} from "@mui/material";
+import { EditOutlined as EditOutlinedIcon } from "@mui/icons-material";
+import "react-datepicker/dist/react-datepicker.css";
+import { useBoundStore } from "../../stores";
+import { shallow } from "zustand/shallow";
+import useSuggestionUsers from "../../hooks/useSuggestionUsers";
+import "./dataPicker.css";
+import css from "./style.module.css";
+import { format } from "date-fns";
+import CustomAvatar from "@/components/CustomAvatar/CustomAvatar";
+import SuggestionList from "../SuggestionList/SuggestionList";
+import getUniqueUsers from "../../utils/getUniqueUsers";
 
 const TaskDetailContent = ({
   task = {},
@@ -36,19 +36,19 @@ const TaskDetailContent = ({
   const theme = createTheme();
 
   //  nombre del miembro
-  const [member, setMember] = useState('');
+  const [member, setMember] = useState("");
   // miembros a renderizar
-  const [members, setMembers] = useState(task['members_id'] || []);
+  const [members, setMembers] = useState(task["members_id"] || []);
   const [filteredMembers, setFilteredMembers] = useState([]);
 
   const initialFormData = {
-    taskName: task.taskName || '',
-    subtaskName: task.name || '',
-    description: task.description || '',
-    start: task.start ? format(new Date(task.start), 'yyyy-MM-dd') : '',
-    end: task.end ? format(new Date(task.end), 'yyyy-MM-dd') : '',
-    state: task.state || '',
-    priority: task.priority || '',
+    taskName: task.taskName || "",
+    subtaskName: task.name || "",
+    description: task.description || "",
+    start: task.start ? format(new Date(task.start), "yyyy-MM-dd") : "",
+    end: task.end ? format(new Date(task.end), "yyyy-MM-dd") : "",
+    state: task.state || "",
+    priority: task.priority || "",
     members_id: task.members_id || [],
   };
 
@@ -68,21 +68,21 @@ const TaskDetailContent = ({
   } = useBoundStore((state) => state, shallow);
 
   useEffect(() => {
-    setMembers(task['members_id'] || []);
+    setMembers(task["members_id"] || []);
     setFormData({
-      taskName: task.taskName || '',
-      subtaskName: task.name || '',
-      description: task.description || '',
-      start: task.start ? format(new Date(task.start), 'yyyy-MM-dd') : '',
-      end: task.end ? format(new Date(task.end), 'yyyy-MM-dd') : '',
-      state: task.state || '',
-      priority: task.priority || '',
+      taskName: task.taskName || "",
+      subtaskName: task.name || "",
+      description: task.description || "",
+      start: task.start ? format(new Date(task.start), "yyyy-MM-dd") : "",
+      end: task.end ? format(new Date(task.end), "yyyy-MM-dd") : "",
+      state: task.state || "",
+      priority: task.priority || "",
       members_id: task.members_id || [],
     });
   }, [task]);
 
   const handleSuggestionChange = ({ inputValue }) => {
-    if (inputValue === '') {
+    if (inputValue === "") {
       setFilteredMembers([]);
     } else {
       const result = getUniqueUsers(users);
@@ -97,7 +97,7 @@ const TaskDetailContent = ({
     if (!members.find((member) => member._id === user._id)) {
       setMembers((prev) => [...prev, user]);
       setFilteredMembers([]);
-      setMember('');
+      setMember("");
     }
   };
 
@@ -108,7 +108,7 @@ const TaskDetailContent = ({
   const handleCancel = () => {
     setIsEditing(false);
     setFormData(initialFormData);
-    setMembers(task['members_id'] || []);
+    setMembers(task["members_id"] || []);
   };
 
   const handleSubmit = async () => {
@@ -117,7 +117,7 @@ const TaskDetailContent = ({
     try {
       if (JSON.stringify(newValues) === JSON.stringify(initialFormData)) {
         ChangeStateAlertError(true);
-        ChangeTitleAlertError('No changes were made');
+        ChangeTitleAlertError("No changes were made");
       } else {
         if (!isSubtask) {
           await updateTask({
@@ -139,11 +139,11 @@ const TaskDetailContent = ({
           await fetchTasksById(selectedProject?._id);
         }
         setIsEditing(false);
-        ChangeTitleAlert('Data has been updated successfully');
+        ChangeTitleAlert("Data has been updated successfully");
         ChangeStateAlert(true);
       }
     } catch (error) {
-      ChangeTitleAlertError('Error: ' + error.message);
+      ChangeTitleAlertError("Error: " + error.message);
       ChangeStateAlertError(true);
     }
   };
@@ -165,12 +165,12 @@ const TaskDetailContent = ({
         container
         spacing={3}
         style={{
-          width: '70vw',
-          maxWidth: '1024px',
+          width: "70vw",
+          maxWidth: "1024px",
         }}
       >
         <Grid item xs={12}>
-          <Box sx={{ position: 'relative' }}>
+          <Box sx={{ position: "relative" }}>
             <TextField
               size="small"
               label="Search Member"
@@ -184,7 +184,7 @@ const TaskDetailContent = ({
               sx={{ mt: 4 }}
               InputLabelProps={{
                 sx: {
-                  color: isEditing ? 'inherit' : 'blue',
+                  color: isEditing ? "inherit" : "rgb(118, 92, 234)",
                 },
               }}
             />
@@ -199,11 +199,11 @@ const TaskDetailContent = ({
         <Grid item xs={12}>
           <Box
             sx={{
-              display: 'flex',
-              gap: '8px',
-              marginBottom: '20px',
-              cursor: isEditing ? 'pointer' : 'not-allowed',
-              width: 'fit-content',
+              display: "flex",
+              gap: "8px",
+              marginBottom: "20px",
+              cursor: isEditing ? "pointer" : "not-allowed",
+              width: "fit-content",
             }}
           >
             {members.map((member, key) => (
@@ -225,14 +225,14 @@ const TaskDetailContent = ({
           <span>Name</span>
           <TextField
             size="small"
-            name={isSubtask ? 'subtaskName' : 'taskName'}
+            name={isSubtask ? "subtaskName" : "taskName"}
             onChange={handleChange}
             value={isSubtask ? formData.subtaskName : formData.taskName}
             fullWidth
             disabled={!isEditing}
             InputLabelProps={{
               sx: {
-                color: isEditing ? 'inherit' : 'blue',
+                color: isEditing ? "inherit" : "rgb(118, 92, 234)",
               },
             }}
           />
@@ -248,24 +248,24 @@ const TaskDetailContent = ({
             disabled={!isEditing}
             InputLabelProps={{
               sx: {
-                color: isEditing ? 'inherit' : 'blue',
+                color: isEditing ? "inherit" : "rgb(118, 92, 234)",
               },
             }}
           />
         </Grid>
         <Grid item xs={12}>
-          <Typography sx={{ fontSize: '0.85rem' }}>Priority</Typography>
-          <FormControl fullWidth sx={{ bgcolor: 'white' }}>
+          <Typography sx={{ fontSize: "0.85rem" }}>Priority</Typography>
+          <FormControl fullWidth sx={{ bgcolor: "white" }}>
             <Select
               required
               variant="outlined"
               size="small"
-              sx={{ fontSize: '1rem', bgcolor: 'white' }}
+              sx={{ fontSize: "1rem", bgcolor: "white" }}
               name="priority"
               value={formData.priority}
               onChange={handleChange}
               displayEmpty
-              renderValue={(selected) => (selected ? selected : 'Type: All')}
+              renderValue={(selected) => (selected ? selected : "Type: All")}
               disabled={!isEditing}
             >
               <CustomMenuItem value="High">High</CustomMenuItem>
@@ -275,18 +275,18 @@ const TaskDetailContent = ({
           </FormControl>
         </Grid>
         <Grid item xs={12}>
-          <Typography sx={{ fontSize: '0.85rem' }}>State</Typography>
+          <Typography sx={{ fontSize: "0.85rem" }}>State</Typography>
           <FormControl fullWidth>
             <Select
               required
               variant="outlined"
               size="small"
-              sx={{ fontSize: '1rem', backgroundColor: 'white' }}
+              sx={{ fontSize: "1rem", backgroundColor: "white" }}
               name="state"
               value={formData.state}
               onChange={handleChange}
               displayEmpty
-              renderValue={(selected) => (selected ? selected : 'Type: All')}
+              renderValue={(selected) => (selected ? selected : "Type: All")}
               disabled={!isEditing}
             >
               <CustomMenuItem value="In Progress">In Progress</CustomMenuItem>
@@ -300,8 +300,8 @@ const TaskDetailContent = ({
             variant="h6"
             style={{
               fontSize: 14,
-              fontWeight: 'normal',
-              color: isEditing ? 'black' : 'darkgray',
+              fontWeight: "normal",
+              color: isEditing ? "black" : "darkgray",
             }}
           >
             Start date
@@ -314,7 +314,7 @@ const TaskDetailContent = ({
             onChange={handleChange}
             disabled={!isEditing}
             sx={{
-              width: '100%',
+              width: "100%",
             }}
           />
         </Grid>
@@ -323,8 +323,8 @@ const TaskDetailContent = ({
             variant="h6"
             style={{
               fontSize: 14,
-              fontWeight: 'normal',
-              color: isEditing ? 'black' : 'darkgray',
+              fontWeight: "normal",
+              color: isEditing ? "black" : "darkgray",
             }}
           >
             End date
@@ -337,7 +337,7 @@ const TaskDetailContent = ({
             value={formData.end}
             onChange={handleChange}
             sx={{
-              width: '100%',
+              width: "100%",
             }}
           />
         </Grid>
@@ -345,10 +345,10 @@ const TaskDetailContent = ({
           {isEditing ? (
             <div
               style={{
-                display: 'flex',
-                alignItems: 'center',
-                width: '100%',
-                justifyContent: 'space-around',
+                display: "flex",
+                alignItems: "center",
+                width: "100%",
+                justifyContent: "space-around",
               }}
             >
               <Button
@@ -357,8 +357,10 @@ const TaskDetailContent = ({
                 onClick={handleCancel}
                 disableRipple
                 style={{
-                  paddingInline: '1.5rem',
+                  paddingInline: "1.5rem",
                   borderRadius: 10,
+                  borderBlockColor: "rgb(118, 92, 234)",
+                  color: "rgb(118, 92, 234)",
                 }}
               >
                 Cancel
@@ -369,9 +371,10 @@ const TaskDetailContent = ({
                 onClick={handleSubmit}
                 disableRipple
                 style={{
-                  color: 'white',
-                  paddingInline: '2rem',
+                  color: "white",
+                  paddingInline: "2rem",
                   borderRadius: 10,
+                  backgroundColor: "rgb(118, 92, 234)",
                 }}
               >
                 Save
@@ -380,11 +383,11 @@ const TaskDetailContent = ({
           ) : (
             <Box
               style={{
-                display: 'flex',
-                alignItems: 'center',
-                width: '100%',
-                fontSize: '14px',
-                justifyContent: 'center',
+                display: "flex",
+                alignItems: "center",
+                width: "100%",
+                fontSize: "14px",
+                justifyContent: "center",
               }}
             >
               <IconButton
@@ -395,7 +398,7 @@ const TaskDetailContent = ({
                 onClick={handleEdit}
               >
                 <EditOutlinedIcon />
-                {isSubtask ? 'Edit Subtask' : 'Edit Task'}
+                {isSubtask ? "Edit Subtask" : "Edit Task"}
               </IconButton>
             </Box>
           )}
@@ -409,7 +412,7 @@ export default TaskDetailContent;
 
 const CustomMenuItem = ({ children, selected, ...props }) => {
   return (
-    <MenuItem className="menu-item" sx={{ height: 'min-content' }} {...props}>
+    <MenuItem className="menu-item" sx={{ height: "min-content" }} {...props}>
       {children}
     </MenuItem>
   );

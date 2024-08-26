@@ -117,6 +117,7 @@ const TaskHeader = ({ title, handleButton, handleAddTask }) => {
               fontWeight: "bold",
               borderRadius: "12px",
               background: "rgb(118, 98, 234)",
+              "&:hover": { backgroundColor: "black" },
             }}
             onClick={handleAddTask}
           >

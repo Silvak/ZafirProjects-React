@@ -5,7 +5,14 @@ const TasksBrowserHeader = ({ searchTerm, setSearchTerm }) => {
   return (
     <Box>
       <Box>
-        <Typography variant="h2">Tasks</Typography>
+        <h6
+          style={{
+            fontWeight: 500,
+            fontSize: "24px",
+          }}
+        >
+          Tasks
+        </h6>
       </Box>
       <TasksBrowserSearch
         searchTerm={searchTerm}

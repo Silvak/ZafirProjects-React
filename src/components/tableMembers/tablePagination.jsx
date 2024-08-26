@@ -1,10 +1,10 @@
-import React from 'react';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import Pagination from '@mui/material/Pagination';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import './styles.css';
+import React from "react";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import Pagination from "@mui/material/Pagination";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import "./styles.css";
 
 const TablePagination = ({
   rowsPerPage,
@@ -21,18 +21,18 @@ const TablePagination = ({
       container
       justifyContent="space-between"
       alignItems="center"
-      style={{ marginTop: '2rem' }}
+      style={{ marginTop: "2rem" }}
     >
       <Grid
         item
         style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '6px',
-          margin: '0.5rem',
+          display: "flex",
+          alignItems: "center",
+          gap: "6px",
+          margin: "0.5rem",
         }}
       >
-        <Typography variant="body2" sx={{ fontWeight: 'normal' }}>
+        <Typography variant="body2" sx={{ fontWeight: "normal" }}>
           View
         </Typography>
         <Select
@@ -40,19 +40,19 @@ const TablePagination = ({
           value={rowsPerPage}
           onChange={handleChangeRowsPerPage}
           style={{
-            width: '5rem',
-            borderRadius: '8px',
-            backgroundColor: 'white',
+            width: "5rem",
+            borderRadius: "8px",
+            backgroundColor: "white",
           }}
           inputProps={{
-            backgroundColor: 'white',
+            backgroundColor: "white",
           }}
           MenuProps={{
             PaperProps: {
               style: {
-                borderRadius: '8px',
+                borderRadius: "8px",
                 marginTop: 2,
-                backgroundColor: 'white',
+                backgroundColor: "white",
               },
             },
           }}
@@ -62,21 +62,21 @@ const TablePagination = ({
               key={value}
               value={value}
               style={{
-                fontSize: '12px',
-                fontWeight: 'normal',
+                fontSize: "12px",
+                fontWeight: "normal",
               }}
               sx={{
-                backgroundColor: 'white',
-                '&:hover': {
-                  backgroundColor: 'cyan',
-                  color: 'gray',
+                backgroundColor: "white",
+                "&:hover": {
+                  backgroundColor: "rgb(118, 98, 234)",
+                  color: "gray",
                 },
-                '&.Mui-selected': {
-                  backgroundColor: 'lightblue',
-                  color: 'white',
-                  '&:hover': {
-                    backgroundColor: 'cyan',
-                    color: 'gray',
+                "&.Mui-selected": {
+                  backgroundColor: "rgb(118, 98, 234)",
+                  color: "white",
+                  "&:hover": {
+                    backgroundColor: "rgb(118, 98, 234)",
+                    color: "gray",
                   },
                 },
               }}
@@ -86,20 +86,20 @@ const TablePagination = ({
           ))}
         </Select>
 
-        <Typography variant="body2" sx={{ fontWeight: 'normal' }}>
+        <Typography variant="body2" sx={{ fontWeight: "normal" }}>
           entries per page
         </Typography>
       </Grid>
       <Grid
         item
         style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          alignItems: 'center',
-          margin: '0.5rem',
+          display: "flex",
+          flexWrap: "wrap",
+          alignItems: "center",
+          margin: "0.5rem",
         }}
       >
-        <Typography variant="body2" sx={{ fontWeight: 'normal', margin: 1 }}>
+        <Typography variant="body2" sx={{ fontWeight: "normal", margin: 1 }}>
           Showing {startIndex}-{endIndex} of {data.length} entries
         </Typography>
         <Pagination

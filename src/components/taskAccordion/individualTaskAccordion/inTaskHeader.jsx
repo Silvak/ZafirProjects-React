@@ -46,8 +46,8 @@ const InTaskHeader = ({ title, handleButton, handleAddTask }) => {
     <ThemeProvider theme={theme}>
       <Header title={title}>
         <ButtonGroup
-          variant='outlined'
-          aria-label='Loading button group'
+          variant="outlined"
+          aria-label="Loading button group"
           sx={{
             display: "flex",
             alignItems: "center",
@@ -108,12 +108,13 @@ const InTaskHeader = ({ title, handleButton, handleAddTask }) => {
         </ButtonGroup>
         {/* <FilterSelect data={filtersData} padding="10px" /> */}
         <Button
-          variant='contained'
+          variant="contained"
           sx={{
             fontSize: "12px",
             fontWeight: "bold",
             borderRadius: "12px",
             background: "rgb(118, 98, 234)",
+            "&:hover": { backgroundColor: "black" },
           }}
           onClick={handleAddTask}
         >

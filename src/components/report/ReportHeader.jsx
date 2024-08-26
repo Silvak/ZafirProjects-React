@@ -1,6 +1,5 @@
 import React from "react";
 import { Typography, useTheme, useMediaQuery } from "@mui/material";
-import CustomSelect from "./CustomSelect";
 
 function ReportHeader() {
   const options = ["This Month", "Last Month", "This Year", "Last Year"];
@@ -18,18 +17,14 @@ function ReportHeader() {
         marginBottom: "56px",
       }}
     >
-      <Typography
-        style={{ fontSize: "24px" }}
-        sx={{
-          color: "#1D1F24",
-          fontWeight: 600,
-          fontFamily: "Poppins",
-          lineHeight: "36px",
-          marginRight: isSmallScreen ? 8 : 0,
+      <h6
+        style={{
+          fontWeight: 500,
+          fontSize: "24px",
         }}
       >
         Project Report
-      </Typography>
+      </h6>
       {/* <CustomSelect options={options} /> */}
     </div>
   );
