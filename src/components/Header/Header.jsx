@@ -79,9 +79,14 @@ const Header = ({ title, subtitle, children }) => {
     <Box component="header" className={classes.header}>
       <Box className={classes.textContainer}>
         {title && (
-          <Typography variant="h2" className={classes.title}>
+          <h6
+            style={{
+              fontWeight: 500,
+              fontSize: "24px",
+            }}
+          >
             {title}
-          </Typography>
+          </h6>
         )}
 
         {subtitle && (

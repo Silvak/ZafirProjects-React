@@ -56,6 +56,7 @@ const arrowBoxSx = (open) => ({
   justifyContent: "end",
   width: "100%",
   pr: "14px",
+  color: "rgb(118, 98, 234)",
 });
 
 //component
